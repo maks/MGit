@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SGit</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="default_text">Default Text</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_new">New Repository</string>
+    <string name="action_camera">Take Photos</string>
+    <string name="action_mic">Record Audio</string>
+    <string name="action_picture">Insert Picture</string>
+
+    <string name="label_remote_url">Remote URL</string>
+    <string name="label_local_path">Local Path</string>
+
+    <string name="label_cancel">Cancel</string>
+    <string name="label_clone">Clone</string>
+
+</resources>
