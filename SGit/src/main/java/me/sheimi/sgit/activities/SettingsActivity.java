@@ -13,12 +13,15 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import java.util.List;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.utils.ActivityUtils;
 
 /**
  * A {@link android.preference.PreferenceActivity} that presents a set of
@@ -44,9 +47,8 @@ public class SettingsActivity extends PreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
-                overridePendingTransition(R.anim.slide_in_right,
-                        R.anim.slide_out_right);
+                NavUtils.navigateUpFromSameTask(this);
+                ActivityUtils.backTransition(this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -237,5 +239,14 @@ public class SettingsActivity extends PreferenceActivity {
 
             bindPreferenceSummaryToValue(findPreference("sync_frequency"));
         }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            ActivityUtils.finishActivity(this);
+            return true;
+        }
+        return false;
     }
 }

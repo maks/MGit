@@ -1,5 +1,6 @@
 package me.sheimi.sgit.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -25,20 +26,22 @@ public class RepoListAdapter extends CursorAdapter implements RepoDbManager
 
     private int mQueryType = QUERY_TYPE_QUERY;
     private String mSearchQueryString;
+    private Activity mActivity;
 
     public RepoListAdapter(Context context) {
         super(context, null, true);
         mDb = RepoDbManager.getInstance(context);
         mDb.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME, this);
+        mActivity = (Activity) context;
     }
 
-    public void searchDiary(String query) {
+    public void searchRepo(String query) {
         mQueryType = QUERY_TYPE_SEARCH;
         mSearchQueryString = query;
         requery();
     }
 
-    public void queryAllDiary() {
+    public void queryAllRepo() {
         mQueryType = QUERY_TYPE_QUERY;
         requery();
     }
@@ -80,7 +83,12 @@ public class RepoListAdapter extends CursorAdapter implements RepoDbManager
         Cursor cursor = getCursor();
         if (cursor == null)
             return;
-        requery();
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                requery();
+            }
+        });
     }
 
     public static String getRepoTitle(Cursor cursor) {

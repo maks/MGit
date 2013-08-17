@@ -70,20 +70,15 @@ public class CloneDialog extends DialogFragment {
 
                     RepoUtils.getInstance(mActivity).cloneSync(remoteURL,
                             localPath);
-                    mActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ContentValues values = new ContentValues();
-                            values.put(RepoContract.RepoEntry
-                                    .COLUMN_NAME_LOCAL_PATH,
-                                    localPath);
-                            values.put(RepoContract.RepoEntry
-                                    .COLUMN_NAME_REMOTE_URL,
-                                    remoteURL);
-                            RepoDbManager.getInstance(mActivity).insertRepo
-                                    (values);
-                        }
-                    });
+                    ContentValues values = new ContentValues();
+                    values.put(RepoContract.RepoEntry
+                            .COLUMN_NAME_LOCAL_PATH,
+                            localPath);
+                    values.put(RepoContract.RepoEntry
+                            .COLUMN_NAME_REMOTE_URL,
+                            remoteURL);
+                    RepoDbManager.getInstance(mActivity).insertRepo
+                            (values);
                 }
             });
             thread.start();

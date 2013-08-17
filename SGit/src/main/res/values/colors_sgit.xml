@@ -19,4 +19,7 @@
 
 <resources>
     <color name="pressed_sgit">#CC33B5E5</color>
+    <color name="branch_name_text">#FFF</color>
+    <color name="branch_name_bg">#555</color>
+    <color name="branch_name_bg_pressed">#777</color>
 </resources>

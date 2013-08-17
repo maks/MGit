@@ -12,4 +12,7 @@
     <dimen name="general_divider_padding">10dp</dimen>
 
     <dimen name="general_label_size">15sp</dimen>
+
+    <dimen name="branch_label_text_size">18sp</dimen>
+    <dimen name="branch_label_padding">10dp</dimen>
 </resources>

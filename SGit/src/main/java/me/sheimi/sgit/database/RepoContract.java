@@ -1,5 +1,6 @@
 package me.sheimi.sgit.database;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
 
 /**
@@ -22,6 +23,18 @@ public final class RepoContract {
         public static final String [] ALL_COLUMNS = {
             _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
         };
+    }
+
+    public static int getRepoID(Cursor cursor) {
+        return cursor.getInt(0);
+    }
+
+    public static String getLocalPath(Cursor cursor) {
+        return cursor.getString(1);
+    }
+
+    public static String getRemoteURL(Cursor cursor) {
+        return cursor.getString(2);
     }
 
     public static final String REPO_ENTRY_CREATE =
