@@ -3,17 +3,30 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_listitem">
+        android:layout_height="match_parent">
 
+    <ImageView
+            android:layout_width="@dimen/file_list_item_icon_size"
+            android:layout_height="@dimen/file_list_item_icon_size"
+            android:id="@+id/fileIcon"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_file_d"
+            android:padding="@dimen/file_list_item_icon_padding"/>
 
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/default_text"
             android:id="@+id/fileTitle"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:minHeight="@dimen/general_min_height"/>
+            android:layout_alignTop="@+id/fileIcon"
+            android:layout_alignBottom="@+id/fileIcon"
+            android:layout_toRightOf="@+id/fileIcon"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/general_padding"
+            android:minHeight="@dimen/general_min_height"
+            android:textSize="@dimen/file_list_item_text_size"
+            android:gravity="left|center"/>
+
 
 </RelativeLayout>

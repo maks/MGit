@@ -22,6 +22,7 @@ import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
+import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
@@ -37,6 +38,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
     private ViewPager mViewPager;
     private ActionBar mActionBar;
+    private TabItemPagerAdapter mViewPagerAdapter;
 
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
@@ -60,9 +62,10 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private void setupActionBar() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mActionBar = getActionBar();
+        mViewPagerAdapter = new TabItemPagerAdapter
+                (getSupportFragmentManager());
 
-        mViewPager.setAdapter(new TabItemPagerAdapter
-                (getSupportFragmentManager()));
+        mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager
                 .SimpleOnPageChangeListener() {
             @Override
@@ -170,6 +173,14 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            int position = mViewPager.getCurrentItem();
+            OnBackClickListener onBackClickListener = mViewPagerAdapter
+                    .getItem(position)
+                    .getOnBackClickListener();
+            if (onBackClickListener != null) {
+                if (onBackClickListener.onClick())
+                    return true;
+            }
             ActivityUtils.finishActivity(this);
             return true;
         }

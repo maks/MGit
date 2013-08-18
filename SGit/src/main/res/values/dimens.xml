@@ -15,4 +15,8 @@
 
     <dimen name="branch_label_text_size">18sp</dimen>
     <dimen name="branch_label_padding">10dp</dimen>
+
+    <dimen name="file_list_item_icon_size">50dp</dimen>
+    <dimen name="file_list_item_text_size">18sp</dimen>
+    <dimen name="file_list_item_icon_padding">8dp</dimen>
 </resources>

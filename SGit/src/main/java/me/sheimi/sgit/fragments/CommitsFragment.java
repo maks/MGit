@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import me.sheimi.sgit.listeners.OnBackClickListener;
+
 /**
  * Created by sheimi on 8/5/13.
  */
@@ -23,4 +25,8 @@ public class CommitsFragment extends BaseFragment {
 		return rl;
 	}
 
+    @Override
+    public OnBackClickListener getOnBackClickListener() {
+        return null;
+    }
 }

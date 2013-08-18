@@ -15,6 +15,7 @@ import java.io.File;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
+import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
@@ -93,4 +94,17 @@ public class FilesFragment extends BaseFragment {
         setCurrentDir(mRootDir);
     }
 
+    @Override
+    public OnBackClickListener getOnBackClickListener() {
+        return new OnBackClickListener() {
+            @Override
+            public boolean onClick() {
+                if (mCurrentDir.equals(mRootDir))
+                    return false;
+                File parent = mCurrentDir.getParentFile();
+                setCurrentDir(parent);
+                return true;
+            }
+        };
+    }
 }
