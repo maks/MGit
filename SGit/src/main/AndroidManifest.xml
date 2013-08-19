@@ -42,12 +42,20 @@
                 android:value="me.sheimi.diary.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.RepoDetailActivity"
+            android:name="me.sheimi.sgit.activities.RepoDetailActivity"
             android:label="@string/title_activity_repo_detail"
             android:parentActivityName=".RepoListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.sheimi.sgit.RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ViewFileActivity"
+            android:label="@string/title_activity_view_file"
+            android:parentActivityName="me.sheimi.sgit.activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.sheimi.sgit.activities.RepoDetailActivity" />
         </activity>
     </application>
 

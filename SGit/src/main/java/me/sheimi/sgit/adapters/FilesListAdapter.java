@@ -60,7 +60,7 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         File [] files = dir.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File file, String s) {
-                if (s.startsWith(".")) {
+                if (s.equals(".git")) {
                     return false;
                 }
                 return true;

@@ -1,6 +1,7 @@
 package me.sheimi.sgit.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import java.io.File;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.listeners.OnBackClickListener;
+import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
@@ -74,9 +77,20 @@ public class FilesFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view,
                                     int position, long id) {
                 File file = mFilesListAdapter.getItem(position);
-                if (!file.isDirectory())
+                if (file.isDirectory()) {
+                    setCurrentDir(file);
                     return;
-                setCurrentDir(file);
+                }
+                String mime = mFsUtils.getMimeType(file);
+                if (mime.startsWith("text")) {
+                    Intent intent = new Intent(getActivity(),
+                            ViewFileActivity.class);
+                    intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
+                            file.getAbsolutePath());
+                    ActivityUtils.startActivity(mActivity, intent);
+                    return;
+                }
+                mFsUtils.openFile(file);
             }
         });
 

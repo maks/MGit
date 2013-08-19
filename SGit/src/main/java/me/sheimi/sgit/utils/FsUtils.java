@@ -1,6 +1,9 @@
 package me.sheimi.sgit.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +64,33 @@ public class FsUtils {
 
     public File getAppDir() {
         return mContext.getExternalFilesDir(null);
+    }
+
+    public String getMimeType(String url) {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url
+                .toLowerCase(Locale.getDefault()));
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+        if (type == null) {
+            type = "text/plain";
+        }
+        return type;
+    }
+
+    public String getMimeType(File file) {
+        return getMimeType(Uri.fromFile(file).toString());
+    }
+
+    public void openFile(File file) {
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(file);
+        String type = getMimeType(uri.toString());
+        intent.setDataAndType(uri, type);
+        mContext.startActivity(intent);
     }
 
 }

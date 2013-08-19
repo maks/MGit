@@ -2,13 +2,20 @@
 
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <translate
-            android:fromXDelta="-100%p"
-            android:toXDelta="0%p"
-            android:duration="@android:integer/config_longAnimTime"/>
     <alpha
             android:fromAlpha="0.5"
             android:toAlpha="1"
-            android:duration="@android:integer/config_longAnimTime"/>
+            android:duration="550"/>
+
+
+    <scale
+            android:fromXScale="0.9"
+            android:toXScale="1.0"
+            android:fromYScale="0.9"
+            android:toYScale="1.0"
+            android:pivotX="50%p"
+            android:pivotY="50%p"
+            android:duration="200"
+            android:startOffset="350"/>
 
 </set>
