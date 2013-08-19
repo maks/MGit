@@ -64,16 +64,18 @@ public class RepoListAdapter extends CursorAdapter implements RepoDbManager
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.repo_listitem, viewGroup, false);
         RepoListItemHolder holder = new RepoListItemHolder();
-        view.setTag(holder);
         holder.repoTitle = (TextView) view.findViewById(R.id.repoTitle);
-        String title = getRepoTitle(cursor);
-        holder.repoTitle.setText(title);
+        view.setTag(holder);
         return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        String title = getRepoTitle(cursor);
+        String title = RepoContract.getLocalPath(cursor);
+        boolean isCloning = RepoContract.isCloning(cursor);
+        if (isCloning) {
+            title += " cloning ...";
+        }
         RepoListItemHolder holder = (RepoListItemHolder) view.getTag();
         holder.repoTitle.setText(title);
     }
@@ -89,14 +91,6 @@ public class RepoListAdapter extends CursorAdapter implements RepoDbManager
                 requery();
             }
         });
-    }
-
-    public static String getRepoTitle(Cursor cursor) {
-        return cursor.getString(1);
-    }
-
-    public static int getRepoID(Cursor cursor) {
-        return cursor.getInt(0);
     }
 
     private static class RepoListItemHolder {

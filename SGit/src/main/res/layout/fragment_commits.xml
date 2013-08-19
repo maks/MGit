@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <Button
             android:layout_width="match_parent"
@@ -29,7 +28,7 @@
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/filesList"
+            android:id="@+id/commitsList"
+            android:fastScrollEnabled="true"
             android:layout_above="@+id/commitName"/>
-
 </RelativeLayout>

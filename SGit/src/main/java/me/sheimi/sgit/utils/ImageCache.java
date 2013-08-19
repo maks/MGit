@@ -35,7 +35,7 @@ public class ImageCache {
 												 .build();
 		File cacheDir = StorageUtils.getCacheDirectory(context);
 		ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
-				context).defaultDisplayImageOptions(mDefaultOptions)
+				context).defaultDisplayImageOptions(mDiskCacheOption)
 		                .discCache(new TotalSizeLimitedDiscCache(cacheDir, SIZE))
 		                .build();
 		mImageLoader = ImageLoader.getInstance();

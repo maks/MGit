@@ -19,4 +19,11 @@
     <dimen name="file_list_item_icon_size">50dp</dimen>
     <dimen name="file_list_item_text_size">18sp</dimen>
     <dimen name="file_list_item_icon_padding">8dp</dimen>
+
+    <dimen name="commit_list_item_icon_size">50dp</dimen>
+    <dimen name="commit_list_item_id_size">14sp</dimen>
+    <dimen name="commit_list_item_msg_size">18sp</dimen>
+    <dimen name="commit_list_item_author_size">14sp</dimen>
+    <dimen name="commit_list_item_time_size">14sp</dimen>
+    <dimen name="commit_list_item_icon_padding">8dp</dimen>
 </resources>

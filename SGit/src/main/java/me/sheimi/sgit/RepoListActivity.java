@@ -1,9 +1,9 @@
 package me.sheimi.sgit;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,7 @@ import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 
-public class RepoListActivity extends Activity {
+public class RepoListActivity extends FragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
@@ -68,7 +68,7 @@ public class RepoListActivity extends Activity {
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
-                cloneDialog.show(getFragmentManager(), "clone-dialog");
+                cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
                 return true;
 
         }

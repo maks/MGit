@@ -13,6 +13,8 @@ public final class RepoContract {
     private static final String PRIMARY_KEY_TYPE = INT_TYPE + "PRIMARY KEY " +
             "AUTOINCREMENT ";
     private static final String COMMA_SEP = ",";
+    public static final int TRUE = 1;
+    public static final int FALSE = 0;
 
     public RepoContract() {}
 
@@ -20,8 +22,10 @@ public final class RepoContract {
         public static final String TABLE_NAME = "repo";
         public static final String COLUMN_NAME_LOCAL_PATH = "local_path";
         public static final String COLUMN_NAME_REMOTE_URL = "remote_url";
+        public static final String COLUMN_NAME_IS_CLONING = "is_cloning";
         public static final String [] ALL_COLUMNS = {
             _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
+                COLUMN_NAME_IS_CLONING
         };
     }
 
@@ -37,11 +41,17 @@ public final class RepoContract {
         return cursor.getString(2);
     }
 
+    public static boolean isCloning(Cursor cursor) {
+        // == 1 true, != 1 false (== 0)
+        return cursor.getInt(3) == 1;
+    }
+
     public static final String REPO_ENTRY_CREATE =
             "CREATE TABLE " + RepoEntry.TABLE_NAME + " ("
                     + RepoEntry._ID + PRIMARY_KEY_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LOCAL_PATH + TEXT_TYPE + COMMA_SEP
-                    + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE
+                    + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_IS_CLONING + INT_TYPE
                     + " )";
 
 

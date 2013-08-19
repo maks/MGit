@@ -93,10 +93,11 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public void insertRepo(ContentValues values) {
-        mWritableDatabase.insert(RepoContract.RepoEntry.TABLE_NAME,
+    public long insertRepo(ContentValues values) {
+        long id = mWritableDatabase.insert(RepoContract.RepoEntry.TABLE_NAME,
                 null, values);
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
+        return id;
     }
 
     public void updateRepo(int id, ContentValues values) {

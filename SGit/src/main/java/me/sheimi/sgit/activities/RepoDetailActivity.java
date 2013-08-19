@@ -103,7 +103,24 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
     private void createFragments() {
         mFilesFragment = new FilesFragment(mGit, mLocalPath);
-        mCommitsFragment = new CommitsFragment();
+        mCommitsFragment = new CommitsFragment(mGit);
+    }
+
+    public void resetCommits(final String commitName) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.checkout(mGit, commitName);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFilesFragment.reset(commitName);
+                        mCommitsFragment.reset(commitName);
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
     @Override

@@ -13,6 +13,4 @@ public abstract class BaseFragment extends Fragment {
 
 	// public abstract void search(String query);
 
-	// public abstract void reset();
-
 }
