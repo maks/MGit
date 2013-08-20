@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -20,6 +20,7 @@ import org.eclipse.jgit.lib.Repository;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
@@ -46,7 +47,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
     private RepoDbManager mDb;
     private RepoUtils mRepoUtils;
-    private int mRepoID;
+    private long mRepoID;
     private String mLocalPath;
     private Repository mRepository;
     private Git mGit;
@@ -100,6 +101,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         mRepoUtils = RepoUtils.getInstance(this);
         mRepository = mRepoUtils.getRepository(mLocalPath);
         mGit = new Git(mRepository);
+        cursor.close();;
     }
 
     private void createFragments() {
@@ -136,8 +138,17 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                ActivityUtils.backTransition(this);
+                ActivityUtils.finishActivity(this);
+                return true;
+            case R.id.action_delete:
+                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath, new View
+                        .OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ActivityUtils.finishActivity(RepoDetailActivity.this);
+                    }
+                });
+                drd.show(getSupportFragmentManager(), "delete-repo-dialog");
                 return true;
             case R.id.action_pull:
                 pullRepo();

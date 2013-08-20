@@ -5,25 +5,28 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="default_text"></string>
+    <string name="title_activity_view_file">ViewFileActivity</string>
 
     <string name="action_search">Search</string>
-    <string name="action_new">New Repository</string>
-    <string name="action_camera">Take Photos</string>
-    <string name="action_mic">Record Audio</string>
-    <string name="action_picture">Insert Picture</string>
+    <string name="action_clone">Clone</string>
     <string name="action_pull">Pull</string>
+    <string name="action_delete"></string>
 
     <string name="label_remote_url">Remote URL</string>
     <string name="label_local_path">Local Path</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
+    <string name="label_delete">Delete</string>
+
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="tab_files_label">Files</string>
     <string name="tab_commits_label">Commits</string>
+
     <string name="dialog_choose_branch_title">Choose Branch</string>
-    <string name="title_activity_view_file">ViewFileActivity</string>
+    <string name="dialog_delete_repo_title">Delete Conformation</string>
+    <string name="dialog_delete_repo_msg">Are you sure to delete this repository ?</string>
 
 </resources>

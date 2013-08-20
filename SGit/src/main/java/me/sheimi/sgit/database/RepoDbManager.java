@@ -81,7 +81,7 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public Cursor getRepoById(int id) {
+    public Cursor getRepoById(long id) {
         Cursor cursor = mReadableDatabase.query(true, RepoContract.RepoEntry
                 .TABLE_NAME, RepoContract.RepoEntry.ALL_COLUMNS,
                 RepoContract.RepoEntry._ID + "= ?", new String[]{String
@@ -105,6 +105,13 @@ public class RepoDbManager {
         String[] selectionArgs = {String.valueOf(id)};
         mWritableDatabase.update(RepoContract.RepoEntry.TABLE_NAME, values,
                 selection, selectionArgs);
+        notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
+    }
+
+    public void deleteRepo(long id) {
+        String selection = RepoContract.RepoEntry._ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        mWritableDatabase.delete(RepoContract.RepoEntry.TABLE_NAME, selection, selectionArgs);
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
     }
 

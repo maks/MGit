@@ -26,6 +26,8 @@ import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CancelDialogListener;
+import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
@@ -53,6 +55,17 @@ public class RepoListActivity extends FragmentActivity {
                         RepoDetailActivity.class);
                 intent.putExtra(RepoContract.RepoEntry._ID, repo.getID());
                 ActivityUtils.startActivity(RepoListActivity.this, intent);
+            }
+        });
+        mRepoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
+                                           long id) {
+                Repo repo = mRepoListAdapter.getItem(position);
+                DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath(),
+                        null);
+                drd.show(getSupportFragmentManager(), "delete-repo-dialog");
+                return false;
             }
         });
     }
@@ -121,7 +134,7 @@ public class RepoListActivity extends FragmentActivity {
 
     }
 
-    public class CloneDialog extends DialogFragment {
+    public class CloneDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
         private EditText mRemoteURL;
         private EditText mLocalPath;
@@ -145,40 +158,26 @@ public class RepoListActivity extends FragmentActivity {
 
             // set button listener
             builder.setNegativeButton(getString(R.string.label_cancel),
-                    new CancelDialogListener());
-            builder.setPositiveButton(getString(R.string.label_clone),
-                    new OnCloneClickedListener());
+                    new CancelDialogListener(this));
+            builder.setPositiveButton(getString(R.string.label_clone), this);
 
             return builder.create();
         }
 
-        private class CancelDialogListener implements DialogInterface
-                .OnClickListener {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                getDialog().cancel();
-            }
-        }
-
-        private class OnCloneClickedListener implements DialogInterface
-                .OnClickListener {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                final String remoteURL = mRemoteURL.getText().toString();
-                final String localPath = mLocalPath.getText().toString();
-                ContentValues values = new ContentValues();
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH,
-                        localPath);
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
-                        remoteURL);
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                        RepoContract.REPO_STATUS_WAITING_CLONE);
-                long id = RepoDbManager.getInstance(mActivity)
-                        .insertRepo(values);
-                cloneRepo(id, remoteURL, localPath);
-            }
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            final String remoteURL = mRemoteURL.getText().toString();
+            final String localPath = mLocalPath.getText().toString();
+            ContentValues values = new ContentValues();
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH,
+                    localPath);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
+                    remoteURL);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
+                    RepoContract.REPO_STATUS_WAITING_CLONE);
+            long id = RepoDbManager.getInstance(mActivity)
+                    .insertRepo(values);
+            cloneRepo(id, remoteURL, localPath);
         }
 
         public void cloneRepo(final long id, final String remoteUrl, final String localPath) {

@@ -93,4 +93,17 @@ public class FsUtils {
         mContext.startActivity(intent);
     }
 
+    public void deleteFile(File file) {
+        if (!file.exists())
+            return;
+        if (!file.isDirectory()) {
+            file.delete();
+            return;
+        }
+        for (File f : file.listFiles()) {
+            deleteFile(f);
+        }
+        file.delete();
+    }
+
 }

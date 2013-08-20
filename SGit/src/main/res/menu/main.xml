@@ -9,7 +9,7 @@
     <item
             android:id="@+id/action_new"
             android:icon="@drawable/ic_content_new"
-            android:title="@string/action_new"
+            android:title="@string/action_clone"
             android:showAsAction="ifRoom"/>
     <item
             android:id="@+id/action_settings"
