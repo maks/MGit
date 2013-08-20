@@ -34,8 +34,6 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
     private RepoUtils mRepoUtils;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new
             SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-    private static final String IMAGE_REQUEST_HASH =
-            "http://www.gravatar.com/avatar/%s?s=40";
 
     public CommitsListAdapter(Context context) {
         super(context, 0);
@@ -78,7 +76,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         holder.commitsIcon.setImageResource(R.drawable.ic_default_author);
 
         ImageLoader im = ImageCache.getInstance(getContext()).getImageLoader();
-        im.displayImage(buildIconURL(email), holder.commitsIcon);
+        im.displayImage(CommonUtils.buildGravatarURL(email), holder.commitsIcon);
         return convertView;
     }
 
@@ -87,13 +85,6 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         List<RevCommit> commitsList = mRepoUtils.getCommitsList(git);
         addAll(commitsList);
         notifyDataSetChanged();
-    }
-
-    private String buildIconURL(String email) {
-        String hash = CommonUtils.md5(email);
-        String url = String.format(Locale.getDefault(), IMAGE_REQUEST_HASH,
-                hash);
-        return url;
     }
 
     private static class CommitsListItemHolder {

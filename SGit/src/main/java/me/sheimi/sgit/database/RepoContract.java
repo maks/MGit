@@ -3,6 +3,8 @@ package me.sheimi.sgit.database;
 import android.database.Cursor;
 import android.provider.BaseColumns;
 
+import java.util.Date;
+
 /**
  * Created by sheimi on 8/6/13.
  */
@@ -23,11 +25,35 @@ public final class RepoContract {
         public static final String COLUMN_NAME_LOCAL_PATH = "local_path";
         public static final String COLUMN_NAME_REMOTE_URL = "remote_url";
         public static final String COLUMN_NAME_IS_CLONING = "is_cloning";
-        public static final String [] ALL_COLUMNS = {
-            _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
-                COLUMN_NAME_IS_CLONING
+        // latest commit's committer name
+        public static final String COLUMN_NAME_LATEST_COMMITTER_UNAME = "latest_committer_uname";
+        public static final String COLUMN_NAME_LATEST_COMMITTER_EMAIL = "latest_committer_email";
+        public static final String COLUMN_NAME_LATEST_COMMIT_DATE = "latest_commit_date";
+        public static final String COLUMN_NAME_LATEST_COMMIT_MSG = "latest_commit_msg";
+        public static final String[] ALL_COLUMNS = {
+                _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
+                COLUMN_NAME_IS_CLONING, COLUMN_NAME_LATEST_COMMITTER_UNAME,
+                COLUMN_NAME_LATEST_COMMITTER_EMAIL, COLUMN_NAME_LATEST_COMMIT_DATE,
+                COLUMN_NAME_LATEST_COMMIT_MSG
         };
     }
+
+    public static final String REPO_ENTRY_CREATE =
+            "CREATE TABLE " + RepoEntry.TABLE_NAME + " ("
+                    + RepoEntry._ID + PRIMARY_KEY_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_LOCAL_PATH + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_IS_CLONING + INT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG + TEXT_TYPE
+                    + " )";
+
+
+    public static final String REPO_ENTRY_DROP =
+            "DROP TABLE IF EXISTS " + RepoEntry.TABLE_NAME;
+
 
     public static int getRepoID(Cursor cursor) {
         return cursor.getInt(0);
@@ -46,17 +72,24 @@ public final class RepoContract {
         return cursor.getInt(3) == 1;
     }
 
-    public static final String REPO_ENTRY_CREATE =
-            "CREATE TABLE " + RepoEntry.TABLE_NAME + " ("
-                    + RepoEntry._ID + PRIMARY_KEY_TYPE + COMMA_SEP
-                    + RepoEntry.COLUMN_NAME_LOCAL_PATH + TEXT_TYPE + COMMA_SEP
-                    + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE + COMMA_SEP
-                    + RepoEntry.COLUMN_NAME_IS_CLONING + INT_TYPE
-                    + " )";
+    public static String getLatestCommitterName(Cursor cursor) {
+        return cursor.getString(4);
+    }
 
+    public static String getLatestCommitterEmail(Cursor cursor) {
+        return cursor.getString(5);
+    }
 
-    public static final String REPO_ENTRY_DROP =
-            "DROP TABLE IF EXISTS " + RepoEntry.TABLE_NAME;
+    public static Date getLatestCommitDate(Cursor cursor) {
+        String longStr = cursor.getString(6);
+        if (longStr == null) {
+            return null;
+        }
+        long time = Long.parseLong(longStr);
+        return new Date(time);
+    }
 
-
+    public static String getLatestCommitMsg(Cursor cursor) {
+        return cursor.getString(7);
+    }
 }

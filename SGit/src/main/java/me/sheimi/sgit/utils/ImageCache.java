@@ -56,4 +56,5 @@ public class ImageCache {
 	public ImageLoader getImageLoader() {
 		return mImageLoader;
 	}
+
 }

@@ -1,11 +1,13 @@
 package me.sheimi.sgit.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -14,7 +16,11 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
 
 /**
  * Created by sheimi on 8/16/13.
@@ -142,6 +148,27 @@ public class RepoUtils {
         }
     }
 
+    public void updateLatestCommitInfo(Git git, int id) {
+        RevCommit commit = getLatestCommit(git);
+        ContentValues values = new ContentValues();
+        if (commit != null) {
+            PersonIdent committer = commit.getCommitterIdent();
+            String email = committer.getEmailAddress();
+            String uname = committer.getName();
+            long date = committer.getWhen().getTime();
+            String msg = commit.getShortMessage();
+
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
+                    Long.toString(date));
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
+                    email);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
+        }
+        RepoDbManager.getInstance(mContext).updateRepo(id,
+                values);
+    }
+
     public String getBranchName(Git git) {
         try {
             return git.getRepository().getFullBranch();
@@ -164,10 +191,16 @@ public class RepoUtils {
                 String remoteBranchName = branchNameSplits[2] + "/" +
                         branchNameSplits[3];
                 String branchName = branchNameSplits[3];
-                git.checkout().setCreateBranch(true).setName(branchName)
-                        .setUpstreamMode(CreateBranchCommand
-                                .SetupUpstreamMode.TRACK)
-                        .setStartPoint(remoteBranchName).call();
+                try {
+                    git.checkout().setCreateBranch(true).setName(branchName)
+                            .setUpstreamMode(CreateBranchCommand
+                                    .SetupUpstreamMode.TRACK)
+                            .setStartPoint(remoteBranchName).call();
+
+                } catch (GitAPIException e) {
+                    e.printStackTrace();
+                    continue;
+                }
             }
             checkout(git, oldBranchName);
         } catch (GitAPIException e) {
@@ -205,6 +238,19 @@ public class RepoUtils {
                 commitsList.add(commit);
             }
             return commitsList;
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public RevCommit getLatestCommit(Git git) {
+        try {
+            Iterable<RevCommit> commits = git.log().setMaxCount(1).call();
+            Iterator<RevCommit> it = commits.iterator();
+            if (!it.hasNext())
+                return null;
+            return it.next();
         } catch (GitAPIException e) {
             e.printStackTrace();
         }

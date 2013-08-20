@@ -2,11 +2,15 @@ package me.sheimi.sgit.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 /**
  * Created by sheimi on 8/19/13.
  */
 public class CommonUtils {
+
+    private static final String IMAGE_REQUEST_HASH =
+            "http://www.gravatar.com/avatar/%s?s=40";
 
     public static String md5(final String s) {
         try {
@@ -32,4 +36,10 @@ public class CommonUtils {
         return "";
     }
 
+    public static String buildGravatarURL(String email) {
+        String hash = md5(email);
+        String url = String.format(Locale.getDefault(), IMAGE_REQUEST_HASH,
+                hash);
+        return url;
+    }
 }

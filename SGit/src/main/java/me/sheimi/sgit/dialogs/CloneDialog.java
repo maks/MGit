@@ -80,12 +80,12 @@ public class CloneDialog extends DialogFragment {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    mRepoUtils.cloneSync(remoteURL,localPath);
+                    mRepoUtils.cloneSync(remoteURL, localPath);
                     Git git = mRepoUtils.getGit(localPath);
                     mRepoUtils.checkoutAllGranches(git);
+                    mRepoUtils.updateLatestCommitInfo(git, id);
                     ContentValues values = new ContentValues();
-                    values.put(RepoContract.RepoEntry.COLUMN_NAME_IS_CLONING,
-                            RepoContract.FALSE);
+                    values.put(RepoContract.RepoEntry.COLUMN_NAME_IS_CLONING, RepoContract.FALSE);
                     RepoDbManager.getInstance(mActivity).updateRepo(id,
                             values);
                 }
