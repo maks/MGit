@@ -8,6 +8,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -28,7 +29,7 @@ import me.sheimi.sgit.database.RepoDbManager;
 public class RepoUtils {
 
     public static final String TEST_REPO =
-            "https://github.com/sheimi/blog.sheimi.me.git";
+            "https://github.com/sheimi/yurss.git";
     public static final String GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
@@ -53,14 +54,23 @@ public class RepoUtils {
         return mInstance;
     }
 
-    public void cloneSync(String fromUri, String localRepoName) {
+    public void cloneSync(String fromUri, String localRepoName, ProgressMonitor pm) {
         File localRepo = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
                 localRepoName);
         try {
             Git.cloneRepository()
                     .setURI(fromUri)
                     .setCloneAllBranches(true)
+                    .setProgressMonitor(pm)
                     .setDirectory(localRepo).call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pullSync(Git git, ProgressMonitor pm) {
+        try {
+            git.pull().setProgressMonitor(pm).call();
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
@@ -148,7 +158,7 @@ public class RepoUtils {
         }
     }
 
-    public void updateLatestCommitInfo(Git git, int id) {
+    public void updateLatestCommitInfo(Git git, long id) {
         RevCommit commit = getLatestCommit(git);
         ContentValues values = new ContentValues();
         if (commit != null) {

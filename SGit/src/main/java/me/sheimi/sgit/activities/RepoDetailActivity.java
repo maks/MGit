@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
 
 import me.sheimi.sgit.R;
@@ -138,8 +139,45 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                 NavUtils.navigateUpFromSameTask(this);
                 ActivityUtils.backTransition(this);
                 return true;
+            case R.id.action_pull:
+                pullRepo();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void pullRepo() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.pullSync(mGit, new ProgressMonitor() {
+                    @Override
+                    public void start(int i) {
+                    }
+
+                    @Override
+                    public void beginTask(String s, int i) {
+
+                    }
+
+                    @Override
+                    public void update(int i) {
+
+                    }
+
+                    @Override
+                    public void endTask() {
+
+                    }
+
+                    @Override
+                    public boolean isCancelled() {
+                        return false;
+                    }
+                });
+            }
+        });
+        thread.start();;
     }
 
     @Override

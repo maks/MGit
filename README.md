@@ -10,3 +10,4 @@ TODO List
 * commit diff
 * commit graph
 * pull repo
+* choose filetype when highlight code

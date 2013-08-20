@@ -27,6 +27,7 @@
             android:textSize="@dimen/repo_list_item_remote_size"/>
 
     <RelativeLayout
+            android:id="@+id/commitMsgContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/general_vertial_margin">
@@ -82,6 +83,29 @@
                     android:textColor="@color/general_gray_text_color"
                     android:textSize="@dimen/repo_list_item_msg_size"/>
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/progressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general_vertial_margin">
+        <ProgressBar
+                android:layout_width="@dimen/repo_list_item_icon_size"
+                android:layout_height="@dimen/repo_list_item_icon_size"
+                android:id="@+id/cloningProgressBar"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:id="@+id/progressMsg"
+                android:textColor="@color/general_gray_text_color"
+                android:textSize="@dimen/repo_list_item_msg_size"
+                android:gravity="left|center"
+                android:layout_marginLeft="@dimen/general_horizontal_margin"
+                android:layout_alignTop="@+id/cloningProgressBar"
+                android:layout_alignBottom="@+id/cloningProgressBar"
+                android:layout_toRightOf="@+id/cloningProgressBar"/>
     </RelativeLayout>
 
 

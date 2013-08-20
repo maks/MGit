@@ -100,7 +100,7 @@ public class RepoDbManager {
         return id;
     }
 
-    public void updateRepo(int id, ContentValues values) {
+    public void updateRepo(long id, ContentValues values) {
         String selection = RepoContract.RepoEntry._ID + " = ?";
         String[] selectionArgs = {String.valueOf(id)};
         mWritableDatabase.update(RepoContract.RepoEntry.TABLE_NAME, values,

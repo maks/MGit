@@ -15,8 +15,8 @@ public final class RepoContract {
     private static final String PRIMARY_KEY_TYPE = INT_TYPE + "PRIMARY KEY " +
             "AUTOINCREMENT ";
     private static final String COMMA_SEP = ",";
-    public static final int TRUE = 1;
-    public static final int FALSE = 0;
+    public static final String REPO_STATUS_WAITING_CLONE = "cloning ... ";
+    public static final String REPO_STATUS_NULL = "";
 
     public RepoContract() {}
 
@@ -24,7 +24,7 @@ public final class RepoContract {
         public static final String TABLE_NAME = "repo";
         public static final String COLUMN_NAME_LOCAL_PATH = "local_path";
         public static final String COLUMN_NAME_REMOTE_URL = "remote_url";
-        public static final String COLUMN_NAME_IS_CLONING = "is_cloning";
+        public static final String COLUMN_NAME_REPO_STATUS = "repo_status";
         // latest commit's committer name
         public static final String COLUMN_NAME_LATEST_COMMITTER_UNAME = "latest_committer_uname";
         public static final String COLUMN_NAME_LATEST_COMMITTER_EMAIL = "latest_committer_email";
@@ -32,7 +32,7 @@ public final class RepoContract {
         public static final String COLUMN_NAME_LATEST_COMMIT_MSG = "latest_commit_msg";
         public static final String[] ALL_COLUMNS = {
                 _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
-                COLUMN_NAME_IS_CLONING, COLUMN_NAME_LATEST_COMMITTER_UNAME,
+                COLUMN_NAME_REPO_STATUS, COLUMN_NAME_LATEST_COMMITTER_UNAME,
                 COLUMN_NAME_LATEST_COMMITTER_EMAIL, COLUMN_NAME_LATEST_COMMIT_DATE,
                 COLUMN_NAME_LATEST_COMMIT_MSG
         };
@@ -43,7 +43,7 @@ public final class RepoContract {
                     + RepoEntry._ID + PRIMARY_KEY_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LOCAL_PATH + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE + COMMA_SEP
-                    + RepoEntry.COLUMN_NAME_IS_CLONING + INT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_REPO_STATUS + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE + TEXT_TYPE + COMMA_SEP
@@ -67,9 +67,8 @@ public final class RepoContract {
         return cursor.getString(2);
     }
 
-    public static boolean isCloning(Cursor cursor) {
-        // == 1 true, != 1 false (== 0)
-        return cursor.getInt(3) == 1;
+    public static String getRepoStatus(Cursor cursor) {
+        return cursor.getString(3);
     }
 
     public static String getLatestCommitterName(Cursor cursor) {
@@ -92,4 +91,5 @@ public final class RepoContract {
     public static String getLatestCommitMsg(Cursor cursor) {
         return cursor.getString(7);
     }
+
 }
