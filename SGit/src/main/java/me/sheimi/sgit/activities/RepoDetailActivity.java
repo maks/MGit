@@ -8,10 +8,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -52,6 +57,13 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private Repository mRepository;
     private Git mGit;
 
+    private View mPullProgressContainer;
+    private ProgressBar mPullProgressBar;
+    private TextView mPullMsg;
+    private TextView mPullLeftHint;
+    private TextView mPullRightHint;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +71,16 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         setupActionBar();
         setupRepoDb();
         createFragments();
+        setupPullProgressView();
+    }
+
+    private void setupPullProgressView() {
+        mPullProgressContainer = findViewById(R.id.pullProgressContainer);
+        mPullProgressContainer.setVisibility(View.GONE);
+        mPullProgressBar = (ProgressBar) mPullProgressContainer.findViewById(R.id.pullProgress);
+        mPullMsg = (TextView) mPullProgressContainer.findViewById(R.id.pullMsg);
+        mPullLeftHint = (TextView) mPullProgressContainer.findViewById(R.id.leftHint);
+        mPullRightHint = (TextView) mPullProgressContainer.findViewById(R.id.rightHint);
     }
 
     private void setupActionBar() {
@@ -101,7 +123,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         mRepoUtils = RepoUtils.getInstance(this);
         mRepository = mRepoUtils.getRepository(mLocalPath);
         mGit = new Git(mRepository);
-        cursor.close();;
+        cursor.close(); ;
     }
 
     private void createFragments() {
@@ -114,6 +136,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             @Override
             public void run() {
                 mRepoUtils.checkout(mGit, commitName);
+                mRepoUtils.updateLatestCommitInfo(mGit, mRepoID);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -158,37 +181,35 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     }
 
     private void pullRepo() {
+        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                R.anim.fade_in);
+        mPullProgressContainer.setAnimation(anim);
+        mPullProgressContainer.setVisibility(View.VISIBLE);
+        mPullMsg.setText(R.string.pull_msg_init);
+        mPullLeftHint.setText(R.string.pull_left_init);
+        mPullRightHint.setText(R.string.pull_right_init);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.pullSync(mGit, new ProgressMonitor() {
+                mRepoUtils.pullSync(mGit, getProgressMonitor());
+                mRepoUtils.updateLatestCommitInfo(mGit, mRepoID);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void start(int i) {
-                    }
-
-                    @Override
-                    public void beginTask(String s, int i) {
-
-                    }
-
-                    @Override
-                    public void update(int i) {
-
-                    }
-
-                    @Override
-                    public void endTask() {
-
-                    }
-
-                    @Override
-                    public boolean isCancelled() {
-                        return false;
+                    public void run() {
+                        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                                R.anim.fade_out);
+                        mPullProgressContainer.setAnimation(anim);
+                        mPullProgressContainer.setVisibility(View.GONE);
                     }
                 });
             }
         });
-        thread.start();;
+        thread.start(); ;
     }
 
     @Override
@@ -251,5 +272,68 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             return true;
         }
         return false;
+    }
+
+    private ProgressMonitor getProgressMonitor() {
+        ProgressMonitor pm = new ProgressMonitor() {
+
+            private int mTotalWork;
+            private int mWorkDone;
+
+            @Override
+            public void start(int i) {
+                Log.d("pull start", String.valueOf(i));
+            }
+
+            @Override
+            public void beginTask(String title, int totalWork) {
+                if (totalWork != 0) {
+                    mTotalWork = totalWork;
+                }
+                mWorkDone = 0;
+                Log.d("pull beginTask", String.valueOf(totalWork));
+                setProgress(title, mWorkDone, mTotalWork);
+            }
+
+            @Override
+            public void update(int i) {
+                mWorkDone += i;
+                Log.d("pull update", String.valueOf(i));
+                Log.d("pull update totlaWork", String.valueOf(mTotalWork));
+                setProgress(null, mWorkDone, mTotalWork);
+            }
+
+            @Override
+            public void endTask() {
+
+            }
+
+            @Override
+            public boolean isCancelled() {
+                return false;
+            }
+
+            private void setProgress(final String title, final int workDone, final int totalWork) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (title != null)
+                            mPullMsg.setText(title + " ... ");
+                        if (totalWork != 0) {
+                            int progress = 100 * workDone / totalWork;
+                            String leftHint = progress + "%";
+                            String rightHint = workDone + "/" + totalWork;
+                            mPullLeftHint.setText(leftHint);
+                            mPullRightHint.setText(rightHint);
+                            mPullProgressBar.setProgress(progress);
+                            Log.d("pull update ui", String.valueOf(leftHint));
+                            Log.d("pull update ui", String.valueOf(rightHint));
+                        }
+                    }
+                });
+            }
+
+        };
+        return pm;
     }
 }

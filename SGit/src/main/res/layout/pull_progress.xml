@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/general_padding">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_text"
+            android:id="@+id/pullMsg"
+            android:textSize="@dimen/file_list_header_msg_size"
+            android:textColor="@color/general_gray_text_color"/>
+
+    <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/pullProgress" />
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <TextView
+                style="@style/items_with_same_width"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:id="@+id/leftHint"
+                android:textSize="@dimen/file_list_header_hint_size"
+                android:textColor="@color/general_gray_text_color"
+                android:gravity="left"/>
+
+        <TextView
+                style="@style/items_with_same_width"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:id="@+id/rightHint"
+                android:textSize="@dimen/file_list_header_hint_size"
+                android:textColor="@color/general_gray_text_color"
+                android:gravity="right"/>
+
+    </LinearLayout>
+</LinearLayout>

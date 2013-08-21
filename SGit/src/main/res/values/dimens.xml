@@ -35,4 +35,7 @@
     <dimen name="repo_list_item_time_size">14sp</dimen>
     <dimen name="repo_list_item_msg_size">14sp</dimen>
     <dimen name="repo_list_item_icon_padding">8dp</dimen>
+
+    <dimen name="file_list_header_msg_size">16dp</dimen>
+    <dimen name="file_list_header_hint_size">14dp</dimen>
 </resources>
