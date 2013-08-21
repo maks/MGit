@@ -63,7 +63,6 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,8 +126,8 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     }
 
     private void createFragments() {
-        mFilesFragment = new FilesFragment(mGit, mLocalPath);
-        mCommitsFragment = new CommitsFragment(mGit);
+        mFilesFragment = FilesFragment.newInstance(mLocalPath);
+        mCommitsFragment = CommitsFragment.newInstance(mLocalPath);
     }
 
     public void resetCommits(final String commitName) {
