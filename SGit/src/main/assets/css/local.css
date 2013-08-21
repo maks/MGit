@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+}
+table {
+  border-spacing: 0;
+  width:100%;
+}
+pre {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+}
+pre code {
+	padding: 0;
+	line-height: 15px;
+}
+.codes {
+  padding-left: 10px;
+}
+.line_numbers {
+  text-align: right;
+  padding-right: 5px;
+}
+.line_number_td {
+  width: 50px;
+  background: rgb(238, 238, 238);
+}
+.codes_td {
+  background: #2d2d2d;
+}
