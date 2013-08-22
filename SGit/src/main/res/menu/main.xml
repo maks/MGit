@@ -11,10 +11,19 @@
             android:icon="@drawable/ic_content_new"
             android:title="@string/action_clone"
             android:showAsAction="ifRoom"/>
+
+    <item
+            android:id="@+id/action_add_private_key"
+            android:title="@string/action_manage_private_key"
+            android:showAsAction="never"/>
+
+    <!--
+    TODO settings will be added in next release
     <item
             android:id="@+id/action_settings"
             android:icon="@drawable/ic_action_settings"
             android:title="@string/action_settings"
             android:orderInCategory="100"
             android:showAsAction="never"/>
+    -->
 </menu>

@@ -12,7 +12,7 @@ import me.sheimi.sgit.database.RepoDbManager;
 /**
  * Created by sheimi on 8/20/13.
  */
-public class Repo {
+public class Repo implements Comparable<Repo> {
 
     private int mID;
     private String mLocalPath;
@@ -90,4 +90,8 @@ public class Repo {
         return mUsername;
     }
 
+    @Override
+    public int compareTo(Repo repo) {
+        return repo.getID() - getID();
+    }
 }

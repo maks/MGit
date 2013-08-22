@@ -67,10 +67,15 @@ public class RepoDbManager {
     }
 
     public Cursor searchRepo(String query) {
+        String selection = RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH + " LIKE ? OR "
+                + RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL +  " LIKE ? OR "
+                + RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME + " LIKE ? OR "
+                + RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG + " LIKE ?";
+        query = "%" + query + "%";
+        String[] selectionArgs = { query, query, query, query };
         Cursor cursor = mReadableDatabase.query(true, RepoContract.RepoEntry
                 .TABLE_NAME, RepoContract.RepoEntry.ALL_COLUMNS,
-                RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH + " LIKE ?",
-                new String[]{"%" + query + "%"}, null, null, null, null);
+                selection, selectionArgs, null, null, null, null);
         return cursor;
     }
 

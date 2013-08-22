@@ -2,17 +2,16 @@
 <resources>
 
     <string name="app_name">SGit</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="default_text">Default Text</string>
     <string name="view_file_title">File: </string>
     <string name="title_clone_repo">Clone Repository</string>
-
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
     <string name="action_pull">Pull</string>
-    <string name="action_delete"></string>
-
+    <string name="action_delete">Delete</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_manage_private_key">Private Keys</string>
+    <string name="action_add_private_key">Add Key</string>
     <string name="label_remote_url">Remote URL</string>
     <string name="label_local_path">Local Path</string>
     <string name="label_cancel">Cancel</string>
@@ -20,20 +19,20 @@
     <string name="label_delete">Delete</string>
     <string name="label_username">Username</string>
     <string name="label_password">Password</string>
-
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="tab_files_label">Files</string>
     <string name="tab_commits_label">Commits</string>
-
     <string name="dialog_choose_branch_title">Choose Branch</string>
     <string name="dialog_delete_repo_title">Delete Conformation</string>
     <string name="dialog_delete_repo_msg">Are you sure to delete this repository ?</string>
-
-    <string name="pull_msg_init">Pulling &#8230; </string>
+    <string name="pull_msg_init">Pulling … </string>
     <string name="pull_left_init">0%</string>
     <string name="pull_right_init">0/0</string>
+    <string name="title_activity_private_key_manage">Manage Private Keys</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_explore_file">Explore Files</string>
 
 </resources>

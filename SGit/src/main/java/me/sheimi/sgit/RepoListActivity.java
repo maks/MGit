@@ -20,8 +20,8 @@ import android.widget.SearchView;
 
 import org.eclipse.jgit.api.Git;
 
+import me.sheimi.sgit.activities.PrivateKeyManageActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.activities.SettingsActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
@@ -83,9 +83,9 @@ public class RepoListActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_add_private_key:
                 intent = new Intent(this,
-                        SettingsActivity.class);
+                        PrivateKeyManageActivity.class);
                 ActivityUtils.startActivity(this, intent);
                 return true;
             case R.id.action_new:

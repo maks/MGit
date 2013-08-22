@@ -25,16 +25,17 @@ import java.util.List;
 
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.utils.ssh.SgitTransportCallback;
 
 /**
  * Created by sheimi on 8/16/13.
  */
 public class RepoUtils {
 
-    public static final String TEST_REPO = "https://github.com/sheimi/km-weitask.git";
+    public static final String TEST_REPO = "git@github.com:sheimi/blog.sheimi.me.git";
     public static final String TEST_LOCAL = "test";
-    public static final String TEST_USERNAME = "sheimi.zhang@gmail.com";
-    public static final String TEST_PASSWORD = "ZhangRizhen0923";
+    public static final String TEST_USERNAME = ""; // "sheimi.zhang@gmail.com";
+    public static final String TEST_PASSWORD = ""; // "ZhangRizhen0923";
     public static final String GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
@@ -46,10 +47,12 @@ public class RepoUtils {
 
     private Context mContext;
     private FsUtils mFsUtils;
+    private SgitTransportCallback mSgitTransportCallback;
 
     private RepoUtils(Context context) {
         mContext = context;
         mFsUtils = FsUtils.getInstance(mContext);
+        mSgitTransportCallback = new SgitTransportCallback(mContext);
     }
 
     public static RepoUtils getInstance(Context context) {
@@ -68,6 +71,7 @@ public class RepoUtils {
                 .setURI(fromUri)
                 .setCloneAllBranches(true)
                 .setProgressMonitor(pm)
+                .setTransportConfigCallback(mSgitTransportCallback)
                 .setDirectory(localRepo);
         if (username != null && password != null && !username.equals("") && !password.equals("")) {
             UsernamePasswordCredentialsProvider auth =
@@ -82,7 +86,8 @@ public class RepoUtils {
     }
 
     public void pullSync(Git git, String username, String password, ProgressMonitor pm) {
-        PullCommand pullCommand = git.pull().setProgressMonitor(pm);
+        PullCommand pullCommand = git.pull().setProgressMonitor(pm)
+                .setTransportConfigCallback(mSgitTransportCallback);
         if (username != null && password != null && !username.equals("") && !password.equals("")) {
             UsernamePasswordCredentialsProvider auth =
                     new UsernamePasswordCredentialsProvider(username, password);
@@ -223,8 +228,12 @@ public class RepoUtils {
                 try {
                     git.checkout().setCreateBranch(true).setName(branchName)
                             .setUpstreamMode(CreateBranchCommand
-                                    .SetupUpstreamMode.TRACK)
+                                    .SetupUpstreamMode.SET_UPSTREAM)
                             .setStartPoint(remoteBranchName).call();
+
+                    git.branchCreate().setUpstreamMode(CreateBranchCommand.SetupUpstreamMode
+                            .SET_UPSTREAM).setStartPoint(remoteBranchName).setName(branchName)
+                            .setForce(true).call();
 
                 } catch (GitAPIException e) {
                     e.printStackTrace();
