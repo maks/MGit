@@ -4,36 +4,47 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:padding="@dimen/general_padding"
-              android:dividerPadding="@dimen/general_divider_padding_larger">
+              android:padding="@dimen/general_padding">
 
     <EditText
             android:id="@+id/remoteURL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/general_label_size"
+            android:textSize="@dimen/clone_dialog_text_size"
             android:hint="@string/label_remote_url"
+            android:layout_margin="@dimen/general_vertial_margin"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="textUri"/>
 
     <EditText
             android:id="@+id/localPath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/general_label_size"
+            android:textSize="@dimen/clone_dialog_text_size"
+            android:layout_margin="@dimen/general_vertial_margin"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:hint="@string/label_local_path"/>
 
     <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/general_label_size"
+            android:textSize="@dimen/clone_dialog_text_size"
+            android:layout_margin="@dimen/general_vertial_margin"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:hint="@string/label_username"/>
 
     <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/general_label_size"
+            android:textSize="@dimen/clone_dialog_text_size"
+            android:layout_margin="@dimen/general_vertial_margin"
+            android:singleLine="true"
             android:inputType="textPassword"
+            android:imeOptions="actionDone"
             android:hint="@string/label_password"/>
 </LinearLayout>

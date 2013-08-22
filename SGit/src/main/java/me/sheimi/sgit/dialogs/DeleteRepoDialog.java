@@ -39,8 +39,7 @@ public class DeleteRepoDialog extends DialogFragment implements DialogInterface.
         builder.setMessage(getString(R.string.dialog_delete_repo_msg));
 
         // set button listener
-        builder.setNegativeButton(getString(R.string.label_cancel),
-                new CancelDialogListener(this));
+        builder.setNegativeButton(getString(R.string.label_cancel), new DummyDialogListener());
         builder.setPositiveButton(getString(R.string.label_delete), this);
 
         return builder.create();
@@ -48,9 +47,15 @@ public class DeleteRepoDialog extends DialogFragment implements DialogInterface.
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        RepoDbManager.getInstance(getActivity()).deleteRepo(mID);
-        File file = FsUtils.getInstance(getActivity()).getRepo(mLocalPath);
-        FsUtils.getInstance(getActivity()).deleteFile(file);
+        final File file = FsUtils.getInstance(getActivity()).getRepo(mLocalPath);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FsUtils.getInstance(getActivity()).deleteFile(file);
+                RepoDbManager.getInstance(getActivity()).deleteRepo(mID);
+            }
+        });
+        thread.start();
         if (mOnDeleteClickListener != null) {
             mOnDeleteClickListener.onClick(null);
         }

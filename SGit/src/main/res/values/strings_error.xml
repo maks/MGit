@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">Invalid Remote</string>
+    <string name="error_transport">Transport Error</string>
+    <string name="error_clone_failed">Clone Failed</string>
+    <string name="error_pull_failed">Pull Failed</string>
+
+    <!-- alerts -->
+    <string name="alert_remoteurl_required">Remote URL Required</string>
+    <string name="alert_localpath_required">Repository Name Required</string>
+    <string name="alert_localpath_format">Format of Repository Name Error</string>
+    <string name="alert_localpath_repo_exists">Repository Already Exists</string>
+
+</resources>

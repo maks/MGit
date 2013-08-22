@@ -14,11 +14,13 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.FsUtils;
+import me.sheimi.sgit.utils.RepoUtils;
 
 public class PrivateKeyManageActivity extends Activity {
 
     private File mPrivateKeyFolder;
     private FsUtils mFsUtils;
+    private RepoUtils mRepoUtils;
     private ListView mPrivateKeyList;
     private FilesListAdapter mFilesListAdapter;
 
@@ -30,6 +32,7 @@ public class PrivateKeyManageActivity extends Activity {
         setContentView(R.layout.activity_file_list);
         setupActionBar();
         mFsUtils = FsUtils.getInstance(this);
+        mRepoUtils = RepoUtils.getInstance(this);
         mPrivateKeyList = (ListView) findViewById(R.id.fileList);
         mFilesListAdapter = new FilesListAdapter(this);
         mPrivateKeyList.setAdapter(mFilesListAdapter);
@@ -80,6 +83,7 @@ public class PrivateKeyManageActivity extends Activity {
                 File newKey = new File(mPrivateKeyFolder, keyFile.getName());
                 mFsUtils.copyFile(keyFile, newKey);
                 mFilesListAdapter.setDir(mPrivateKeyFolder);
+                mRepoUtils.refreshSgitTransportCallback();
                 break;
         }
 

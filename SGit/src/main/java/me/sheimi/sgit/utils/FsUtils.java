@@ -56,7 +56,7 @@ public class FsUtils {
 
     public File getDir(String dirname) {
         File mDir = new File(getAppDir(), dirname);
-        if (mDir.exists()) {
+        if (!mDir.exists()) {
             mDir.mkdir();
         }
         return mDir;
