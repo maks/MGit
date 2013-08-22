@@ -25,6 +25,8 @@ public final class RepoContract {
         public static final String COLUMN_NAME_LOCAL_PATH = "local_path";
         public static final String COLUMN_NAME_REMOTE_URL = "remote_url";
         public static final String COLUMN_NAME_REPO_STATUS = "repo_status";
+        public static final String COLUMN_NAME_USERNAME = "username";
+        public static final String COLUMN_NAME_PASSWORD = "password";
         // latest commit's committer name
         public static final String COLUMN_NAME_LATEST_COMMITTER_UNAME = "latest_committer_uname";
         public static final String COLUMN_NAME_LATEST_COMMITTER_EMAIL = "latest_committer_email";
@@ -34,7 +36,7 @@ public final class RepoContract {
                 _ID, COLUMN_NAME_LOCAL_PATH, COLUMN_NAME_REMOTE_URL,
                 COLUMN_NAME_REPO_STATUS, COLUMN_NAME_LATEST_COMMITTER_UNAME,
                 COLUMN_NAME_LATEST_COMMITTER_EMAIL, COLUMN_NAME_LATEST_COMMIT_DATE,
-                COLUMN_NAME_LATEST_COMMIT_MSG
+                COLUMN_NAME_LATEST_COMMIT_MSG, COLUMN_NAME_USERNAME, COLUMN_NAME_PASSWORD
         };
     }
 
@@ -43,6 +45,8 @@ public final class RepoContract {
                     + RepoEntry._ID + PRIMARY_KEY_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LOCAL_PATH + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_REMOTE_URL + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_USERNAME + TEXT_TYPE + COMMA_SEP
+                    + RepoEntry.COLUMN_NAME_PASSWORD + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_REPO_STATUS + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME + TEXT_TYPE + COMMA_SEP
                     + RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL + TEXT_TYPE + COMMA_SEP
@@ -90,6 +94,14 @@ public final class RepoContract {
 
     public static String getLatestCommitMsg(Cursor cursor) {
         return cursor.getString(7);
+    }
+
+    public static String getUsername(Cursor cursor) {
+        return cursor.getString(8);
+    }
+
+    public static String getPassword(Cursor cursor) {
+        return cursor.getString(9);
     }
 
 }

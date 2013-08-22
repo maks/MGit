@@ -38,6 +38,7 @@ public class ViewFileActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         String fileName = extras.getString(TAG_FILE_NAME);
         File file = new File(fileName);
+        setTitle(getString(R.string.view_file_title) + file.getName());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuffer sb = new StringBuffer();

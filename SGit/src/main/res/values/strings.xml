@@ -5,7 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="default_text">Default Text</string>
-    <string name="title_activity_view_file">ViewFileActivity</string>
+    <string name="view_file_title">File: </string>
+    <string name="title_clone_repo">Clone Repository</string>
 
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
@@ -17,6 +18,8 @@
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
     <string name="label_delete">Delete</string>
+    <string name="label_username">Username</string>
+    <string name="label_password">Password</string>
 
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="title_section1">Section 1</string>

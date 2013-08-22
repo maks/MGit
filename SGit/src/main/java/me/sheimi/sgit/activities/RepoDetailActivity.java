@@ -25,6 +25,7 @@ import org.eclipse.jgit.lib.Repository;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
@@ -54,6 +55,8 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private RepoUtils mRepoUtils;
     private long mRepoID;
     private String mLocalPath;
+    private String mUsername;
+    private String mPassword;
     private Repository mRepository;
     private Git mGit;
 
@@ -117,12 +120,15 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             return;
         Cursor cursor = mDb.getRepoById(mRepoID);
         cursor.moveToFirst();
-        mLocalPath = RepoContract.getLocalPath(cursor);
+        Repo repo = new Repo(cursor);
+        cursor.close();
+        mLocalPath = repo.getLocalPath();
+        mUsername = repo.getUsername();
+        mPassword = repo.getPassword();
         setTitle(mLocalPath);
         mRepoUtils = RepoUtils.getInstance(this);
         mRepository = mRepoUtils.getRepository(mLocalPath);
         mGit = new Git(mRepository);
-        cursor.close(); ;
     }
 
     private void createFragments() {
@@ -190,7 +196,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.pullSync(mGit, getProgressMonitor());
+                mRepoUtils.pullSync(mGit, mUsername, mPassword, getProgressMonitor());
                 mRepoUtils.updateLatestCommitInfo(mGit, mRepoID);
                 try {
                     Thread.sleep(500);

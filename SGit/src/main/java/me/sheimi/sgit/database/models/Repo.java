@@ -17,6 +17,8 @@ public class Repo {
     private int mID;
     private String mLocalPath;
     private String mRemoteURL;
+    private String mUsername;
+    private String mPassword;
     private String mRepoStatus;
     private String mLastCommitter;
     private String mLastCommitterEmail;
@@ -29,6 +31,8 @@ public class Repo {
         mID = RepoContract.getRepoID(cursor);
         mRemoteURL = RepoContract.getRemoteURL(cursor);
         mLocalPath = RepoContract.getLocalPath(cursor);
+        mUsername = RepoContract.getUsername(cursor);
+        mPassword = RepoContract.getPassword(cursor);
         mRepoStatus = RepoContract.getRepoStatus(cursor);
         mLastCommitter = RepoContract.getLatestCommitterName(cursor);
         mLastCommitterEmail = RepoContract.getLatestCommitterEmail(cursor);
@@ -76,6 +80,14 @@ public class Repo {
 
     public Date getLastCommitDate() {
         return mLastCommitDate;
+    }
+
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public String getUsername() {
+        return mUsername;
     }
 
 }

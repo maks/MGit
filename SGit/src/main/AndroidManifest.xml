@@ -51,7 +51,6 @@
         </activity>
         <activity
             android:name=".activities.ViewFileActivity"
-            android:label="@string/title_activity_view_file"
             android:parentActivityName="me.sheimi.sgit.activities.RepoDetailActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

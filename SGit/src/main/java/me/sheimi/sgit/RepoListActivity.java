@@ -138,6 +138,8 @@ public class RepoListActivity extends FragmentActivity {
 
         private EditText mRemoteURL;
         private EditText mLocalPath;
+        private EditText mUsername;
+        private EditText mPassword;
         private Activity mActivity;
         private RepoUtils mRepoUtils;
 
@@ -153,10 +155,16 @@ public class RepoListActivity extends FragmentActivity {
 
             mRemoteURL = (EditText) layout.findViewById(R.id.remoteURL);
             mLocalPath = (EditText) layout.findViewById(R.id.localPath);
+            mUsername = (EditText) layout.findViewById(R.id.username);
+            mPassword = (EditText) layout.findViewById(R.id.password);
 
             mRemoteURL.setText(RepoUtils.TEST_REPO);
+            mLocalPath.setText(RepoUtils.TEST_LOCAL);
+            mUsername.setText(RepoUtils.TEST_USERNAME);
+            mPassword.setText(RepoUtils.TEST_PASSWORD);
 
             // set button listener
+            builder.setTitle(R.string.title_clone_repo);
             builder.setNegativeButton(getString(R.string.label_cancel),
                     new CancelDialogListener(this));
             builder.setPositiveButton(getString(R.string.label_clone), this);
@@ -166,25 +174,28 @@ public class RepoListActivity extends FragmentActivity {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            final String remoteURL = mRemoteURL.getText().toString();
-            final String localPath = mLocalPath.getText().toString();
+            String remoteURL = mRemoteURL.getText().toString();
+            String localPath = mLocalPath.getText().toString();
+            String username = mUsername.getText().toString();
+            String password = mPassword.getText().toString();
             ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH,
-                    localPath);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
-                    remoteURL);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
             values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                     RepoContract.REPO_STATUS_WAITING_CLONE);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
             long id = RepoDbManager.getInstance(mActivity)
                     .insertRepo(values);
-            cloneRepo(id, remoteURL, localPath);
+            cloneRepo(id, remoteURL, localPath, username, password);
         }
 
-        public void cloneRepo(final long id, final String remoteUrl, final String localPath) {
+        public void cloneRepo(final long id, final String remoteUrl, final String localPath,
+                              final String username, final String password) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    mRepoUtils.cloneSync(remoteUrl, localPath,
+                    mRepoUtils.cloneSync(remoteUrl, localPath, username, password,
                             mRepoListAdapter.new CloningMonitor(id));
                     Git git = mRepoUtils.getGit(localPath);
                     mRepoUtils.checkoutAllGranches(git);

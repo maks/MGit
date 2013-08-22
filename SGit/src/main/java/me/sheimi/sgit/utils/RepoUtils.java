@@ -3,9 +3,11 @@ package me.sheimi.sgit.utils;
 import android.content.ContentValues;
 import android.content.Context;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -13,6 +15,7 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,8 +31,10 @@ import me.sheimi.sgit.database.RepoDbManager;
  */
 public class RepoUtils {
 
-    public static final String TEST_REPO =
-            "https://github.com/sheimi/yurss.git";
+    public static final String TEST_REPO = "https://github.com/sheimi/km-weitask.git";
+    public static final String TEST_LOCAL = "test";
+    public static final String TEST_USERNAME = "sheimi.zhang@gmail.com";
+    public static final String TEST_PASSWORD = "ZhangRizhen0923";
     public static final String GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
@@ -54,23 +59,37 @@ public class RepoUtils {
         return mInstance;
     }
 
-    public void cloneSync(String fromUri, String localRepoName, ProgressMonitor pm) {
+    public void cloneSync(String fromUri, String localRepoName, String username,
+                          String password, ProgressMonitor pm) {
+
         File localRepo = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
                 localRepoName);
+        CloneCommand cloneCommand = Git.cloneRepository()
+                .setURI(fromUri)
+                .setCloneAllBranches(true)
+                .setProgressMonitor(pm)
+                .setDirectory(localRepo);
+        if (username != null && password != null && !username.equals("") && !password.equals("")) {
+            UsernamePasswordCredentialsProvider auth =
+                    new UsernamePasswordCredentialsProvider(username, password);
+            cloneCommand.setCredentialsProvider(auth);
+        }
         try {
-            Git.cloneRepository()
-                    .setURI(fromUri)
-                    .setCloneAllBranches(true)
-                    .setProgressMonitor(pm)
-                    .setDirectory(localRepo).call();
+            cloneCommand.call();
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
     }
 
-    public void pullSync(Git git, ProgressMonitor pm) {
+    public void pullSync(Git git, String username, String password, ProgressMonitor pm) {
+        PullCommand pullCommand = git.pull().setProgressMonitor(pm);
+        if (username != null && password != null && !username.equals("") && !password.equals("")) {
+            UsernamePasswordCredentialsProvider auth =
+                    new UsernamePasswordCredentialsProvider(username, password);
+            pullCommand.setCredentialsProvider(auth);
+        }
         try {
-            git.pull().setProgressMonitor(pm).call();
+            pullCommand.call();
         } catch (GitAPIException e) {
             e.printStackTrace();
         }

@@ -5,16 +5,15 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:padding="@dimen/general_padding"
-              android:dividerPadding="@dimen/general_divider_padding">
-
+              android:dividerPadding="@dimen/general_divider_padding_larger">
 
     <EditText
             android:id="@+id/remoteURL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/general_label_size"
-            android:hint="@string/label_remote_url"/>
-
+            android:hint="@string/label_remote_url"
+            android:inputType="textUri"/>
 
     <EditText
             android:id="@+id/localPath"
@@ -22,4 +21,19 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/general_label_size"
             android:hint="@string/label_local_path"/>
+
+    <EditText
+            android:id="@+id/username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/general_label_size"
+            android:hint="@string/label_username"/>
+
+    <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/general_label_size"
+            android:inputType="textPassword"
+            android:hint="@string/label_password"/>
 </LinearLayout>
