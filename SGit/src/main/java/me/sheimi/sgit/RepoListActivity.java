@@ -61,7 +61,7 @@ public class RepoListActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> adapterView, View view,
                                     int position, long id) {
                 Repo repo = mRepoListAdapter.getItem(position);
-                if (repo.getRepoStatus() != RepoContract.REPO_STATUS_NULL)
+                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
                     return;
                 Intent intent = new Intent(RepoListActivity.this,
                         RepoDetailActivity.class);
@@ -74,6 +74,8 @@ public class RepoListActivity extends FragmentActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
                                            long id) {
                 Repo repo = mRepoListAdapter.getItem(position);
+                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
+                    return false;
                 DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath(),
                         null);
                 drd.show(getSupportFragmentManager(), "delete-repo-dialog");

@@ -55,15 +55,19 @@ public class FsUtils {
     }
 
     public File getDir(String dirname) {
+        return getDir(dirname, true);
+    }
+
+    public File getDir(String dirname, boolean isCreate) {
         File mDir = new File(getAppDir(), dirname);
-        if (!mDir.exists()) {
+        if (!mDir.exists() && isCreate) {
             mDir.mkdir();
         }
         return mDir;
     }
 
     public File getRepo(String localPath) {
-        return getDir(REPO_DIR + "/" + localPath);
+        return getDir(REPO_DIR + "/" + localPath, false);
     }
 
     public File getAppDir() {
