@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,32 +13,51 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import org.eclipse.jgit.api.Git;
+import com.google.ads.AdView;
+import com.umeng.analytics.MobclickAgent;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+
+import java.io.File;
+
+import me.sheimi.sgit.activities.PrivateKeyManageActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.activities.SettingsActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.CancelDialogListener;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.AdUtils;
+import me.sheimi.sgit.utils.CommonUtils;
+import me.sheimi.sgit.utils.Constants;
+import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 public class RepoListActivity extends FragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
+    private ViewUtils mViewUtils;
+    private FsUtils mFsUtils;
+    private AdView mAdView;
+    private AdUtils mAdUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mViewUtils = ViewUtils.getInstance(this);
+        mFsUtils = FsUtils.getInstance(this);
         mRepoList = (ListView) findViewById(R.id.repoList);
         mRepoListAdapter = new RepoListAdapter(this);
         mRepoList.setAdapter(mRepoListAdapter);
@@ -51,6 +69,8 @@ public class RepoListActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> adapterView, View view,
                                     int position, long id) {
                 Repo repo = mRepoListAdapter.getItem(position);
+                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
+                    return;
                 Intent intent = new Intent(RepoListActivity.this,
                         RepoDetailActivity.class);
                 intent.putExtra(RepoContract.RepoEntry._ID, repo.getID());
@@ -62,12 +82,25 @@ public class RepoListActivity extends FragmentActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
                                            long id) {
                 Repo repo = mRepoListAdapter.getItem(position);
+                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
+                    return false;
                 DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath(),
                         null);
                 drd.show(getSupportFragmentManager(), "delete-repo-dialog");
                 return false;
             }
         });
+
+        setupMonetize(); ;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAdView != null)
+            mAdView.destroy();
+        if (mAdUtils.getIabHelper() != null)
+            mAdUtils.getIabHelper().dispose();
     }
 
     @Override
@@ -83,16 +116,27 @@ public class RepoListActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case R.id.action_add_private_key:
                 intent = new Intent(this,
-                        SettingsActivity.class);
+                        PrivateKeyManageActivity.class);
                 ActivityUtils.startActivity(this, intent);
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
                 return true;
-
+            case R.id.action_feedback:
+                Intent feedback = new Intent(Intent.ACTION_SEND);
+                feedback.setType("text/email");
+                feedback.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.FEEDBACK_EMAIL});
+                feedback.putExtra(Intent.EXTRA_SUBJECT, getString(Constants.FEEDBACK_SUBJECT));
+                startActivity(Intent.createChooser(feedback,
+                        getString(R.string.label_send_feedback)));
+                ActivityUtils.forwardTransition(this);
+                return true;
+            case R.id.action_pay:
+                mAdUtils.payToDisableAds(mAdView);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -105,6 +149,18 @@ public class RepoListActivity extends FragmentActivity {
         searchItem.setOnActionExpandListener(searchListener);
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(searchListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     public class SearchListener implements SearchView.OnQueryTextListener,
@@ -134,10 +190,12 @@ public class RepoListActivity extends FragmentActivity {
 
     }
 
-    public class CloneDialog extends DialogFragment implements DialogInterface.OnClickListener {
+    public class CloneDialog extends DialogFragment implements View.OnClickListener {
 
         private EditText mRemoteURL;
         private EditText mLocalPath;
+        private EditText mUsername;
+        private EditText mPassword;
         private Activity mActivity;
         private RepoUtils mRepoUtils;
 
@@ -153,51 +211,109 @@ public class RepoListActivity extends FragmentActivity {
 
             mRemoteURL = (EditText) layout.findViewById(R.id.remoteURL);
             mLocalPath = (EditText) layout.findViewById(R.id.localPath);
+            mUsername = (EditText) layout.findViewById(R.id.username);
+            mPassword = (EditText) layout.findViewById(R.id.password);
 
-            mRemoteURL.setText(RepoUtils.TEST_REPO);
+            if (CommonUtils.isDebug(RepoListActivity.this)) {
+                mRemoteURL.setText(RepoUtils.TEST_REPO);
+                mLocalPath.setText(RepoUtils.TEST_LOCAL);
+                mUsername.setText(RepoUtils.TEST_USERNAME);
+                mPassword.setText(RepoUtils.TEST_PASSWORD);
+            }
 
             // set button listener
-            builder.setNegativeButton(getString(R.string.label_cancel),
-                    new CancelDialogListener(this));
-            builder.setPositiveButton(getString(R.string.label_clone), this);
+            builder.setTitle(R.string.title_clone_repo);
+            builder.setNegativeButton(getString(R.string.label_cancel), new DummyDialogListener());
+            builder.setPositiveButton(getString(R.string.label_clone), new DummyDialogListener());
 
             return builder.create();
         }
 
+
         @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            final String remoteURL = mRemoteURL.getText().toString();
-            final String localPath = mLocalPath.getText().toString();
-            ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH,
-                    localPath);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
-                    remoteURL);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                    RepoContract.REPO_STATUS_WAITING_CLONE);
-            long id = RepoDbManager.getInstance(mActivity)
-                    .insertRepo(values);
-            cloneRepo(id, remoteURL, localPath);
+        public void onStart() {
+            super.onStart();
+            AlertDialog dialog = (AlertDialog) getDialog();
+            if (dialog == null)
+                return;
+            Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(this);
         }
 
-        public void cloneRepo(final long id, final String remoteUrl, final String localPath) {
+        @Override
+        public void onClick(View view) {
+            String remoteURL = mRemoteURL.getText().toString().trim();
+            String localPath = mLocalPath.getText().toString().trim();
+
+            if (remoteURL.equals("")) {
+                mViewUtils.showToastMessage(R.string.alert_remoteurl_required);
+                mRemoteURL.setError(getString(R.string.alert_remoteurl_required));
+                return;
+            }
+            if (localPath.equals("")) {
+                mViewUtils.showToastMessage(R.string.alert_localpath_required);
+                mLocalPath.setError(getString(R.string.alert_localpath_required));
+                return;
+            }
+            if (localPath.contains("/")) {
+                mViewUtils.showToastMessage(R.string.alert_localpath_format);
+                mLocalPath.setError(getString(R.string.alert_localpath_format));
+                return;
+            }
+
+            File file = mFsUtils.getRepo(localPath);
+            if (file.exists()) {
+                mViewUtils.showToastMessage(R.string.alert_localpath_repo_exists);
+                mLocalPath.setError(getString(R.string.alert_localpath_repo_exists));
+                return;
+            }
+
+            String username = mUsername.getText().toString();
+            String password = mPassword.getText().toString();
+            ContentValues values = new ContentValues();
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
+                    RepoContract.REPO_STATUS_WAITING_CLONE);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+            long id = RepoDbManager.getInstance(mActivity)
+                    .insertRepo(values);
+            cloneRepo(id, remoteURL, localPath, username, password);
+            dismiss();
+        }
+
+        public void cloneRepo(final long id, final String remoteUrl, final String localPath,
+                              final String username, final String password) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    mRepoUtils.cloneSync(remoteUrl, localPath,
-                            mRepoListAdapter.new CloningMonitor(id));
-                    Git git = mRepoUtils.getGit(localPath);
-                    mRepoUtils.checkoutAllGranches(git);
-                    mRepoUtils.updateLatestCommitInfo(git, id);
-                    ContentValues values = new ContentValues();
-                    values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                            RepoContract.REPO_STATUS_NULL);
-                    RepoDbManager.getInstance(mActivity).updateRepo(id, values);
+                    try {
+                        mRepoUtils.cloneSync(remoteUrl, localPath, username, password,
+                                mRepoListAdapter.new CloningMonitor(id));
+                        Git git = mRepoUtils.getGit(localPath);
+                        mRepoUtils.checkoutAllGranches(git);
+                        mRepoUtils.updateLatestCommitInfo(git, id);
+                        ContentValues values = new ContentValues();
+                        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
+                                RepoContract.REPO_STATUS_NULL);
+                        RepoDbManager.getInstance(mActivity).updateRepo(id, values);
+                    } catch (GitAPIException e) {
+                        RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                    } catch (JGitInternalException e) {
+                        RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                    }
                 }
             });
             thread.start();
         }
 
+    }
+
+    private void setupMonetize() {
+        mAdUtils = AdUtils.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdUtils.setupIabHelper(mAdView);
     }
 
 }

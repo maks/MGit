@@ -30,6 +30,8 @@ import me.sheimi.sgit.utils.RepoUtils;
  */
 public class FilesFragment extends BaseFragment {
 
+    private static String LOCAL_REPO = "local_repo";
+
     private FsUtils mFsUtils;
     private RepoUtils mRepoUtils;
 
@@ -47,11 +49,14 @@ public class FilesFragment extends BaseFragment {
 
     private RepoDetailActivity mActivity;
 
-    public FilesFragment(Git git, String localRepo) {
-        mGit = git;
-        mLocalRepo = localRepo;
-    }
 
+    public static FilesFragment newInstance(String  mLocalRepo) {
+        FilesFragment fragment = new FilesFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(LOCAL_REPO, mLocalRepo);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -61,7 +66,23 @@ public class FilesFragment extends BaseFragment {
         mRepoUtils = RepoUtils.getInstance(mActivity);
         mFsUtils = FsUtils.getInstance(getActivity());
 
+        Bundle bundle = getArguments();
+        String localRepoStr = bundle.getString(LOCAL_REPO);
+        if (localRepoStr != null) {
+            mLocalRepo = localRepoStr;
+        }
+        if (savedInstanceState != null) {
+            String saveRepoStr = savedInstanceState.getString(LOCAL_REPO);
+            if (saveRepoStr != null) {
+                mLocalRepo = saveRepoStr;
+            }
+        }
+        if (mLocalRepo == null) {
+            // this will not execute, if the app runs right
+            return v;
+        }
         mRootDir = mFsUtils.getRepo(mLocalRepo);
+        mGit = mRepoUtils.getGit(mLocalRepo);
 
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
@@ -108,6 +129,11 @@ public class FilesFragment extends BaseFragment {
         return v;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(LOCAL_REPO, mLocalRepo);
+    }
 
     public void setCurrentDir(File dir) {
         mCurrentDir = dir;

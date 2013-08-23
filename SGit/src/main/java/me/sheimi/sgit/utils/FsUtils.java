@@ -6,7 +6,11 @@ import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -51,15 +55,19 @@ public class FsUtils {
     }
 
     public File getDir(String dirname) {
+        return getDir(dirname, true);
+    }
+
+    public File getDir(String dirname, boolean isCreate) {
         File mDir = new File(getAppDir(), dirname);
-        if (mDir.exists()) {
+        if (!mDir.exists() && isCreate) {
             mDir.mkdir();
         }
         return mDir;
     }
 
     public File getRepo(String localPath) {
-        return getDir(REPO_DIR + "/" + localPath);
+        return getDir(REPO_DIR + "/" + localPath, false);
     }
 
     public File getAppDir() {
@@ -85,11 +93,17 @@ public class FsUtils {
     }
 
     public void openFile(File file) {
+        openFile(file, null);
+    }
+
+    public void openFile(File file, String mimeType) {
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
         Uri uri = Uri.fromFile(file);
-        String type = getMimeType(uri.toString());
-        intent.setDataAndType(uri, type);
+        if (mimeType == null) {
+            mimeType = getMimeType(uri.toString());
+        }
+        intent.setDataAndType(uri, mimeType);
         mContext.startActivity(intent);
     }
 
@@ -104,6 +118,24 @@ public class FsUtils {
             deleteFile(f);
         }
         file.delete();
+    }
+
+    public void copyFile(File from, File to) {
+        if (to.exists())
+            to.delete();
+        try {
+            InputStream inputStream = new FileInputStream(from);
+            OutputStream outputStream = new FileOutputStream(to);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
+            }
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

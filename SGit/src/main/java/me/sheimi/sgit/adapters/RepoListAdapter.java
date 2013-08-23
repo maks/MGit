@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.eclipse.jgit.lib.ProgressMonitor;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,6 +75,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
                 break;
         }
         List<Repo> repo = Repo.getRepoList(cursor);
+        Collections.sort(repo);
         cursor.close();
         clear();
         addAll(repo);

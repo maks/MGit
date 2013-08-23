@@ -3,16 +3,22 @@ package me.sheimi.sgit.utils;
 import android.content.ContentValues;
 import android.content.Context;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,31 +26,38 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.utils.ssh.SgitTransportCallback;
 
 /**
  * Created by sheimi on 8/16/13.
  */
 public class RepoUtils {
 
-    public static final String TEST_REPO =
-            "https://github.com/sheimi/yurss.git";
+    public static final String TEST_REPO = "git@github.com:sheimi/blog.sheimi.me.git";
+    public static final String TEST_LOCAL = "test";
+    public static final String TEST_USERNAME = ""; // "sheimi.zhang@gmail.com";
+    public static final String TEST_PASSWORD = ""; // "ZhangRizhen0923";
     public static final String GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
     public static final int COMMIT_TYPE_TAG = 1;
     public static final int COMMIT_TYPE_TEMP = 2;
 
-    private static final String REMOTE_TAG = "remotes";
     private static RepoUtils mInstance;
 
     private Context mContext;
     private FsUtils mFsUtils;
+    private ViewUtils mViewUtils;
+    private SgitTransportCallback mSgitTransportCallback;
 
     private RepoUtils(Context context) {
         mContext = context;
         mFsUtils = FsUtils.getInstance(mContext);
+        mViewUtils = ViewUtils.getInstance(mContext);
+        refreshSgitTransportCallback();
     }
 
     public static RepoUtils getInstance(Context context) {
@@ -54,23 +67,102 @@ public class RepoUtils {
         return mInstance;
     }
 
-    public void cloneSync(String fromUri, String localRepoName, ProgressMonitor pm) {
+    public void cloneSync(String fromUri, String localRepoName, String username,
+                          String password, ProgressMonitor pm) throws GitAPIException {
+
         File localRepo = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
                 localRepoName);
+        CloneCommand cloneCommand = Git.cloneRepository()
+                .setURI(fromUri)
+                .setCloneAllBranches(true)
+                .setProgressMonitor(pm)
+                .setTransportConfigCallback(mSgitTransportCallback)
+                .setDirectory(localRepo);
+        if (username != null && password != null && !username.equals("") && !password.equals("")) {
+            UsernamePasswordCredentialsProvider auth =
+                    new UsernamePasswordCredentialsProvider(username, password);
+            cloneCommand.setCredentialsProvider(auth);
+        }
         try {
-            Git.cloneRepository()
-                    .setURI(fromUri)
-                    .setCloneAllBranches(true)
-                    .setProgressMonitor(pm)
-                    .setDirectory(localRepo).call();
+            cloneCommand.call();
+        } catch (InvalidRemoteException e) {
+            e.printStackTrace();
+            mFsUtils.deleteFile(localRepo);
+            mViewUtils.showToastMessage(R.string.error_invalid_remote);
+            throw e;
+        } catch (TransportException e) {
+            e.printStackTrace();
+            mFsUtils.deleteFile(localRepo);
+            mViewUtils.showToastMessage(e.getMessage());
+            throw e;
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mFsUtils.deleteFile(localRepo);
+            mViewUtils.showToastMessage(R.string.error_clone_failed);
+            throw e;
+        } catch (JGitInternalException e) {
+            e.printStackTrace();
+            mFsUtils.deleteFile(localRepo);
+            mViewUtils.showToastMessage(e.getMessage());
+            throw e;
+        }
+    }
+
+    public void pullSync(Git git, String username, String password, ProgressMonitor pm) {
+        PullCommand pullCommand = git.pull().setProgressMonitor(pm)
+                .setTransportConfigCallback(mSgitTransportCallback);
+        if (username != null && password != null && !username.equals("") && !password.equals("")) {
+            UsernamePasswordCredentialsProvider auth =
+                    new UsernamePasswordCredentialsProvider(username, password);
+            pullCommand.setCredentialsProvider(auth);
+        }
+        try {
+            pullCommand.call();
+        } catch (TransportException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_pull_failed);
+        }
+    }
+
+    public void checkout(Git git, String name) {
+        try {
+            git.checkout().setName(name).call();
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
     }
 
-    public void pullSync(Git git, ProgressMonitor pm) {
+    public void checkoutFromRemote(Git git, String remoteBranchName, String branchName) {
         try {
-            git.pull().setProgressMonitor(pm).call();
+            git.checkout().setCreateBranch(true).setName(branchName)
+                    .setStartPoint(remoteBranchName).call();
+            git.branchCreate().setUpstreamMode(CreateBranchCommand.SetupUpstreamMode
+                    .SET_UPSTREAM).setStartPoint(remoteBranchName).setName(branchName)
+                    .setForce(true).call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void checkoutAllGranches(Git git) {
+        try {
+            String oldBranchName = getBranchName(git);
+            List<Ref> refs = git.branchList().setListMode(ListBranchCommand
+                    .ListMode.REMOTE).call();
+            for (Ref ref : refs) {
+                // ref/remotes/[remote]/[branch]
+                String[] branchNameSplits = ref.getName().split("/");
+                String remoteBranchName = branchNameSplits[2] + "/" +
+                        branchNameSplits[3];
+                String branchName = branchNameSplits[3];
+                if (branchName.equals(oldBranchName))
+                    continue;
+                checkoutFromRemote(git, remoteBranchName, branchName);
+            }
+            checkout(git, oldBranchName);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
@@ -90,6 +182,7 @@ public class RepoUtils {
         }
         return null;
     }
+
 
     public Git getGit(String localPath) {
         File repoFile = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
@@ -150,14 +243,6 @@ public class RepoUtils {
         return COMMIT_TYPE_HEAD;
     }
 
-    public void checkout(Git git, String name) {
-        try {
-            git.checkout().setName(name).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void updateLatestCommitInfo(Git git, long id) {
         RevCommit commit = getLatestCommit(git);
         ContentValues values = new ContentValues();
@@ -188,35 +273,6 @@ public class RepoUtils {
         return null;
     }
 
-    public void checkoutAllGranches(Git git) {
-        try {
-            String oldBranchName = getBranchName(git);
-            List<Ref> refs = git.branchList().setListMode(ListBranchCommand
-                    .ListMode.ALL).call();
-            for (Ref ref : refs) {
-                String[] branchNameSplits = ref.getName().split("/");
-                // if the second item is not "remotes"
-                if (!REMOTE_TAG.equals(branchNameSplits[1]))
-                    continue;
-                String remoteBranchName = branchNameSplits[2] + "/" +
-                        branchNameSplits[3];
-                String branchName = branchNameSplits[3];
-                try {
-                    git.checkout().setCreateBranch(true).setName(branchName)
-                            .setUpstreamMode(CreateBranchCommand
-                                    .SetupUpstreamMode.TRACK)
-                            .setStartPoint(remoteBranchName).call();
-
-                } catch (GitAPIException e) {
-                    e.printStackTrace();
-                    continue;
-                }
-            }
-            checkout(git, oldBranchName);
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-    }
 
     public String getShortenCommitName(RevCommit commit) {
         return getShortenCommitName(commit.getName());
@@ -265,6 +321,10 @@ public class RepoUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void refreshSgitTransportCallback() {
+        mSgitTransportCallback = new SgitTransportCallback(mContext);
     }
 
 }

@@ -6,16 +6,18 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Locale;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.utils.ActivityUtils;
@@ -24,6 +26,9 @@ public class ViewFileActivity extends Activity {
 
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
+    private static final String JS_INF = "CodeLoader";
+    private String mCode;
+    private int mCodeLines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +40,22 @@ public class ViewFileActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         String fileName = extras.getString(TAG_FILE_NAME);
         File file = new File(fileName);
+        setTitle(getString(R.string.view_file_title) + file.getName());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuffer sb = new StringBuffer();
             String line = br.readLine();
+            mCodeLines = 0;
             while (null != line) {
+                mCodeLines++;
                 sb.append(line);
                 sb.append('\n');
                 line = br.readLine();
             }
-            String text = String.format(Locale.getDefault(), HTML_TMPL, sb);
-            mFileContent.loadDataWithBaseURL("file:///android_asset/", text,
+            mCode = sb.toString();
+            mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
                     "text/html", "utf-8", null);
+            mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
             WebSettings webSettings = mFileContent.getSettings();
             webSettings.setJavaScriptEnabled(true);
             mFileContent.setWebChromeClient(new WebChromeClient() {
@@ -56,6 +65,7 @@ public class ViewFileActivity extends Activity {
                             lineNumber
                             + " of " + sourceID);
                 }
+
                 public boolean shouldOverrideUrlLoading(WebView view,
                                                         String url) {
                     return false;
@@ -90,6 +100,18 @@ public class ViewFileActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             ActivityUtils.finishActivity(this);
@@ -98,20 +120,31 @@ public class ViewFileActivity extends Activity {
         return false;
     }
 
+    private class CodeLoader {
+
+        @JavascriptInterface
+        public String getCode() {
+            return mCode;
+        }
+
+        @JavascriptInterface
+        public int getLineNumber() {
+            return mCodeLines;
+        }
+
+    }
+
     private static final String HTML_TMPL = "<!doctype html>"
             + "<head>"
             + " <script src=\"js/jquery.js\"></script>"
             + " <script src=\"js/highlight.pack.js\"></script>"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/xcode" +
-            ".css\" />"
-            + "</head>"
-            + "<body>"
-            + " <pre><code>%s</code></pre>"
-            + " <script>"
-            + "  var code = $('pre code').html();"
-            + "  $('pre code').text(code);"
-            + "  hljs.initHighlightingOnLoad();"
-            + " </script>"
-            + "</body>";
+            + " <script src=\"js/local.js\"></script>"
+            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/tne.css\" />"
+            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local.css\" />"
+            + "</head><body><table>"
+            + "<tbody><tr><td class=\"line_number_td\">"
+            + "<pre class=\"line_numbers\"></pre>"
+            + "</td><td class=\"codes_td\"><pre class=\"codes\"><code></code></pre>"
+            + "</td></tr></tbody></table></body>";
 
 }

@@ -25,6 +25,9 @@ import me.sheimi.sgit.utils.RepoUtils;
  */
 public class CommitsFragment extends BaseFragment {
 
+    private static String LOCAL_REPO = "local_repo";
+    private String mLocalRepo;
+
     private RepoDetailActivity mActivity;
     private Button mCommitNameButton;
     private ImageView mCommitType;
@@ -34,9 +37,12 @@ public class CommitsFragment extends BaseFragment {
     private RepoUtils mRepoUtils;
     private Git mGit;
 
-
-    public CommitsFragment(Git git) {
-        mGit = git;
+    public static CommitsFragment newInstance(String  mLocalRepo) {
+        CommitsFragment fragment = new CommitsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(LOCAL_REPO, mLocalRepo);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -45,6 +51,24 @@ public class CommitsFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_commits, container, false);
         mRepoUtils = RepoUtils.getInstance(mActivity);
         mActivity = (RepoDetailActivity) getActivity();
+
+        Bundle bundle = getArguments();
+        String localRepoStr = bundle.getString(LOCAL_REPO);
+        if (localRepoStr != null) {
+            mLocalRepo = localRepoStr;
+        }
+        if (savedInstanceState != null) {
+            String saveRepoStr = savedInstanceState.getString(LOCAL_REPO);
+            if (saveRepoStr != null) {
+                mLocalRepo = saveRepoStr;
+            }
+        }
+        if (mLocalRepo == null) {
+            // this will not execute, if the app runs right
+            return v;
+        }
+        mGit = mRepoUtils.getGit(mLocalRepo);
+
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
@@ -73,6 +97,12 @@ public class CommitsFragment extends BaseFragment {
         String branchName = mRepoUtils.getBranchName(mGit);
         reset(branchName);
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(LOCAL_REPO, mLocalRepo);
     }
 
     @Override

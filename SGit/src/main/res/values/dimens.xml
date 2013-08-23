@@ -11,6 +11,7 @@
     <dimen name="general_padding">5dp</dimen>
     <dimen name="general_padding_larger">10dp</dimen>
     <dimen name="general_divider_padding">10dp</dimen>
+    <dimen name="general_divider_padding_larger">20dp</dimen>
 
     <dimen name="general_label_size">15sp</dimen>
 
@@ -38,4 +39,6 @@
 
     <dimen name="file_list_header_msg_size">16dp</dimen>
     <dimen name="file_list_header_hint_size">14dp</dimen>
+
+    <dimen name="general_dialog_text_size">16dp</dimen>
 </resources>

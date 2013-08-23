@@ -1,5 +1,7 @@
 package me.sheimi.sgit.utils;
 
+import android.app.Activity;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -41,5 +43,9 @@ public class CommonUtils {
         String url = String.format(Locale.getDefault(), IMAGE_REQUEST_HASH,
                 hash);
         return url;
+    }
+
+    public static boolean isDebug(Activity activity) {
+        return false;
     }
 }
