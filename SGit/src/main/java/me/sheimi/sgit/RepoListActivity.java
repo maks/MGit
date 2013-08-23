@@ -37,6 +37,7 @@ import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
+import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.Constants;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
@@ -90,7 +91,7 @@ public class RepoListActivity extends FragmentActivity {
             }
         });
 
-        setupMonetize();;
+        setupMonetize(); ;
     }
 
     @Override
@@ -213,10 +214,12 @@ public class RepoListActivity extends FragmentActivity {
             mUsername = (EditText) layout.findViewById(R.id.username);
             mPassword = (EditText) layout.findViewById(R.id.password);
 
-            mRemoteURL.setText(RepoUtils.TEST_REPO);
-            mLocalPath.setText(RepoUtils.TEST_LOCAL);
-            mUsername.setText(RepoUtils.TEST_USERNAME);
-            mPassword.setText(RepoUtils.TEST_PASSWORD);
+            if (CommonUtils.isDebug(RepoListActivity.this)) {
+                mRemoteURL.setText(RepoUtils.TEST_REPO);
+                mLocalPath.setText(RepoUtils.TEST_LOCAL);
+                mUsername.setText(RepoUtils.TEST_USERNAME);
+                mPassword.setText(RepoUtils.TEST_PASSWORD);
+            }
 
             // set button listener
             builder.setTitle(R.string.title_clone_repo);

@@ -30,7 +30,9 @@ public class AdUtils {
     private AdUtils(Activity activity) {
         mActivity = activity;
         mHelper = new IabHelper(activity, Constants.BASE64_PUBLIC_KEY);
-        mHelper.enableDebugLogging(true);
+        if (CommonUtils.isDebug(activity)) {
+            mHelper.enableDebugLogging(true);
+        }
 
     }
 
@@ -46,16 +48,16 @@ public class AdUtils {
             public void onIabSetupFinished(IabResult result) {
                 if (!result.isSuccess()) {
                     // Oh noes, there was a problem.
-                    Log.e(AdUtils.class.getName(), "Problem setting up In-app Billing: " +
+                    Log.d(AdUtils.class.getName(), "Problem setting up In-app Billing: " +
                             result);
                 }
-                Log.e(AdUtils.class.getName(), "In-app Setup Success");
+                Log.d(AdUtils.class.getName(), "In-app Setup Success");
                 // Hooray, IAB is fully set up!
                 mHelper.queryInventoryAsync(new IabHelper.QueryInventoryFinishedListener() {
                     @Override
                     public void onQueryInventoryFinished(IabResult result, Inventory inv) {
                         if (result.isFailure()) {
-                            Log.e(AdUtils.class.getName(), "Query Fail: " + result);
+                            Log.d(AdUtils.class.getName(), "Query Fail: " + result);
                             return;
                         }
                         if (inv.hasPurchase(Constants.INAPP_BILLING_ADS)) {
@@ -77,7 +79,7 @@ public class AdUtils {
                     @Override
                     public void onIabPurchaseFinished(IabResult result, Purchase info) {
                         if (result.isFailure()) {
-                            Log.e(RepoListActivity.class.getName(), "Pay Fail: " + result);
+                            Log.d(RepoListActivity.class.getName(), "Pay Fail: " + result);
                             return;
                         }
                         if (info.getSku().equals(Constants.INAPP_BILLING_ADS)) {
@@ -85,7 +87,7 @@ public class AdUtils {
                             hideAds(adView);
                             return;
                         }
-                        Log.e(RepoListActivity.class.getName(), "Pay Fail: " + result);
+                        Log.d(RepoListActivity.class.getName(), "Pay Fail: " + result);
 
                     }
                 }, Constants.INAPP_BILLING_PAYLOAD);
