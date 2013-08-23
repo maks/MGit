@@ -9,15 +9,10 @@
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -32,14 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".RepoListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RepoListActivity" />
         </activity>
         <activity
             android:name=".activities.RepoDetailActivity"
@@ -72,6 +59,8 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.ExploreFileActivity" />
         </activity>
+        <meta-data android:value="5216c81356240b897d00007c" android:name="UMENG_APPKEY" />
+        <meta-data android:value="google play" android:name="UMENG_CHANNEL"></meta-data>
     </application>
 
 </manifest>

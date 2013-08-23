@@ -17,6 +17,11 @@
             android:title="@string/action_manage_private_key"
             android:showAsAction="never"/>
 
+    <item
+            android:id="@+id/action_feedback"
+            android:title="@string/action_feedback"
+            android:showAsAction="never"/>
+
     <!--
     TODO settings will be added in next release
     <item

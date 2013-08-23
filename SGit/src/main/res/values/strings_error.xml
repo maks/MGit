@@ -9,7 +9,10 @@
     <!-- alerts -->
     <string name="alert_remoteurl_required">Remote URL Required</string>
     <string name="alert_localpath_required">Repository Name Required</string>
-    <string name="alert_localpath_format">Format of Repository Name Error</string>
-    <string name="alert_localpath_repo_exists">Repository Already Exists</string>
+    <string name="alert_localpath_format">Repository Name Error</string>
+    <string name="alert_localpath_repo_exists">Repository Exists</string>
+    <string name="alert_new_filename_required">File Name Required</string>
+    <string name="alert_file_exists">File Name Exists</string>
+    <string name="alert_filename_format">File Name Format Error</string>
 
 </resources>

@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Repository;
@@ -215,6 +217,18 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             }
         });
         thread.start(); ;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

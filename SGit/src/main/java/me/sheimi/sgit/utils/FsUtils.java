@@ -93,11 +93,17 @@ public class FsUtils {
     }
 
     public void openFile(File file) {
+        openFile(file, null);
+    }
+
+    public void openFile(File file, String mimeType) {
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
         Uri uri = Uri.fromFile(file);
-        String type = getMimeType(uri.toString());
-        intent.setDataAndType(uri, type);
+        if (mimeType == null) {
+            mimeType = getMimeType(uri.toString());
+        }
+        intent.setDataAndType(uri, mimeType);
         mContext.startActivity(intent);
     }
 
@@ -122,7 +128,7 @@ public class FsUtils {
             OutputStream outputStream = new FileOutputStream(to);
             byte[] buffer = new byte[1024];
             int length;
-            while((length = inputStream.read(buffer)) > 0) {
+            while ((length = inputStream.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, length);
             }
             inputStream.close();

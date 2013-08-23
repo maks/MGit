@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.umeng.analytics.MobclickAgent;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -33,6 +35,7 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.Constants;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
@@ -106,7 +109,15 @@ public class RepoListActivity extends FragmentActivity {
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
                 return true;
-
+            case R.id.action_feedback:
+                Intent feedback = new Intent(Intent.ACTION_SEND);
+                feedback.setType("text/email");
+                feedback.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.FEEDBACK_EMAIL});
+                feedback.putExtra(Intent.EXTRA_SUBJECT, getString(Constants.FEEDBACK_SUBJECT));
+                startActivity(Intent.createChooser(feedback,
+                        getString(R.string.label_send_feedback)));
+                ActivityUtils.forwardTransition(this);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -119,6 +130,18 @@ public class RepoListActivity extends FragmentActivity {
         searchItem.setOnActionExpandListener(searchListener);
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(searchListener);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     public class SearchListener implements SearchView.OnQueryTextListener,

@@ -40,5 +40,5 @@
     <dimen name="file_list_header_msg_size">16dp</dimen>
     <dimen name="file_list_header_hint_size">14dp</dimen>
 
-    <dimen name="clone_dialog_text_size">16dp</dimen>
+    <dimen name="general_dialog_text_size">16dp</dimen>
 </resources>
