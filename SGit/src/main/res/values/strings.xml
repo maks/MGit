@@ -2,9 +2,13 @@
 <resources>
 
     <string name="app_name">SGit</string>
+    <string name="admob_id">a15216f9d8d07d3</string>
+    <string name="inapp_billing_key"></string>
     <string name="default_text">Default Text</string>
     <string name="view_file_title">File: </string>
     <string name="title_clone_repo">Clone Repository</string>
+
+    <!-- action -->
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
     <string name="action_pull">Pull</string>
@@ -13,6 +17,7 @@
     <string name="action_manage_private_key">Private Keys</string>
     <string name="action_add_private_key">Add Key</string>
     <string name="action_feedback">Feedback</string>
+    <string name="action_pay">Pay to Remove Ads</string>
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>

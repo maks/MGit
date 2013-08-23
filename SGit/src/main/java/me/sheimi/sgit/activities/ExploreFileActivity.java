@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import java.io.File;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.AdUtils;
 
 public class ExploreFileActivity extends Activity {
 
@@ -27,6 +29,8 @@ public class ExploreFileActivity extends Activity {
     private File mCurrentDir;
     private ListView mFileList;
     private FilesListAdapter mFilesListAdapter;
+    private AdUtils mAdUtils;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,9 @@ public class ExploreFileActivity extends Activity {
             }
         });
 
+        mAdUtils = AdUtils.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdUtils.loadAds(mAdView);
     }
 
     @Override

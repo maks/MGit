@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
@@ -37,6 +39,8 @@ public class PrivateKeyManageActivity extends FragmentActivity {
     private ListView mPrivateKeyList;
     private FilesListAdapter mFilesListAdapter;
     private ViewUtils mViewUtils;
+    private AdUtils mAdUtils;
+    private AdView mAdView;
 
     private static final int REQUSET_ADD_KEY = 0;
 
@@ -71,6 +75,9 @@ public class PrivateKeyManageActivity extends FragmentActivity {
                 return false;
             }
         });
+        mAdUtils = AdUtils.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdUtils.loadAds(mAdView);
     }
 
     /**

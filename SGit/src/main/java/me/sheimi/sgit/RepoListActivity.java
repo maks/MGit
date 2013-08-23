@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.api.Git;
@@ -35,6 +36,7 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.Constants;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
@@ -46,6 +48,8 @@ public class RepoListActivity extends FragmentActivity {
     private RepoListAdapter mRepoListAdapter;
     private ViewUtils mViewUtils;
     private FsUtils mFsUtils;
+    private AdView mAdView;
+    private AdUtils mAdUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,17 @@ public class RepoListActivity extends FragmentActivity {
                 return false;
             }
         });
+
+        setupMonetize();;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mAdView != null)
+            mAdView.destroy();
+        if (mAdUtils.getIabHelper() != null)
+            mAdUtils.getIabHelper().dispose();
     }
 
     @Override
@@ -117,6 +132,9 @@ public class RepoListActivity extends FragmentActivity {
                 startActivity(Intent.createChooser(feedback,
                         getString(R.string.label_send_feedback)));
                 ActivityUtils.forwardTransition(this);
+                return true;
+            case R.id.action_pay:
+                mAdUtils.payToDisableAds(mAdView);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -287,6 +305,12 @@ public class RepoListActivity extends FragmentActivity {
             thread.start();
         }
 
+    }
+
+    private void setupMonetize() {
+        mAdUtils = AdUtils.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdUtils.setupIabHelper(mAdView);
     }
 
 }
