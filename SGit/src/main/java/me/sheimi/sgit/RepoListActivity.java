@@ -1,46 +1,31 @@
 package me.sheimi.sgit;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.JGitInternalException;
-
-import java.io.File;
+import org.eclipse.jgit.lib.ProgressMonitor;
 
 import me.sheimi.sgit.activities.PrivateKeyManageActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
-import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
-import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.Constants;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 public class RepoListActivity extends FragmentActivity {
@@ -163,6 +148,10 @@ public class RepoListActivity extends FragmentActivity {
         MobclickAgent.onPause(this);
     }
 
+    public ProgressMonitor getCloneMonitor(long id) {
+        return mRepoListAdapter.new CloningMonitor(id);
+    }
+
     public class SearchListener implements SearchView.OnQueryTextListener,
             MenuItem.OnActionExpandListener {
 
@@ -186,126 +175,6 @@ public class RepoListActivity extends FragmentActivity {
         public boolean onMenuItemActionCollapse(MenuItem menuItem) {
             mRepoListAdapter.queryAllRepo();
             return true;
-        }
-
-    }
-
-    public class CloneDialog extends DialogFragment implements View.OnClickListener {
-
-        private EditText mRemoteURL;
-        private EditText mLocalPath;
-        private EditText mUsername;
-        private EditText mPassword;
-        private Activity mActivity;
-        private RepoUtils mRepoUtils;
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            super.onCreateDialog(savedInstanceState);
-            mActivity = getActivity();
-            mRepoUtils = RepoUtils.getInstance(mActivity);
-            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-            LayoutInflater inflater = mActivity.getLayoutInflater();
-            View layout = inflater.inflate(R.layout.dialog_clone, null);
-            builder.setView(layout);
-
-            mRemoteURL = (EditText) layout.findViewById(R.id.remoteURL);
-            mLocalPath = (EditText) layout.findViewById(R.id.localPath);
-            mUsername = (EditText) layout.findViewById(R.id.username);
-            mPassword = (EditText) layout.findViewById(R.id.password);
-
-            if (CommonUtils.isDebug(RepoListActivity.this)) {
-                mRemoteURL.setText(RepoUtils.TEST_REPO);
-                mLocalPath.setText(RepoUtils.TEST_LOCAL);
-                mUsername.setText(RepoUtils.TEST_USERNAME);
-                mPassword.setText(RepoUtils.TEST_PASSWORD);
-            }
-
-            // set button listener
-            builder.setTitle(R.string.title_clone_repo);
-            builder.setNegativeButton(getString(R.string.label_cancel), new DummyDialogListener());
-            builder.setPositiveButton(getString(R.string.label_clone), new DummyDialogListener());
-
-            return builder.create();
-        }
-
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            AlertDialog dialog = (AlertDialog) getDialog();
-            if (dialog == null)
-                return;
-            Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            String remoteURL = mRemoteURL.getText().toString().trim();
-            String localPath = mLocalPath.getText().toString().trim();
-
-            if (remoteURL.equals("")) {
-                mViewUtils.showToastMessage(R.string.alert_remoteurl_required);
-                mRemoteURL.setError(getString(R.string.alert_remoteurl_required));
-                return;
-            }
-            if (localPath.equals("")) {
-                mViewUtils.showToastMessage(R.string.alert_localpath_required);
-                mLocalPath.setError(getString(R.string.alert_localpath_required));
-                return;
-            }
-            if (localPath.contains("/")) {
-                mViewUtils.showToastMessage(R.string.alert_localpath_format);
-                mLocalPath.setError(getString(R.string.alert_localpath_format));
-                return;
-            }
-
-            File file = mFsUtils.getRepo(localPath);
-            if (file.exists()) {
-                mViewUtils.showToastMessage(R.string.alert_localpath_repo_exists);
-                mLocalPath.setError(getString(R.string.alert_localpath_repo_exists));
-                return;
-            }
-
-            String username = mUsername.getText().toString();
-            String password = mPassword.getText().toString();
-            ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                    RepoContract.REPO_STATUS_WAITING_CLONE);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-            long id = RepoDbManager.getInstance(mActivity)
-                    .insertRepo(values);
-            cloneRepo(id, remoteURL, localPath, username, password);
-            dismiss();
-        }
-
-        public void cloneRepo(final long id, final String remoteUrl, final String localPath,
-                              final String username, final String password) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mRepoUtils.cloneSync(remoteUrl, localPath, username, password,
-                                mRepoListAdapter.new CloningMonitor(id));
-                        Git git = mRepoUtils.getGit(localPath);
-                        mRepoUtils.checkoutAllGranches(git);
-                        mRepoUtils.updateLatestCommitInfo(git, id);
-                        ContentValues values = new ContentValues();
-                        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                                RepoContract.REPO_STATUS_NULL);
-                        RepoDbManager.getInstance(mActivity).updateRepo(id, values);
-                    } catch (GitAPIException e) {
-                        RepoDbManager.getInstance(mActivity).deleteRepo(id);
-                    } catch (JGitInternalException e) {
-                        RepoDbManager.getInstance(mActivity).deleteRepo(id);
-                    }
-                }
-            });
-            thread.start();
         }
 
     }

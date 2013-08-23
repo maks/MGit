@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.CodeUtils;
 
 public class ViewFileActivity extends Activity {
 
@@ -29,6 +30,7 @@ public class ViewFileActivity extends Activity {
     private static final String JS_INF = "CodeLoader";
     private String mCode;
     private int mCodeLines;
+    private String mCodeType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class ViewFileActivity extends Activity {
         String fileName = extras.getString(TAG_FILE_NAME);
         File file = new File(fileName);
         setTitle(getString(R.string.view_file_title) + file.getName());
+        mCodeType = CodeUtils.guessCodeType(file.getName());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuffer sb = new StringBuffer();
@@ -130,6 +133,11 @@ public class ViewFileActivity extends Activity {
         @JavascriptInterface
         public int getLineNumber() {
             return mCodeLines;
+        }
+
+        @JavascriptInterface
+        public String getCodeType() {
+            return mCodeType;
         }
 
     }

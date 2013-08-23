@@ -21,7 +21,6 @@ Features
 
 To Do List
 ---------------
-* improve autodetection of a code's language
 * manually choose code's language
 * git diff between commits
 * merge branches
