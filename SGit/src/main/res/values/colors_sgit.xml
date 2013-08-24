@@ -24,4 +24,5 @@
     <color name="branch_name_bg_pressed">#33b5e5</color>
 
     <color name="general_gray_text_color">#999</color>
+    <color name="chosen_sgit">#BC43C5D5</color>
 </resources>

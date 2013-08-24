@@ -12,6 +12,12 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.errors.AmbiguousObjectException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
@@ -19,9 +25,12 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -343,6 +352,57 @@ public class RepoUtils {
 
     public void refreshSgitTransportCallback() {
         mSgitTransportCallback = new SgitTransportCallback(mContext);
+    }
+
+    public List<DiffEntry> getCommitDiff(Git git, String oldCommit, String newCommit) {
+        Repository repo = git.getRepository();
+        try {
+            ObjectId oldId = repo.resolve(oldCommit + "^{tree}");
+            ObjectId newId = repo.resolve(newCommit + "^{tree}");
+
+            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
+            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+
+            ObjectReader reader = repo.newObjectReader();
+
+            oldTreeIter.reset(reader, oldId);
+            newTreeIter.reset(reader, newId);
+
+            List<DiffEntry> diffs = git.diff().setOldTree(oldTreeIter)
+                    .setNewTree(newTreeIter).call();
+
+            return diffs;
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_diff_failed);
+        } catch (IncorrectObjectTypeException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_diff_failed);
+        } catch (AmbiguousObjectException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_diff_failed);
+        }  catch (IOException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_diff_failed);
+        }
+        return null;
+    }
+
+    public String parseDiffEntry(Git git, DiffEntry diffEntry) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        DiffFormatter df = new DiffFormatter(out);
+        df.setRepository(git.getRepository());
+
+        try {
+            df.format(diffEntry);
+            String diffText = out.toString("UTF-8");
+            return diffText;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -72,7 +72,7 @@ public class PrivateKeyManageActivity extends FragmentActivity {
                 File file = mFilesListAdapter.getItem(position);
                 RenameKeyDialog rkd = new RenameKeyDialog(file);
                 rkd.show(getSupportFragmentManager(), "rename-dialog");
-                return false;
+                return true;
             }
         });
         mAdUtils = AdUtils.getInstance(this);

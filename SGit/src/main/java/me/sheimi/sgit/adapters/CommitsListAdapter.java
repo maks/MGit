@@ -19,11 +19,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.ImageCache;
 import me.sheimi.sgit.utils.RepoUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/18/13.
@@ -34,12 +36,15 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
     private RepoUtils mRepoUtils;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new
             SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+    private Set<Integer> mChosenItems;
+    private ViewUtils mViewUtils;
 
-    public CommitsListAdapter(Context context) {
+    public CommitsListAdapter(Context context, Set<Integer> chosenItems) {
         super(context, 0);
         mRepoUtils = RepoUtils.getInstance(context);
+        mChosenItems = chosenItems;
+        mViewUtils = ViewUtils.getInstance(context);
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -77,6 +82,13 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
         ImageLoader im = ImageCache.getInstance(getContext()).getImageLoader();
         im.displayImage(CommonUtils.buildGravatarURL(email), holder.commitsIcon);
+
+        if (mChosenItems.contains(position)) {
+            convertView.setBackgroundColor(mViewUtils.getColor(R.color.pressed_sgit));
+        } else {
+            convertView.setBackgroundColor(mViewUtils.getColor(android.R.color.transparent));
+        }
+
         return convertView;
     }
 

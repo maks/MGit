@@ -1,8 +1,6 @@
 SGIT
 ====
 
-an unofficial git client
-
 an unofficial git client for android
 
 Features
