@@ -69,8 +69,7 @@ public class RepoListActivity extends FragmentActivity {
                 Repo repo = mRepoListAdapter.getItem(position);
                 if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
                     return false;
-                DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath(),
-                        null);
+                DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath());
                 drd.show(getSupportFragmentManager(), "delete-repo-dialog");
                 return false;
             }

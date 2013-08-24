@@ -183,6 +183,24 @@ public class RepoUtils {
         return null;
     }
 
+    public Repository gitRepoFromRepoPath(String repoPath) {
+        try {
+            FileRepositoryBuilder builder = new FileRepositoryBuilder();
+            File repoFile = new File(repoPath);
+            Repository repository = builder.setGitDir(repoFile)
+                    .readEnvironment()
+                    .findGitDir().build();
+            return repository;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Git getGit(Repository repo) {
+        Git git = new Git(repo);
+        return git;
+    }
 
     public Git getGit(String localPath) {
         File repoFile = new File(mFsUtils.getDir(FsUtils.REPO_DIR),

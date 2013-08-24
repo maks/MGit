@@ -18,6 +18,7 @@
     <string name="action_add_private_key">Add Key</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_pay">Pay to Remove Ads</string>
+    <string name="action_choose_language">Choose Language</string>
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>

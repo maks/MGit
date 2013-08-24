@@ -171,13 +171,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                 ActivityUtils.finishActivity(this);
                 return true;
             case R.id.action_delete:
-                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath, new View
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ActivityUtils.finishActivity(RepoDetailActivity.this);
-                    }
-                });
+                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath);
                 drd.show(getSupportFragmentManager(), "delete-repo-dialog");
                 return true;
             case R.id.action_pull:
@@ -229,6 +223,14 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    public void setFilesFragment(FilesFragment filesFragment) {
+        mFilesFragment = filesFragment;
+    }
+
+    public void setCommitsFragment(CommitsFragment commitsFragment) {
+        mCommitsFragment = commitsFragment;
     }
 
     @Override

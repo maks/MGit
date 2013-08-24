@@ -51,6 +51,7 @@ public class CommitsFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_commits, container, false);
         mRepoUtils = RepoUtils.getInstance(mActivity);
         mActivity = (RepoDetailActivity) getActivity();
+        mActivity.setCommitsFragment(this);
 
         Bundle bundle = getArguments();
         String localRepoStr = bundle.getString(LOCAL_REPO);

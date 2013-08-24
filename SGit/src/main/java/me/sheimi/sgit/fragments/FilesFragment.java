@@ -31,6 +31,7 @@ import me.sheimi.sgit.utils.RepoUtils;
 public class FilesFragment extends BaseFragment {
 
     private static String LOCAL_REPO = "local_repo";
+    private static String CURRENT_DIR = "current_dir";
 
     private FsUtils mFsUtils;
     private RepoUtils mRepoUtils;
@@ -65,6 +66,7 @@ public class FilesFragment extends BaseFragment {
         mActivity = (RepoDetailActivity) getActivity();
         mRepoUtils = RepoUtils.getInstance(mActivity);
         mFsUtils = FsUtils.getInstance(getActivity());
+        mActivity.setFilesFragment(this);
 
         Bundle bundle = getArguments();
         String localRepoStr = bundle.getString(LOCAL_REPO);
@@ -125,7 +127,13 @@ public class FilesFragment extends BaseFragment {
 
         String branchName = mRepoUtils.getBranchName(mGit);
         reset(branchName);
-
+        if (savedInstanceState != null) {
+            String currentDirPath = savedInstanceState.getString(CURRENT_DIR);
+            if (currentDirPath != null) {
+                mCurrentDir = new File(currentDirPath);
+                setCurrentDir(mCurrentDir);
+            }
+        }
         return v;
     }
 
@@ -133,6 +141,7 @@ public class FilesFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(LOCAL_REPO, mLocalRepo);
+        outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
     }
 
     public void setCurrentDir(File dir) {
@@ -171,7 +180,7 @@ public class FilesFragment extends BaseFragment {
         return new OnBackClickListener() {
             @Override
             public boolean onClick() {
-                if (mCurrentDir.equals(mRootDir))
+                if (mRootDir.equals(mCurrentDir))
                     return false;
                 File parent = mCurrentDir.getParentFile();
                 setCurrentDir(parent);

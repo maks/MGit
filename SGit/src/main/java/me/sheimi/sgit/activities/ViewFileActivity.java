@@ -98,6 +98,9 @@ public class ViewFileActivity extends Activity {
             case android.R.id.home:
                 ActivityUtils.finishActivity(this);
                 return true;
+            case R.id.action_choose_language:
+
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
