@@ -18,10 +18,10 @@ Features
 * browse commit message (short)
 * search from local repositories
 * private keys management
+* manually choose code's language
 
 To Do List
 ---------------
-* manually choose code's language
 * git diff between commits
 * merge branches
 * push merged content

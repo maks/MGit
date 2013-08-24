@@ -45,6 +45,7 @@
     <string name="dialog_delete_repo_title">Delete Conformation</string>
     <string name="dialog_delete_repo_msg">Are you sure to delete this repository ?</string>
     <string name="dialog_rename_key_title">Rename</string>
+    <string name="dialog_choose_language_title">Choose Language</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>

@@ -1,7 +1,7 @@
 package me.sheimi.sgit.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,10 +20,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CodeUtils;
 
-public class ViewFileActivity extends Activity {
+public class ViewFileActivity extends FragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
@@ -56,29 +57,33 @@ public class ViewFileActivity extends Activity {
                 line = br.readLine();
             }
             mCode = sb.toString();
-            mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
-                    "text/html", "utf-8", null);
-            mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
-            WebSettings webSettings = mFileContent.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            mFileContent.setWebChromeClient(new WebChromeClient() {
-                public void onConsoleMessage(String message, int lineNumber,
-                                             String sourceID) {
-                    Log.d("MyApplication", message + " -- From line " +
-                            lineNumber
-                            + " of " + sourceID);
-                }
-
-                public boolean shouldOverrideUrlLoading(WebView view,
-                                                        String url) {
-                    return false;
-                }
-            });
+            loadFileContent();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadFileContent() {
+        mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
+                "text/html", "utf-8", null);
+        mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
+        WebSettings webSettings = mFileContent.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        mFileContent.setWebChromeClient(new WebChromeClient() {
+            public void onConsoleMessage(String message, int lineNumber,
+                                         String sourceID) {
+                Log.d("MyApplication", message + " -- From line " +
+                        lineNumber
+                        + " of " + sourceID);
+            }
+
+            public boolean shouldOverrideUrlLoading(WebView view,
+                                                    String url) {
+                return false;
+            }
+        });
     }
 
     private void setupActionBar() {
@@ -99,7 +104,8 @@ public class ViewFileActivity extends Activity {
                 ActivityUtils.finishActivity(this);
                 return true;
             case R.id.action_choose_language:
-
+                ChooseLanguageDialog cld = new ChooseLanguageDialog();
+                cld.show(getSupportFragmentManager(), "choose language");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -124,6 +130,11 @@ public class ViewFileActivity extends Activity {
             return true;
         }
         return false;
+    }
+
+    public void setLanguage(String language) {
+        mCodeType = language;
+        loadFileContent();
     }
 
     private class CodeLoader {
