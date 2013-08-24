@@ -62,7 +62,7 @@ public class PrivateKeyManageActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int positon, long id) {
                 File file = mFilesListAdapter.getItem(positon);
-                mFsUtils.openFile(file, "plain/text");
+                mFsUtils.openFile(file, "text/plain");
             }
         });
         mPrivateKeyList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
