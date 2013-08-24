@@ -171,17 +171,15 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                 ActivityUtils.finishActivity(this);
                 return true;
             case R.id.action_delete:
-                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath, new View
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ActivityUtils.finishActivity(RepoDetailActivity.this);
-                    }
-                });
+                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath);
                 drd.show(getSupportFragmentManager(), "delete-repo-dialog");
                 return true;
             case R.id.action_pull:
                 pullRepo();
+                return true;
+            case R.id.action_diff:
+                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
+                mCommitsFragment.enterDiffActionMode();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -229,6 +227,14 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    public void setFilesFragment(FilesFragment filesFragment) {
+        mFilesFragment = filesFragment;
+    }
+
+    public void setCommitsFragment(CommitsFragment commitsFragment) {
+        mCommitsFragment = commitsFragment;
     }
 
     @Override
@@ -306,9 +312,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
             @Override
             public void beginTask(String title, int totalWork) {
-                if (totalWork != 0) {
-                    mTotalWork = totalWork;
-                }
+                mTotalWork = totalWork;
                 mWorkDone = 0;
                 Log.d("pull beginTask", String.valueOf(totalWork));
                 setProgress(title, mWorkDone, mTotalWork);
@@ -317,9 +321,11 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             @Override
             public void update(int i) {
                 mWorkDone += i;
-                Log.d("pull update", String.valueOf(i));
+                Log.d("pull update workDone", String.valueOf(mWorkDone));
                 Log.d("pull update totlaWork", String.valueOf(mTotalWork));
-                setProgress(null, mWorkDone, mTotalWork);
+                if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0) {
+                    setProgress(null, mWorkDone, mTotalWork);
+                }
             }
 
             @Override
@@ -339,9 +345,10 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                         if (title != null)
                             mPullMsg.setText(title + " ... ");
                         if (totalWork != 0) {
-                            int progress = 100 * workDone / totalWork;
+                            int showedWorkDown = Math.min(workDone, totalWork);
+                            int progress = 100 * showedWorkDown / totalWork;
                             String leftHint = progress + "%";
-                            String rightHint = workDone + "/" + totalWork;
+                            String rightHint = showedWorkDown + "/" + totalWork;
                             mPullLeftHint.setText(leftHint);
                             mPullRightHint.setText(rightHint);
                             mPullProgressBar.setProgress(progress);

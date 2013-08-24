@@ -1,8 +1,6 @@
 SGIT
 ====
 
-an unofficial git client
-
 an unofficial git client for android
 
 Features
@@ -18,12 +16,11 @@ Features
 * browse commit message (short)
 * search from local repositories
 * private keys management
+* manually choose code's language
+* git diff between commits
 
 To Do List
 ---------------
-* improve autodetection of a code's language
-* manually choose code's language
-* git diff between commits
 * merge branches
 * push merged content
 * edit file

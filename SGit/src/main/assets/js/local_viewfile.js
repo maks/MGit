@@ -1,6 +1,13 @@
 $(document).ready(function() {
     var rawCodes = CodeLoader.getCode();
-    var highlighted = hljs.highlightAuto(rawCodes);
+    var codeType = CodeLoader.getCodeType();
+    var highlighted;
+    console.log(codeType);
+    if (codeType === null || codeType === undefined) {
+        highlighted = hljs.highlightAuto(rawCodes);
+    } else {
+        highlighted = hljs.highlight(codeType, rawCodes, true);
+    }
     var length = CodeLoader.getLineNumber();
     var lineNumbersList = []
     for (var i = 0; i < length; i++) {

@@ -5,6 +5,7 @@
     <string name="error_transport">Transport Error</string>
     <string name="error_clone_failed">Clone Failed</string>
     <string name="error_pull_failed">Pull Failed</string>
+    <string name="error_diff_failed">Diff Failed</string>
 
     <!-- alerts -->
     <string name="alert_remoteurl_required">Remote URL Required</string>
@@ -14,5 +15,8 @@
     <string name="alert_new_filename_required">File Name Required</string>
     <string name="alert_file_exists">File Name Exists</string>
     <string name="alert_filename_format">File Name Format Error</string>
+    <string name="alert_choose_two_items">You can only choose two items</string>
+    <string name="alert_no_items_selected">No items selected</string>
+    <string name="alert_no_older_commits">No Older Commits to Compare With</string>
 
 </resources>

@@ -25,7 +25,7 @@ public class ViewUtils {
     }
 
     public void showToastMessage(final String msg) {
-        ((Activity)mContext).runOnUiThread(new Runnable() {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(mContext, msg, Toast.LENGTH_LONG)
@@ -36,6 +36,10 @@ public class ViewUtils {
 
     public void showToastMessage(int resId) {
         showToastMessage(mContext.getString(resId));
+    }
+
+    public int getColor(int resId) {
+        return mContext.getResources().getColor(resId);
     }
 
 }

@@ -45,6 +45,13 @@
                     android:value=".activities.RepoDetailActivity"/>
         </activity>
         <activity
+                android:name=".activities.CommitDiffActivity"
+                android:parentActivityName=".activities.RepoDetailActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".activities.RepoDetailActivity"/>
+        </activity>
+        <activity
                 android:name=".activities.PrivateKeyManageActivity"
                 android:label="@string/title_activity_private_key_manage"
                 android:parentActivityName=".RepoListActivity">

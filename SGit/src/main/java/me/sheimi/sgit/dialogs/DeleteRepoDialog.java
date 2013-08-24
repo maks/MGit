@@ -1,18 +1,19 @@
 package me.sheimi.sgit.dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.View;
 
 import java.io.File;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 /**
  * Created by sheimi on 8/16/13.
@@ -20,29 +21,43 @@ import me.sheimi.sgit.utils.RepoUtils;
 public class DeleteRepoDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
     private long mID;
-    private RepoUtils mRepoUtils;
     private String mLocalPath;
-    private View.OnClickListener mOnDeleteClickListener;
+    private Activity mActivity;
 
-    public DeleteRepoDialog(long id, String localPath, View.OnClickListener listener) {
+    private static final String LOCAL_PATH = "local path";
+    private static final String REPO_ID = "repo id";
+    public DeleteRepoDialog() {}
+
+    public DeleteRepoDialog(long id, String localPath) {
         mID = id;
         mLocalPath = localPath;
-        mOnDeleteClickListener = listener;
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+        mActivity = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         builder.setTitle(getString(R.string.dialog_delete_repo_title));
         builder.setMessage(getString(R.string.dialog_delete_repo_msg));
+
+        if (savedInstanceState != null) {
+            mID = savedInstanceState.getLong(REPO_ID);
+            mLocalPath = savedInstanceState.getString(LOCAL_PATH);
+        }
 
         // set button listener
         builder.setNegativeButton(getString(R.string.label_cancel), new DummyDialogListener());
         builder.setPositiveButton(getString(R.string.label_delete), this);
 
         return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(LOCAL_PATH, mLocalPath);
+        outState.putLong(REPO_ID, mID);
     }
 
     @Override
@@ -56,8 +71,8 @@ public class DeleteRepoDialog extends DialogFragment implements DialogInterface.
             }
         });
         thread.start();
-        if (mOnDeleteClickListener != null) {
-            mOnDeleteClickListener.onClick(null);
+        if (mActivity instanceof RepoDetailActivity) {
+            ActivityUtils.finishActivity(mActivity);
         }
     }
 

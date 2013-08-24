@@ -13,6 +13,7 @@ pre {
 pre code {
 	padding: 0;
 	line-height: 15px;
+	overflow: scroll;
 }
 .codes {
   padding-left: 10px;

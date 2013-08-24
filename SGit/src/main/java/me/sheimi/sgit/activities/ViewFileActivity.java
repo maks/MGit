@@ -1,7 +1,7 @@
 package me.sheimi.sgit.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -20,15 +20,18 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.CodeUtils;
 
-public class ViewFileActivity extends Activity {
+public class ViewFileActivity extends FragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
     private static final String JS_INF = "CodeLoader";
     private String mCode;
     private int mCodeLines;
+    private String mCodeType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,8 @@ public class ViewFileActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         String fileName = extras.getString(TAG_FILE_NAME);
         File file = new File(fileName);
-        setTitle(getString(R.string.view_file_title) + file.getName());
+        setTitle(getString(R.string.title_activity_view_file) + file.getName());
+        mCodeType = CodeUtils.guessCodeType(file.getName());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             StringBuffer sb = new StringBuffer();
@@ -53,29 +57,33 @@ public class ViewFileActivity extends Activity {
                 line = br.readLine();
             }
             mCode = sb.toString();
-            mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
-                    "text/html", "utf-8", null);
-            mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
-            WebSettings webSettings = mFileContent.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            mFileContent.setWebChromeClient(new WebChromeClient() {
-                public void onConsoleMessage(String message, int lineNumber,
-                                             String sourceID) {
-                    Log.d("MyApplication", message + " -- From line " +
-                            lineNumber
-                            + " of " + sourceID);
-                }
-
-                public boolean shouldOverrideUrlLoading(WebView view,
-                                                        String url) {
-                    return false;
-                }
-            });
+            loadFileContent();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadFileContent() {
+        mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
+                "text/html", "utf-8", null);
+        mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
+        WebSettings webSettings = mFileContent.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        mFileContent.setWebChromeClient(new WebChromeClient() {
+            public void onConsoleMessage(String message, int lineNumber,
+                                         String sourceID) {
+                Log.d("MyApplication", message + " -- From line " +
+                        lineNumber
+                        + " of " + sourceID);
+            }
+
+            public boolean shouldOverrideUrlLoading(WebView view,
+                                                    String url) {
+                return false;
+            }
+        });
     }
 
     private void setupActionBar() {
@@ -94,6 +102,10 @@ public class ViewFileActivity extends Activity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 ActivityUtils.finishActivity(this);
+                return true;
+            case R.id.action_choose_language:
+                ChooseLanguageDialog cld = new ChooseLanguageDialog();
+                cld.show(getSupportFragmentManager(), "choose language");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -120,6 +132,11 @@ public class ViewFileActivity extends Activity {
         return false;
     }
 
+    public void setLanguage(String language) {
+        mCodeType = language;
+        loadFileContent();
+    }
+
     private class CodeLoader {
 
         @JavascriptInterface
@@ -132,15 +149,20 @@ public class ViewFileActivity extends Activity {
             return mCodeLines;
         }
 
+        @JavascriptInterface
+        public String getCodeType() {
+            return mCodeType;
+        }
+
     }
 
     private static final String HTML_TMPL = "<!doctype html>"
             + "<head>"
             + " <script src=\"js/jquery.js\"></script>"
             + " <script src=\"js/highlight.pack.js\"></script>"
-            + " <script src=\"js/local.js\"></script>"
+            + " <script src=\"js/local_viewfile.js\"></script>"
             + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/tne.css\" />"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local.css\" />"
+            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local_viewfile.css\" />"
             + "</head><body><table>"
             + "<tbody><tr><td class=\"line_number_td\">"
             + "<pre class=\"line_numbers\"></pre>"
