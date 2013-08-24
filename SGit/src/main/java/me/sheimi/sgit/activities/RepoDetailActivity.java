@@ -341,10 +341,10 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                         if (title != null)
                             mPullMsg.setText(title + " ... ");
                         if (totalWork != 0) {
-                            int progress = 100 * workDone / totalWork;
-                            progress = progress > 100 ? 100 : progress;
+                            int showedWorkDown = Math.min(workDone, totalWork);
+                            int progress = 100 * showedWorkDown / totalWork;
                             String leftHint = progress + "%";
-                            String rightHint = workDone + "/" + totalWork;
+                            String rightHint = showedWorkDown + "/" + totalWork;
                             mPullLeftHint.setText(leftHint);
                             mPullRightHint.setText(rightHint);
                             mPullProgressBar.setProgress(progress);
