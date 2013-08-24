@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -111,9 +110,21 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
             public void onItemClick(AdapterView<?> adapterView, View view,
                                     int position, long id) {
                 if (mActionMode == null) {
-                    RevCommit commit = mCommitsListAdapter.getItem(position);
-                    String fullCommitName = commit.getName();
-                    mActivity.resetCommits(fullCommitName);
+                    if (position == mCommitsListAdapter.getCount() - 1) {
+                        mViewUtils.showToastMessage(R.string.alert_no_older_commits);
+
+                    }
+                    Intent intent = new Intent(getActivity(), CommitDiffActivity.class);
+                    String oldCommit = mCommitsListAdapter.getItem(position + 1).getName();
+                    String newCommit = mCommitsListAdapter.getItem(position).getName();
+                    intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
+                    intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
+                    intent.putExtra(CommitDiffActivity.LOCAL_REPO, mLocalRepo);
+                    ActivityUtils.startActivity(getActivity(), intent);
+
+//                    RevCommit commit = mCommitsListAdapter.getItem(position);
+//                    String fullCommitName = commit.getName();
+//                    mActivity.resetCommits(fullCommitName);
                     return;
                 }
                 chooseItem(position);
