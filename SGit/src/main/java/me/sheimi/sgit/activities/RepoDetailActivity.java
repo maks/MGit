@@ -308,9 +308,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
             @Override
             public void beginTask(String title, int totalWork) {
-                if (totalWork != 0) {
-                    mTotalWork = totalWork;
-                }
+                mTotalWork = totalWork;
                 mWorkDone = 0;
                 Log.d("pull beginTask", String.valueOf(totalWork));
                 setProgress(title, mWorkDone, mTotalWork);
@@ -319,9 +317,11 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             @Override
             public void update(int i) {
                 mWorkDone += i;
-                Log.d("pull update", String.valueOf(i));
+                Log.d("pull update workDone", String.valueOf(mWorkDone));
                 Log.d("pull update totlaWork", String.valueOf(mTotalWork));
-                setProgress(null, mWorkDone, mTotalWork);
+                if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0) {
+                    setProgress(null, mWorkDone, mTotalWork);
+                }
             }
 
             @Override
@@ -342,6 +342,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                             mPullMsg.setText(title + " ... ");
                         if (totalWork != 0) {
                             int progress = 100 * workDone / totalWork;
+                            progress = progress > 100 ? 100 : progress;
                             String leftHint = progress + "%";
                             String rightHint = workDone + "/" + totalWork;
                             mPullLeftHint.setText(leftHint);
