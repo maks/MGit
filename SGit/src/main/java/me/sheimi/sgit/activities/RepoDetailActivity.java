@@ -207,9 +207,9 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                                 R.anim.fade_out);
                         mPullProgressContainer.setAnimation(anim);
                         mPullProgressContainer.setVisibility(View.GONE);
+                        reset();
                     }
                 });
-                reset();
             }
         });
         thread.start(); ;
