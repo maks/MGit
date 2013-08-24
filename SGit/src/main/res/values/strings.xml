@@ -5,7 +5,6 @@
     <string name="admob_id">a15216f9d8d07d3</string>
     <string name="inapp_billing_key"></string>
     <string name="default_text">Default Text</string>
-    <string name="view_file_title">File: </string>
     <string name="title_clone_repo">Clone Repository</string>
 
     <!-- action -->
@@ -19,6 +18,7 @@
     <string name="action_feedback">Feedback</string>
     <string name="action_pay">Pay to Remove Ads</string>
     <string name="action_choose_language">Choose Language</string>
+    <string name="action_diff">Diff</string>
     <string name="action_mode_diff">Diff</string>
 
     <!-- label msg -->
@@ -35,6 +35,8 @@
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
+    <string name="title_activity_view_file">File: </string>
+    <string name="title_activity_commit_diff">Diff:   </string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>

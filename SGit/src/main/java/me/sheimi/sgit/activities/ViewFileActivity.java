@@ -43,7 +43,7 @@ public class ViewFileActivity extends FragmentActivity {
         Bundle extras = getIntent().getExtras();
         String fileName = extras.getString(TAG_FILE_NAME);
         File file = new File(fileName);
-        setTitle(getString(R.string.view_file_title) + file.getName());
+        setTitle(getString(R.string.title_activity_view_file) + file.getName());
         mCodeType = CodeUtils.guessCodeType(file.getName());
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));

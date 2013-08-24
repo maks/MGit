@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -114,17 +115,10 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
                         mViewUtils.showToastMessage(R.string.alert_no_older_commits);
 
                     }
-                    Intent intent = new Intent(getActivity(), CommitDiffActivity.class);
-                    String oldCommit = mCommitsListAdapter.getItem(position + 1).getName();
-                    String newCommit = mCommitsListAdapter.getItem(position).getName();
-                    intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
-                    intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
-                    intent.putExtra(CommitDiffActivity.LOCAL_REPO, mLocalRepo);
-                    ActivityUtils.startActivity(getActivity(), intent);
 
-//                    RevCommit commit = mCommitsListAdapter.getItem(position);
-//                    String fullCommitName = commit.getName();
-//                    mActivity.resetCommits(fullCommitName);
+                    RevCommit commit = mCommitsListAdapter.getItem(position);
+                    String fullCommitName = commit.getName();
+                    mActivity.resetCommits(fullCommitName);
                     return;
                 }
                 chooseItem(position);
@@ -137,7 +131,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
                 if (mActionMode != null) {
                     return false;
                 }
-                mActionMode = getActivity().startActionMode(CommitsFragment.this);
+                enterDiffActionMode();
                 chooseItem(position);
                 return true;
             }
@@ -197,6 +191,10 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
         mCommitsListAdapter.resetCommit(mGit);
     }
 
+    public void enterDiffActionMode() {
+        mActionMode = getActivity().startActionMode(CommitsFragment.this);
+    }
+
     @Override
     public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
         MenuInflater inflater = actionMode.getMenuInflater();
@@ -214,14 +212,25 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.action_mode_diff:
-                if (mChosenItem.size() != 2) {
-                    mViewUtils.showToastMessage(R.string.alert_choose_two_items_required);
+                Integer[] items = mChosenItem.toArray(new Integer[0]);
+                if (items.length == 0) {
+                    mViewUtils.showToastMessage(R.string.alert_no_items_selected);
                     return true;
                 }
+                int item1, item2;
+                item1 = items[0];
+                if (items.length == 1) {
+                    item2 = item1 + 1;
+                    if (item2 == mCommitsListAdapter.getCount()) {
+                        mViewUtils.showToastMessage(R.string.alert_no_older_commits);
+                        return true;
+                    }
+                } else {
+                    item2 = items[1];
+                }
                 Intent intent = new Intent(getActivity(), CommitDiffActivity.class);
-                Integer[] items = mChosenItem.toArray(new Integer[0]);
-                int smaller = Math.min(items[0], items[1]);
-                int larger = Math.max(items[0], items[1]);
+                int smaller = Math.min(item1, item2);
+                int larger = Math.max(item1, item2);
                 String oldCommit = mCommitsListAdapter.getItem(larger).getName();
                 String newCommit = mCommitsListAdapter.getItem(smaller).getName();
                 intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);

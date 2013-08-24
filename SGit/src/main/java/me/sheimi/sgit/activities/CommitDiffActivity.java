@@ -49,6 +49,12 @@ public class CommitDiffActivity extends FragmentActivity {
         mNewCommit = extras.getString(NEW_COMMIT);
         mLocalRepo = extras.getString(LOCAL_REPO);
         mGit = mRepoUtils.getGit(mLocalRepo);
+
+        String title = mRepoUtils.getCommitDisplayName(mNewCommit) + " : "
+                + mRepoUtils.getCommitDisplayName(mOldCommit);
+
+        setTitle(getString(R.string.title_activity_commit_diff) + title);
+
         loadFileContent();
     }
 

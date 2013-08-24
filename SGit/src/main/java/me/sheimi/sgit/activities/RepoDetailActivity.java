@@ -177,6 +177,10 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             case R.id.action_pull:
                 pullRepo();
                 return true;
+            case R.id.action_diff:
+                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
+                mCommitsFragment.enterDiffActionMode();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
