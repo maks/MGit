@@ -22,7 +22,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.lib.Repository;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
@@ -59,7 +58,6 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private String mLocalPath;
     private String mUsername;
     private String mPassword;
-    private Repository mRepository;
     private Git mGit;
 
     private View mPullProgressContainer;
@@ -129,8 +127,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         mPassword = repo.getPassword();
         setTitle(mLocalPath);
         mRepoUtils = RepoUtils.getInstance(this);
-        mRepository = mRepoUtils.getRepository(mLocalPath);
-        mGit = new Git(mRepository);
+        mGit = mRepoUtils.getGit(mLocalPath);
     }
 
     private void createFragments() {
@@ -212,9 +209,15 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                         mPullProgressContainer.setVisibility(View.GONE);
                     }
                 });
+                reset();
             }
         });
         thread.start(); ;
+    }
+
+    private void reset() {
+        mFilesFragment.reset();
+        mCommitsFragment.reset();
     }
 
     @Override
@@ -300,7 +303,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     }
 
     private ProgressMonitor getProgressMonitor() {
-        ProgressMonitor pm = new ProgressMonitor() {
+        return new ProgressMonitor() {
 
             private int mTotalWork;
             private int mWorkDone;
@@ -360,6 +363,5 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             }
 
         };
-        return pm;
     }
 }

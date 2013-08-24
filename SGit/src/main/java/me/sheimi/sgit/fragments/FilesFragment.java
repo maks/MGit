@@ -175,6 +175,10 @@ public class FilesFragment extends BaseFragment {
         resetCurrentDir();
     }
 
+    public void reset() {
+        resetCurrentDir();
+    }
+
     @Override
     public OnBackClickListener getOnBackClickListener() {
         return new OnBackClickListener() {

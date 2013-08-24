@@ -191,6 +191,10 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
         mCommitsListAdapter.resetCommit(mGit);
     }
 
+    public void reset() {
+        mCommitsListAdapter.resetCommit(mGit);
+    }
+
     public void enterDiffActionMode() {
         mActionMode = getActivity().startActionMode(CommitsFragment.this);
     }
