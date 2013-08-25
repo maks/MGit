@@ -7,6 +7,7 @@ import android.view.View;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.utils.inapputil.IabHelper;
 import me.sheimi.sgit.utils.inapputil.IabResult;
@@ -19,16 +20,19 @@ import me.sheimi.sgit.utils.inapputil.Purchase;
 public class AdUtils {
 
     private static AdUtils mInstance;
+    private ViewUtils mViewUtils;
     private Activity mActivity;
     private IabHelper mHelper;
     private static final int INIT = 0;
     private static final int NOT_PAID = 1;
     private static final int PAID = 2;
+    private static final int NOT_AVAILABLE = 3;
     private int mPayStatus = INIT;
     static final int RC_REQUEST = 10001;
 
     private AdUtils(Activity activity) {
         mActivity = activity;
+        mViewUtils = ViewUtils.getInstance(activity);
         mHelper = new IabHelper(activity, Constants.BASE64_PUBLIC_KEY);
         if (CommonUtils.isDebug(activity)) {
             mHelper.enableDebugLogging(true);
@@ -50,6 +54,9 @@ public class AdUtils {
                     // Oh noes, there was a problem.
                     Log.d(AdUtils.class.getName(), "Problem setting up In-app Billing: " +
                             result);
+                    mPayStatus = NOT_AVAILABLE;
+                    showAds(adView);
+                    return;
                 }
                 Log.d(AdUtils.class.getName(), "In-app Setup Success");
                 // Hooray, IAB is fully set up!
@@ -74,6 +81,10 @@ public class AdUtils {
     }
 
     public void payToDisableAds(final AdView adView) {
+        if (mPayStatus == NOT_AVAILABLE) {
+            mViewUtils.showToastMessage(R.string.alert_in_app_billing_not_available);
+            return;
+        }
         mHelper.launchPurchaseFlow(mActivity, Constants.INAPP_BILLING_ADS, RC_REQUEST,
                 new IabHelper.OnIabPurchaseFinishedListener() {
                     @Override
@@ -100,6 +111,7 @@ public class AdUtils {
     public void loadAds(final AdView adView) {
         switch (mPayStatus) {
             case NOT_PAID:
+            case NOT_AVAILABLE:
                 showAds(adView);
                 break;
             case PAID:

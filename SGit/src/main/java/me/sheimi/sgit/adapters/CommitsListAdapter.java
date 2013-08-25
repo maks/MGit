@@ -95,7 +95,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
     public void resetCommit(Git git) {
         clear();
         List<RevCommit> commitsList = mRepoUtils.getCommitsList(git);
-        addAll(commitsList);
+        mViewUtils.adapterAddAll(this, commitsList);
         notifyDataSetChanged();
     }
 

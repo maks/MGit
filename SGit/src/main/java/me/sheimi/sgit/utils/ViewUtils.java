@@ -2,7 +2,11 @@ package me.sheimi.sgit.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import java.util.Collection;
 
 /**
  * Created by sheimi on 8/22/13.
@@ -40,6 +44,26 @@ public class ViewUtils {
 
     public int getColor(int resId) {
         return mContext.getResources().getColor(resId);
+    }
+
+    public <T> void adapterAddAll(ArrayAdapter<T> adapter, Collection<T> collection) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            adapter.addAll(collection);
+        } else {
+            for (T item : collection) {
+                adapter.add(item);
+            }
+        }
+    }
+
+    public <T> void adapterAddAll(ArrayAdapter<T> adapter, T[] collection) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            adapter.addAll(collection);
+        } else {
+            for (T item : collection) {
+                adapter.add(item);
+            }
+        }
     }
 
 }

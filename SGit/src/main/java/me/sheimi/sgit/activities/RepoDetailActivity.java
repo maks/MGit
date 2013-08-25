@@ -1,28 +1,27 @@
 package me.sheimi.sgit.activities;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.lib.Repository;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
@@ -36,8 +35,7 @@ import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
-public class RepoDetailActivity extends FragmentActivity implements ActionBar
-        .TabListener {
+public class RepoDetailActivity extends SherlockFragmentActivity implements ActionBar.TabListener{
 
     private static final int[] NAV_TABS = {R.string.tab_files_label,
             R.string.tab_commits_label};
@@ -59,7 +57,6 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     private String mLocalPath;
     private String mUsername;
     private String mPassword;
-    private Repository mRepository;
     private Git mGit;
 
     private View mPullProgressContainer;
@@ -89,7 +86,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
 
     private void setupActionBar() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mActionBar = getActionBar();
+        mActionBar = getSupportActionBar();
         mViewPagerAdapter = new TabItemPagerAdapter
                 (getSupportFragmentManager());
 
@@ -129,8 +126,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
         mPassword = repo.getPassword();
         setTitle(mLocalPath);
         mRepoUtils = RepoUtils.getInstance(this);
-        mRepository = mRepoUtils.getRepository(mLocalPath);
-        mGit = new Git(mRepository);
+        mGit = mRepoUtils.getGit(mLocalPath);
     }
 
     private void createFragments() {
@@ -159,7 +155,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.repo_detail, menu);
+        getSupportMenuInflater().inflate(R.menu.repo_detail, menu);
         return true;
     }
 
@@ -210,11 +206,17 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
                                 R.anim.fade_out);
                         mPullProgressContainer.setAnimation(anim);
                         mPullProgressContainer.setVisibility(View.GONE);
+                        reset();
                     }
                 });
             }
         });
         thread.start(); ;
+    }
+
+    private void reset() {
+        mFilesFragment.reset();
+        mCommitsFragment.reset();
     }
 
     @Override
@@ -300,7 +302,7 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
     }
 
     private ProgressMonitor getProgressMonitor() {
-        ProgressMonitor pm = new ProgressMonitor() {
+        return new ProgressMonitor() {
 
             private int mTotalWork;
             private int mWorkDone;
@@ -360,6 +362,5 @@ public class RepoDetailActivity extends FragmentActivity implements ActionBar
             }
 
         };
-        return pm;
     }
 }

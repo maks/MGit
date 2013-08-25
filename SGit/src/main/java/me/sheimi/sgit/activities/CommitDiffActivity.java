@@ -1,16 +1,16 @@
 package me.sheimi.sgit.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.api.Git;
@@ -23,7 +23,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
-public class CommitDiffActivity extends FragmentActivity {
+public class CommitDiffActivity extends SherlockFragmentActivity {
 
     public final static String OLD_COMMIT = "old commit";
     public final static String NEW_COMMIT = "new commit";
@@ -80,13 +80,13 @@ public class CommitDiffActivity extends FragmentActivity {
     }
 
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.diff_commits, menu);
+        getSupportMenuInflater().inflate(R.menu.diff_commits, menu);
         return true;
     }
 

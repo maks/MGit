@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/18/13.
@@ -21,9 +22,11 @@ import me.sheimi.sgit.R;
 public class FilesListAdapter extends ArrayAdapter<File> {
 
     private File mDir;
+    private ViewUtils mViewUtils;
 
     public FilesListAdapter(Context context) {
         super(context, 0);
+        mViewUtils = ViewUtils.getInstance(context);
     }
 
 
@@ -77,7 +80,7 @@ public class FilesListAdapter extends ArrayAdapter<File> {
                 return file1.isDirectory() ? -1 : 1;
             }
         });
-        addAll(files);
+        mViewUtils.adapterAddAll(this, files);
         notifyDataSetChanged();;
     }
 

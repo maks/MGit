@@ -3,17 +3,18 @@ package me.sheimi.sgit.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -151,7 +152,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
         boolean isActionMode = savedInstanceState.getBoolean(IS_ACTION_MODE);
         if (isActionMode) {
             List<Integer> itemsInt = savedInstanceState.getIntegerArrayList(CHOSEN_ITEM);
-            mActionMode = getActivity().startActionMode(this);
+            mActionMode = mActivity.startActionMode(this);
             mChosenItem.addAll(itemsInt);
             mCommitsListAdapter.notifyDataSetChanged();
         }
@@ -191,8 +192,12 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
         mCommitsListAdapter.resetCommit(mGit);
     }
 
+    public void reset() {
+        mCommitsListAdapter.resetCommit(mGit);
+    }
+
     public void enterDiffActionMode() {
-        mActionMode = getActivity().startActionMode(CommitsFragment.this);
+        mActionMode = mActivity.startActionMode(CommitsFragment.this);
     }
 
     @Override

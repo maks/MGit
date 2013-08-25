@@ -1,16 +1,16 @@
 package me.sheimi.sgit.activities;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.BufferedReader;
@@ -24,7 +24,7 @@ import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CodeUtils;
 
-public class ViewFileActivity extends FragmentActivity {
+public class ViewFileActivity extends SherlockFragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
@@ -87,13 +87,13 @@ public class ViewFileActivity extends FragmentActivity {
     }
 
     private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.view_file, menu);
+        getSupportMenuInflater().inflate(R.menu.view_file, menu);
         return true;
     }
 
