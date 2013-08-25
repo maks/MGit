@@ -67,6 +67,8 @@ public class AdUtils {
                             Log.d(AdUtils.class.getName(), "Query Fail: " + result);
                             return;
                         }
+                        Purchase p = inv.getPurchase(Constants.INAPP_BILLING_ADS);
+                        int o = p.getPurchaseState();
                         if (inv.hasPurchase(Constants.INAPP_BILLING_ADS)) {
                             mPayStatus = PAID;
                             hideAds(adView);
@@ -85,6 +87,14 @@ public class AdUtils {
             mViewUtils.showToastMessage(R.string.alert_in_app_billing_not_available);
             return;
         }
+        if (mPayStatus == PAID) {
+            mViewUtils.showToastMessage(R.string.alert_have_paid);
+            return;
+        }
+        if (mPayStatus == INIT) {
+            mViewUtils.showToastMessage(R.string.alert_in_app_billing_not_inited);
+            return;
+        }
         mHelper.launchPurchaseFlow(mActivity, Constants.INAPP_BILLING_ADS, RC_REQUEST,
                 new IabHelper.OnIabPurchaseFinishedListener() {
                     @Override
@@ -99,7 +109,6 @@ public class AdUtils {
                             return;
                         }
                         Log.d(RepoListActivity.class.getName(), "Pay Fail: " + result);
-
                     }
                 }, Constants.INAPP_BILLING_PAYLOAD);
     }
