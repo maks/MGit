@@ -5,12 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -21,7 +22,7 @@ import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
 
-public class ExploreFileActivity extends Activity {
+public class ExploreFileActivity extends SherlockFragmentActivity {
 
     public static final String RESULT_PATH = "result_path";
 
@@ -77,7 +78,7 @@ public class ExploreFileActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.explore_file, menu);
+        getSupportMenuInflater().inflate(R.menu.explore_file, menu);
         return true;
     }
 

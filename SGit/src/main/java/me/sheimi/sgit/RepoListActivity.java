@@ -2,14 +2,14 @@ package me.sheimi.sgit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SearchView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -28,7 +28,7 @@ import me.sheimi.sgit.utils.Constants;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
-public class RepoListActivity extends FragmentActivity {
+public class RepoListActivity extends SherlockFragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
@@ -90,7 +90,7 @@ public class RepoListActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getSupportMenuInflater().inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         configSearchAction(searchItem);
         return true;

@@ -5,7 +5,7 @@
             android:icon="@drawable/ic_search"
             android:title="@string/action_search"
             android:showAsAction="always|collapseActionView"
-            android:actionViewClass="android.widget.SearchView"/>
+            android:actionViewClass="com.actionbarsherlock.widget.SearchView"/>
     <item
             android:id="@+id/action_new"
             android:icon="@drawable/ic_content_new"

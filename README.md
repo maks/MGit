@@ -21,10 +21,10 @@ Features
 
 To Do List
 ---------------
+* import copied repositories (that is, you can copy a repository from computer and import to SGit)
 * merge branches
 * push merged content
 * edit file
 * commit and push changed file
-* import copied repositories (that is, you can copy a repository from computer and import to SGit)
 * commit graph
 * improve memory usage

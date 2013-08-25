@@ -7,16 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -31,7 +31,7 @@ import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
-public class PrivateKeyManageActivity extends FragmentActivity {
+public class PrivateKeyManageActivity extends SherlockFragmentActivity {
 
     private File mPrivateKeyFolder;
     private FsUtils mFsUtils;
@@ -85,14 +85,14 @@ public class PrivateKeyManageActivity extends FragmentActivity {
      */
     private void setupActionBar() {
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.private_key_manage, menu);
+        getSupportMenuInflater().inflate(R.menu.private_key_manage, menu);
         return true;
     }
 
