@@ -67,9 +67,9 @@ public class AdUtils {
                             Log.d(AdUtils.class.getName(), "Query Fail: " + result);
                             return;
                         }
-                        Purchase p = inv.getPurchase(Constants.INAPP_BILLING_ADS);
-                        int o = p.getPurchaseState();
-                        if (inv.hasPurchase(Constants.INAPP_BILLING_ADS)) {
+                        Purchase purchase = inv.getPurchase(Constants.INAPP_BILLING_ADS);
+                        // if purchase is not null & purchase is not canceled or refunded
+                        if (purchase != null && purchase.getPurchaseState() == 0) {
                             mPayStatus = PAID;
                             hideAds(adView);
                             return;
