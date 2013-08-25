@@ -2,6 +2,7 @@ package me.sheimi.sgit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -149,6 +150,17 @@ public class RepoListActivity extends SherlockFragmentActivity {
 
     public ProgressMonitor getCloneMonitor(long id) {
         return mRepoListAdapter.new CloningMonitor(id);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(getClass().getName(), "onActivityResult(" + requestCode + "," + resultCode + "," +
+                "" + data);
+        if (!mAdUtils.getIabHelper().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        } else {
+            Log.d(getClass().getName(), "onActivityResult handled by IABUtil.");
+        }
     }
 
     public class SearchListener implements SearchView.OnQueryTextListener,

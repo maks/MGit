@@ -20,5 +20,7 @@
     <string name="alert_no_older_commits">No Older Commits to Compare With</string>
     <string name="alert_in_app_billing_not_available">Sorry, in-app billing is not available.
     </string>
+    <string name="alert_have_paid">Ads has been disabled.</string>
+    <string name="alert_in_app_billing_not_inited">In-app billing hasn\'t been initialized</string>
 
 </resources>
