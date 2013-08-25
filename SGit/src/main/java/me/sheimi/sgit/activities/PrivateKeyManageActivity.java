@@ -48,7 +48,7 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
-        setupActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mFsUtils = FsUtils.getInstance(this);
         mViewUtils = ViewUtils.getInstance(this);
         mRepoUtils = RepoUtils.getInstance(this);
@@ -78,15 +78,6 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
         mAdUtils = AdUtils.getInstance(this);
         mAdView = (AdView) findViewById(R.id.adView);
         mAdUtils.loadAds(mAdView);
-    }
-
-    /**
-     * Set up the {@link android.app.ActionBar}.
-     */
-    private void setupActionBar() {
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

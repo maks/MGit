@@ -30,6 +30,8 @@
         <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_sgit</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Sgit</item>
         <item name="android:actionMenuTextColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.Sgit.Widget</item>
 
         <item name="actionBarItemBackground">@drawable/selectable_background_sgit</item>
         <item name="popupMenuStyle">@style/PopupMenu.Sgit</item>
@@ -41,11 +43,6 @@
         <item name="actionModeSplitBackground">@drawable/cab_background_bottom_sgit</item>
         <item name="actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Sgit</item>
         <item name="actionMenuTextColor">@android:color/black</item>
-
-        <item name="android:textColor">@android:color/black</item>
-        
-        <!-- Light.DarkActionBar specific -->
-        <item name="android:actionBarWidgetTheme">@style/Theme.Sgit.Widget</item>
         <item name="actionBarWidgetTheme">@style/Theme.Sgit.Widget</item>
 
     </style>
@@ -53,15 +50,21 @@
     <style name="ActionBar.Solid.Sgit" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_background_textured_sgit</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_sgit</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_sgit</item>
         <item name="android:backgroundSplit">@drawable/ab_background_textured_sgit</item>
-        <item name="backgroundSplit">@drawable/ab_background_textured_sgit</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Sgit</item>
+
+        <item name="background">@drawable/ab_background_textured_sgit</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_sgit</item>
+        <item name="backgroundSplit">@drawable/ab_background_textured_sgit</item>
+        <item name="progressBarStyle">@style/ProgressBar.Sgit</item>
     </style>
 
     <style name="ActionBar.Transparent.Sgit" parent="Widget.Sherlock.ActionBar">
         <item name="android:background">@drawable/ab_transparent_sgit</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Sgit</item>
+
+        <item name="background">@drawable/ab_transparent_sgit</item>
+        <item name="progressBarStyle">@style/ProgressBar.Sgit</item>
     </style>
 
     <style name="PopupMenu.Sgit" parent="Widget.Sherlock.ListPopupWindow">
@@ -74,12 +77,15 @@
 
     <style name="ActionBarTabStyle.Sgit" parent="Widget.Sherlock.ActionBar.TabView">
         <item name="android:background">@drawable/tab_indicator_ab_sgit</item>
+        <item name="background">@drawable/tab_indicator_ab_sgit</item>
     </style>
 
     <style name="DropDownNav.Sgit" parent="Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/spinner_background_ab_sgit</item>
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_sgit</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_sgit</item>
+
+        <item name="background">@drawable/spinner_background_ab_sgit</item>
     </style>
     
     <style name="ProgressBar.Sgit" parent="Widget.Sherlock.Light.ProgressBar.Horizontal">
@@ -88,13 +94,16 @@
     
     <style name="ActionButton.CloseMode.Sgit" parent="Widget.Sherlock.ActionButton.CloseMode">
         <item name="android:background">@drawable/btn_cab_done_sgit</item>
+        <item name="background">@drawable/btn_cab_done_sgit</item>
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
     <style name="Theme.Sgit.Widget" parent="Theme.Sherlock.Light">
-        <item name="popupMenuStyle">@style/PopupMenu.Sgit</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Sgit</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Sgit</item>
+
+        <item name="popupMenuStyle">@style/PopupMenu.Sgit</item>
+        <item name="dropDownListViewStyle">@style/DropDownListView.Sgit</item>
     </style>
 
 </resources>

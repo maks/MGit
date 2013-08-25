@@ -20,6 +20,7 @@ import org.eclipse.jgit.api.Git;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.utils.RepoUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/16/13.
@@ -31,6 +32,7 @@ public class ChooseCommitDialog extends DialogFragment {
     private RepoUtils mRepoUtils;
     private ListView mBranchTagList;
     private final static String GIT_PATH = "git path";
+    private ViewUtils mViewUtils;
 
     public ChooseCommitDialog() {}
 
@@ -47,8 +49,8 @@ public class ChooseCommitDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-
-        mRepoUtils = (RepoUtils) RepoUtils.getInstance(mActivity);
+        mViewUtils = ViewUtils.getInstance(mActivity);
+        mRepoUtils = RepoUtils.getInstance(mActivity);
         if (savedInstanceState != null) {
             String path = savedInstanceState.getString(GIT_PATH);
             if (path != null) {
@@ -69,9 +71,8 @@ public class ChooseCommitDialog extends DialogFragment {
 
         String[] branches = mRepoUtils.getBranches(mGit);
         String[] tags = mRepoUtils.getTags(mGit);
-
-        mAdapter.addAll(branches);
-        mAdapter.addAll(tags);
+        mViewUtils.adapterAddAll(mAdapter, branches);
+        mViewUtils.adapterAddAll(mAdapter, tags);
 
         builder.setTitle(R.string.dialog_choose_branch_title);
         mBranchTagList.setOnItemClickListener(new AdapterView

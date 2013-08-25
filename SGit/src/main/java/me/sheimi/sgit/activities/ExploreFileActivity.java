@@ -37,6 +37,7 @@ public class ExploreFileActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mSDCardFolder = Environment.getExternalStorageDirectory();
         mCurrentDir = mSDCardFolder;
         mFileList = (ListView) findViewById(R.id.fileList);
