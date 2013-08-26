@@ -88,11 +88,11 @@ public class RepoListActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mAdView != null)
-            mAdView.destroy();
         Log.d(getClass().getName(), "distory activity");
         mAdUtils.disposeHelper();
         Log.d(getClass().getName(), "distory activity");
+        if (mAdView != null)
+            mAdView.destroy();
     }
 
     @Override
