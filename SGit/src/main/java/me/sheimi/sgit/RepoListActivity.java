@@ -76,16 +76,23 @@ public class RepoListActivity extends SherlockFragmentActivity {
             }
         });
 
-        setupMonetize(); ;
+        setupMonetize();
+    }
+
+    private void setupMonetize() {
+        mAdUtils = AdUtils.getInstance(this);
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdUtils.setupIabHelper(mAdView);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(getClass().getName(), "distory activity");
+        mAdUtils.disposeHelper();
+        Log.d(getClass().getName(), "distory activity");
         if (mAdView != null)
             mAdView.destroy();
-        if (mAdUtils.getIabHelper() != null)
-            mAdUtils.getIabHelper().dispose();
     }
 
     @Override
@@ -156,7 +163,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(getClass().getName(), "onActivityResult(" + requestCode + "," + resultCode + "," +
                 "" + data);
-        if (!mAdUtils.getIabHelper().handleActivityResult(requestCode, resultCode, data)) {
+        if (!mAdUtils.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
         } else {
             Log.d(getClass().getName(), "onActivityResult handled by IABUtil.");
@@ -188,12 +195,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
             return true;
         }
 
-    }
-
-    private void setupMonetize() {
-        mAdUtils = AdUtils.getInstance(this);
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdUtils.setupIabHelper(mAdView);
     }
 
 }
