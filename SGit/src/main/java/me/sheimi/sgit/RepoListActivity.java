@@ -26,15 +26,11 @@ import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.Constants;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
 
 public class RepoListActivity extends SherlockFragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
-    private ViewUtils mViewUtils;
-    private FsUtils mFsUtils;
     private AdView mAdView;
     private AdUtils mAdUtils;
 
@@ -42,8 +38,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mViewUtils = ViewUtils.getInstance(this);
-        mFsUtils = FsUtils.getInstance(this);
         mRepoList = (ListView) findViewById(R.id.repoList);
         mRepoListAdapter = new RepoListAdapter(this);
         mRepoList.setAdapter(mRepoListAdapter);
@@ -88,9 +82,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(getClass().getName(), "distory activity");
         mAdUtils.disposeHelper();
-        Log.d(getClass().getName(), "distory activity");
         if (mAdView != null)
             mAdView.destroy();
     }

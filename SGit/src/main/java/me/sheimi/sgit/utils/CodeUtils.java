@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class CodeUtils {
 
-    private final static String [][] FILENAME_EXTENSION_ARRAY = {
+    private final static String[][] FILENAME_EXTENSION_ARRAY = {
             {"Python", "python", "py"},
             {"Ruby", "ruby", "rb"},
             {"Perl", "perl", "pl"},
@@ -42,7 +42,7 @@ public class CodeUtils {
             {"Haskell", "haskell", "hs", "hs-boot"},
             {"Tex", "tex", "cls", "latex", "tex", "sty", "dtx", "ltx", "bbl"},
             {"Clojure", "clojure", "clj", "cljs"},
-            {"Dos Batch","dos", "bat", "sys"},
+            {"Dos Batch", "dos", "bat", "sys"},
             {"Erlang", "erlang", "erl", "hrl", "yaws"},
             {"R", "r", "r"},
             {"ActionScript", "actionscript", "as"},
@@ -66,12 +66,12 @@ public class CodeUtils {
             {"RIB", "rib"},
     };
 
-    private static Map<String, String> mFilenameExtensionMap  =
+    private static Map<String, String> mFilenameExtensionMap =
             new HashMap<String, String>();
     private static List<String> mSupportLanguageList =
             new ArrayList<String>();
 
-    private static Map<String, String> mDisplayTagMap  =
+    private static Map<String, String> mDisplayTagMap =
             new HashMap<String, String>();
 
     static {
@@ -103,5 +103,12 @@ public class CodeUtils {
     public static String getLanguageTag(String language) {
         return mDisplayTagMap.get(language);
     }
+
+    public static String wrapUrlScript(String script) {
+        return String.format(URL_SCRIPT_WRAPPER, script);
+    }
+
+    public final static String URL_SCRIPT_WRAPPER = "javascript:(function(){%s;})()";
+
 
 }

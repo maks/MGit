@@ -3,10 +3,12 @@ package me.sheimi.sgit.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.CodeUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 
 public class CommitDiffActivity extends SherlockFragmentActivity {
@@ -31,6 +34,7 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
     private static final String JS_INF = "CodeLoader";
     private WebView mDiffContent;
     private RepoUtils mRepoUtils;
+    private ProgressBar mLoading;
     private String mLocalRepo;
     private String mOldCommit;
     private String mNewCommit;
@@ -42,6 +46,7 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_view_file);
         setupActionBar();
         mDiffContent = (WebView) findViewById(R.id.fileContent);
+        mLoading = (ProgressBar) findViewById(R.id.loading);
         mRepoUtils = RepoUtils.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
@@ -132,6 +137,27 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
         }
 
         @JavascriptInterface
+        public String getChangeType(int index) {
+            DiffEntry diff = mDiffEntries.get(index);
+            DiffEntry.ChangeType ct = diff.getChangeType();
+            return ct.toString();
+        }
+
+        @JavascriptInterface
+        public String getOldPath(int index) {
+            DiffEntry diff = mDiffEntries.get(index);
+            String op = diff.getOldPath();
+            return op;
+        }
+
+        @JavascriptInterface
+        public String getNewPath(int index) {
+            DiffEntry diff = mDiffEntries.get(index);
+            String np = diff.getNewPath();
+            return np;
+        }
+
+        @JavascriptInterface
         public void getDiffEntries() {
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -145,7 +171,8 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mDiffContent.loadUrl(wrapUrlScript("notifyEntriesReady();"));
+                            mLoading.setVisibility(View.GONE);
+                            mDiffContent.loadUrl(CodeUtils.wrapUrlScript("notifyEntriesReady();"));
                         }
                     });
                 }
@@ -160,18 +187,12 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
 
     }
 
-    private static String wrapUrlScript(String script) {
-        return String.format(URL_SCRIPT_WRAPPER, script);
-    }
-
-    private final static String URL_SCRIPT_WRAPPER = "javascript:(function(){%s;})()";
-
     private static final String HTML_TMPL = "<!doctype html>"
             + "<head>"
             + " <script src=\"js/jquery.js\"></script>"
             + " <script src=\"js/highlight.pack.js\"></script>"
             + " <script src=\"js/local_commits_diff.js\"></script>"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/tne.css\" />"
+            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/rainbow.css\" />"
             + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local_commits_diff.css\" />"
             + "</head><body></body>";
 

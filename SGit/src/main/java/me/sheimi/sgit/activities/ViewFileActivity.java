@@ -3,10 +3,12 @@ package me.sheimi.sgit.activities;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -29,9 +31,8 @@ public class ViewFileActivity extends SherlockFragmentActivity {
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
     private static final String JS_INF = "CodeLoader";
-    private String mCode;
-    private int mCodeLines;
-    private String mCodeType;
+    private ProgressBar mLoading;
+    private File mFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,30 +40,13 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_view_file);
         setupActionBar();
         mFileContent = (WebView) findViewById(R.id.fileContent);
+        mLoading = (ProgressBar) findViewById(R.id.loading);
 
         Bundle extras = getIntent().getExtras();
         String fileName = extras.getString(TAG_FILE_NAME);
-        File file = new File(fileName);
-        setTitle(getString(R.string.title_activity_view_file) + file.getName());
-        mCodeType = CodeUtils.guessCodeType(file.getName());
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            StringBuffer sb = new StringBuffer();
-            String line = br.readLine();
-            mCodeLines = 0;
-            while (null != line) {
-                mCodeLines++;
-                sb.append(line);
-                sb.append('\n');
-                line = br.readLine();
-            }
-            mCode = sb.toString();
-            loadFileContent();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mFile = new File(fileName);
+        setTitle(mFile.getName());
+        loadFileContent();
     }
 
     private void loadFileContent() {
@@ -132,12 +116,15 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         return false;
     }
 
-    public void setLanguage(String language) {
-        mCodeType = language;
-        loadFileContent();
+    public void setLanguage(String lang) {
+        String js = String.format("setLanguage('%s')", lang);
+        mFileContent.loadUrl(CodeUtils.wrapUrlScript(js));
     }
 
     private class CodeLoader {
+
+        private String mCode;
+        private int mCodeLines;
 
         @JavascriptInterface
         public String getCode() {
@@ -150,8 +137,42 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         }
 
         @JavascriptInterface
-        public String getCodeType() {
-            return mCodeType;
+        public String getLanguage() {
+            return CodeUtils.guessCodeType(mFile.getName());
+        }
+
+        @JavascriptInterface()
+        public void loadCode() {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(mFile));
+                        StringBuffer sb = new StringBuffer();
+                        String line = br.readLine();
+                        mCodeLines = 0;
+                        while (null != line) {
+                            mCodeLines++;
+                            sb.append(line);
+                            sb.append('\n');
+                            line = br.readLine();
+                        }
+                        mCode = sb.toString();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLoading.setVisibility(View.INVISIBLE);
+                            mFileContent.loadUrl(CodeUtils.wrapUrlScript("notifyFileLoaded();"));
+                        }
+                    });
+                }
+            });
+            thread.start();
         }
 
     }
@@ -161,7 +182,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
             + " <script src=\"js/jquery.js\"></script>"
             + " <script src=\"js/highlight.pack.js\"></script>"
             + " <script src=\"js/local_viewfile.js\"></script>"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/tne.css\" />"
+            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/rainbow.css\" />"
             + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local_viewfile.css\" />"
             + "</head><body><table>"
             + "<tbody><tr><td class=\"line_number_td\">"

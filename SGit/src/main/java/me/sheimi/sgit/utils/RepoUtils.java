@@ -45,7 +45,7 @@ import me.sheimi.sgit.utils.ssh.SgitTransportCallback;
  */
 public class RepoUtils {
 
-    public static final String TEST_REPO = "git@github.com:sheimi/blog.sheimi.me.git";
+    public static final String TEST_REPO = "git@git.sheimi.me:sheimi/sgit-android.git";
     public static final String TEST_LOCAL = "test";
     public static final String TEST_USERNAME = ""; // "sheimi.zhang@gmail.com";
     public static final String TEST_PASSWORD = ""; // "ZhangRizhen0923";

@@ -34,10 +34,6 @@ public class AdUtils {
     private AdUtils(Activity activity) {
         mActivity = activity;
         mViewUtils = ViewUtils.getInstance(activity);
-        if (CommonUtils.isDebug(activity)) {
-            mHelper.enableDebugLogging(true);
-        }
-
     }
 
     public static AdUtils getInstance(Activity activity) {
@@ -50,6 +46,9 @@ public class AdUtils {
     public void setupIabHelper(final AdView adView) {
         Log.d(getClass().getName(), "init Helper");
         mHelper = new IabHelper(mActivity, Constants.BASE64_PUBLIC_KEY);
+        if (CommonUtils.isDebug(mActivity)) {
+            mHelper.enableDebugLogging(true);
+        }
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
                 if (!result.isSuccess()) {
@@ -117,11 +116,9 @@ public class AdUtils {
 
 
     public void disposeHelper() {
-        Log.d(getClass().getName(), "distory helper");
         if (mHelper != null) {
             mHelper.dispose();
             mHelper = null;
-            Log.d(getClass().getName(), "distory helper");
         }
     }
 

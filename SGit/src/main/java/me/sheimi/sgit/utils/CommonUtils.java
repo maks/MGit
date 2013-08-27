@@ -46,6 +46,6 @@ public class CommonUtils {
     }
 
     public static boolean isDebug(Activity activity) {
-        return false;
+        return true;
     }
 }

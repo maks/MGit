@@ -2,12 +2,33 @@ body {
   margin: 0;
 }
 pre {
-  padding-top: 10px;
-  padding-bottom: 10px;
   margin: 0;
 }
 pre code {
-	padding: 0;
+	padding: 5px;
 	line-height: 15px;
 	overflow: scroll;
+    padding: 5px;
+}
+.path-block {
+	overflow: hidden;
+}
+.change-type {
+    float: right;
+    color: #999;
+    text-weight: bold;
+}
+.clear {
+    clear: both;
+}
+.info-block {
+    background: #DDD;
+    padding: 5px;
+
+}
+.diff-block {
+    margin: 5px;
+    border-radius: 2px;
+    border: 1px solid #999;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
 }
