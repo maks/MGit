@@ -49,7 +49,7 @@ public class RepoUtils {
     public static final String TEST_LOCAL = "test";
     public static final String TEST_USERNAME = ""; // "sheimi.zhang@gmail.com";
     public static final String TEST_PASSWORD = ""; // "ZhangRizhen0923";
-    public static final String GIT_DIR = "/.git";
+    public static final String DOT_GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
     public static final int COMMIT_TYPE_TAG = 1;
@@ -181,7 +181,7 @@ public class RepoUtils {
         try {
             FileRepositoryBuilder builder = new FileRepositoryBuilder();
             File repoFile = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
-                    localPath + GIT_DIR);
+                    localPath + "/" + DOT_GIT_DIR);
             Repository repository = builder.setGitDir(repoFile)
                     .readEnvironment()
                     .findGitDir().build();
@@ -381,7 +381,7 @@ public class RepoUtils {
         } catch (AmbiguousObjectException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_diff_failed);
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_diff_failed);
         }

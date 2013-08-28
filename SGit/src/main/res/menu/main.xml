@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_content_new"
             android:title="@string/action_clone"
             android:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/action_import_repo"
+            android:title="@string/action_import_repo"
+            android:showAsAction="never"/>
 
     <item
             android:id="@+id/action_add_private_key"
