@@ -1,16 +1,9 @@
 package me.sheimi.sgit.activities.explorer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -19,11 +12,10 @@ import java.io.File;
 import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.dialogs.DummyDialogListener;
+import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
-import me.sheimi.sgit.utils.ViewUtils;
 
 public class PrivateKeyManageActivity extends FileExplorerActivity {
 
@@ -57,7 +49,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
                                            long id) {
                 File file = mFilesListAdapter.getItem(position);
-                RenameKeyDialog rkd = new RenameKeyDialog(file);
+                RenameKeyDialog rkd = new RenameKeyDialog(file.getAbsolutePath());
                 rkd.show(getSupportFragmentManager(), "rename-dialog");
                 return true;
             }
@@ -100,84 +92,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     }
 
-    private class RenameKeyDialog extends DialogFragment implements View.OnClickListener,
-            DialogInterface.OnClickListener {
-
-        private File mFile;
-        private EditText mNewFilename;
-        private ViewUtils mViewUtils;
-
-        public RenameKeyDialog(File file) {
-            mFile = file;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            super.onCreateDialog(savedInstanceState);
-            mViewUtils = ViewUtils.getInstance(getActivity());
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-            builder.setTitle(getString(R.string.dialog_rename_key_title));
-            View view = PrivateKeyManageActivity.this.getLayoutInflater().inflate(R.layout
-                    .dialog_rename_key, null);
-
-            builder.setView(view);
-            mNewFilename = (EditText) view.findViewById(R.id.newFilename);
-            mNewFilename.setText(mFile.getName());
-
-            // set button listener
-            builder.setNegativeButton(R.string.label_cancel, new DummyDialogListener());
-            builder.setNeutralButton(R.string.label_delete, this);
-            builder.setPositiveButton(R.string.label_rename, new DummyDialogListener());
-
-            return builder.create();
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            AlertDialog dialog = (AlertDialog) getDialog();
-            if (dialog == null)
-                return;
-            Button positiveButton = (Button) dialog.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            String newFilename = mNewFilename.getText().toString().trim();
-            if (newFilename.equals("")) {
-                mViewUtils.showToastMessage(R.string.alert_new_filename_required);
-                mNewFilename.setError(getString(R.string.alert_new_filename_required));
-                return;
-            }
-
-            if (newFilename.contains("/")) {
-                mViewUtils.showToastMessage(R.string.alert_filename_format);
-                mNewFilename.setError(getString(R.string.alert_filename_format));
-                return;
-            }
-
-            File file = new File(getRootFolder(), newFilename);
-            if (file.exists()) {
-                mViewUtils.showToastMessage(R.string.alert_file_exists);
-                mNewFilename.setError(getString(R.string.alert_file_exists));
-                return;
-            }
-            mFile.renameTo(file);
-            refreshList();
-            dismiss();
-        }
-
-        @Override
-        public void onClick(DialogInterface dialogInterface, int i) {
-            FsUtils.getInstance(PrivateKeyManageActivity.this).deleteFile(mFile);
-            refreshList();
-        }
-
-    }
-
-    private void refreshList() {
+    public void refreshList() {
         setCurrentDir(getRootFolder());
         RepoUtils.getInstance(this).refreshSgitTransportCallback();
     }

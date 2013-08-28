@@ -29,14 +29,12 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
 
     private File mFile;
     private String mFromPath;
-    private String mToPath;
     private ViewUtils mViewUtils;
     private RepoUtils mRepoUtils;
     private FsUtils mFsUtils;
     private Activity mActivity;
     private EditText mLocalPath;
     private static final String FROM_PATH = "from path";
-    private static final String TO_PATH = "to path";
 
     public ImportLocalRepoDialog() {}
 
@@ -56,10 +54,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
             if (fromPath != null) {
                 mFromPath = fromPath;
             }
-            String toPath = savedInstanceState.getString(TO_PATH);
-            if (toPath != null) {
-                mToPath = toPath;
-            }
         }
         mFile = new File(mFromPath);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -69,9 +63,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
 
         builder.setView(view);
         mLocalPath = (EditText) view.findViewById(R.id.localPath);
-        if (mToPath != null) {
-            mLocalPath.setText(mToPath);
-        }
 
         // set button listener
         builder.setNegativeButton(R.string.label_cancel, new DummyDialogListener());
@@ -84,7 +75,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(FROM_PATH, mFromPath);
-        outState.putString(TO_PATH, mLocalPath.getText().toString());
     }
 
     @Override
