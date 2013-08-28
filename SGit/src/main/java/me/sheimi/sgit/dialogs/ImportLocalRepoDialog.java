@@ -28,16 +28,20 @@ import me.sheimi.sgit.utils.ViewUtils;
 public class ImportLocalRepoDialog extends DialogFragment implements View.OnClickListener {
 
     private File mFile;
-    private EditText mLocalPath;
+    private String mFromPath;
+    private String mToPath;
     private ViewUtils mViewUtils;
     private RepoUtils mRepoUtils;
     private FsUtils mFsUtils;
     private Activity mActivity;
+    private EditText mLocalPath;
+    private static final String FROM_PATH = "from path";
+    private static final String TO_PATH = "to path";
 
     public ImportLocalRepoDialog() {}
 
     public ImportLocalRepoDialog(String fromPath) {
-        mFile = new File(fromPath);
+        mFromPath = fromPath;
     }
 
     @Override
@@ -47,6 +51,17 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
         mViewUtils = ViewUtils.getInstance(getActivity());
         mRepoUtils = RepoUtils.getInstance(getActivity());
         mFsUtils = FsUtils.getInstance(getActivity());
+        if (savedInstanceState != null) {
+            String fromPath = savedInstanceState.getString(FROM_PATH);
+            if (fromPath != null) {
+                mFromPath = fromPath;
+            }
+            String toPath = savedInstanceState.getString(TO_PATH);
+            if (toPath != null) {
+                mToPath = toPath;
+            }
+        }
+        mFile = new File(mFromPath);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(getString(R.string.dialog_set_local_repo_dialog));
@@ -54,12 +69,22 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
 
         builder.setView(view);
         mLocalPath = (EditText) view.findViewById(R.id.localPath);
+        if (mToPath != null) {
+            mLocalPath.setText(mToPath);
+        }
 
         // set button listener
         builder.setNegativeButton(R.string.label_cancel, new DummyDialogListener());
         builder.setPositiveButton(R.string.label_rename, new DummyDialogListener());
 
         return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(FROM_PATH, mFromPath);
+        outState.putString(TO_PATH, mLocalPath.getText().toString());
     }
 
     @Override
