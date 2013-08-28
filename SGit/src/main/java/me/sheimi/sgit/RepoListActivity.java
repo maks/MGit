@@ -1,5 +1,6 @@
 package me.sheimi.sgit;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,13 +17,16 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
 
-import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
+import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
+import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
+import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.Constants;
@@ -33,6 +37,9 @@ public class RepoListActivity extends SherlockFragmentActivity {
     private RepoListAdapter mRepoListAdapter;
     private AdView mAdView;
     private AdUtils mAdUtils;
+
+    private static final int REQUEST_IMPORT_REPO = 0;
+    private Intent mImportRepoIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +108,17 @@ public class RepoListActivity extends SherlockFragmentActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_add_private_key:
-                intent = new Intent(this,
-                        PrivateKeyManageActivity.class);
+                intent = new Intent(this, PrivateKeyManageActivity.class);
                 ActivityUtils.startActivity(this, intent);
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                return true;
+            case R.id.action_import_repo:
+                intent = new Intent(this, ImportRepositoryActivity.class);
+                startActivityForResult(intent, REQUEST_IMPORT_REPO);
+                ActivityUtils.forwardTransition(this);
                 return true;
             case R.id.action_feedback:
                 Intent feedback = new Intent(Intent.ACTION_SEND);
@@ -139,6 +150,12 @@ public class RepoListActivity extends SherlockFragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        if (mImportRepoIntent != null) {
+            String path = mImportRepoIntent.getExtras().getString(ExploreFileActivity.RESULT_PATH);
+            ImportLocalRepoDialog rld = new ImportLocalRepoDialog(path);
+            rld.show(getSupportFragmentManager(), "import-local-dialog");
+            mImportRepoIntent = null;
+        }
     }
 
     @Override
@@ -153,12 +170,15 @@ public class RepoListActivity extends SherlockFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(getClass().getName(), "onActivityResult(" + requestCode + "," + resultCode + "," +
-                "" + data);
-        if (!mAdUtils.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-        } else {
+        if (mAdUtils.handleActivityResult(requestCode, resultCode, data)) {
             Log.d(getClass().getName(), "onActivityResult handled by IABUtil.");
+        }
+        if (resultCode != Activity.RESULT_OK)
+            return;
+        switch (requestCode) {
+            case REQUEST_IMPORT_REPO:
+                mImportRepoIntent = data;
+                break;
         }
     }
 

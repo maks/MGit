@@ -122,9 +122,13 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
         if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL)) {
             holder.commitMsgContainer.setVisibility(View.GONE);
             holder.progressContainer.setVisibility(View.VISIBLE);
-            int progress = mCloningProgress.get(repo.getID(), 0);
-            String text = String.format("%s  (%d%%)", repo.getRepoStatus(), progress);
-            holder.progressMsg.setText(text);
+            int progress = mCloningProgress.get(repo.getID(), -1);
+            if (progress != -1) {
+                holder.progressMsg.setText(String.format("%s  (%d%%)", repo.getRepoStatus(),
+                        progress));
+            } else {
+                holder.progressMsg.setText(String.format("%s", repo.getRepoStatus()));
+            }
         } else if (repo.getLastCommitter() != null) {
             holder.commitMsgContainer.setVisibility(View.VISIBLE);
             holder.progressContainer.setVisibility(View.GONE);

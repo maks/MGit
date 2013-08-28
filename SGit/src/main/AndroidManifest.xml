@@ -52,6 +52,14 @@
                     android:value=".activities.RepoDetailActivity"/>
         </activity>
         <activity
+                android:name=".activities.explorer.ImportRepositoryActivity"
+                android:label="@string/title_activity_import_repository"
+                android:parentActivityName=".RepoListActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".RepoListActivity"/>
+        </activity>
+        <activity
                 android:name=".activities.explorer.PrivateKeyManageActivity"
                 android:label="@string/title_activity_private_key_manage"
                 android:parentActivityName=".RepoListActivity">
