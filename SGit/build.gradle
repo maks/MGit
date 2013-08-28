@@ -15,6 +15,7 @@ repositories {
 dependencies {
     compile files('libs/GoogleAdMobAdsSdk-6.4.1.jar')
     compile files('libs/umeng_sdk.jar')
+    compile 'commons-io:commons-io:2.4'
     compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
     compile 'com.android.support:support-v4:13.0.+'
     compile 'org.eclipse.jgit:org.eclipse.jgit:3.0.0.201306101825-r'

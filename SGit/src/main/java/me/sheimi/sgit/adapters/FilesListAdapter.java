@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -23,12 +23,13 @@ public class FilesListAdapter extends ArrayAdapter<File> {
 
     private File mDir;
     private ViewUtils mViewUtils;
+    private FileFilter mFileFilter;
 
-    public FilesListAdapter(Context context) {
+    public FilesListAdapter(Context context, FileFilter fileFilter) {
         super(context, 0);
         mViewUtils = ViewUtils.getInstance(context);
+        mFileFilter = fileFilter;
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -60,15 +61,12 @@ public class FilesListAdapter extends ArrayAdapter<File> {
     public void setDir(File dir) {
         mDir = dir;
         clear();
-        File [] files = dir.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String s) {
-                if (s.equals(".git")) {
-                    return false;
-                }
-                return true;
-            }
-        });
+        File[] files = null;
+        if (mFileFilter == null) {
+            files = dir.listFiles();
+        } else {
+            files = dir.listFiles(mFileFilter);
+        }
         Arrays.sort(files, new Comparator<File>() {
             @Override
             public int compare(File file1, File file2) {

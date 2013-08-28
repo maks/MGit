@@ -14,6 +14,7 @@ import android.widget.ListView;
 import org.eclipse.jgit.api.Git;
 
 import java.io.File;
+import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -90,7 +91,14 @@ public class FilesFragment extends BaseFragment {
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
         mFilesList = (ListView) v.findViewById(R.id.filesList);
 
-        mFilesListAdapter = new FilesListAdapter(getActivity());
+        mFilesListAdapter = new FilesListAdapter(getActivity(), new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+                String name = file.getName();
+                if (name.equals(".git")) return false;
+                return true;
+            }
+        });
         mFilesList.setAdapter(mFilesListAdapter);
 
 

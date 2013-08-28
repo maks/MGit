@@ -16,6 +16,7 @@ public final class RepoContract {
             "AUTOINCREMENT ";
     private static final String COMMA_SEP = ",";
     public static final String REPO_STATUS_WAITING_CLONE = "cloning ... ";
+    public static final String REPO_STATUS_IMPORTING = "importing ... ";
     public static final String REPO_STATUS_NULL = "";
 
     public RepoContract() {}
