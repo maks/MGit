@@ -113,7 +113,9 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
                     public void run() {
                         Git git = mRepoUtils.getGit(localPath);
                         mRepoUtils.updateLatestCommitInfo(git, id);
+                        String remote = mRepoUtils.getRemoteOriginURL(git);
                         ContentValues values = new ContentValues();
+                        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remote);
                         values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                                 RepoContract.REPO_STATUS_NULL);
                         RepoDbManager.getInstance(mActivity).updateRepo(id, values);
