@@ -26,6 +26,7 @@ import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
+import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.Constants;
@@ -38,6 +39,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
     private AdUtils mAdUtils;
 
     private static final int REQUEST_IMPORT_REPO = 0;
+    private Intent mImportRepoIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +150,12 @@ public class RepoListActivity extends SherlockFragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        if (mImportRepoIntent != null) {
+            String path = mImportRepoIntent.getExtras().getString(ExploreFileActivity.RESULT_PATH);
+            ImportLocalRepoDialog rld = new ImportLocalRepoDialog(path);
+            rld.show(getSupportFragmentManager(), "import-local-dialog");
+            mImportRepoIntent = null;
+        }
     }
 
     @Override
@@ -169,7 +177,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
             return;
         switch (requestCode) {
             case REQUEST_IMPORT_REPO:
-                String path = data.getExtras().getString(ExploreFileActivity.RESULT_PATH);
+                mImportRepoIntent = data;
                 break;
         }
     }
