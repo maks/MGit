@@ -1,4 +1,4 @@
-package me.sheimi.sgit.activities;
+package me.sheimi.sgit.activities.explorer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,65 +7,52 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.ads.AdView;
-import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
-public class PrivateKeyManageActivity extends SherlockFragmentActivity {
-
-    private File mPrivateKeyFolder;
-    private FsUtils mFsUtils;
-    private RepoUtils mRepoUtils;
-    private ListView mPrivateKeyList;
-    private FilesListAdapter mFilesListAdapter;
-    private ViewUtils mViewUtils;
-    private AdUtils mAdUtils;
-    private AdView mAdView;
+public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     private static final int REQUSET_ADD_KEY = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mFsUtils = FsUtils.getInstance(this);
-        mViewUtils = ViewUtils.getInstance(this);
-        mRepoUtils = RepoUtils.getInstance(this);
-        mPrivateKeyList = (ListView) findViewById(R.id.fileList);
-        mFilesListAdapter = new FilesListAdapter(this);
-        mPrivateKeyList.setAdapter(mFilesListAdapter);
-        mPrivateKeyFolder = mFsUtils.getDir("ssh");
-        mFilesListAdapter.setDir(mPrivateKeyFolder);
+    protected File getRootFolder() {
+        return FsUtils.getInstance(this).getDir("ssh");
+    }
 
-        mPrivateKeyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    protected FileFilter getExplorerFileFilter() {
+        return null;
+    }
+
+    @Override
+    protected AdapterView.OnItemClickListener getOnListItemClickListener() {
+        return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int positon, long id) {
                 File file = mFilesListAdapter.getItem(positon);
-                mFsUtils.openFile(file, "text/plain");
+                FsUtils.getInstance(PrivateKeyManageActivity.this).openFile(file, "text/plain");
             }
-        });
-        mPrivateKeyList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        };
+    }
+
+    @Override
+    protected AdapterView.OnItemLongClickListener getOnListItemLongClickListener() {
+        return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
                                            long id) {
@@ -74,10 +61,7 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
                 rkd.show(getSupportFragmentManager(), "rename-dialog");
                 return true;
             }
-        });
-        mAdUtils = AdUtils.getInstance(this);
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdUtils.loadAds(mAdView);
+        };
     }
 
     @Override
@@ -90,9 +74,6 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                ActivityUtils.finishActivity(this);
-                return true;
             case R.id.action_new:
                 Intent intent = new Intent(this, ExploreFileActivity.class);
                 startActivityForResult(intent, REQUSET_ADD_KEY);
@@ -111,33 +92,12 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
             case REQUSET_ADD_KEY:
                 String path = data.getExtras().getString(ExploreFileActivity.RESULT_PATH);
                 File keyFile = new File(path);
-                File newKey = new File(mPrivateKeyFolder, keyFile.getName());
-                mFsUtils.copyFile(keyFile, newKey);
+                File newKey = new File(getRootFolder(), keyFile.getName());
+                FsUtils.getInstance(this).copyFile(keyFile, newKey);
                 refreshList();
                 break;
         }
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ActivityUtils.finishActivity(this);
-            return true;
-        }
-        return false;
     }
 
     private class RenameKeyDialog extends DialogFragment implements View.OnClickListener,
@@ -145,6 +105,7 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
 
         private File mFile;
         private EditText mNewFilename;
+        private ViewUtils mViewUtils;
 
         public RenameKeyDialog(File file) {
             mFile = file;
@@ -153,6 +114,7 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             super.onCreateDialog(savedInstanceState);
+            mViewUtils = ViewUtils.getInstance(getActivity());
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
             builder.setTitle(getString(R.string.dialog_rename_key_title));
@@ -196,7 +158,7 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
                 return;
             }
 
-            File file = new File(mPrivateKeyFolder, newFilename);
+            File file = new File(getRootFolder(), newFilename);
             if (file.exists()) {
                 mViewUtils.showToastMessage(R.string.alert_file_exists);
                 mNewFilename.setError(getString(R.string.alert_file_exists));
@@ -209,15 +171,15 @@ public class PrivateKeyManageActivity extends SherlockFragmentActivity {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            mFsUtils.deleteFile(mFile);
+            FsUtils.getInstance(PrivateKeyManageActivity.this).deleteFile(mFile);
             refreshList();
         }
 
     }
 
     private void refreshList() {
-        mFilesListAdapter.setDir(mPrivateKeyFolder);
-        mRepoUtils.refreshSgitTransportCallback();
+        setCurrentDir(getRootFolder());
+        RepoUtils.getInstance(this).refreshSgitTransportCallback();
     }
 
 }

@@ -52,7 +52,7 @@
                     android:value=".activities.RepoDetailActivity"/>
         </activity>
         <activity
-                android:name=".activities.PrivateKeyManageActivity"
+                android:name=".activities.explorer.PrivateKeyManageActivity"
                 android:label="@string/title_activity_private_key_manage"
                 android:parentActivityName=".RepoListActivity">
             <meta-data
@@ -60,12 +60,12 @@
                     android:value=".RepoListActivity"/>
         </activity>
         <activity
-                android:name=".activities.ExploreFileActivity"
+                android:name=".activities.explorer.ExploreFileActivity"
                 android:label="@string/title_activity_explore_file"
-                android:parentActivityName=".activities.ExploreFileActivity">
+                android:parentActivityName=".activities.explorer.PrivateKeyManageActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.ExploreFileActivity"/>
+                    android:value=".activities.explorer.PrivateKeyManageActivity"/>
         </activity>
         <activity
                 android:name="com.google.ads.AdActivity"

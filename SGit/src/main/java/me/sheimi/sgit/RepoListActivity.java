@@ -16,7 +16,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
 
-import me.sheimi.sgit.activities.PrivateKeyManageActivity;
+import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoContract;
