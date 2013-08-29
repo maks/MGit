@@ -23,5 +23,6 @@
     </string>
     <string name="alert_have_paid">Ads has been disabled.</string>
     <string name="alert_in_app_billing_not_inited">In-app billing hasn\'t been initialized</string>
+    <string name="alert_please_wait_previous_op">Previous operation is still running</string>
 
 </resources>
