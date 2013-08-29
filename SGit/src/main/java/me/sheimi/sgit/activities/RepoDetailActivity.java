@@ -34,6 +34,7 @@ import me.sheimi.sgit.fragments.FilesFragment;
 import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.RepoUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 public class RepoDetailActivity extends SherlockFragmentActivity implements ActionBar.TabListener{
 
@@ -53,11 +54,13 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
 
     private RepoDbManager mDb;
     private RepoUtils mRepoUtils;
+    private ViewUtils mViewUtils;
     private long mRepoID;
     private String mLocalPath;
     private String mUsername;
     private String mPassword;
     private Git mGit;
+    private Thread mRunningThread;
 
     private View mPullProgressContainer;
     private ProgressBar mPullProgressBar;
@@ -73,6 +76,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         setupRepoDb();
         createFragments();
         setupPullProgressView();
+        mViewUtils = ViewUtils.getInstance(this);
     }
 
     private void setupPullProgressView() {
@@ -135,7 +139,11 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     }
 
     public void resetCommits(final String commitName) {
-        Thread thread = new Thread(new Runnable() {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 mRepoUtils.checkout(mGit, commitName);
@@ -145,11 +153,12 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                     public void run() {
                         mFilesFragment.reset(commitName);
                         mCommitsFragment.reset(commitName);
+                        mRunningThread = null;
                     }
                 });
             }
         });
-        thread.start();
+        mRunningThread.start();
     }
 
     @Override
@@ -182,6 +191,10 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     }
 
     private void pullRepo() {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
         Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
                 R.anim.fade_in);
         mPullProgressContainer.setAnimation(anim);
@@ -189,7 +202,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mPullMsg.setText(R.string.pull_msg_init);
         mPullLeftHint.setText(R.string.pull_left_init);
         mPullRightHint.setText(R.string.pull_right_init);
-        Thread thread = new Thread(new Runnable() {
+        mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 mRepoUtils.pullSync(mGit, mUsername, mPassword, getProgressMonitor());
@@ -207,11 +220,12 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                         mPullProgressContainer.setAnimation(anim);
                         mPullProgressContainer.setVisibility(View.GONE);
                         reset();
+                        mRunningThread = null;
                     }
                 });
             }
         });
-        thread.start(); ;
+        mRunningThread.start(); ;
     }
 
     private void reset() {

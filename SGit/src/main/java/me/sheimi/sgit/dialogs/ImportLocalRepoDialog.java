@@ -66,7 +66,7 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
 
         // set button listener
         builder.setNegativeButton(R.string.label_cancel, new DummyDialogListener());
-        builder.setPositiveButton(R.string.label_rename, new DummyDialogListener());
+        builder.setPositiveButton(R.string.label_import, new DummyDialogListener());
 
         return builder.create();
     }
