@@ -18,10 +18,10 @@ Features
 * private keys management
 * manually choose code's language
 * git diff between commits
+* import copied repositories (that is, you can copy a repository from computer and import to SGit)
 
 To Do List
 ---------------
-* import copied repositories (that is, you can copy a repository from computer and import to SGit)
 * merge branches
 * push merged content
 * edit file
