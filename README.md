@@ -28,3 +28,8 @@ To Do List
 * commit and push changed file
 * commit graph
 * improve memory usage
+
+License
+-------
+
+[GPLv3](./LICENSE)

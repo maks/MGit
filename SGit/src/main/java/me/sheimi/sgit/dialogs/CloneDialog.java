@@ -139,7 +139,6 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
                     mRepoUtils.cloneSync(remoteUrl, localPath, username, password,
                             mActivity.getCloneMonitor(id));
                     Git git = mRepoUtils.getGit(localPath);
-                    mRepoUtils.checkoutAllGranches(git);
                     mRepoUtils.updateLatestCommitInfo(git, id);
                     ContentValues values = new ContentValues();
                     values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
