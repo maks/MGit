@@ -63,6 +63,7 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
 
         builder.setView(view);
         mLocalPath = (EditText) view.findViewById(R.id.localPath);
+        mLocalPath.setText(mFile.getName());
 
         // set button listener
         builder.setNegativeButton(R.string.label_cancel, new DummyDialogListener());

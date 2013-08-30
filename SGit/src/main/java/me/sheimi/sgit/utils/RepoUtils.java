@@ -33,8 +33,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
@@ -55,6 +57,7 @@ public class RepoUtils {
     public static final int COMMIT_TYPE_HEAD = 0;
     public static final int COMMIT_TYPE_TAG = 1;
     public static final int COMMIT_TYPE_TEMP = 2;
+    public static final int COMMIT_TYPE_REMOTE = 3;
 
     private static RepoUtils mInstance;
 
@@ -138,6 +141,10 @@ public class RepoUtils {
     }
 
     public void checkout(Git git, String name) {
+        if (COMMIT_TYPE_REMOTE == getCommitType(name)) {
+            checkoutFromRemote(git, name, getCommitName(name));
+            return;
+        }
         try {
             git.checkout().setName(name).call();
         } catch (GitAPIException e) {
@@ -152,27 +159,6 @@ public class RepoUtils {
             git.branchCreate().setUpstreamMode(CreateBranchCommand.SetupUpstreamMode
                     .SET_UPSTREAM).setStartPoint(remoteBranchName).setName(branchName)
                     .setForce(true).call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void checkoutAllGranches(Git git) {
-        try {
-            String oldBranchName = getBranchName(git);
-            List<Ref> refs = git.branchList().setListMode(ListBranchCommand
-                    .ListMode.REMOTE).call();
-            for (Ref ref : refs) {
-                // ref/remotes/[remote]/[branch]
-                String[] branchNameSplits = ref.getName().split("/");
-                String remoteBranchName = branchNameSplits[2] + "/" +
-                        branchNameSplits[3];
-                String branchName = branchNameSplits[3];
-                if (branchName.equals(oldBranchName))
-                    continue;
-                checkoutFromRemote(git, remoteBranchName, branchName);
-            }
-            checkout(git, oldBranchName);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
@@ -225,13 +211,23 @@ public class RepoUtils {
 
     public String[] getBranches(Git git) {
         try {
-            List<Ref> refs = git.branchList().call();
-            String[] branches = new String[refs.size()];
-            // convert refs/heads/[branch] -> heads/[branch]
-            for (int i = 0; i < branches.length; i++) {
-                branches[i] = refs.get(i).getName();
+            Set<String> branchSet = new HashSet<String>();
+            List<String> branchList = new ArrayList<String>();
+            List<Ref> localRefs = git.branchList().call();
+            for (Ref ref : localRefs) {
+                branchSet.add(ref.getName());
+                branchList.add(ref.getName());
             }
-            return branches;
+            List<Ref> remoteRefs = git.branchList().setListMode(ListBranchCommand.ListMode
+                    .REMOTE).call();
+            for (Ref ref : remoteRefs) {
+                String name = ref.getName();
+                String localName = convertRemoteName(name);
+                if (branchSet.contains(localName))
+                    continue;
+                branchList.add(name);
+            }
+            return branchList.toArray(new String[0]);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
@@ -253,45 +249,6 @@ public class RepoUtils {
         return null;
     }
 
-    public String getCommitName(String str) {
-        String[] splits = str.split("/");
-        if (splits.length != 3)
-            return null;
-        // ref/[heads/]/name
-        return splits[2];
-    }
-
-    public int getCommitType(String str) {
-        String[] splits = str.split("/");
-        if (splits.length != 3)
-            return COMMIT_TYPE_TEMP;
-        String type = splits[1];
-        if ("tags".equals(type))
-            return COMMIT_TYPE_TAG;
-        return COMMIT_TYPE_HEAD;
-    }
-
-    public void updateLatestCommitInfo(Git git, long id) {
-        RevCommit commit = getLatestCommit(git);
-        ContentValues values = new ContentValues();
-        if (commit != null) {
-            PersonIdent committer = commit.getCommitterIdent();
-            String email = committer.getEmailAddress();
-            String uname = committer.getName();
-            long date = committer.getWhen().getTime();
-            String msg = commit.getShortMessage();
-
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
-                    Long.toString(date));
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
-                    email);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
-        }
-        RepoDbManager.getInstance(mContext).updateRepo(id,
-                values);
-    }
-
     public String getBranchName(Git git) {
         try {
             return git.getRepository().getFullBranch();
@@ -301,25 +258,56 @@ public class RepoUtils {
         return null;
     }
 
-
-    public String getShortenCommitName(RevCommit commit) {
-        return getShortenCommitName(commit.getName());
-    }
-
-    public String getShortenCommitName(String name) {
-        if (name.length() <= 10)
-            return name;
-        return name.substring(0, 10);
-    }
-
     public String getCommitDisplayName(String raw) {
-        int type = getCommitType(raw);
+        String[] splits = raw.split("/");
+        int type = getCommitType(splits);
         switch (type) {
             case COMMIT_TYPE_TEMP:
-                return getShortenCommitName(raw);
+                if (raw.length() <= 10)
+                    return raw;
+                return raw.substring(0, 10);
             case COMMIT_TYPE_TAG:
             case COMMIT_TYPE_HEAD:
-                return getCommitName(raw);
+                return splits[2];
+            case COMMIT_TYPE_REMOTE:
+                return splits[1] + "/" + splits[2] + "/" + splits[3];
+        }
+        return null;
+    }
+
+    public int getCommitType(String[] splits) {
+        if (splits.length == 4)
+            return COMMIT_TYPE_REMOTE;
+        if (splits.length != 3)
+            return COMMIT_TYPE_TEMP;
+        String type = splits[1];
+        if ("tags".equals(type))
+            return COMMIT_TYPE_TAG;
+        return COMMIT_TYPE_HEAD;
+    }
+
+    public int getCommitType(String str) {
+        String[] splits = str.split("/");
+        return getCommitType(splits);
+    }
+
+    public String convertRemoteName(String remote) {
+        String[] splits = remote.split("/");
+        if (getCommitType(splits) != COMMIT_TYPE_REMOTE)
+            return null;
+        return String.format("refs/heads/%s", splits[3]);
+    }
+
+    public String getCommitName(String name) {
+        String[] splits = name.split("/");
+        int type = getCommitType(splits);
+        switch (type) {
+            case COMMIT_TYPE_TEMP:
+            case COMMIT_TYPE_TAG:
+            case COMMIT_TYPE_HEAD:
+                return getCommitDisplayName(name);
+            case COMMIT_TYPE_REMOTE:
+                return splits[3];
         }
         return null;
     }
@@ -349,6 +337,27 @@ public class RepoUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void updateLatestCommitInfo(Git git, long id) {
+        RevCommit commit = getLatestCommit(git);
+        ContentValues values = new ContentValues();
+        if (commit != null) {
+            PersonIdent committer = commit.getCommitterIdent();
+            String email = committer.getEmailAddress();
+            String uname = committer.getName();
+            long date = committer.getWhen().getTime();
+            String msg = commit.getShortMessage();
+
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
+                    Long.toString(date));
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
+                    email);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
+        }
+        RepoDbManager.getInstance(mContext).updateRepo(id,
+                values);
     }
 
     public void refreshSgitTransportCallback() {

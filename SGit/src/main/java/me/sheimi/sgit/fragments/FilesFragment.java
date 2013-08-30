@@ -166,6 +166,9 @@ public class FilesFragment extends BaseFragment {
     public void reset(String commitName) {
         int commitType = mRepoUtils.getCommitType(commitName);
         switch (commitType) {
+            case RepoUtils.COMMIT_TYPE_REMOTE:
+                // change the display name to local branch
+                commitName = mRepoUtils.convertRemoteName(commitName);
             case RepoUtils.COMMIT_TYPE_HEAD:
                 mCommitType.setVisibility(View.VISIBLE);
                 mCommitType.setImageResource(R.drawable.ic_branch_w);

@@ -74,7 +74,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         Date date = person.getWhen();
         String email = person.getEmailAddress();
 
-        holder.commitsTitle.setText(mRepoUtils.getShortenCommitName(commit));
+        holder.commitsTitle.setText(mRepoUtils.getCommitDisplayName(commit.getName()));
         holder.commitAuthor.setText(person.getName());
         holder.commitsMsg.setText(commit.getShortMessage());
         holder.commitTime.setText(COMMITTIME_FORMATTER.format(date));
