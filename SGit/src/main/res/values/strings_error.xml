@@ -6,12 +6,14 @@
     <string name="error_clone_failed">Clone Failed</string>
     <string name="error_pull_failed">Pull Failed</string>
     <string name="error_diff_failed">Diff Failed</string>
+    <string name="error_out_of_memory">Opps, Out of Memory</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
     <string name="alert_remoteurl_required">Remote URL Required</string>
     <string name="alert_localpath_required">Repository Name Required</string>
-    <string name="alert_localpath_format">Repository Name Error</string>
+    <string name="alert_localpath_format">Repository Name Format Error. Repo name can't
+        contain slash.</string>
     <string name="alert_localpath_repo_exists">Repository Exists</string>
     <string name="alert_new_filename_required">File Name Required</string>
     <string name="alert_file_exists">File Name Exists</string>

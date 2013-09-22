@@ -2,6 +2,7 @@ package me.sheimi.sgit.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
@@ -44,6 +45,11 @@ public class AdUtils {
     }
 
     public void setupIabHelper(final AdView adView) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            mPayStatus = NOT_AVAILABLE;
+            showAds(adView);
+            return;
+        }
         Log.d(getClass().getName(), "init Helper");
         mHelper = new IabHelper(mActivity, Constants.BASE64_PUBLIC_KEY);
         if (CommonUtils.isDebug(mActivity)) {
@@ -123,6 +129,8 @@ public class AdUtils {
     }
 
     public boolean handleActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mPayStatus == NOT_AVAILABLE || mPayStatus == INIT || mPayStatus == PAID)
+            return false;
         return mHelper.handleActivityResult(requestCode, resultCode, data);
     }
 
