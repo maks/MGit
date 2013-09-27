@@ -75,10 +75,6 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".activities.explorer.PrivateKeyManageActivity"/>
         </activity>
-        <activity
-                android:name="com.google.ads.AdActivity"
-                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-
 
         <meta-data
                 android:value="5216c81356240b897d00007c"

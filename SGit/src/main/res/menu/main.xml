@@ -25,10 +25,6 @@
             android:id="@+id/action_feedback"
             android:title="@string/action_feedback"
             android:showAsAction="never"/>
-    <item
-            android:id="@+id/action_pay"
-            android:title="@string/action_pay"
-            android:showAsAction="never" />
 
     <!--
     TODO settings will be added in next release
