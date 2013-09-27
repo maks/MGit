@@ -8,7 +8,6 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -17,7 +16,6 @@ import java.io.FileFilter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.AdUtils;
 
 public abstract class FileExplorerActivity extends SherlockFragmentActivity {
 
@@ -26,8 +24,6 @@ public abstract class FileExplorerActivity extends SherlockFragmentActivity {
     private File mRootFolder;
     private File mCurrentDir;
     private ListView mFileList;
-    private AdUtils mAdUtils;
-    private AdView mAdView;
     protected FilesListAdapter mFilesListAdapter;
 
     protected abstract File getRootFolder();
@@ -51,9 +47,6 @@ public abstract class FileExplorerActivity extends SherlockFragmentActivity {
         mFileList.setOnItemClickListener(getOnListItemClickListener());
         mFileList.setOnItemLongClickListener(getOnListItemLongClickListener());
 
-        mAdUtils = AdUtils.getInstance(this);
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdUtils.loadAds(mAdView);
     }
 
     @Override
