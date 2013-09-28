@@ -23,7 +23,7 @@ public class CodeUtils {
             {"CSS", "css", "css"},
             {"JSON", "json", "json"},
             {"JavaScript", "javascript", "js"},
-            {"CoffeeScript", "cooffeescript", "coffee"},
+            {"CoffeeScript", "coffeescript", "coffee"},
             {"Lua", "lua", "lua"},
             {"AppleScript", "applescript", "scpt", "AppleScript", "applescript"},
             {"Delphi", "delphi", "p", "pp", "pas"},
