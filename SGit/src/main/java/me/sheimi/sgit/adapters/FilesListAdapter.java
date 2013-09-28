@@ -67,6 +67,10 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         } else {
             files = dir.listFiles(mFileFilter);
         }
+        // this is to fix a bug
+        if (files == null) {
+            files = new File[0];
+        }
         Arrays.sort(files, new Comparator<File>() {
             @Override
             public int compare(File file1, File file2) {

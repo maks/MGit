@@ -118,6 +118,11 @@ public class RepoUtils {
             mFsUtils.deleteFile(localRepo);
             mViewUtils.showToastMessage(e.getMessage());
             throw e;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            mFsUtils.deleteFile(localRepo);
+            mViewUtils.showToastMessage(R.string.error_out_of_memory);
+            throw e;
         }
     }
 
@@ -351,10 +356,16 @@ public class RepoUtils {
 
             values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
                     Long.toString(date));
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
-                    email);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
+            if (msg != null) {
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
+            }
+            if (email != null) {
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
+                        email);
+            }
+            if (uname != null) {
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
+            }
         }
         RepoDbManager.getInstance(mContext).updateRepo(id,
                 values);
@@ -414,7 +425,7 @@ public class RepoUtils {
         }
         return null;
     }
-    
+
     public String getRemoteOriginURL(Git git) {
         StoredConfig config = git.getRepository().getConfig();
         String origin = config.getString("remote", "origin", "url");

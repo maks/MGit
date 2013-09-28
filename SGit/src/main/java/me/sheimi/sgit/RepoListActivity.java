@@ -3,7 +3,6 @@ package me.sheimi.sgit;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,7 +11,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import com.google.ads.AdView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -28,15 +26,12 @@ import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.AdUtils;
 import me.sheimi.sgit.utils.Constants;
 
 public class RepoListActivity extends SherlockFragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
-    private AdView mAdView;
-    private AdUtils mAdUtils;
 
     private static final int REQUEST_IMPORT_REPO = 0;
     private Intent mImportRepoIntent;
@@ -77,21 +72,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
             }
         });
 
-        setupMonetize();
-    }
-
-    private void setupMonetize() {
-        mAdUtils = AdUtils.getInstance(this);
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdUtils.setupIabHelper(mAdView);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mAdUtils.disposeHelper();
-        if (mAdView != null)
-            mAdView.destroy();
     }
 
     @Override
@@ -128,9 +108,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
                 startActivity(Intent.createChooser(feedback,
                         getString(R.string.label_send_feedback)));
                 ActivityUtils.forwardTransition(this);
-                return true;
-            case R.id.action_pay:
-                mAdUtils.payToDisableAds(mAdView);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -170,9 +147,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (mAdUtils.handleActivityResult(requestCode, resultCode, data)) {
-            Log.d(getClass().getName(), "onActivityResult handled by IABUtil.");
-        }
         if (resultCode != Activity.RESULT_OK)
             return;
         switch (requestCode) {

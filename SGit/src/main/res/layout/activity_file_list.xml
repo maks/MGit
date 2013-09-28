@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".PrivateKeyManageActivity">
@@ -8,15 +7,5 @@
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fileList"
-            android:layout_above="@+id/adView"/>
-    <com.google.ads.AdView
-            android:id="@id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            ads:adUnitId="@string/admob_id"
-            ads:adSize="SMART_BANNER"
-            ads:loadAdOnCreate="false">
-    </com.google.ads.AdView>
+            android:id="@+id/fileList"/>
 </RelativeLayout>

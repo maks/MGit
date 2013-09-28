@@ -15,8 +15,10 @@
     }
     if (lang) {
       highlighted = hljs.highlight(lang, rawCodes, true);
+      $('.codes code').html(highlighted.value);
+      $('.codes code').addClass(highlighted.language);
     } else {
-      highlighted = hljs.highlightAuto(rawCodes);
+      $('.codes code').html(rawCodes);
     }
     length = CodeLoader.getLineNumber();
     lineNumbersList = (function() {
@@ -29,9 +31,7 @@
       return _results;
     })();
     lineNumbers = lineNumbersList.join('\n');
-    $('.line_numbers').html(lineNumbers);
-    $('.codes code').html(highlighted.value);
-    return $('.codes code').addClass(highlighted.language);
+    return $('.line_numbers').html(lineNumbers);
   };
 
   window.notifyFileLoaded = function() {
