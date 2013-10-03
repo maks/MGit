@@ -17,6 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.Ref;
+
+import java.util.List;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -26,19 +29,19 @@ import me.sheimi.sgit.utils.ViewUtils;
 /**
  * Created by sheimi on 8/16/13.
  */
-public class ChooseCommitDialog extends DialogFragment {
+public class MergeDialog extends DialogFragment {
 
     private Git mGit;
     private RepoDetailActivity mActivity;
     private RepoUtils mRepoUtils;
     private final static String GIT_PATH = "git path";
-    private ViewUtils mViewUtils;
     private ListView mBranchTagList;
+    private Spinner mSpinner;
     private BranchTagListAdapter mAdapter;
 
-    public ChooseCommitDialog() {}
+    public MergeDialog() {}
 
-    public ChooseCommitDialog(Git git) {
+    public MergeDialog(Git git) {
         mGit = git;
     }
 
@@ -59,29 +62,36 @@ public class ChooseCommitDialog extends DialogFragment {
         }
 
         mActivity = (RepoDetailActivity) getActivity();
-        mViewUtils = ViewUtils.getInstance(mActivity);
         mRepoUtils = RepoUtils.getInstance(mActivity);
+        LayoutInflater inflater = mActivity.getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_merge, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
-        mBranchTagList = new ListView(mActivity);
+        mBranchTagList = (ListView) layout.findViewById(R.id.branchList);
+        mSpinner = (Spinner) layout.findViewById(R.id.ffSpinner);
         mAdapter = new BranchTagListAdapter
                 (mActivity);
         mBranchTagList.setAdapter(mAdapter);
-        builder.setView(mBranchTagList);
+        builder.setView(layout);
 
-        String[] branches = mRepoUtils.getBranches(mGit);
-        String[] tags = mRepoUtils.getTags(mGit);
-        mViewUtils.adapterAddAll(mAdapter, branches);
-        mViewUtils.adapterAddAll(mAdapter, tags);
+        List<Ref> branches = mRepoUtils.getLocalBranches(mGit);
+        String currentBranchDisplayName = mRepoUtils.getCommitDisplayName(mRepoUtils
+                .getBranchName(mGit));
+        for (Ref branch : branches) {
+            if (mRepoUtils.getCommitDisplayName(branch.getName()).equals(currentBranchDisplayName))
+                continue;
+            mAdapter.add(branch);
+        }
 
-        builder.setTitle(R.string.dialog_choose_branch_title);
+        builder.setTitle(R.string.dialog_merge_title);
         mBranchTagList.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,
                                     int position, long id) {
-                String commitName = mAdapter.getItem(position);
-                mActivity.resetCommits(commitName);
+                Ref commit = mAdapter.getItem(position);
+                String mFFString = mSpinner.getSelectedItem().toString();
+                mActivity.mergeBranch(mGit, commit, mFFString);
                 getDialog().cancel();
             }
         });
@@ -89,7 +99,7 @@ public class ChooseCommitDialog extends DialogFragment {
         return builder.create();
     }
 
-    private class BranchTagListAdapter extends ArrayAdapter<String> {
+    private class BranchTagListAdapter extends ArrayAdapter<Ref> {
 
         public BranchTagListAdapter(Context context) {
             super(context, 0);
@@ -111,7 +121,7 @@ public class ChooseCommitDialog extends DialogFragment {
             } else {
                 holder = (ListItemHolder) convertView.getTag();
             }
-            String commitName = getItem(position);
+            String commitName = getItem(position).getName();
             String displayName = mRepoUtils.getCommitDisplayName(commitName);
             int commitType = mRepoUtils.getCommitType(commitName);
             switch (commitType) {

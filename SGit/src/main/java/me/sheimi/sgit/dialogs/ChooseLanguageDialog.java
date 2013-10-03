@@ -25,8 +25,8 @@ public class ChooseLanguageDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        mRepoUtils = (RepoUtils) RepoUtils.getInstance(mActivity);
         mActivity = (ViewFileActivity) getActivity();
+        mRepoUtils = (RepoUtils) RepoUtils.getInstance(mActivity);
 
         final List<String> langs = CodeUtils.getLanguageList();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);

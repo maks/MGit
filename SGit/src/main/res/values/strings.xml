@@ -13,6 +13,8 @@
     <string name="action_import_repo">Import Repository</string>
     <string name="action_pull">Pull</string>
     <string name="action_delete">Delete</string>
+    <string name="action_merge">Merge</string>
+    <string name="action_push">Push</string>
     <string name="action_settings">Settings</string>
     <string name="action_manage_private_key">Private Keys</string>
     <string name="action_add_private_key">Add Key</string>
@@ -34,6 +36,8 @@
     <string name="label_rename">Rename</string>
     <string name="label_send_feedback">Send Feedback</string>
     <string name="label_import">Import</string>
+    <string name="label_push">Push</string>
+    <string name="label_push_all">Push All</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
@@ -55,6 +59,9 @@
     <string name="dialog_comfirm_import_repo_title">Import Repository</string>
     <string name="dialog_comfirm_import_repo_msg">Are you sure to import this repository?</string>
     <string name="dialog_set_local_repo_dialog">Set Local Path</string>
+    <string name="dialog_merge_title">Choose Branch To Merge</string>
+    <string name="dialog_push_repo_title">Push Repo</string>
+    <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -65,5 +72,11 @@
     <string name="title_activity_explore_file">Explore Files</string>
 
     <string name="feedback_subject">Feedback</string>
+
+    <string-array name="merge_ff_type">
+        <item>Fast Forward</item>
+        <item>Fast Forward Only</item>
+        <item>No Fast Forward</item>
+    </string-array>
 
 </resources>

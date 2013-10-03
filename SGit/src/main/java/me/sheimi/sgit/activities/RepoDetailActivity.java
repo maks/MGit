@@ -22,12 +22,15 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
+import me.sheimi.sgit.dialogs.MergeDialog;
+import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
@@ -186,8 +189,20 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
                 mCommitsFragment.enterDiffActionMode();
                 return true;
+            case R.id.action_merge:
+                MergeDialog md = new MergeDialog(mGit);
+                md.show(getSupportFragmentManager(), "merge-repo-dialog");
+                return true;
+            case R.id.action_push:
+                PushRepoDialog prd = new PushRepoDialog(mGit);
+                prd.show(getSupportFragmentManager(), "push-repo-dialog");
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void pushRepo(final boolean pushAll) {
+
     }
 
     private void pullRepo() {
@@ -313,6 +328,27 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
             return true;
         }
         return false;
+    }
+
+    public void mergeBranch(final Git git, final Ref commit, final String ffModeStr) {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.mergeBranch(git, commit, ffModeStr);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reset();
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
     }
 
     private ProgressMonitor getProgressMonitor() {

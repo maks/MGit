@@ -7,7 +7,9 @@ import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
+import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.PullCommand;
+import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -169,6 +171,47 @@ public class RepoUtils {
         }
     }
 
+    public void mergeBranch(Git git, Ref commit, String ffModeStr) {
+        String[] stringArray = mContext.getResources().getStringArray(R.array.merge_ff_type);
+        MergeCommand.FastForwardMode ffMode = MergeCommand.FastForwardMode.FF;
+        if (ffModeStr.equals(stringArray[1])) {
+            // FF Only
+            ffMode = MergeCommand.FastForwardMode.FF_ONLY;
+        } else if (ffModeStr.equals(stringArray[2])) {
+            // No FF
+            ffMode = MergeCommand.FastForwardMode.NO_FF;
+        }
+        try {
+            git.merge().include(commit).setFastForward(ffMode).call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
+    }
+
+    public void push(Git git, ProgressMonitor pm, boolean isPushAll) {
+        PushCommand pc = git.push().setPushTags();
+        if (isPushAll) {
+            pc.setPushAll();
+        }
+
+        try {
+            pc.call();
+        } catch (InvalidRemoteException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(R.string.error_invalid_remote);
+        } catch (TransportException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        } catch (JGitInternalException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
+    }
+
     public Repository getRepository(String localPath) {
         try {
             FileRepositoryBuilder builder = new FileRepositoryBuilder();
@@ -209,6 +252,16 @@ public class RepoUtils {
         try {
             return Git.open(repoFile);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Ref> getLocalBranches(Git git) {
+        try {
+            List<Ref> localRefs = git.branchList().call();
+            return localRefs;
+        } catch (GitAPIException e) {
             e.printStackTrace();
         }
         return null;
