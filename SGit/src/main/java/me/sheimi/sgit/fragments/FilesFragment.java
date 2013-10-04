@@ -4,6 +4,7 @@ package me.sheimi.sgit.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import org.eclipse.jgit.api.Git;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -211,6 +213,32 @@ public class FilesFragment extends BaseFragment {
     public void reset() {
         resetCurrentDir();
     }
+
+    public boolean newDir(String name) {
+        File file = new File(mCurrentDir, name);
+        if (file.exists()) {
+            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            return false;
+        }
+        return file.mkdir();
+    }
+
+    public boolean newFile(String name) {
+        File file = new File(mCurrentDir, name);
+        Log.d("name", name);
+        if (file.exists()) {
+            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            return false;
+        }
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+            return false;
+        }
+    }
+
 
     @Override
     public OnBackClickListener getOnBackClickListener() {

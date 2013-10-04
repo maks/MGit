@@ -209,9 +209,31 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                         new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        resetCommitChanges();
                     }
                 });
+                return true;
+            case R.id.action_new_dir:
+                mViewUtils.showEditTextDialog(R.string.dialog_create_dir_title,
+                        R.string.dialog_create_dir_hint, R.string.label_create,
+                        new ViewUtils.OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newDir(text);
+                                reset();
+                            }
+                        });
+                return true;
+            case R.id.action_new_file:
+                mViewUtils.showEditTextDialog(R.string.dialog_create_file_title,
+                        R.string.dialog_create_file_hint, R.string.label_create,
+                        new ViewUtils.OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newFile(text);
+                                reset();
+                            }
+                        });
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -422,7 +444,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread.start();
     }
 
-    private void resetCommit() {
+    private void resetCommitChanges() {
         if (mRunningThread != null) {
             mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
             return;

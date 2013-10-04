@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/general_padding">
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general_padding"
+            android:textSize="@dimen/general_dialog_text_size"
+            android:text="@string/default_text"
+            android:id="@+id/commitDialogMsg"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/commitMsg"
+            android:layout_gravity="center"
+            android:hint="@string/dialog_commit_msg_hint"/>
+</LinearLayout>

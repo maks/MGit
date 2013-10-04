@@ -81,6 +81,9 @@ public class RepoUtils {
         if (mInstance == null) {
             mInstance = new RepoUtils(context);
         }
+        if (context != null) {
+            mInstance.mContext = context;
+        }
         return mInstance;
     }
 
@@ -236,7 +239,12 @@ public class RepoUtils {
     }
 
     public void resetCommitChanges(Git git) {
-        git.reset().setMode(ResetCommand.ResetType.HARD);
+        try {
+            git.reset().setMode(ResetCommand.ResetType.HARD).call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
     }
 
     public Repository getRepository(String localPath) {

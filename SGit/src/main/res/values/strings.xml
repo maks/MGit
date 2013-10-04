@@ -26,6 +26,8 @@
     <string name="action_edit">Edit</string>
     <string name="action_commit">Commit</string>
     <string name="action_reset">Reset</string>
+    <string name="action_new_file">New File</string>
+    <string name="action_new_dir">New Directory</string>
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>
@@ -42,6 +44,7 @@
     <string name="label_push">Push</string>
     <string name="label_push_all">Push All</string>
     <string name="label_commit">Commit</string>
+    <string name="label_create">Create</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
@@ -73,6 +76,10 @@
     <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
     <string name="dialog_reset_commit_title">Reset Changes</string>
     <string name="dialog_reset_commit_msg">Are you sure to discard all the changes?</string>
+    <string name="dialog_create_dir_title">New Directory</string>
+    <string name="dialog_create_dir_hint">Directory Name</string>
+    <string name="dialog_create_file_title">New File</string>
+    <string name="dialog_create_file_hint">File Name</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>

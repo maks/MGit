@@ -36,6 +36,9 @@ public class FsUtils {
         if (mInstance == null) {
             mInstance = new FsUtils(context);
         }
+        if (context != null) {
+            mInstance.mContext = context;
+        }
         return mInstance;
     }
 
