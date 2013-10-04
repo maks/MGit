@@ -1,5 +1,6 @@
 package me.sheimi.sgit.activities;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CommitDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
@@ -196,6 +198,42 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
             case R.id.action_push:
                 PushRepoDialog prd = new PushRepoDialog();
                 prd.show(getSupportFragmentManager(), "push-repo-dialog");
+                return true;
+            case R.id.action_commit:
+                CommitDialog cd = new CommitDialog();
+                cd.show(getSupportFragmentManager(), "commit-dialog");
+                return true;
+            case R.id.action_reset:
+                mViewUtils.showMessageDialog(R.string.dialog_reset_commit_title,
+                        R.string.dialog_reset_commit_msg, R.string.action_reset,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        resetCommitChanges();
+                    }
+                });
+                return true;
+            case R.id.action_new_dir:
+                mViewUtils.showEditTextDialog(R.string.dialog_create_dir_title,
+                        R.string.dialog_create_dir_hint, R.string.label_create,
+                        new ViewUtils.OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newDir(text);
+                                reset();
+                            }
+                        });
+                return true;
+            case R.id.action_new_file:
+                mViewUtils.showEditTextDialog(R.string.dialog_create_file_title,
+                        R.string.dialog_create_file_hint, R.string.label_create,
+                        new ViewUtils.OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newFile(text);
+                                reset();
+                            }
+                        });
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -376,6 +414,50 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                     @Override
                     public void run() {
                         reset();
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
+    }
+
+    public void commitChanges(final String commitMsg) {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.commitAllChanges(mGit, commitMsg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reset();
+                        mViewUtils.showToastMessage(R.string.toast_commit_success);
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
+    }
+
+    private void resetCommitChanges() {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.resetCommitChanges(mGit);;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reset();
+                        mViewUtils.showToastMessage(R.string.toast_reset_success);
                         mRunningThread = null;
                     }
                 });

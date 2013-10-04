@@ -46,6 +46,9 @@ public class ImageCache {
 		if (mInstance == null) {
 			mInstance = new ImageCache(context);
 		}
+        if (context != null) {
+            mInstance.mContext = context;
+        }
 		return mInstance;
 	}
 
