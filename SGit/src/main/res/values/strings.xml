@@ -67,6 +67,9 @@
     <string name="pull_msg_init">Pulling … </string>
     <string name="pull_left_init">0%</string>
     <string name="pull_right_init">0/0</string>
+    <string name="push_msg_init">Pushing … </string>
+    <string name="push_left_init">0%</string>
+    <string name="push_right_init">0/0</string>
     <string name="title_activity_private_key_manage">Manage Private Keys</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_explore_file">Explore Files</string>

@@ -2,6 +2,7 @@ package me.sheimi.sgit.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.util.Log;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -27,6 +28,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
@@ -189,14 +191,25 @@ public class RepoUtils {
         }
     }
 
-    public void push(Git git, ProgressMonitor pm, boolean isPushAll) {
-        PushCommand pc = git.push().setPushTags();
+    public void pushSync(Git git, String username, String password, ProgressMonitor pm,
+                         boolean isPushAll) {
+        PushCommand pushCommand = git.push().setPushTags().setProgressMonitor(pm)
+                .setTransportConfigCallback(mSgitTransportCallback);
         if (isPushAll) {
-            pc.setPushAll();
+            pushCommand.setPushAll();
+        } else {
+            RefSpec spec = new RefSpec(getBranchName(git));
+            pushCommand.setRefSpecs(spec);
+        }
+
+        if (username != null && password != null && !username.equals("") && !password.equals("")) {
+            UsernamePasswordCredentialsProvider auth =
+                    new UsernamePasswordCredentialsProvider(username, password);
+            pushCommand.setCredentialsProvider(auth);
         }
 
         try {
-            pc.call();
+            pushCommand.call();
         } catch (InvalidRemoteException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_invalid_remote);

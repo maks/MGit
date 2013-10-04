@@ -194,7 +194,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 md.show(getSupportFragmentManager(), "merge-repo-dialog");
                 return true;
             case R.id.action_push:
-                PushRepoDialog prd = new PushRepoDialog(mGit);
+                PushRepoDialog prd = new PushRepoDialog();
                 prd.show(getSupportFragmentManager(), "push-repo-dialog");
                 return true;
         }
@@ -202,7 +202,40 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     }
 
     public void pushRepo(final boolean pushAll) {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                R.anim.fade_in);
+        mPullProgressContainer.setAnimation(anim);
+        mPullProgressContainer.setVisibility(View.VISIBLE);
+        mPullMsg.setText(R.string.push_msg_init);
+        mPullLeftHint.setText(R.string.push_left_init);
+        mPullRightHint.setText(R.string.push_right_init);
 
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.pushSync(mGit, mUsername, mPassword, getProgressMonitor(), pushAll);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                                R.anim.fade_out);
+                        mPullProgressContainer.setAnimation(anim);
+                        mPullProgressContainer.setVisibility(View.GONE);
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
     }
 
     private void pullRepo() {
@@ -240,7 +273,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 });
             }
         });
-        mRunningThread.start(); ;
+        mRunningThread.start();
     }
 
     private void reset() {

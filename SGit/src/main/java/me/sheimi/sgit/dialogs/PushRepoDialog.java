@@ -46,7 +46,6 @@ public class PushRepoDialog extends DialogFragment {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            // TODO
             mActivity.pushRepo(false);
         }
     }
@@ -55,7 +54,6 @@ public class PushRepoDialog extends DialogFragment {
 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            // TODO
             mActivity.pushRepo(true);
         }
     }
