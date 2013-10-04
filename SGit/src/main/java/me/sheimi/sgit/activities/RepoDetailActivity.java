@@ -1,5 +1,6 @@
 package me.sheimi.sgit.activities;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -202,6 +203,16 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 CommitDialog cd = new CommitDialog();
                 cd.show(getSupportFragmentManager(), "commit-dialog");
                 return true;
+            case R.id.action_reset:
+                mViewUtils.showMessageDialog(R.string.dialog_reset_commit_title,
+                        R.string.dialog_reset_commit_msg, R.string.action_reset,
+                        new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -402,7 +413,29 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                     @Override
                     public void run() {
                         reset();
-                        mViewUtils.showToastMessage(R.string.commit_success);
+                        mViewUtils.showToastMessage(R.string.toast_commit_success);
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
+    }
+
+    private void resetCommit() {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.resetCommitChanges(mGit);;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reset();
+                        mViewUtils.showToastMessage(R.string.toast_reset_success);
                         mRunningThread = null;
                     }
                 });

@@ -25,6 +25,7 @@
     <string name="action_mode_diff">Diff</string>
     <string name="action_edit">Edit</string>
     <string name="action_commit">Commit</string>
+    <string name="action_reset">Reset</string>
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>
@@ -68,6 +69,10 @@
     <string name="dialog_commit_title">Commit Changes</string>
     <string name="dialog_commit_dialog_msg">Are you sure to commit all the changes?</string>
     <string name="dialog_commit_msg_hint"></string>
+    <string name="dialog_file_delete">Delete File</string>
+    <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
+    <string name="dialog_reset_commit_title">Reset Changes</string>
+    <string name="dialog_reset_commit_msg">Are you sure to discard all the changes?</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -81,7 +86,8 @@
     <string name="title_activity_explore_file">Explore Files</string>
 
     <!-- toast msg -->
-    <string name="commit_success">Changes has been committed</string>
+    <string name="toast_commit_success">Changes has been committed</string>
+    <string name="toast_reset_success">Changes has been discarded</string>
 
     <string name="feedback_subject">Feedback</string>
 

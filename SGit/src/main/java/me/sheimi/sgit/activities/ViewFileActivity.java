@@ -51,7 +51,19 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         String fileName = extras.getString(TAG_FILE_NAME);
         mFile = new File(fileName);
         setTitle(mFile.getName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
         loadFileContent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void loadFileContent() {
@@ -107,18 +119,6 @@ public class ViewFileActivity extends SherlockFragmentActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override

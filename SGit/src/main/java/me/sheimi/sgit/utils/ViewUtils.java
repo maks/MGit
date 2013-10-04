@@ -1,12 +1,17 @@
 package me.sheimi.sgit.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import java.util.Collection;
+
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
 
 /**
  * Created by sheimi on 8/22/13.
@@ -64,6 +69,21 @@ public class ViewUtils {
                 adapter.add(item);
             }
         }
+    }
+
+    public void showMessageDialog(int title, int msg, int positiveBtn,
+                                   DialogInterface.OnClickListener positiveListenerr) {
+        showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
+                positiveListenerr, new DummyDialogListener());
+    }
+
+    public void showMessageDialog(int title, int msg, int positiveBtn, int negativeBtn,
+                                  DialogInterface.OnClickListener positiveListener,
+                                  DialogInterface.OnClickListener negativeListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(title).setMessage(msg)
+               .setPositiveButton(positiveBtn, positiveListener)
+               .setNegativeButton(negativeBtn, negativeListener).show();
     }
 
 }

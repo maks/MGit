@@ -10,6 +10,7 @@ import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -232,6 +233,10 @@ public class RepoUtils {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         }
+    }
+
+    public void resetCommitChanges(Git git) {
+        git.reset().setMode(ResetCommand.ResetType.HARD);
     }
 
     public Repository getRepository(String localPath) {
