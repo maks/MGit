@@ -20,6 +20,22 @@
             android:icon="@drawable/ic_file"
             android:showAsAction="ifRoom"/>
     <item
+            android:id="@+id/action_commit"
+            android:title="@string/action_commit"
+            android:showAsAction="never"/>
+    <item
+            android:id="@+id/action_reset"
+            android:title="@string/action_reset"
+            android:showAsAction="never"/>
+    <item
+            android:id="@+id/action_new_file"
+            android:title="@string/action_new_file"
+            android:showAsAction="never"/>
+    <item
+            android:id="@+id/action_new_dir"
+            android:title="@string/action_new_dir"
+            android:showAsAction="never"/>
+    <item
             android:id="@+id/action_delete"
             android:title="@string/action_delete"
             android:icon="@drawable/ic_trash"

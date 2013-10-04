@@ -148,6 +148,8 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
                     RepoDbManager.getInstance(mActivity).deleteRepo(id);
                 } catch (JGitInternalException e) {
                     RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                } catch (OutOfMemoryError e) {
+                    RepoDbManager.getInstance(mActivity).deleteRepo(id);
                 }
             }
         });

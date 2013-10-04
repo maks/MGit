@@ -2,7 +2,6 @@ package me.sheimi.sgit.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -11,6 +10,7 @@ import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.PushCommand;
+import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
@@ -80,6 +80,9 @@ public class RepoUtils {
     public static RepoUtils getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new RepoUtils(context);
+        }
+        if (context != null) {
+            mInstance.mContext = context;
         }
         return mInstance;
     }
@@ -220,6 +223,25 @@ public class RepoUtils {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         } catch (JGitInternalException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
+    }
+
+    public void commitAllChanges(Git git, String commitMsg) {
+        try {
+            git.add().addFilepattern(".").call();
+            git.commit().setMessage(commitMsg).setAll(true).call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
+    }
+
+    public void resetCommitChanges(Git git) {
+        try {
+            git.reset().setMode(ResetCommand.ResetType.HARD).call();
+        } catch (GitAPIException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         }
@@ -432,9 +454,9 @@ public class RepoUtils {
             if (uname != null) {
                 values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
             }
+            RepoDbManager.getInstance(mContext).updateRepo(id,
+                    values);
         }
-        RepoDbManager.getInstance(mContext).updateRepo(id,
-                values);
     }
 
     public void refreshSgitTransportCallback() {

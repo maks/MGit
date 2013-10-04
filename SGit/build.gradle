@@ -30,4 +30,17 @@ android {
         minSdkVersion 8
         targetSdkVersion 17
     }
+    signingConfigs {
+        release {
+            storeFile file("/Users/sheimi/Google Drive/Developer/SGitKey.jks")
+            storePassword "ZhangRizhen0923"
+            keyAlias "sgit"
+            keyPassword "ZhangRizhen0923"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }

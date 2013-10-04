@@ -1,5 +1,7 @@
 package me.sheimi.sgit.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,6 +27,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CodeUtils;
+import me.sheimi.sgit.utils.FsUtils;
 
 public class ViewFileActivity extends SherlockFragmentActivity {
 
@@ -33,12 +36,14 @@ public class ViewFileActivity extends SherlockFragmentActivity {
     private static final String JS_INF = "CodeLoader";
     private ProgressBar mLoading;
     private File mFile;
+    private FsUtils mFsUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_file);
         setupActionBar();
+        mFsUtils = FsUtils.getInstance(this);
         mFileContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);
 
@@ -46,7 +51,19 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         String fileName = extras.getString(TAG_FILE_NAME);
         mFile = new File(fileName);
         setTitle(mFile.getName());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
         loadFileContent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void loadFileContent() {
@@ -87,24 +104,21 @@ public class ViewFileActivity extends SherlockFragmentActivity {
             case android.R.id.home:
                 ActivityUtils.finishActivity(this);
                 return true;
+            case R.id.action_edit:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_EDIT);
+                Uri uri = Uri.fromFile(mFile);
+                String mimeType = mFsUtils.getMimeType(uri.toString());
+                intent.setDataAndType(uri, mimeType);
+                startActivity(intent);
+                ActivityUtils.forwardTransition(this);
+                return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
                 cld.show(getSupportFragmentManager(), "choose language");
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override

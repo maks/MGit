@@ -1,8 +1,10 @@
 package me.sheimi.sgit.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import org.eclipse.jgit.api.Git;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -25,6 +28,7 @@ import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/5/13.
@@ -36,6 +40,7 @@ public class FilesFragment extends BaseFragment {
 
     private FsUtils mFsUtils;
     private RepoUtils mRepoUtils;
+    private ViewUtils mViewUtils;
 
     private String mLocalRepo;
 
@@ -66,7 +71,8 @@ public class FilesFragment extends BaseFragment {
         View v = inflater.inflate(R.layout.fragment_files, container, false);
         mActivity = (RepoDetailActivity) getActivity();
         mRepoUtils = RepoUtils.getInstance(mActivity);
-        mFsUtils = FsUtils.getInstance(getActivity());
+        mViewUtils = ViewUtils.getInstance(mActivity);
+        mFsUtils = FsUtils.getInstance(mActivity);
         mActivity.setFilesFragment(this);
 
         Bundle bundle = getArguments();
@@ -122,6 +128,24 @@ public class FilesFragment extends BaseFragment {
                     return;
                 }
                 mFsUtils.openFile(file);
+            }
+        });
+
+        mFilesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
+                                           long id) {
+                final File file = mFilesListAdapter.getItem(position);
+                mViewUtils.showMessageDialog(R.string.dialog_file_delete,
+                        R.string.dialog_file_delete_msg, R.string.label_delete,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mFsUtils.deleteFile(file);
+                                reset();
+                            }
+                        });
+                return true;
             }
         });
 
@@ -190,11 +214,39 @@ public class FilesFragment extends BaseFragment {
         resetCurrentDir();
     }
 
+    public boolean newDir(String name) {
+        File file = new File(mCurrentDir, name);
+        if (file.exists()) {
+            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            return false;
+        }
+        return file.mkdir();
+    }
+
+    public boolean newFile(String name) {
+        File file = new File(mCurrentDir, name);
+        Log.d("name", name);
+        if (file.exists()) {
+            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            return false;
+        }
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+            return false;
+        }
+    }
+
+
     @Override
     public OnBackClickListener getOnBackClickListener() {
         return new OnBackClickListener() {
             @Override
             public boolean onClick() {
+                if (mRootDir == null || mCurrentDir == null)
+                    return false;
                 if (mRootDir.equals(mCurrentDir))
                     return false;
                 File parent = mCurrentDir.getParentFile();
