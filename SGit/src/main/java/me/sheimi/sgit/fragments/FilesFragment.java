@@ -245,6 +245,8 @@ public class FilesFragment extends BaseFragment {
         return new OnBackClickListener() {
             @Override
             public boolean onClick() {
+                if (mRootDir == null || mCurrentDir == null)
+                    return false;
                 if (mRootDir.equals(mCurrentDir))
                     return false;
                 File parent = mCurrentDir.getParentFile();

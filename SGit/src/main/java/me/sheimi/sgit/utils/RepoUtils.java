@@ -454,9 +454,9 @@ public class RepoUtils {
             if (uname != null) {
                 values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME, uname);
             }
+            RepoDbManager.getInstance(mContext).updateRepo(id,
+                    values);
         }
-        RepoDbManager.getInstance(mContext).updateRepo(id,
-                values);
     }
 
     public void refreshSgitTransportCallback() {
