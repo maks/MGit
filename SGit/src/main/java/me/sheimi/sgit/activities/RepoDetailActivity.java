@@ -28,6 +28,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CommitDialog;
 import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
@@ -196,6 +197,10 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
             case R.id.action_push:
                 PushRepoDialog prd = new PushRepoDialog();
                 prd.show(getSupportFragmentManager(), "push-repo-dialog");
+                return true;
+            case R.id.action_commit:
+                CommitDialog cd = new CommitDialog();
+                cd.show(getSupportFragmentManager(), "commit-dialog");
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -376,6 +381,28 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                     @Override
                     public void run() {
                         reset();
+                        mRunningThread = null;
+                    }
+                });
+            }
+        });
+        mRunningThread.start();
+    }
+
+    public void commitChanges(final String commitMsg) {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        mRunningThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoUtils.commitAllChanges(mGit, commitMsg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reset();
+                        mViewUtils.showToastMessage(R.string.commit_success);
                         mRunningThread = null;
                     }
                 });

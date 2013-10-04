@@ -2,7 +2,6 @@ package me.sheimi.sgit.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -220,6 +219,16 @@ public class RepoUtils {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         } catch (JGitInternalException e) {
+            e.printStackTrace();
+            mViewUtils.showToastMessage(e.getMessage());
+        }
+    }
+
+    public void commitAllChanges(Git git, String commitMsg) {
+        try {
+            git.add().addFilepattern(".").call();
+            git.commit().setMessage(commitMsg).setAll(true).call();
+        } catch (GitAPIException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         }
