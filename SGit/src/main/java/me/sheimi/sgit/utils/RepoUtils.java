@@ -54,8 +54,8 @@ public class RepoUtils {
 
     public static final String TEST_REPO = "git@git.sheimi.me:sheimi/sgit-android.git";
     public static final String TEST_LOCAL = "test";
-    public static final String TEST_USERNAME = ""; // "sheimi.zhang@gmail.com";
-    public static final String TEST_PASSWORD = ""; // "ZhangRizhen0923";
+    public static final String TEST_USERNAME = "";
+    public static final String TEST_PASSWORD = "";
     public static final String DOT_GIT_DIR = "/.git";
 
     public static final int COMMIT_TYPE_HEAD = 0;
