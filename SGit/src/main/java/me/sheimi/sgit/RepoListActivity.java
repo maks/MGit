@@ -3,8 +3,6 @@ package me.sheimi.sgit;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -15,15 +13,11 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
 
-import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
 import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.CloneDialog;
-import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.Constants;
@@ -35,6 +29,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
 
     private static final int REQUEST_IMPORT_REPO = 0;
     private Intent mImportRepoIntent;
+    private static boolean mIsCloneCanceled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,34 +39,8 @@ public class RepoListActivity extends SherlockFragmentActivity {
         mRepoListAdapter = new RepoListAdapter(this);
         mRepoList.setAdapter(mRepoListAdapter);
         mRepoListAdapter.queryAllRepo();
-
-        mRepoList.setOnItemClickListener(new AdapterView.OnItemClickListener
-                () {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view,
-                                    int position, long id) {
-                Repo repo = mRepoListAdapter.getItem(position);
-                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
-                    return;
-                Intent intent = new Intent(RepoListActivity.this,
-                        RepoDetailActivity.class);
-                intent.putExtra(RepoContract.RepoEntry._ID, repo.getID());
-                ActivityUtils.startActivity(RepoListActivity.this, intent);
-            }
-        });
-        mRepoList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position,
-                                           long id) {
-                Repo repo = mRepoListAdapter.getItem(position);
-                if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
-                    return false;
-                DeleteRepoDialog drd = new DeleteRepoDialog(repo.getID(), repo.getLocalPath());
-                drd.show(getSupportFragmentManager(), "delete-repo-dialog");
-                return true;
-            }
-        });
-
+        mRepoList.setOnItemClickListener(mRepoListAdapter);
+        mRepoList.setOnItemLongClickListener(mRepoListAdapter);
     }
 
     @Override
@@ -142,7 +111,7 @@ public class RepoListActivity extends SherlockFragmentActivity {
     }
 
     public ProgressMonitor getCloneMonitor(long id) {
-        return mRepoListAdapter.new CloningMonitor(id);
+        return mRepoListAdapter.getCloneMonitor(id);
     }
 
     @Override

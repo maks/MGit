@@ -11,7 +11,6 @@ import java.util.List;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.utils.CodeUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 /**
  * Created by sheimi on 8/16/13.
@@ -19,14 +18,12 @@ import me.sheimi.sgit.utils.RepoUtils;
 public class ChooseLanguageDialog extends DialogFragment {
 
     private ViewFileActivity mActivity;
-    private RepoUtils mRepoUtils;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
         mActivity = (ViewFileActivity) getActivity();
-        mRepoUtils = (RepoUtils) RepoUtils.getInstance(mActivity);
 
         final List<String> langs = CodeUtils.getLanguageList();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);

@@ -45,6 +45,7 @@
     <string name="label_push_all">Push All</string>
     <string name="label_commit">Commit</string>
     <string name="label_create">Create</string>
+    <string name="label_checkout">Checkout</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
@@ -70,8 +71,7 @@
     <string name="dialog_push_repo_title">Push Repo</string>
     <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
     <string name="dialog_commit_title">Commit Changes</string>
-    <string name="dialog_commit_dialog_msg">Are you sure to commit all the changes?</string>
-    <string name="dialog_commit_msg_hint"></string>
+    <string name="dialog_commit_msg_hint">Commit message</string>
     <string name="dialog_file_delete">Delete File</string>
     <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
     <string name="dialog_reset_commit_title">Reset Changes</string>
@@ -80,6 +80,8 @@
     <string name="dialog_create_dir_hint">Directory Name</string>
     <string name="dialog_create_file_title">New File</string>
     <string name="dialog_create_file_hint">File Name</string>
+    <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
+    <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>

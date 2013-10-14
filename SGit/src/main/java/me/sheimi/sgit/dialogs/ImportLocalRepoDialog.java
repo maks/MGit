@@ -10,15 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.eclipse.jgit.api.Git;
-
 import java.io.File;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -30,7 +28,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
     private File mFile;
     private String mFromPath;
     private ViewUtils mViewUtils;
-    private RepoUtils mRepoUtils;
     private FsUtils mFsUtils;
     private Activity mActivity;
     private EditText mLocalPath;
@@ -47,7 +44,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
         super.onCreateDialog(savedInstanceState);
         mActivity = getActivity();
         mViewUtils = ViewUtils.getInstance(getActivity());
-        mRepoUtils = RepoUtils.getInstance(getActivity());
         mFsUtils = FsUtils.getInstance(getActivity());
         if (savedInstanceState != null) {
             String fromPath = savedInstanceState.getString(FROM_PATH);
@@ -124,12 +120,12 @@ public class ImportLocalRepoDialog extends DialogFragment implements View.OnClic
             @Override
             public void run() {
                 mFsUtils.copyDirectory(mFile, file);
+                final Repo repo = Repo.getRepoById(mActivity, id);
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Git git = mRepoUtils.getGit(localPath);
-                        mRepoUtils.updateLatestCommitInfo(git, id);
-                        String remote = mRepoUtils.getRemoteOriginURL(git);
+                        repo.updateLatestCommitInfo();
+                        String remote = repo.getRemoteOriginURL();
                         ContentValues values = new ContentValues();
                         values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remote);
                         values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
