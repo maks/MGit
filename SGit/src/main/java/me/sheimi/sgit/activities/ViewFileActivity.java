@@ -1,5 +1,6 @@
 package me.sheimi.sgit.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CodeUtils;
 import me.sheimi.sgit.utils.FsUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 public class ViewFileActivity extends SherlockFragmentActivity {
 
@@ -37,6 +39,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
     private ProgressBar mLoading;
     private File mFile;
     private FsUtils mFsUtils;
+    private ViewUtils mViewUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         setContentView(R.layout.activity_view_file);
         setupActionBar();
         mFsUtils = FsUtils.getInstance(this);
+        mViewUtils = ViewUtils.getInstance(this);
         mFileContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);
 
@@ -110,8 +114,12 @@ public class ViewFileActivity extends SherlockFragmentActivity {
                 Uri uri = Uri.fromFile(mFile);
                 String mimeType = mFsUtils.getMimeType(uri.toString());
                 intent.setDataAndType(uri, mimeType);
-                startActivity(intent);
-                ActivityUtils.forwardTransition(this);
+                try {
+                    startActivity(intent);
+                    ActivityUtils.forwardTransition(this);
+                } catch (ActivityNotFoundException e) {
+                    mViewUtils.showToastMessage(R.string.error_no_edit_app);
+                }
                 return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();

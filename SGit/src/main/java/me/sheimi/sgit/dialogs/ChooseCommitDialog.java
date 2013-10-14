@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.eclipse.jgit.api.Git;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
@@ -28,39 +25,34 @@ import me.sheimi.sgit.utils.ViewUtils;
  */
 public class ChooseCommitDialog extends DialogFragment {
 
-    private Git mGit;
+    private Repo mRepo;
     private RepoDetailActivity mActivity;
-    private RepoUtils mRepoUtils;
-    private final static String GIT_PATH = "git path";
     private ViewUtils mViewUtils;
     private ListView mBranchTagList;
     private BranchTagListAdapter mAdapter;
 
     public ChooseCommitDialog() {}
 
-    public ChooseCommitDialog(Git git) {
-        mGit = git;
+    public ChooseCommitDialog(Repo repo) {
+        mRepo = repo;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GIT_PATH, mGit.getRepository().getDirectory().getAbsolutePath());
+        outState.putSerializable(Repo.TAG, mRepo);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-        if (savedInstanceState != null) {
-            String path = savedInstanceState.getString(GIT_PATH);
-            if (path != null) {
-                mGit = mRepoUtils.getGit(mRepoUtils.gitRepoFromRepoPath(path));
-            }
+        if (mRepo == null && savedInstanceState != null) {
+            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
+            mRepo.setContext(getActivity());
         }
 
         mActivity = (RepoDetailActivity) getActivity();
         mViewUtils = ViewUtils.getInstance(mActivity);
-        mRepoUtils = RepoUtils.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         mBranchTagList = new ListView(mActivity);
@@ -69,8 +61,8 @@ public class ChooseCommitDialog extends DialogFragment {
         mBranchTagList.setAdapter(mAdapter);
         builder.setView(mBranchTagList);
 
-        String[] branches = mRepoUtils.getBranches(mGit);
-        String[] tags = mRepoUtils.getTags(mGit);
+        String[] branches = mRepo.getBranches();
+        String[] tags = mRepo.getTags();
         mViewUtils.adapterAddAll(mAdapter, branches);
         mViewUtils.adapterAddAll(mAdapter, tags);
 
@@ -112,8 +104,8 @@ public class ChooseCommitDialog extends DialogFragment {
                 holder = (ListItemHolder) convertView.getTag();
             }
             String commitName = getItem(position);
-            String displayName = mRepoUtils.getCommitDisplayName(commitName);
-            int commitType = mRepoUtils.getCommitType(commitName);
+            String displayName = Repo.getCommitDisplayName(commitName);
+            int commitType = Repo.getCommitType(commitName);
             switch (commitType) {
                 case RepoUtils.COMMIT_TYPE_HEAD:
                     holder.commitIcon.setImageResource(R.drawable.ic_branch_d);

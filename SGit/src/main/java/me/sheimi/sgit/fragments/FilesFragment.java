@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import org.eclipse.jgit.api.Git;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -23,6 +21,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
@@ -35,14 +34,10 @@ import me.sheimi.sgit.utils.ViewUtils;
  */
 public class FilesFragment extends BaseFragment {
 
-    private static String LOCAL_REPO = "local_repo";
     private static String CURRENT_DIR = "current_dir";
 
     private FsUtils mFsUtils;
-    private RepoUtils mRepoUtils;
     private ViewUtils mViewUtils;
-
-    private String mLocalRepo;
 
     private Button mCommitNameButton;
     private ImageView mCommitType;
@@ -52,15 +47,15 @@ public class FilesFragment extends BaseFragment {
     private File mCurrentDir;
     private File mRootDir;
 
-    private Git mGit;
+    private Repo mRepo;
 
     private RepoDetailActivity mActivity;
 
 
-    public static FilesFragment newInstance(String  mLocalRepo) {
+    public static FilesFragment newInstance(Repo mRepo) {
         FilesFragment fragment = new FilesFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(LOCAL_REPO, mLocalRepo);
+        bundle.putSerializable(Repo.TAG, mRepo);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -70,28 +65,20 @@ public class FilesFragment extends BaseFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_files, container, false);
         mActivity = (RepoDetailActivity) getActivity();
-        mRepoUtils = RepoUtils.getInstance(mActivity);
         mViewUtils = ViewUtils.getInstance(mActivity);
         mFsUtils = FsUtils.getInstance(mActivity);
         mActivity.setFilesFragment(this);
 
         Bundle bundle = getArguments();
-        String localRepoStr = bundle.getString(LOCAL_REPO);
-        if (localRepoStr != null) {
-            mLocalRepo = localRepoStr;
+        mRepo = (Repo) bundle.getSerializable(Repo.TAG);
+        if (mRepo == null && savedInstanceState != null) {
+            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
         }
-        if (savedInstanceState != null) {
-            String saveRepoStr = savedInstanceState.getString(LOCAL_REPO);
-            if (saveRepoStr != null) {
-                mLocalRepo = saveRepoStr;
-            }
-        }
-        if (mLocalRepo == null) {
-            // this will not execute, if the app runs right
+        if (mRepo == null) {
             return v;
         }
-        mRootDir = mFsUtils.getRepo(mLocalRepo);
-        mGit = mRepoUtils.getGit(mLocalRepo);
+        mRepo.setContext(mActivity);
+        mRootDir = mFsUtils.getRepo(mRepo.getLocalPath());
 
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
@@ -152,13 +139,14 @@ public class FilesFragment extends BaseFragment {
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog(mGit);
+                ChooseCommitDialog cbd = new ChooseCommitDialog(mRepo);
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });
 
-        String branchName = mRepoUtils.getBranchName(mGit);
+        String branchName = mRepo.getBranchName();
         reset(branchName);
+
         if (savedInstanceState != null) {
             String currentDirPath = savedInstanceState.getString(CURRENT_DIR);
             if (currentDirPath != null) {
@@ -172,7 +160,7 @@ public class FilesFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LOCAL_REPO, mLocalRepo);
+        outState.putSerializable(Repo.TAG, mRepo);
         outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
     }
 
@@ -188,11 +176,11 @@ public class FilesFragment extends BaseFragment {
     }
 
     public void reset(String commitName) {
-        int commitType = mRepoUtils.getCommitType(commitName);
+        int commitType = Repo.getCommitType(commitName);
         switch (commitType) {
             case RepoUtils.COMMIT_TYPE_REMOTE:
                 // change the display name to local branch
-                commitName = mRepoUtils.convertRemoteName(commitName);
+                commitName = Repo.convertRemoteName(commitName);
             case RepoUtils.COMMIT_TYPE_HEAD:
                 mCommitType.setVisibility(View.VISIBLE);
                 mCommitType.setImageResource(R.drawable.ic_branch_w);
@@ -205,7 +193,7 @@ public class FilesFragment extends BaseFragment {
                 mCommitType.setVisibility(View.GONE);
                 break;
         }
-        String displayName = mRepoUtils.getCommitDisplayName(commitName);
+        String displayName = Repo.getCommitDisplayName(commitName);
         mCommitNameButton.setText(displayName);
         resetCurrentDir();
     }

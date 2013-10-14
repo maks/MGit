@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,53 +15,47 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.Ref;
 
 import java.util.List;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.RepoUtils;
-import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/16/13.
  */
 public class MergeDialog extends DialogFragment {
 
-    private Git mGit;
+    private Repo mRepo;
     private RepoDetailActivity mActivity;
-    private RepoUtils mRepoUtils;
-    private final static String GIT_PATH = "git path";
     private ListView mBranchTagList;
     private Spinner mSpinner;
     private BranchTagListAdapter mAdapter;
 
     public MergeDialog() {}
 
-    public MergeDialog(Git git) {
-        mGit = git;
+    public MergeDialog(Repo repo) {
+        mRepo = repo;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GIT_PATH, mGit.getRepository().getDirectory().getAbsolutePath());
+        outState.putSerializable(Repo.TAG, mRepo);
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-        if (savedInstanceState != null) {
-            String path = savedInstanceState.getString(GIT_PATH);
-            if (path != null) {
-                mGit = mRepoUtils.getGit(mRepoUtils.gitRepoFromRepoPath(path));
-            }
+        if (mRepo == null && savedInstanceState != null) {
+            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
+            mRepo.setContext(getActivity());
         }
 
         mActivity = (RepoDetailActivity) getActivity();
-        mRepoUtils = RepoUtils.getInstance(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_merge, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
@@ -74,11 +67,10 @@ public class MergeDialog extends DialogFragment {
         mBranchTagList.setAdapter(mAdapter);
         builder.setView(layout);
 
-        List<Ref> branches = mRepoUtils.getLocalBranches(mGit);
-        String currentBranchDisplayName = mRepoUtils.getCommitDisplayName(mRepoUtils
-                .getBranchName(mGit));
+        List<Ref> branches = mRepo.getLocalBranches();
+        String currentBranchDisplayName = mRepo.getCurrentDisplayName();
         for (Ref branch : branches) {
-            if (mRepoUtils.getCommitDisplayName(branch.getName()).equals(currentBranchDisplayName))
+            if (Repo.getCommitDisplayName(branch.getName()).equals(currentBranchDisplayName))
                 continue;
             mAdapter.add(branch);
         }
@@ -91,7 +83,7 @@ public class MergeDialog extends DialogFragment {
                                     int position, long id) {
                 Ref commit = mAdapter.getItem(position);
                 String mFFString = mSpinner.getSelectedItem().toString();
-                mActivity.mergeBranch(mGit, commit, mFFString);
+                mActivity.mergeBranch(commit, mFFString);
                 getDialog().cancel();
             }
         });
@@ -122,8 +114,8 @@ public class MergeDialog extends DialogFragment {
                 holder = (ListItemHolder) convertView.getTag();
             }
             String commitName = getItem(position).getName();
-            String displayName = mRepoUtils.getCommitDisplayName(commitName);
-            int commitType = mRepoUtils.getCommitType(commitName);
+            String displayName = Repo.getCommitDisplayName(commitName);
+            int commitType = Repo.getCommitType(commitName);
             switch (commitType) {
                 case RepoUtils.COMMIT_TYPE_HEAD:
                     holder.commitIcon.setImageResource(R.drawable.ic_branch_d);

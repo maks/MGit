@@ -10,11 +10,9 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +20,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.ImageCache;
 import me.sheimi.sgit.utils.RepoUtils;
@@ -32,18 +31,19 @@ import me.sheimi.sgit.utils.ViewUtils;
  */
 public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
-    private File mDir;
+    private Repo mRepo;
     private RepoUtils mRepoUtils;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new
             SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
     private Set<Integer> mChosenItems;
     private ViewUtils mViewUtils;
 
-    public CommitsListAdapter(Context context, Set<Integer> chosenItems) {
+    public CommitsListAdapter(Context context, Set<Integer> chosenItems, Repo repo) {
         super(context, 0);
         mRepoUtils = RepoUtils.getInstance(context);
         mChosenItems = chosenItems;
         mViewUtils = ViewUtils.getInstance(context);
+        mRepo = repo;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         Date date = person.getWhen();
         String email = person.getEmailAddress();
 
-        holder.commitsTitle.setText(mRepoUtils.getCommitDisplayName(commit.getName()));
+        holder.commitsTitle.setText(Repo.getCommitDisplayName(commit.getName()));
         holder.commitAuthor.setText(person.getName());
         holder.commitsMsg.setText(commit.getShortMessage());
         holder.commitTime.setText(COMMITTIME_FORMATTER.format(date));
@@ -92,10 +92,13 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         return convertView;
     }
 
-    public void resetCommit(Git git) {
+    public void resetCommit() {
         clear();
-        List<RevCommit> commitsList = mRepoUtils.getCommitsList(git);
-        mViewUtils.adapterAddAll(this, commitsList);
+        List<RevCommit> commitsList = mRepo.getCommitsList();
+        if (commitsList != null) {
+            // TODO why == null
+            mViewUtils.adapterAddAll(this, commitsList);
+        }
         notifyDataSetChanged();
     }
 

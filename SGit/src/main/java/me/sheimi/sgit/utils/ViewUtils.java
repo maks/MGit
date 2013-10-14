@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
@@ -21,7 +23,7 @@ import me.sheimi.sgit.dialogs.DummyDialogListener;
  */
 public class ViewUtils {
 
-    private static ViewUtils mInstance;
+    private static Map<Context, ViewUtils> mInstances = new HashMap<Context, ViewUtils>();
 
     Context mContext;
 
@@ -30,13 +32,12 @@ public class ViewUtils {
     }
 
     public static ViewUtils getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = new ViewUtils(context);
+        ViewUtils viewUtils = mInstances.get(context);
+        if (viewUtils == null) {
+            viewUtils = new ViewUtils(context);
+            mInstances.put(context, viewUtils);
         }
-        if (context != null) {
-            mInstance.mContext = context;
-        }
-        return mInstance;
+        return viewUtils;
     }
 
     public void showToastMessage(final String msg) {
@@ -79,11 +80,17 @@ public class ViewUtils {
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
                                   DialogInterface.OnClickListener positiveListenerr) {
+        showMessageDialog(title, mContext.getString(msg), positiveBtn, R.string.label_cancel,
+                positiveListenerr, new DummyDialogListener());
+    }
+
+    public void showMessageDialog(int title, String msg, int positiveBtn,
+                                  DialogInterface.OnClickListener positiveListenerr) {
         showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
                 positiveListenerr, new DummyDialogListener());
     }
 
-    public void showMessageDialog(int title, int msg, int positiveBtn, int negativeBtn,
+    public void showMessageDialog(int title, String msg, int positiveBtn, int negativeBtn,
                                   DialogInterface.OnClickListener positiveListener,
                                   DialogInterface.OnClickListener negativeListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
