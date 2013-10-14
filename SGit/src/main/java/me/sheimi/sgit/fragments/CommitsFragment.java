@@ -1,6 +1,7 @@
 package me.sheimi.sgit.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.CommitDiffActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.adapters.CommitsListAdapter;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
@@ -39,11 +40,8 @@ import me.sheimi.sgit.utils.ViewUtils;
  */
 public class CommitsFragment extends BaseFragment implements ActionMode.Callback {
 
-    private final static String LOCAL_REPO = "local repo";
     private final static String IS_ACTION_MODE = "is action mode";
     private final static String CHOSEN_ITEM = "chosen item";
-
-    private String mLocalRepo;
 
     private RepoDetailActivity mActivity;
     private Button mCommitNameButton;
@@ -51,16 +49,15 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     private ListView mCommitsList;
     private CommitsListAdapter mCommitsListAdapter;
 
-    private RepoUtils mRepoUtils;
     private ViewUtils mViewUtils;
-    private Git mGit;
     private ActionMode mActionMode;
     private Set<Integer> mChosenItem = new HashSet<Integer>();
+    private Repo mRepo;
 
-    public static CommitsFragment newInstance(String mLocalRepo) {
+    public static CommitsFragment newInstance(Repo mRepo) {
         CommitsFragment fragment = new CommitsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(LOCAL_REPO, mLocalRepo);
+        bundle.putSerializable(Repo.TAG, mRepo);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -69,40 +66,32 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_commits, container, false);
-        mRepoUtils = RepoUtils.getInstance(mActivity);
-        mViewUtils = ViewUtils.getInstance(mActivity);
         mActivity = (RepoDetailActivity) getActivity();
         mActivity.setCommitsFragment(this);
+        mViewUtils = ViewUtils.getInstance(mActivity);
 
         Bundle bundle = getArguments();
-        String localRepoStr = bundle.getString(LOCAL_REPO);
-        if (localRepoStr != null) {
-            mLocalRepo = localRepoStr;
+        mRepo = (Repo) bundle.getSerializable(Repo.TAG);
+        if (mRepo == null && savedInstanceState != null) {
+            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
         }
-        if (savedInstanceState != null) {
-            String saveRepoStr = savedInstanceState.getString(LOCAL_REPO);
-            if (saveRepoStr != null) {
-                mLocalRepo = saveRepoStr;
-            }
-        }
-        if (mLocalRepo == null) {
-            // this will not execute, if the app runs right
+        if (mRepo == null) {
             return v;
         }
-        mGit = mRepoUtils.getGit(mLocalRepo);
+        mRepo.setContext(mActivity);
 
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
-        mCommitsListAdapter = new CommitsListAdapter(mActivity, mChosenItem);
-        mCommitsListAdapter.resetCommit(mGit);
+        mCommitsListAdapter = new CommitsListAdapter(mActivity, mChosenItem, mRepo);
+        mCommitsListAdapter.resetCommit();
         mCommitsList.setAdapter(mCommitsListAdapter);
 
 
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog(mGit);
+                ChooseCommitDialog cbd = new ChooseCommitDialog();
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });
@@ -113,8 +102,17 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
                                     int position, long id) {
                 if (mActionMode == null) {
                     RevCommit commit = mCommitsListAdapter.getItem(position);
-                    String fullCommitName = commit.getName();
-                    mActivity.resetCommits(fullCommitName);
+                    final String fullCommitName = commit.getName();
+                    String message = getString(R.string.dialog_comfirm_checkout_commit_msg) + " " +
+                            Repo.getCommitDisplayName(fullCommitName);
+                    mViewUtils.showMessageDialog(R.string.dialog_comfirm_checkout_commit_title,
+                            message, R.string.label_checkout,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    mActivity.resetCommits(fullCommitName);
+                                }
+                            });
                     return;
                 }
                 chooseItem(position);
@@ -133,7 +131,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
             }
         });
 
-        String branchName = mRepoUtils.getBranchName(mGit);
+        String branchName = mRepo.getBranchName();
         reset(branchName);
         return v;
     }
@@ -156,7 +154,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(LOCAL_REPO, mLocalRepo);
+        outState.putSerializable(Repo.TAG, mRepo);
         outState.putBoolean(IS_ACTION_MODE, mActionMode != null);
         ArrayList<Integer> itemsList = new ArrayList<Integer>(mChosenItem);
         outState.putIntegerArrayList(CHOSEN_ITEM, itemsList);
@@ -168,11 +166,11 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     }
 
     public void reset(String commitName) {
-        int commitType = mRepoUtils.getCommitType(commitName);
+        int commitType = Repo.getCommitType(commitName);
         switch (commitType) {
             case RepoUtils.COMMIT_TYPE_REMOTE:
                 // change the display name to local branch
-                commitName = mRepoUtils.convertRemoteName(commitName);
+                commitName = Repo.convertRemoteName(commitName);
             case RepoUtils.COMMIT_TYPE_HEAD:
                 mCommitType.setVisibility(View.VISIBLE);
                 mCommitType.setImageResource(R.drawable.ic_branch_w);
@@ -185,13 +183,13 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
                 mCommitType.setVisibility(View.GONE);
                 break;
         }
-        String displayName = mRepoUtils.getCommitDisplayName(commitName);
+        String displayName = Repo.getCommitDisplayName(commitName);
         mCommitNameButton.setText(displayName);
-        mCommitsListAdapter.resetCommit(mGit);
+        mCommitsListAdapter.resetCommit();
     }
 
     public void reset() {
-        mCommitsListAdapter.resetCommit(mGit);
+        mCommitsListAdapter.resetCommit();
     }
 
     public void enterDiffActionMode() {
@@ -238,7 +236,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
                 String newCommit = mCommitsListAdapter.getItem(smaller).getName();
                 intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
                 intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
-                intent.putExtra(CommitDiffActivity.LOCAL_REPO, mLocalRepo);
+                intent.putExtra(Repo.TAG, mRepo);
                 actionMode.finish();
                 ActivityUtils.startActivity(getActivity(), intent);
                 return true;

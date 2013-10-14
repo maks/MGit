@@ -27,7 +27,6 @@ public class RenameKeyDialog extends DialogFragment implements View.OnClickListe
     private String mFromPath;
     private EditText mNewFilename;
     private ViewUtils mViewUtils;
-    private FsUtils mFsUtils;
     private PrivateKeyManageActivity mActivity;
     private static final String FROM_PATH = "from path";
 
@@ -41,7 +40,6 @@ public class RenameKeyDialog extends DialogFragment implements View.OnClickListe
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (PrivateKeyManageActivity) getActivity();
-        mFsUtils = FsUtils.getInstance(mActivity);
         mViewUtils = ViewUtils.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 

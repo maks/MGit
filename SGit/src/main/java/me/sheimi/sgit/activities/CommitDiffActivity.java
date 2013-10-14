@@ -15,30 +15,26 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.diff.DiffEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CodeUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 public class CommitDiffActivity extends SherlockFragmentActivity {
 
     public final static String OLD_COMMIT = "old commit";
     public final static String NEW_COMMIT = "new commit";
-    public final static String LOCAL_REPO = "local repo";
     private static final String JS_INF = "CodeLoader";
     private WebView mDiffContent;
-    private RepoUtils mRepoUtils;
     private ProgressBar mLoading;
-    private String mLocalRepo;
     private String mOldCommit;
     private String mNewCommit;
-    private Git mGit;
+    private Repo mRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +43,15 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
         setupActionBar();
         mDiffContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);
-        mRepoUtils = RepoUtils.getInstance(this);
 
         Bundle extras = getIntent().getExtras();
         mOldCommit = extras.getString(OLD_COMMIT);
         mNewCommit = extras.getString(NEW_COMMIT);
-        mLocalRepo = extras.getString(LOCAL_REPO);
-        mGit = mRepoUtils.getGit(mLocalRepo);
+        mRepo = (Repo) extras.getSerializable(Repo.TAG);
+        mRepo.setContext(this);
 
-        String title = mRepoUtils.getCommitDisplayName(mNewCommit) + " : "
-                + mRepoUtils.getCommitDisplayName(mOldCommit);
+        String title = Repo.getCommitDisplayName(mNewCommit) + " : "
+                + Repo.getCommitDisplayName(mOldCommit);
 
         setTitle(getString(R.string.title_activity_commit_diff) + title);
 
@@ -162,10 +157,10 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    mDiffEntries = mRepoUtils.getCommitDiff(mGit, mOldCommit, mNewCommit);
+                    mDiffEntries = mRepo.getCommitDiff(mOldCommit, mNewCommit);
                     mDiffStrs = new ArrayList<String>(mDiffEntries.size());
                     for (DiffEntry diffEntry : mDiffEntries) {
-                        String diffStr = mRepoUtils.parseDiffEntry(mGit, diffEntry);
+                        String diffStr = mRepo.parseDiffEntry(diffEntry);
                         mDiffStrs.add(diffStr);
                     }
                     runOnUiThread(new Runnable() {

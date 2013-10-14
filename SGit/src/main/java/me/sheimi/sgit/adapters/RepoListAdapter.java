@@ -1,13 +1,15 @@
 package me.sheimi.sgit.adapters;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,18 +23,22 @@ import java.util.List;
 import java.util.Locale;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.RepoListActivity;
+import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.ImageCache;
+import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/6/13.
  */
 public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
-        .RepoDbObserver {
+        .RepoDbObserver, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private static final int QUERY_TYPE_SEARCH = 0;
     private static final int QUERY_TYPE_QUERY = 1;
@@ -43,8 +49,9 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
 
     private int mQueryType = QUERY_TYPE_QUERY;
     private String mSearchQueryString;
-    private Activity mActivity;
+    private RepoListActivity mActivity;
     private ViewUtils mViewUtils;
+    private RepoUtils mRepoUtils;
 
     private SparseArray<Integer> mCloningProgress = new SparseArray<Integer>();
 
@@ -52,8 +59,9 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
         super(context, 0);
         mDb = RepoDbManager.getInstance(context);
         mDb.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME, this);
-        mActivity = (Activity) context;
+        mActivity = (RepoListActivity) context;
         mViewUtils = ViewUtils.getInstance(context);
+        mRepoUtils = RepoUtils.getInstance(context);
     }
 
     public void searchRepo(String query) {
@@ -77,7 +85,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
                 cursor = mDb.queryAllRepo();
                 break;
         }
-        List<Repo> repo = Repo.getRepoList(cursor);
+        List<Repo> repo = Repo.getRepoList(mActivity, cursor);
         Collections.sort(repo);
         cursor.close();
         clear();
@@ -152,6 +160,36 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
                 requery();
             }
         });
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Repo repo = getItem(position);
+        if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
+            return;
+        Intent intent = new Intent(mActivity, RepoDetailActivity.class);
+        intent.putExtra(Repo.TAG, repo);
+        ActivityUtils.startActivity(mActivity, intent);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long id) {
+        final Repo repo = getItem(position);
+        if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
+            return false;
+        mViewUtils.showMessageDialog(R.string.dialog_delete_repo_title,
+                R.string.dialog_delete_repo_msg, R.string.label_delete, new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                repo.deleteRepo();
+            }
+        });
+        return true;
+    }
+
+    public ProgressMonitor getCloneMonitor(long id) {
+        return new CloningMonitor(id);
     }
 
     private class RepoListItemHolder {

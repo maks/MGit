@@ -1,7 +1,6 @@
 package me.sheimi.sgit.activities;
 
 import android.content.DialogInterface;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -21,16 +20,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.CommitDialog;
-import me.sheimi.sgit.dialogs.DeleteRepoDialog;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
@@ -38,14 +32,12 @@ import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
 import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
-public class RepoDetailActivity extends SherlockFragmentActivity implements ActionBar.TabListener{
+public class RepoDetailActivity extends SherlockFragmentActivity implements ActionBar.TabListener {
 
     private static final int[] NAV_TABS = {R.string.tab_files_label,
             R.string.tab_commits_label};
-    private static final int DEFAULT_VALUE = -1;
 
     private static final int FILES_FRAGMENT_INDEX = 0;
     private static final int COMMITS_FRAGMENT_INDEX = 1;
@@ -57,15 +49,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
 
-    private RepoDbManager mDb;
-    private RepoUtils mRepoUtils;
     private ViewUtils mViewUtils;
-    private long mRepoID;
-    private String mLocalPath;
-    private String mUsername;
-    private String mPassword;
-    private Git mGit;
     private Thread mRunningThread;
+    private Repo mRepo;
 
     private View mPullProgressContainer;
     private ProgressBar mPullProgressBar;
@@ -76,9 +62,11 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
+        mRepo.setContext(this);
+        setTitle(mRepo.getLocalPath());
         setContentView(R.layout.activity_repo_detail);
         setupActionBar();
-        setupRepoDb();
         createFragments();
         setupPullProgressView();
         mViewUtils = ViewUtils.getInstance(this);
@@ -120,27 +108,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setupRepoDb() {
-        mDb = RepoDbManager.getInstance(this);
-        mRepoID = getIntent().getIntExtra(RepoContract.RepoEntry._ID,
-                DEFAULT_VALUE);
-        if (mRepoID == DEFAULT_VALUE)
-            return;
-        Cursor cursor = mDb.getRepoById(mRepoID);
-        cursor.moveToFirst();
-        Repo repo = new Repo(cursor);
-        cursor.close();
-        mLocalPath = repo.getLocalPath();
-        mUsername = repo.getUsername();
-        mPassword = repo.getPassword();
-        setTitle(mLocalPath);
-        mRepoUtils = RepoUtils.getInstance(this);
-        mGit = mRepoUtils.getGit(mLocalPath);
-    }
-
     private void createFragments() {
-        mFilesFragment = FilesFragment.newInstance(mLocalPath);
-        mCommitsFragment = CommitsFragment.newInstance(mLocalPath);
+        mFilesFragment = FilesFragment.newInstance(mRepo);
+        mCommitsFragment = CommitsFragment.newInstance(mRepo);
     }
 
     public void resetCommits(final String commitName) {
@@ -151,8 +121,8 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.checkout(mGit, commitName);
-                mRepoUtils.updateLatestCommitInfo(mGit, mRepoID);
+                mRepo.checkout(commitName);
+                mRepo.updateLatestCommitInfo();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -181,8 +151,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 ActivityUtils.finishActivity(this);
                 return true;
             case R.id.action_delete:
-                DeleteRepoDialog drd = new DeleteRepoDialog(mRepoID, mLocalPath);
-                drd.show(getSupportFragmentManager(), "delete-repo-dialog");
+                deleteRepo();
                 return true;
             case R.id.action_pull:
                 pullRepo();
@@ -192,7 +161,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 mCommitsFragment.enterDiffActionMode();
                 return true;
             case R.id.action_merge:
-                MergeDialog md = new MergeDialog(mGit);
+                MergeDialog md = new MergeDialog(mRepo);
                 md.show(getSupportFragmentManager(), "merge-repo-dialog");
                 return true;
             case R.id.action_push:
@@ -200,18 +169,24 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 prd.show(getSupportFragmentManager(), "push-repo-dialog");
                 return true;
             case R.id.action_commit:
-                CommitDialog cd = new CommitDialog();
-                cd.show(getSupportFragmentManager(), "commit-dialog");
+                mViewUtils.showEditTextDialog(R.string.dialog_commit_title,
+                        R.string.dialog_commit_msg_hint, R.string.label_commit,
+                        new ViewUtils.OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                commitChanges(text);
+                            }
+                        });
                 return true;
             case R.id.action_reset:
                 mViewUtils.showMessageDialog(R.string.dialog_reset_commit_title,
                         R.string.dialog_reset_commit_msg, R.string.action_reset,
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        resetCommitChanges();
-                    }
-                });
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resetCommitChanges();
+                            }
+                        });
                 return true;
             case R.id.action_new_dir:
                 mViewUtils.showEditTextDialog(R.string.dialog_create_dir_title,
@@ -255,7 +230,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.pushSync(mGit, mUsername, mPassword, getProgressMonitor(), pushAll);
+                mRepo.push(getProgressMonitor(), pushAll);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -291,8 +266,8 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.pullSync(mGit, mUsername, mPassword, getProgressMonitor());
-                mRepoUtils.updateLatestCommitInfo(mGit, mRepoID);
+                mRepo.pull(getProgressMonitor());
+                mRepo.updateLatestCommitInfo();
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -401,7 +376,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         return false;
     }
 
-    public void mergeBranch(final Git git, final Ref commit, final String ffModeStr) {
+    public void mergeBranch(final Ref commit, final String ffModeStr) {
         if (mRunningThread != null) {
             mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
             return;
@@ -409,7 +384,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.mergeBranch(git, commit, ffModeStr);
+                mRepo.mergeBranch(commit, ffModeStr);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -430,7 +405,8 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.commitAllChanges(mGit, commitMsg);
+
+                mRepo.commitAllChanges(commitMsg);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -452,7 +428,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepoUtils.resetCommitChanges(mGit);;
+                mRepo.resetCommitChanges();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -464,6 +440,18 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
             }
         });
         mRunningThread.start();
+    }
+
+    private void deleteRepo() {
+        mViewUtils.showMessageDialog(R.string.dialog_delete_repo_title,
+                R.string.dialog_delete_repo_msg, R.string.label_delete, new DialogInterface
+                .OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mRepo.deleteRepo();
+                ActivityUtils.finishActivity(RepoDetailActivity.this);
+            }
+        });
     }
 
     private ProgressMonitor getProgressMonitor() {
@@ -527,5 +515,10 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
             }
 
         };
+    }
+
+    public void error() {
+        ActivityUtils.finishActivity(this);
+        mViewUtils.showToastMessage(R.string.error_unknown);
     }
 }

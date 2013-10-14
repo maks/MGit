@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 
@@ -20,6 +19,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
@@ -36,7 +36,6 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
     private EditText mUsername;
     private EditText mPassword;
     private RepoListActivity mActivity;
-    private RepoUtils mRepoUtils;
     private ViewUtils mViewUtils;
     private FsUtils mFsUtils;
 
@@ -44,7 +43,6 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
-        mRepoUtils = RepoUtils.getInstance(mActivity);
         mViewUtils = ViewUtils.getInstance(mActivity);
         mFsUtils = FsUtils.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
@@ -126,30 +124,28 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
         values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
         long id = RepoDbManager.getInstance(mActivity)
                 .insertRepo(values);
-        cloneRepo(id, remoteURL, localPath, username, password);
+        Repo repo = Repo.getRepoById(mActivity, id);
+        cloneRepo(repo);
         dismiss();
     }
 
-    public void cloneRepo(final long id, final String remoteUrl, final String localPath,
-                          final String username, final String password) {
+    public void cloneRepo(final Repo repo) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    mRepoUtils.cloneSync(remoteUrl, localPath, username, password,
-                            mActivity.getCloneMonitor(id));
-                    Git git = mRepoUtils.getGit(localPath);
-                    mRepoUtils.updateLatestCommitInfo(git, id);
+                    repo.clone(mActivity.getCloneMonitor(repo.getID()));
+                    repo.updateLatestCommitInfo();
                     ContentValues values = new ContentValues();
                     values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                             RepoContract.REPO_STATUS_NULL);
-                    RepoDbManager.getInstance(mActivity).updateRepo(id, values);
+                    RepoDbManager.getInstance(mActivity).updateRepo(repo.getID(), values);
                 } catch (GitAPIException e) {
-                    RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                    repo.deleteRepoSync();
                 } catch (JGitInternalException e) {
-                    RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                    repo.deleteRepoSync();
                 } catch (OutOfMemoryError e) {
-                    RepoDbManager.getInstance(mActivity).deleteRepo(id);
+                    repo.deleteRepoSync();
                 }
             }
         });

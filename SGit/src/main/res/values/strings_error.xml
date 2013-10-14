@@ -7,6 +7,8 @@
     <string name="error_pull_failed">Pull Failed</string>
     <string name="error_diff_failed">Diff Failed</string>
     <string name="error_out_of_memory">Opps, Out of Memory</string>
+    <string name="error_no_edit_app">Opps, no apps can edit source file.</string>
+    <string name="error_unknown">Something wrong!!!</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
