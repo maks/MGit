@@ -6,11 +6,13 @@
     <string name="inapp_billing_key"></string>
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
+    <string name="preference_file_key">me.sheimi.sgit</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
     <string name="action_import_repo">Import Repository</string>
+    <string name="action_git_profile">Git Profile</string>
     <string name="action_pull">Pull</string>
     <string name="action_delete">Delete</string>
     <string name="action_merge">Merge</string>
@@ -29,6 +31,7 @@
     <string name="action_new_file">New File</string>
     <string name="action_new_dir">New Directory</string>
 
+
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>
     <string name="label_local_path">Local Path</string>
@@ -46,6 +49,9 @@
     <string name="label_commit">Commit</string>
     <string name="label_create">Create</string>
     <string name="label_checkout">Checkout</string>
+    <string name="label_git_name">Name</string>
+    <string name="label_git_email">Email</string>
+    <string name="label_done">Done</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
@@ -68,6 +74,7 @@
     <string name="dialog_comfirm_import_repo_msg">Are you sure to import this repository?</string>
     <string name="dialog_set_local_repo_dialog">Set Local Path</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
+    <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_push_repo_title">Push Repo</string>
     <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
     <string name="dialog_commit_title">Commit Changes</string>
@@ -82,6 +89,7 @@
     <string name="dialog_create_file_hint">File Name</string>
     <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
     <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
+    <string name="dialog_profile_git_profile_title">Git Profile</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -93,6 +101,7 @@
     <string name="title_activity_private_key_manage">Manage Private Keys</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_explore_file">Explore Files</string>
+
 
     <!-- toast msg -->
     <string name="toast_commit_success">Changes has been committed</string>

@@ -12,6 +12,13 @@
             android:id="@+id/ffSpinner"
             android:entries="@array/merge_ff_type"/>
 
+    <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_merge_checkbox"
+            android:id="@+id/autoCommit"
+            android:layout_gravity="center"/>
+
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

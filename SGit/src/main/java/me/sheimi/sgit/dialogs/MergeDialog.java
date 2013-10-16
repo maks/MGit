@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -34,6 +35,7 @@ public class MergeDialog extends DialogFragment {
     private ListView mBranchTagList;
     private Spinner mSpinner;
     private BranchTagListAdapter mAdapter;
+    private CheckBox mCheckbox;
 
     public MergeDialog() {}
 
@@ -62,6 +64,7 @@ public class MergeDialog extends DialogFragment {
 
         mBranchTagList = (ListView) layout.findViewById(R.id.branchList);
         mSpinner = (Spinner) layout.findViewById(R.id.ffSpinner);
+        mCheckbox = (CheckBox) layout.findViewById(R.id.autoCommit);
         mAdapter = new BranchTagListAdapter
                 (mActivity);
         mBranchTagList.setAdapter(mAdapter);
@@ -83,7 +86,7 @@ public class MergeDialog extends DialogFragment {
                                     int position, long id) {
                 Ref commit = mAdapter.getItem(position);
                 String mFFString = mSpinner.getSelectedItem().toString();
-                mActivity.mergeBranch(commit, mFFString);
+                mActivity.mergeBranch(commit, mFFString, mCheckbox.isChecked());
                 getDialog().cancel();
             }
         });

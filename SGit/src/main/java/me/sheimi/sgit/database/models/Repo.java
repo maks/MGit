@@ -2,6 +2,7 @@ package me.sheimi.sgit.database.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 
 import org.eclipse.jgit.api.CloneCommand;
@@ -47,6 +48,7 @@ import java.util.Set;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.dialogs.ProfileDialog;
 import me.sheimi.sgit.utils.FsUtils;
 import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
@@ -224,9 +226,15 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public void commitAllChanges(String commitMsg) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(mContext.getString(R
+                .string.preference_file_key), Context.MODE_PRIVATE);
+        String committerName = sharedPreferences.getString(ProfileDialog.GIT_USER_NAME, "");
+        String committerEmail = sharedPreferences.getString(ProfileDialog.GIT_USER_EMAIL, "");
         try {
             mGit.add().addFilepattern(".").call();
-            mGit.commit().setMessage(commitMsg).setAll(true).call();
+            mGit.commit().setMessage(commitMsg).setCommitter(committerName,
+                    committerEmail).setAll(true).call();
+            updateLatestCommitInfo();
         } catch (GitAPIException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
@@ -394,7 +402,7 @@ public class Repo implements Comparable<Repo>, Serializable {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_out_of_memory);
             throw e;
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         }
@@ -549,7 +557,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         return origin;
     }
 
-    public void mergeBranch(Ref commit, String ffModeStr) {
+    public void mergeBranch(Ref commit, String ffModeStr, boolean autoCommit) {
         String[] stringArray = mContext.getResources().getStringArray(R.array.merge_ff_type);
         MergeCommand.FastForwardMode ffMode = MergeCommand.FastForwardMode.FF;
         if (ffModeStr.equals(stringArray[1])) {
@@ -560,7 +568,8 @@ public class Repo implements Comparable<Repo>, Serializable {
             ffMode = MergeCommand.FastForwardMode.NO_FF;
         }
         try {
-            mGit.merge().include(commit).setFastForward(ffMode).call();
+            mGit.merge().include(commit).setCommit(autoCommit).setFastForward(ffMode).call();
+            updateLatestCommitInfo();
         } catch (GitAPIException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());

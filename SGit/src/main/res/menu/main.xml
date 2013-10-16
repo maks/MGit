@@ -12,6 +12,10 @@
             android:title="@string/action_clone"
             android:showAsAction="ifRoom"/>
     <item
+            android:id="@+id/action_git_profile"
+            android:title="@string/action_git_profile"
+            android:showAsAction="never"/>
+    <item
             android:id="@+id/action_import_repo"
             android:title="@string/action_import_repo"
             android:showAsAction="never"/>
