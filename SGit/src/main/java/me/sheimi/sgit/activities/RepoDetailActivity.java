@@ -376,7 +376,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         return false;
     }
 
-    public void mergeBranch(final Ref commit, final String ffModeStr) {
+    public void mergeBranch(final Ref commit, final String ffModeStr, final boolean autoCommit) {
         if (mRunningThread != null) {
             mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
             return;
@@ -384,7 +384,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         mRunningThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mRepo.mergeBranch(commit, ffModeStr);
+                mRepo.mergeBranch(commit, ffModeStr, autoCommit);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

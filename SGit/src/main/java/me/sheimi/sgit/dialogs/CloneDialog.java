@@ -146,6 +146,8 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
                     repo.deleteRepoSync();
                 } catch (OutOfMemoryError e) {
                     repo.deleteRepoSync();
+                } catch (RuntimeException e) {
+                    repo.deleteRepoSync();
                 }
             }
         });

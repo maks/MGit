@@ -19,6 +19,7 @@ import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
+import me.sheimi.sgit.dialogs.ProfileDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.Constants;
 
@@ -62,6 +63,10 @@ public class RepoListActivity extends SherlockFragmentActivity {
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                return true;
+            case R.id.action_git_profile:
+                ProfileDialog profileDialog = new ProfileDialog();
+                profileDialog.show(getSupportFragmentManager(), "profile-dialog");
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
