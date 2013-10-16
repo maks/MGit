@@ -91,7 +91,7 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog();
+                ChooseCommitDialog cbd = new ChooseCommitDialog(mRepo);
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });
