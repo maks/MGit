@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="me.sheimi.sgit"
-          android:versionCode="14"
+          android:versionCode="17"
           android:versionName="1.1.3">
 
     <uses-sdk
