@@ -29,7 +29,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
 
     private static final int REQUEST_IMPORT_REPO = 0;
     private Intent mImportRepoIntent;
-    private static boolean mIsCloneCanceled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
