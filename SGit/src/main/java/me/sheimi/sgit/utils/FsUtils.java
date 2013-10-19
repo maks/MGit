@@ -1,5 +1,7 @@
 package me.sheimi.sgit.utils;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +14,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import me.sheimi.sgit.R;
 
 /**
  * Created by sheimi on 8/8/13.
@@ -27,9 +31,11 @@ public class FsUtils {
     private static FsUtils mInstance;
 
     private Context mContext;
+    private ViewUtils mViewUtils;
 
     private FsUtils(Context context) {
         mContext = context;
+        mViewUtils = ViewUtils.getInstance(context);
     }
 
     public static FsUtils getInstance(Context context) {
@@ -105,7 +111,12 @@ public class FsUtils {
             mimeType = getMimeType(uri.toString());
         }
         intent.setDataAndType(uri, mimeType);
-        mContext.startActivity(intent);
+        try {
+            mContext.startActivity(intent);
+            ActivityUtils.forwardTransition((Activity)mContext);
+        } catch (ActivityNotFoundException e) {
+            mViewUtils.showToastMessage(R.string.error_no_edit_app);
+        }
     }
 
     public void deleteFile(File file) {
