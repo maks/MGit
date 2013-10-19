@@ -171,6 +171,14 @@ public class Repo implements Comparable<Repo>, Serializable {
         return mUsername;
     }
 
+    public void setUsername(String username) {
+        mUsername = username;
+    }
+
+    public void setPassword(String password) {
+        mPassword = password;
+    }
+
     private void writeObject(java.io.ObjectOutputStream out)
             throws IOException {
         out.writeInt(mID);
@@ -313,7 +321,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         return null;
     }
 
-    public void pull(ProgressMonitor pm) {
+    public void pull(ProgressMonitor pm) throws TransportException {
         PullCommand pullCommand = mGit.pull().setProgressMonitor(pm)
                 .setTransportConfigCallback(mCommonUtils.getSgitTransportCallback());
         if (mUsername != null && mPassword != null
@@ -327,13 +335,14 @@ public class Repo implements Comparable<Repo>, Serializable {
         } catch (TransportException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
-        } catch (GitAPIException e) {
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_pull_failed);
         }
     }
 
-    public void push(ProgressMonitor pm, boolean isPushAll) {
+    public void push(ProgressMonitor pm, boolean isPushAll) throws TransportException {
         PushCommand pushCommand = mGit.push().setPushTags().setProgressMonitor(pm)
                 .setTransportConfigCallback(mCommonUtils.getSgitTransportCallback());
         if (isPushAll) {
@@ -352,16 +361,11 @@ public class Repo implements Comparable<Repo>, Serializable {
 
         try {
             pushCommand.call();
-        } catch (InvalidRemoteException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_invalid_remote);
         } catch (TransportException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
-        } catch (JGitInternalException e) {
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(e.getMessage());
         }
@@ -638,6 +642,5 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
         return null;
     }
-
 
 }

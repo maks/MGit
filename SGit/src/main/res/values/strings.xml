@@ -90,14 +90,15 @@
     <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
     <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
     <string name="dialog_profile_git_profile_title">Git Profile</string>
+    <string name="dialog_prompt_for_password_title">Need Auth</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">Auth Fail</string>
+    <string name="dialog_prompt_for_password_checkbox">Save username and password</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
-    <string name="pull_left_init">0%</string>
-    <string name="pull_right_init">0/0</string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
     <string name="push_msg_init">Pushing … </string>
-    <string name="push_left_init">0%</string>
-    <string name="push_right_init">0/0</string>
     <string name="title_activity_private_key_manage">Manage Private Keys</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_explore_file">Explore Files</string>
