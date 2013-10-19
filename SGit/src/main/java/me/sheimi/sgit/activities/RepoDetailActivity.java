@@ -1,5 +1,6 @@
 package me.sheimi.sgit.activities;
 
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -20,10 +21,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
@@ -50,6 +54,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     private CommitsFragment mCommitsFragment;
 
     private ViewUtils mViewUtils;
+    private RepoDbManager mRepoDbManager;
     private Thread mRunningThread;
     private Repo mRepo;
 
@@ -58,6 +63,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
     private TextView mPullMsg;
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
+
+    private PushRepo mPushRepo = new PushRepo();
+    private PullRepo mPullRepo = new PullRepo();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +78,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         createFragments();
         setupPullProgressView();
         mViewUtils = ViewUtils.getInstance(this);
+        mRepoDbManager = RepoDbManager.getInstance(this);
     }
 
     private void setupPullProgressView() {
@@ -154,7 +163,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 deleteRepo();
                 return true;
             case R.id.action_pull:
-                pullRepo();
+                mPullRepo.pull();
                 return true;
             case R.id.action_diff:
                 mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
@@ -212,81 +221,6 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void pushRepo(final boolean pushAll) {
-        if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
-                R.anim.fade_in);
-        mPullProgressContainer.setAnimation(anim);
-        mPullProgressContainer.setVisibility(View.VISIBLE);
-        mPullMsg.setText(R.string.push_msg_init);
-        mPullLeftHint.setText(R.string.push_left_init);
-        mPullRightHint.setText(R.string.push_right_init);
-
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRepo.push(getProgressMonitor(), pushAll);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
-                                R.anim.fade_out);
-                        mPullProgressContainer.setAnimation(anim);
-                        mPullProgressContainer.setVisibility(View.GONE);
-                        mRunningThread = null;
-                    }
-                });
-            }
-        });
-        mRunningThread.start();
-    }
-
-    private void pullRepo() {
-        if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
-                R.anim.fade_in);
-        mPullProgressContainer.setAnimation(anim);
-        mPullProgressContainer.setVisibility(View.VISIBLE);
-        mPullMsg.setText(R.string.pull_msg_init);
-        mPullLeftHint.setText(R.string.pull_left_init);
-        mPullRightHint.setText(R.string.pull_right_init);
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRepo.pull(getProgressMonitor());
-                mRepo.updateLatestCommitInfo();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
-                                R.anim.fade_out);
-                        mPullProgressContainer.setAnimation(anim);
-                        mPullProgressContainer.setVisibility(View.GONE);
-                        reset();
-                        mRunningThread = null;
-                    }
-                });
-            }
-        });
-        mRunningThread.start();
     }
 
     private void reset() {
@@ -521,4 +455,134 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements Acti
         ActivityUtils.finishActivity(this);
         mViewUtils.showToastMessage(R.string.error_unknown);
     }
+
+    public void showProgressBar(int initMsg) {
+        if (mRunningThread != null) {
+            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            return;
+        }
+        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                R.anim.fade_in);
+        mPullProgressContainer.setAnimation(anim);
+        mPullProgressContainer.setVisibility(View.VISIBLE);
+        mPullMsg.setText(initMsg);
+        mPullLeftHint.setText(R.string.progress_left_init);
+        mPullRightHint.setText(R.string.progress_right_init);
+    }
+
+    public void hideProgressBar() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
+                        R.anim.fade_out);
+                mPullProgressContainer.setAnimation(anim);
+                mPullProgressContainer.setVisibility(View.GONE);
+                reset();
+                mRunningThread = null;
+            }
+        });
+    }
+
+
+    public void pushRepo(boolean pushAll) {
+        mPushRepo.push(pushAll);
+    }
+
+    private class PullRepo implements ViewUtils.OnPasswordEntered {
+
+        public void pull() {
+            onClicked(mRepo.getUsername(), mRepo.getPassword(), false);
+        }
+
+        @Override
+        public void onClicked(String username, String password, boolean savePassword) {
+            mRepo.setUsername(username);
+            mRepo.setPassword(password);
+            if (savePassword) {
+                ContentValues values = new ContentValues();
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+                mRepoDbManager.updateRepo(mRepo.getID(), values);
+            }
+            showProgressBar(R.string.pull_msg_init); ;
+            mRunningThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mRepo.pull(getProgressMonitor());
+                    } catch (TransportException e) {
+                        promptForPassword(mPullRepo, e.getMessage());
+                    }
+                    hideProgressBar();
+                }
+            });
+            mRunningThread.start();
+        }
+        @Override
+        public void onCanceled() {}
+    }
+
+    private class PushRepo implements ViewUtils.OnPasswordEntered {
+
+        private boolean mPushAll = false;
+
+        public void push(boolean pushAll) {
+            mPushAll = pushAll;
+            onClicked(mRepo.getUsername(), mRepo.getPassword(), false);
+        }
+
+        @Override
+        public void onClicked(String username, String password, boolean savePassword) {
+            mRepo.setUsername(username);
+            mRepo.setPassword(password);
+            if (savePassword) {
+                ContentValues values = new ContentValues();
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+                values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+                mRepoDbManager.updateRepo(mRepo.getID(), values);
+            }
+            showProgressBar(R.string.push_msg_init);
+            mRunningThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mRepo.push(getProgressMonitor(), mPushAll);
+                    } catch (TransportException e) {
+                        promptForPassword(mPushRepo, e.getMessage());
+                    }
+                    hideProgressBar();
+                }
+            });
+            mRunningThread.start();
+        }
+
+        @Override
+        public void onCanceled() {}
+    }
+
+    public void promptForPassword(final ViewUtils.OnPasswordEntered listener,
+                                  final String msg) {
+        if ((!msg.contains("Auth fail")) && (!msg.toLowerCase().contains("auth"))) {
+            return;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String errorInfo = null;
+                if (msg.contains("Auth fail")) {
+                    errorInfo = getString(R.string
+                            .dialog_prompt_for_password_title_auth_fail);
+                }
+                mViewUtils.promptForPassword(listener, errorInfo);
+            }
+        });
+    }
+
 }

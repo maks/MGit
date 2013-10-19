@@ -14,8 +14,8 @@ import java.io.FileFilter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 public class PrivateKeyManageActivity extends FileExplorerActivity {
 
@@ -94,7 +94,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     public void refreshList() {
         setCurrentDir(getRootFolder());
-        RepoUtils.getInstance(this).refreshSgitTransportCallback();
+        CommonUtils.getInstance(this).refreshSgitTransportCallback();
     }
 
 }

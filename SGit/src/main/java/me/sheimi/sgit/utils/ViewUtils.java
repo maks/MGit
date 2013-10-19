@@ -8,6 +8,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -116,8 +117,40 @@ public class ViewUtils {
                 .setNegativeButton(R.string.label_cancel, new DummyDialogListener()).show();
     }
 
+    public void promptForPassword(final OnPasswordEntered onPasswordEntered, String errorInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_prompt_for_password, null);
+        final EditText username = (EditText) layout.findViewById(R.id.username);
+        final EditText password = (EditText) layout.findViewById(R.id.password);
+        final CheckBox checkBox = (CheckBox) layout.findViewById(R.id.savePassword);
+        if (errorInfo == null) {
+            errorInfo = mContext.getString(R.string.dialog_prompt_for_password_title);
+        }
+        builder.setTitle(errorInfo).setView(layout)
+                .setPositiveButton(R.string.label_done, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onPasswordEntered.onClicked(username.getText().toString(),
+                                password.getText().toString(), checkBox.isChecked());
+
+                    }
+                })
+                .setNegativeButton(R.string.label_cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onPasswordEntered.onCanceled();
+                    }
+                }).show();
+    }
+
     public static interface OnEditTextDialogClicked {
         void onClicked(String text);
+    }
+
+    public static interface OnPasswordEntered {
+        void onClicked(String username, String password, boolean savePassword);
+        void onCanceled();
     }
 
 }

@@ -1,22 +1,13 @@
 package me.sheimi.sgit.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-import org.eclipse.jgit.api.Git;
-
-import java.io.File;
-
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 /**
  * Created by sheimi on 8/16/13.

@@ -8,10 +8,10 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.TransportException;
 
 import java.io.File;
 
@@ -22,22 +22,25 @@ import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/24/13.
  */
 
-public class CloneDialog extends DialogFragment implements View.OnClickListener {
+public class CloneDialog extends DialogFragment implements View.OnClickListener,
+        ViewUtils.OnPasswordEntered {
 
     private EditText mRemoteURL;
     private EditText mLocalPath;
     private EditText mUsername;
     private EditText mPassword;
+    private CheckBox mIsSavePassword;
     private RepoListActivity mActivity;
     private ViewUtils mViewUtils;
     private FsUtils mFsUtils;
+    private Repo mRepo;
+    private RepoDbManager mRepoDbManager;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
         mActivity = (RepoListActivity) getActivity();
         mViewUtils = ViewUtils.getInstance(mActivity);
         mFsUtils = FsUtils.getInstance(mActivity);
+        mRepoDbManager = RepoDbManager.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_clone, null);
@@ -54,12 +58,11 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
         mLocalPath = (EditText) layout.findViewById(R.id.localPath);
         mUsername = (EditText) layout.findViewById(R.id.username);
         mPassword = (EditText) layout.findViewById(R.id.password);
+        mIsSavePassword = (CheckBox) layout.findViewById(R.id.savePassword);
 
         if (CommonUtils.isDebug(mActivity)) {
-            mRemoteURL.setText(RepoUtils.TEST_REPO);
-            mLocalPath.setText(RepoUtils.TEST_LOCAL);
-            mUsername.setText(RepoUtils.TEST_USERNAME);
-            mPassword.setText(RepoUtils.TEST_PASSWORD);
+            mRemoteURL.setText(Repo.TEST_REPO);
+            mLocalPath.setText(Repo.TEST_LOCAL);
         }
 
         // set button listener
@@ -115,43 +118,74 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
 
         String username = mUsername.getText().toString();
         String password = mPassword.getText().toString();
+        boolean savePassword = mIsSavePassword.isChecked();
+        onClicked(username, password, savePassword);
+        dismiss();
+    }
+
+    public void cloneRepo() {
+        onClicked(null, null, false);
+    }
+
+    @Override
+    public void onClicked(String username, String password, boolean savePassword) {
+        String remoteURL = mRemoteURL.getText().toString().trim();
+        String localPath = mLocalPath.getText().toString().trim();
         ContentValues values = new ContentValues();
         values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                 RepoContract.REPO_STATUS_WAITING_CLONE);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-        long id = RepoDbManager.getInstance(mActivity)
-                .insertRepo(values);
-        Repo repo = Repo.getRepoById(mActivity, id);
-        cloneRepo(repo);
-        dismiss();
-    }
+        if (savePassword) {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+        } else {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
+        }
+        long id = mRepoDbManager.insertRepo(values);
+        mRepo = Repo.getRepoById(mActivity, id);
 
-    public void cloneRepo(final Repo repo) {
+        mRepo.setUsername(username);
+        mRepo.setPassword(password);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    repo.clone(mActivity.getCloneMonitor(repo.getID()));
-                    repo.updateLatestCommitInfo();
+                    mRepo.clone(mActivity.getCloneMonitor(mRepo.getID()));
+                    mRepo.updateLatestCommitInfo();
                     ContentValues values = new ContentValues();
                     values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                             RepoContract.REPO_STATUS_NULL);
-                    RepoDbManager.getInstance(mActivity).updateRepo(repo.getID(), values);
-                } catch (GitAPIException e) {
-                    repo.deleteRepoSync();
-                } catch (JGitInternalException e) {
-                    repo.deleteRepoSync();
-                } catch (OutOfMemoryError e) {
-                    repo.deleteRepoSync();
-                } catch (RuntimeException e) {
-                    repo.deleteRepoSync();
+                    RepoDbManager.getInstance(mActivity).updateRepo(mRepo.getID(), values);
+                } catch (TransportException e) {
+                    String msg = e.getMessage();
+                    if (msg.contains("Auth fail")) {
+                        promptForPassword(mActivity.getString(R.string
+                                .dialog_prompt_for_password_title_auth_fail));
+                    } else if (msg.toLowerCase().contains("auth")) {
+                        promptForPassword(null);
+                    }
+                    mRepo.deleteRepoSync();
+                } catch (Exception e) {
+                    mRepo.deleteRepoSync();
                 }
             }
         });
         thread.start();
     }
 
+    @Override
+    public void onCanceled() {
+        mRepo.deleteRepo();
+    }
+
+    public void promptForPassword(final String errorInfo) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mViewUtils.promptForPassword(CloneDialog.this, errorInfo);
+            }
+        });
+    }
 }

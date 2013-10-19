@@ -31,7 +31,6 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.ActivityUtils;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.ImageCache;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -51,7 +50,6 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
     private String mSearchQueryString;
     private RepoListActivity mActivity;
     private ViewUtils mViewUtils;
-    private RepoUtils mRepoUtils;
 
     private SparseArray<Integer> mCloningProgress = new SparseArray<Integer>();
 
@@ -61,7 +59,6 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements RepoDbManager
         mDb.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME, this);
         mActivity = (RepoListActivity) context;
         mViewUtils = ViewUtils.getInstance(context);
-        mRepoUtils = RepoUtils.getInstance(context);
     }
 
     public void searchRepo(String query) {
