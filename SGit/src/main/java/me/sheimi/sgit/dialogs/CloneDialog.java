@@ -22,7 +22,6 @@ import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -56,10 +55,8 @@ public class CloneDialog extends DialogFragment implements View.OnClickListener 
         mPassword = (EditText) layout.findViewById(R.id.password);
 
         if (CommonUtils.isDebug(mActivity)) {
-            mRemoteURL.setText(RepoUtils.TEST_REPO);
-            mLocalPath.setText(RepoUtils.TEST_LOCAL);
-            mUsername.setText(RepoUtils.TEST_USERNAME);
-            mPassword.setText(RepoUtils.TEST_PASSWORD);
+            mRemoteURL.setText(Repo.TEST_REPO);
+            mLocalPath.setText(Repo.TEST_LOCAL);
         }
 
         // set button listener

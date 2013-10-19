@@ -12,8 +12,8 @@ import java.io.File;
 import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 
 public class ImportRepositoryActivity extends FileExplorerActivity {
 
@@ -39,7 +39,7 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 final File file = mFilesListAdapter.getItem(position);
-                File dotGit = new File(file, RepoUtils.DOT_GIT_DIR);
+                File dotGit = new File(file, Repo.DOT_GIT_DIR);
                 if (!dotGit.exists()) {
                     setCurrentDir(file);
                     return;

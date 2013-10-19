@@ -23,7 +23,6 @@ import java.util.List;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.RepoUtils;
 
 /**
  * Created by sheimi on 8/16/13.
@@ -120,10 +119,10 @@ public class MergeDialog extends DialogFragment {
             String displayName = Repo.getCommitDisplayName(commitName);
             int commitType = Repo.getCommitType(commitName);
             switch (commitType) {
-                case RepoUtils.COMMIT_TYPE_HEAD:
+                case Repo.COMMIT_TYPE_HEAD:
                     holder.commitIcon.setImageResource(R.drawable.ic_branch_d);
                     break;
-                case RepoUtils.COMMIT_TYPE_TAG:
+                case Repo.COMMIT_TYPE_TAG:
                     holder.commitIcon.setImageResource(R.drawable.ic_tag_d);
                     break;
             }

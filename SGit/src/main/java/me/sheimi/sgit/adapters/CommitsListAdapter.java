@@ -23,7 +23,6 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.ImageCache;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -32,7 +31,6 @@ import me.sheimi.sgit.utils.ViewUtils;
 public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
     private Repo mRepo;
-    private RepoUtils mRepoUtils;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new
             SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
     private Set<Integer> mChosenItems;
@@ -40,7 +38,6 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems, Repo repo) {
         super(context, 0);
-        mRepoUtils = RepoUtils.getInstance(context);
         mChosenItems = chosenItems;
         mViewUtils = ViewUtils.getInstance(context);
         mRepo = repo;

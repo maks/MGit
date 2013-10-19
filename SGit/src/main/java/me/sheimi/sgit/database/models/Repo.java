@@ -49,8 +49,8 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.dialogs.ProfileDialog;
+import me.sheimi.sgit.utils.CommonUtils;
 import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -78,10 +78,14 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     private Context mContext;
     private ViewUtils mViewUtils;
-    private RepoUtils mRepoUtils;
+    private CommonUtils mCommonUtils;
     private FsUtils mFsUtils;
     private RepoDbManager mDbManager;
     private Git mGit;
+
+    public static final String TEST_REPO = "git@git.sheimi.me:sheimi/sgit-android.git";
+    public static final String TEST_LOCAL = "test";
+    public static final String DOT_GIT_DIR = ".git";
 
     public Repo() {}
 
@@ -103,10 +107,10 @@ public class Repo implements Comparable<Repo>, Serializable {
     public void setContext(Context context) {
         mContext = context;
         mViewUtils = ViewUtils.getInstance(context);
-        mRepoUtils = RepoUtils.getInstance(context);
+        mCommonUtils = CommonUtils.getInstance(context);
         mFsUtils = FsUtils.getInstance(context);
         mDbManager = RepoDbManager.getInstance(context);
-        mGit = mRepoUtils.getGit(getLocalPath());
+        mGit = getGit();
     }
 
     public static Repo getRepoById(Context context, long id) {
@@ -311,7 +315,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public void pull(ProgressMonitor pm) {
         PullCommand pullCommand = mGit.pull().setProgressMonitor(pm)
-                .setTransportConfigCallback(mRepoUtils.getSgitTransportCallback());
+                .setTransportConfigCallback(mCommonUtils.getSgitTransportCallback());
         if (mUsername != null && mPassword != null
                 && !mUsername.equals("") && !mPassword.equals("")) {
             UsernamePasswordCredentialsProvider auth =
@@ -331,7 +335,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public void push(ProgressMonitor pm, boolean isPushAll) {
         PushCommand pushCommand = mGit.push().setPushTags().setProgressMonitor(pm)
-                .setTransportConfigCallback(mRepoUtils.getSgitTransportCallback());
+                .setTransportConfigCallback(mCommonUtils.getSgitTransportCallback());
         if (isPushAll) {
             pushCommand.setPushAll();
         } else {
@@ -370,7 +374,7 @@ public class Repo implements Comparable<Repo>, Serializable {
                 .setURI(mRemoteURL)
                 .setCloneAllBranches(true)
                 .setProgressMonitor(pm)
-                .setTransportConfigCallback(mRepoUtils.getSgitTransportCallback())
+                .setTransportConfigCallback(mCommonUtils.getSgitTransportCallback())
                 .setDirectory(localRepo);
 
         if (mUsername != null && mPassword != null
@@ -381,7 +385,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
         try {
             cloneCommand.call();
-            mGit = mRepoUtils.getGit(getLocalPath());
+            mGit = getGit();
         } catch (InvalidRemoteException e) {
             e.printStackTrace();
             mViewUtils.showToastMessage(R.string.error_invalid_remote);
@@ -623,5 +627,17 @@ public class Repo implements Comparable<Repo>, Serializable {
             return null;
         return String.format("refs/heads/%s", splits[3]);
     }
+
+    private Git getGit() {
+        File repoFile = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
+                getLocalPath());
+        try {
+            return Git.open(repoFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

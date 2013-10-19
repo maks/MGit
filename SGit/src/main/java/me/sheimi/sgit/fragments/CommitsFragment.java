@@ -32,7 +32,6 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.listeners.OnBackClickListener;
 import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.RepoUtils;
 import me.sheimi.sgit.utils.ViewUtils;
 
 /**
@@ -168,18 +167,18 @@ public class CommitsFragment extends BaseFragment implements ActionMode.Callback
     public void reset(String commitName) {
         int commitType = Repo.getCommitType(commitName);
         switch (commitType) {
-            case RepoUtils.COMMIT_TYPE_REMOTE:
+            case Repo.COMMIT_TYPE_REMOTE:
                 // change the display name to local branch
                 commitName = Repo.convertRemoteName(commitName);
-            case RepoUtils.COMMIT_TYPE_HEAD:
+            case Repo.COMMIT_TYPE_HEAD:
                 mCommitType.setVisibility(View.VISIBLE);
                 mCommitType.setImageResource(R.drawable.ic_branch_w);
                 break;
-            case RepoUtils.COMMIT_TYPE_TAG:
+            case Repo.COMMIT_TYPE_TAG:
                 mCommitType.setVisibility(View.VISIBLE);
                 mCommitType.setImageResource(R.drawable.ic_tag_w);
                 break;
-            case RepoUtils.COMMIT_TYPE_TEMP:
+            case Repo.COMMIT_TYPE_TEMP:
                 mCommitType.setVisibility(View.GONE);
                 break;
         }
