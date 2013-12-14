@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.sheimi.sgit"
+    android:versionCode="17"
+    android:versionName="1.1.4" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".RepoListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RepoDetailActivity"
+            android:label="@string/title_activity_repo_detail"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ViewFileActivity"
+            android:parentActivityName=".activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RepoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activities.CommitDiffActivity"
+            android:parentActivityName=".activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RepoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ImportRepositoryActivity"
+            android:label="@string/title_activity_import_repository"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.PrivateKeyManageActivity"
+            android:label="@string/title_activity_private_key_manage"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ExploreFileActivity"
+            android:label="@string/title_activity_explore_file"
+            android:parentActivityName=".activities.explorer.PrivateKeyManageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.explorer.PrivateKeyManageActivity" />
+        </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5216c81356240b897d00007c" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="google play" >
+        </meta-data>
+    </application>
+
+</manifest>
