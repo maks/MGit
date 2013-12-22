@@ -1,5 +1,15 @@
 package me.sheimi.sgit;
 
+import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
+import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
+import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
+import me.sheimi.sgit.adapters.RepoListAdapter;
+import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
+import me.sheimi.sgit.dialogs.CloneDialog;
+import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
+import me.sheimi.sgit.dialogs.ProfileDialog;
+import me.sheimi.sgit.utils.ActivityUtils;
+import me.sheimi.sgit.utils.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,19 +21,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.lib.ProgressMonitor;
-
-import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
-import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
-import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.adapters.RepoListAdapter;
-import me.sheimi.sgit.dialogs.CloneDialog;
-import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
-import me.sheimi.sgit.dialogs.ProfileDialog;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.Constants;
-
-public class RepoListActivity extends SherlockFragmentActivity {
+public class RepoListActivity extends SherlockFragmentActivity implements CloneObserver {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
@@ -118,10 +116,6 @@ public class RepoListActivity extends SherlockFragmentActivity {
         MobclickAgent.onPause(this);
     }
 
-    public ProgressMonitor getCloneMonitor(long id) {
-        return mRepoListAdapter.getCloneMonitor(id);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)
@@ -158,6 +152,16 @@ public class RepoListActivity extends SherlockFragmentActivity {
             return true;
         }
 
+    }
+
+    @Override
+    public void cloneStateUpdated() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRepoListAdapter.nofityChanged();
+            }
+        });
     }
 
 }

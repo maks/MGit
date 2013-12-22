@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,8 +52,6 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
     private String mSearchQueryString;
     private RepoListActivity mActivity;
     private ViewUtils mViewUtils;
-
-    private SparseArray<Integer> mCloningProgress = new SparseArray<Integer>();
 
     public RepoListAdapter(Context context) {
         super(context, 0);
@@ -113,15 +112,14 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         holder.progressContainer = view.findViewById(R.id.progressContainer);
         holder.commitMsgContainer = view.findViewById(R.id.commitMsgContainer);
         holder.progressMsg = (TextView) view.findViewById(R.id.progressMsg);
-        holder.cloningProgressBar = (ProgressBar) view
-                .findViewById(R.id.cloningProgressBar);
+        holder.cancelBtn = (ImageView) view.findViewById(R.id.cancelBtn);
         view.setTag(holder);
         return view;
     }
 
     public void bindView(View view, int position) {
         RepoListItemHolder holder = (RepoListItemHolder) view.getTag();
-        Repo repo = getItem(position);
+        final Repo repo = getItem(position);
 
         holder.repoTitle.setText(repo.getLocalPath());
         holder.repoRemote.setText(repo.getRemoteURL());
@@ -129,7 +127,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL)) {
             holder.commitMsgContainer.setVisibility(View.GONE);
             holder.progressContainer.setVisibility(View.VISIBLE);
-            int progress = mCloningProgress.get(repo.getID(), -1);
+            int progress = repo.getProgress();
             if (progress != -1) {
                 holder.progressMsg.setText(String.format("%s  (%d%%)",
                         repo.getRepoStatus(), progress));
@@ -137,6 +135,12 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
                 holder.progressMsg.setText(String.format("%s",
                         repo.getRepoStatus()));
             }
+            holder.cancelBtn.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    repo.cancelClone();
+                }
+            });
         } else if (repo.getLastCommitter() != null) {
             holder.commitMsgContainer.setVisibility(View.VISIBLE);
             holder.progressContainer.setVisibility(View.GONE);
@@ -192,10 +196,6 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         return true;
     }
 
-    public ProgressMonitor getCloneMonitor(long id) {
-        return new CloningMonitor(id);
-    }
-
     private class RepoListItemHolder {
         public TextView repoTitle;
         public TextView repoRemote;
@@ -205,67 +205,8 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         public ImageView authorIcon;
         public View progressContainer;
         public View commitMsgContainer;
-        public ProgressBar cloningProgressBar;
         public TextView progressMsg;
-    }
-
-    public class CloningMonitor implements ProgressMonitor {
-
-        private long mID;
-        private int mTotalWork;
-        private int mWorkDone;
-
-        public CloningMonitor(long id) {
-            mID = id;
-        }
-
-        @Override
-        public void start(int totalTasks) {
-            mCloningProgress.put((int) mID, 0);
-        }
-
-        @Override
-        public void beginTask(String title, int totalWork) {
-            mTotalWork = totalWork;
-            mWorkDone = 0;
-            mCloningProgress.put((int) mID, 0);
-            if (title != null) {
-                ContentValues values = new ContentValues();
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                        title + " ...");
-                mDb.updateRepo(mID, values);
-            }
-        }
-
-        @Override
-        public void update(int i) {
-            mWorkDone += i;
-            if (mTotalWork != 0) {
-                mActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        int progress = computeProgress();
-                        mCloningProgress.put((int) mID, progress);
-                        notifyDataSetChanged();
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void endTask() {
-
-        }
-
-        @Override
-        public boolean isCancelled() {
-            return false;
-        }
-
-        private int computeProgress() {
-            return 100 * mWorkDone / mTotalWork;
-        }
-
+        public ImageView cancelBtn;
     }
 
 }

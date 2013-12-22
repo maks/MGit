@@ -103,9 +103,20 @@
                 android:textSize="@dimen/repo_list_item_msg_size"
                 android:gravity="left|center"
                 android:layout_marginLeft="@dimen/general_horizontal_margin"
+                android:layout_marginRight="@dimen/general_horizontal_margin"
                 android:layout_alignTop="@+id/cloningProgressBar"
                 android:layout_alignBottom="@+id/cloningProgressBar"
-                android:layout_toRightOf="@+id/cloningProgressBar"/>
+                android:layout_toRightOf="@+id/cloningProgressBar"
+                android:layout_toLeftOf="@+id/cancelBtn"/>
+        <ImageButton
+                android:layout_width="@dimen/repo_list_item_icon_size"
+                android:layout_height="@dimen/repo_list_item_icon_size"
+                android:id="@+id/cancelBtn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/general_padding"
+                android:src="@drawable/ic_action_cancel"
+                android:background="@android:color/transparent"/>
     </RelativeLayout>
 
 

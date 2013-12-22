@@ -1,9 +1,25 @@
 package me.sheimi.sgit.database.models;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.database.Cursor;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
+import me.sheimi.sgit.dialogs.ProfileDialog;
+import me.sheimi.sgit.utils.CommonUtils;
+import me.sheimi.sgit.utils.FsUtils;
+import me.sheimi.sgit.utils.ViewUtils;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -33,25 +49,10 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.dialogs.ProfileDialog;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 
 /**
  * Created by sheimi on 8/20/13.
@@ -80,6 +81,8 @@ public class Repo implements Comparable<Repo>, Serializable {
     private String mLastCommitterEmail;
     private Date mLastCommitDate;
     private String mLastCommitMsg;
+    private RepoCloneMonitor mCloneMonitor;
+    private boolean isDeleted = false;
 
     private Context mContext;
     private ViewUtils mViewUtils;
@@ -91,8 +94,10 @@ public class Repo implements Comparable<Repo>, Serializable {
     public static final String TEST_REPO = "git@git.sheimi.me:sheimi/sgit-android.git";
     public static final String TEST_LOCAL = "test";
     public static final String DOT_GIT_DIR = ".git";
+    public static final int DELAY_DELETE = 10000;
 
     public Repo() {
+
     }
 
     public Repo(Context context, Cursor cursor) {
@@ -185,6 +190,27 @@ public class Repo implements Comparable<Repo>, Serializable {
         mPassword = password;
     }
 
+    public int getProgress() {
+        if (mCloneMonitor == null)
+            return 0;
+        return mCloneMonitor.getProgress();
+    }
+
+    public void cancelClone() {
+        if (mCloneMonitor != null) {
+            mCloneMonitor.cancel();
+        }
+        deleteRepo();
+    }
+
+    public void updateStatus(String status) {
+        ContentValues values = new ContentValues();
+        mRepoStatus = status;
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS, status
+                + " ...");
+        mDbManager.updateRepo(mID, values);
+    }
+
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeInt(mID);
         out.writeObject(mRemoteURL);
@@ -218,19 +244,35 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public void deleteRepo() {
+        deleteRepo(0);
+    }
+
+    public void deleteRepo(final int delay) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                deleteRepoSync();
+                deleteRepoSync(delay);
             }
         });
         thread.start();
     }
 
     public void deleteRepoSync() {
-        File fileToDelete = mFsUtils.getRepo(mLocalPath);
-        mFsUtils.deleteFile(fileToDelete);
+        deleteRepoSync(0);
+    }
+
+    public void deleteRepoSync(int delay) {
+        if (isDeleted)
+            return;
         mDbManager.deleteRepo(mID);
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+        } finally {
+            File fileToDelete = mFsUtils.getRepo(mLocalPath);
+            mFsUtils.deleteFile(fileToDelete);
+            isDeleted = true;
+        }
     }
 
     public void resetCommitChanges() {
@@ -390,14 +432,14 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
     }
 
-    public void clone(ProgressMonitor pm) throws GitAPIException {
-
+    public void clone(CloneObserver observer) throws GitAPIException {
+        mCloneMonitor = new RepoCloneMonitor(this, observer);
         File localRepo = new File(mFsUtils.getDir(FsUtils.REPO_DIR), mLocalPath);
         CloneCommand cloneCommand = Git
                 .cloneRepository()
                 .setURI(mRemoteURL)
                 .setCloneAllBranches(true)
-                .setProgressMonitor(pm)
+                .setProgressMonitor(mCloneMonitor)
                 .setTransportConfigCallback(
                         mCommonUtils.getSgitTransportCallback())
                 .setDirectory(localRepo);

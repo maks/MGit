@@ -155,7 +155,7 @@ public class CloneDialog extends DialogFragment implements
             @Override
             public void run() {
                 try {
-                    mRepo.clone(mActivity.getCloneMonitor(mRepo.getID()));
+                    mRepo.clone(mActivity);
                     mRepo.updateLatestCommitInfo();
                     ContentValues values = new ContentValues();
                     values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
