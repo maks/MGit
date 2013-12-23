@@ -38,22 +38,6 @@ public class CloneTask extends RepoOpTask {
         return true;
     }
 
-    @Override
-    protected void onProgressUpdate(String... progress) {
-        super.onProgressUpdate(progress);
-        String status = "";
-        String percent = "";
-        if (mTitle != null) {
-            status = String.format(Locale.getDefault(), "%s ... ", mTitle);
-            percent = "0%";
-        }
-        if (mTotalWork != 0) {
-            int p = 100 * mWorkDone / mTotalWork;
-            percent = String.format(Locale.getDefault(), "(%d%%)", p);
-        }
-        mRepo.updateStatus(status + percent);
-    }
-
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
         if (!isSuccess && !isTaskCanceled()) {
@@ -110,10 +94,6 @@ public class CloneTask extends RepoOpTask {
         return true;
     }
 
-    private int mTotalWork;
-    private int mWorkDone;
-    private String mTitle;
-
     @Override
     public void cancelTask() {
         super.cancelTask();
@@ -122,9 +102,27 @@ public class CloneTask extends RepoOpTask {
 
     public class RepoCloneMonitor implements ProgressMonitor {
 
+        private int mTotalWork;
+        private int mWorkDone;
+        private String mTitle;
+
+        private void publishProgressInner() {
+            String status = "";
+            String percent = "";
+            if (mTitle != null) {
+                status = String.format(Locale.getDefault(), "%s ... ", mTitle);
+                percent = "0%";
+            }
+            if (mTotalWork != 0) {
+                int p = 100 * mWorkDone / mTotalWork;
+                percent = String.format(Locale.getDefault(), "(%d%%)", p);
+            }
+            mRepo.updateStatus(status + percent);
+        }
+
         @Override
         public void start(int totalTasks) {
-            publishProgress();
+            publishProgressInner();
         }
 
         @Override
@@ -132,13 +130,13 @@ public class CloneTask extends RepoOpTask {
             mTotalWork = totalWork;
             mWorkDone = 0;
             mTitle = title;
-            publishProgress();
+            publishProgressInner();
         }
 
         @Override
         public void update(int i) {
             mWorkDone += i;
-            publishProgress();
+            publishProgressInner();
         }
 
         @Override
