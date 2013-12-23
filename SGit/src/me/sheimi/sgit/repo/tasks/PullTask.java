@@ -18,7 +18,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-public class CloneTask extends RepoOpTask {
+public class PullTask extends RepoOpTask {
 
     private Repo mRepo;
 
