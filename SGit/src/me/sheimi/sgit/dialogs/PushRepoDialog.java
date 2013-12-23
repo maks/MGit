@@ -1,18 +1,17 @@
 package me.sheimi.sgit.dialogs;
 
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
 
 /**
  * Created by sheimi on 8/16/13.
  */
-public class PushRepoDialog extends DialogFragment {
+public class PushRepoDialog extends SheimiDialogFragment {
 
     private RepoDetailActivity mActivity;
 

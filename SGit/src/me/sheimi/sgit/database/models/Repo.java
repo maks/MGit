@@ -12,14 +12,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
 import me.sheimi.sgit.dialogs.ProfileDialog;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
+import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -85,16 +85,12 @@ public class Repo implements Comparable<Repo>, Serializable {
     private boolean isDeleted = false;
 
     private Context mContext;
-    private ViewUtils mViewUtils;
-    private CommonUtils mCommonUtils;
-    private FsUtils mFsUtils;
     private RepoDbManager mDbManager;
     private Git mGit;
 
-    public static final String TEST_REPO = "git@git.sheimi.me:sheimi/sgit-android.git";
-    public static final String TEST_LOCAL = "test";
+    public static final String TEST_REPO = "https://github.com/sheimi/SGit.git";
+    public static final String TEST_LOCAL = "SGit";
     public static final String DOT_GIT_DIR = ".git";
-    public static final int DELAY_DELETE = 10000;
 
     public Repo() {
 
@@ -117,9 +113,6 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public void setContext(Context context) {
         mContext = context;
-        mViewUtils = ViewUtils.getInstance(context);
-        mCommonUtils = CommonUtils.getInstance(context);
-        mFsUtils = FsUtils.getInstance(context);
         mDbManager = RepoDbManager.getInstance(context);
         mGit = getGit();
     }
@@ -244,43 +237,29 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public void deleteRepo() {
-        deleteRepo(0);
-    }
-
-    public void deleteRepo(final int delay) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                deleteRepoSync(delay);
+                deleteRepoSync();
             }
         });
         thread.start();
     }
 
     public void deleteRepoSync() {
-        deleteRepoSync(0);
-    }
-
-    public void deleteRepoSync(int delay) {
         if (isDeleted)
             return;
         mDbManager.deleteRepo(mID);
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-        } finally {
-            File fileToDelete = mFsUtils.getRepo(mLocalPath);
-            mFsUtils.deleteFile(fileToDelete);
-            isDeleted = true;
-        }
+        File fileToDelete = FsUtils.getRepo(mLocalPath);
+        FsUtils.deleteFile(fileToDelete);
+        isDeleted = true;
     }
 
     public void resetCommitChanges() {
         try {
             mGit.reset().setMode(ResetCommand.ResetType.HARD).call();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
     }
 
@@ -299,8 +278,7 @@ public class Repo implements Comparable<Repo>, Serializable {
                     .call();
             updateLatestCommitInfo();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
     }
 
@@ -312,11 +290,9 @@ public class Repo implements Comparable<Repo>, Serializable {
         try {
             mGit.checkout().setName(name).call();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         } catch (JGitInternalException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         }
     }
@@ -331,11 +307,9 @@ public class Repo implements Comparable<Repo>, Serializable {
                     .setStartPoint(remoteBranchName).setName(branchName)
                     .setForce(true).call();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         } catch (JGitInternalException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         }
     }
@@ -378,8 +352,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         PullCommand pullCommand = mGit
                 .pull()
                 .setProgressMonitor(pm)
-                .setTransportConfigCallback(
-                        mCommonUtils.getSgitTransportCallback());
+                .setTransportConfigCallback(new SgitTransportCallback());
         if (mUsername != null && mPassword != null && !mUsername.equals("")
                 && !mPassword.equals("")) {
             UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
@@ -389,12 +362,11 @@ public class Repo implements Comparable<Repo>, Serializable {
         try {
             pullCommand.call();
         } catch (TransportException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_pull_failed);
+            showError(R.string.error_pull_failed);
         }
     }
 
@@ -404,8 +376,7 @@ public class Repo implements Comparable<Repo>, Serializable {
                 .push()
                 .setPushTags()
                 .setProgressMonitor(pm)
-                .setTransportConfigCallback(
-                        mCommonUtils.getSgitTransportCallback());
+                .setTransportConfigCallback(new SgitTransportCallback());
         if (isPushAll) {
             pushCommand.setPushAll();
         } else {
@@ -423,25 +394,22 @@ public class Repo implements Comparable<Repo>, Serializable {
         try {
             pushCommand.call();
         } catch (TransportException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         } catch (Exception e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
     }
 
     public void clone(CloneObserver observer) throws GitAPIException {
         mCloneMonitor = new RepoCloneMonitor(this, observer);
-        File localRepo = new File(mFsUtils.getDir(FsUtils.REPO_DIR), mLocalPath);
+        File localRepo = new File(FsUtils.getDir(FsUtils.REPO_DIR), mLocalPath);
         CloneCommand cloneCommand = Git
                 .cloneRepository()
                 .setURI(mRemoteURL)
                 .setCloneAllBranches(true)
                 .setProgressMonitor(mCloneMonitor)
-                .setTransportConfigCallback(
-                        mCommonUtils.getSgitTransportCallback())
+                .setTransportConfigCallback(new SgitTransportCallback())
                 .setDirectory(localRepo);
 
         if (mUsername != null && mPassword != null && !mUsername.equals("")
@@ -455,27 +423,24 @@ public class Repo implements Comparable<Repo>, Serializable {
             mGit = getGit();
         } catch (InvalidRemoteException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_invalid_remote);
+            showError(R.string.error_invalid_remote);
             throw e;
         } catch (TransportException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         } catch (GitAPIException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_clone_failed);
+            showError(R.string.error_clone_failed);
             throw e;
         } catch (JGitInternalException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
             throw e;
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_out_of_memory);
+            showError(R.string.error_out_of_memory);
             throw e;
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
     }
 
@@ -554,19 +519,18 @@ public class Repo implements Comparable<Repo>, Serializable {
             return diffs;
         } catch (GitAPIException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_diff_failed);
+            showError(R.string.error_diff_failed);
         } catch (IncorrectObjectTypeException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_diff_failed);
+            showError(R.string.error_diff_failed);
         } catch (AmbiguousObjectException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_diff_failed);
+            showError(R.string.error_diff_failed);
         } catch (IOException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(R.string.error_diff_failed);
+            showError(R.string.error_diff_failed);
         } catch (IllegalStateException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
         return null;
     }
@@ -648,8 +612,7 @@ public class Repo implements Comparable<Repo>, Serializable {
                     .setFastForward(ffMode).call();
             updateLatestCommitInfo();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showError(e);
         }
     }
 
@@ -701,7 +664,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     private Git getGit() {
-        File repoFile = new File(mFsUtils.getDir(FsUtils.REPO_DIR),
+        File repoFile = new File(FsUtils.getDir(FsUtils.REPO_DIR),
                 getLocalPath());
         try {
             return Git.open(repoFile);
@@ -709,6 +672,20 @@ public class Repo implements Comparable<Repo>, Serializable {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void showError(Exception e) {
+        e.printStackTrace();
+        if (mContext instanceof SheimiFragmentActivity) {
+            ((SheimiFragmentActivity) mContext)
+                    .showToastMessage(e.getMessage());
+        }
+    }
+
+    private void showError(int errorId) {
+        if (mContext instanceof SheimiFragmentActivity) {
+            ((SheimiFragmentActivity) mContext).showToastMessage(errorId);
+        }
     }
 
 }

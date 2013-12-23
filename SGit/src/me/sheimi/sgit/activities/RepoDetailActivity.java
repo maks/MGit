@@ -1,5 +1,20 @@
 package me.sheimi.sgit.activities;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.MergeDialog;
+import me.sheimi.sgit.dialogs.PushRepoDialog;
+import me.sheimi.sgit.fragments.BaseFragment;
+import me.sheimi.sgit.fragments.CommitsFragment;
+import me.sheimi.sgit.fragments.FilesFragment;
+
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.lib.Ref;
+
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,29 +31,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.lib.Ref;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.MergeDialog;
-import me.sheimi.sgit.dialogs.PushRepoDialog;
-import me.sheimi.sgit.fragments.BaseFragment;
-import me.sheimi.sgit.fragments.CommitsFragment;
-import me.sheimi.sgit.fragments.FilesFragment;
-import me.sheimi.sgit.listeners.OnBackClickListener;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.ViewUtils;
-
-public class RepoDetailActivity extends SherlockFragmentActivity implements
+public class RepoDetailActivity extends SheimiFragmentActivity implements
         ActionBar.TabListener {
 
     private static final int[] NAV_TABS = { R.string.tab_files_label,
@@ -54,7 +50,6 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
 
-    private ViewUtils mViewUtils;
     private RepoDbManager mRepoDbManager;
     private Thread mRunningThread;
     private Repo mRepo;
@@ -78,7 +73,6 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
         setupActionBar();
         createFragments();
         setupPullProgressView();
-        mViewUtils = ViewUtils.getInstance(this);
         mRepoDbManager = RepoDbManager.getInstance(this);
     }
 
@@ -126,7 +120,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
 
     public void resetCommits(final String commitName) {
         if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            showToastMessage(R.string.alert_please_wait_previous_op);
             return;
         }
         mRunningThread = new Thread(new Runnable() {
@@ -158,7 +152,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.finishActivity(this);
+                finish();
                 return true;
             case R.id.action_delete:
                 deleteRepo();
@@ -179,9 +173,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                 prd.show(getSupportFragmentManager(), "push-repo-dialog");
                 return true;
             case R.id.action_commit:
-                mViewUtils.showEditTextDialog(R.string.dialog_commit_title,
+                showEditTextDialog(R.string.dialog_commit_title,
                         R.string.dialog_commit_msg_hint, R.string.label_commit,
-                        new ViewUtils.OnEditTextDialogClicked() {
+                        new OnEditTextDialogClicked() {
                             @Override
                             public void onClicked(String text) {
                                 commitChanges(text);
@@ -189,8 +183,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                         });
                 return true;
             case R.id.action_reset:
-                mViewUtils.showMessageDialog(
-                        R.string.dialog_reset_commit_title,
+                showMessageDialog(R.string.dialog_reset_commit_title,
                         R.string.dialog_reset_commit_msg,
                         R.string.action_reset,
                         new DialogInterface.OnClickListener() {
@@ -202,9 +195,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                         });
                 return true;
             case R.id.action_new_dir:
-                mViewUtils.showEditTextDialog(R.string.dialog_create_dir_title,
+                showEditTextDialog(R.string.dialog_create_dir_title,
                         R.string.dialog_create_dir_hint, R.string.label_create,
-                        new ViewUtils.OnEditTextDialogClicked() {
+                        new OnEditTextDialogClicked() {
                             @Override
                             public void onClicked(String text) {
                                 mFilesFragment.newDir(text);
@@ -213,11 +206,9 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                         });
                 return true;
             case R.id.action_new_file:
-                mViewUtils.showEditTextDialog(
-                        R.string.dialog_create_file_title,
+                showEditTextDialog(R.string.dialog_create_file_title,
                         R.string.dialog_create_file_hint,
-                        R.string.label_create,
-                        new ViewUtils.OnEditTextDialogClicked() {
+                        R.string.label_create, new OnEditTextDialogClicked() {
                             @Override
                             public void onClicked(String text) {
                                 mFilesFragment.newFile(text);
@@ -232,18 +223,6 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     private void reset() {
         mFilesFragment.reset();
         mCommitsFragment.reset();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     public void setFilesFragment(FilesFragment filesFragment) {
@@ -310,7 +289,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                 if (onBackClickListener.onClick())
                     return true;
             }
-            ActivityUtils.finishActivity(this);
+            finish();
             return true;
         }
         return false;
@@ -319,7 +298,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     public void mergeBranch(final Ref commit, final String ffModeStr,
             final boolean autoCommit) {
         if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            showToastMessage(R.string.alert_please_wait_previous_op);
             return;
         }
         mRunningThread = new Thread(new Runnable() {
@@ -340,7 +319,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
 
     public void commitChanges(final String commitMsg) {
         if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            showToastMessage(R.string.alert_please_wait_previous_op);
             return;
         }
         mRunningThread = new Thread(new Runnable() {
@@ -352,8 +331,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                     @Override
                     public void run() {
                         reset();
-                        mViewUtils
-                                .showToastMessage(R.string.toast_commit_success);
+                        showToastMessage(R.string.toast_commit_success);
                         mRunningThread = null;
                     }
                 });
@@ -364,7 +342,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
 
     private void resetCommitChanges() {
         if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            showToastMessage(R.string.alert_please_wait_previous_op);
             return;
         }
         mRunningThread = new Thread(new Runnable() {
@@ -375,8 +353,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
                     @Override
                     public void run() {
                         reset();
-                        mViewUtils
-                                .showToastMessage(R.string.toast_reset_success);
+                        showToastMessage(R.string.toast_reset_success);
                         mRunningThread = null;
                     }
                 });
@@ -386,13 +363,13 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     }
 
     private void deleteRepo() {
-        mViewUtils.showMessageDialog(R.string.dialog_delete_repo_title,
+        showMessageDialog(R.string.dialog_delete_repo_title,
                 R.string.dialog_delete_repo_msg, R.string.label_delete,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mRepo.deleteRepo();
-                        ActivityUtils.finishActivity(RepoDetailActivity.this);
+                        finish();
                     }
                 });
     }
@@ -462,13 +439,13 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
     }
 
     public void error() {
-        ActivityUtils.finishActivity(this);
-        mViewUtils.showToastMessage(R.string.error_unknown);
+        finish();
+        showToastMessage(R.string.error_unknown);
     }
 
     public void showProgressBar(int initMsg) {
         if (mRunningThread != null) {
-            mViewUtils.showToastMessage(R.string.alert_please_wait_previous_op);
+            showToastMessage(R.string.alert_please_wait_previous_op);
             return;
         }
         Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
@@ -503,7 +480,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
         mPushRepo.push(pushAll);
     }
 
-    private class PullRepo implements ViewUtils.OnPasswordEntered {
+    private class PullRepo implements OnPasswordEntered {
 
         public void pull() {
             onClicked(mRepo.getUsername(), mRepo.getPassword(), false);
@@ -543,7 +520,7 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
         }
     }
 
-    private class PushRepo implements ViewUtils.OnPasswordEntered {
+    private class PushRepo implements OnPasswordEntered {
 
         private boolean mPushAll = false;
 
@@ -585,23 +562,17 @@ public class RepoDetailActivity extends SherlockFragmentActivity implements
         }
     }
 
-    public void promptForPassword(final ViewUtils.OnPasswordEntered listener,
+    public void promptForPassword(final OnPasswordEntered listener,
             final String msg) {
         if ((!msg.contains("Auth fail"))
                 && (!msg.toLowerCase().contains("auth"))) {
             return;
         }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String errorInfo = null;
-                if (msg.contains("Auth fail")) {
-                    errorInfo = getString(R.string.dialog_prompt_for_password_title_auth_fail);
-                }
-                mViewUtils.promptForPassword(listener, errorInfo);
-            }
-        });
+        String errorInfo = null;
+        if (msg.contains("Auth fail")) {
+            errorInfo = getString(R.string.dialog_prompt_for_password_title_auth_fail);
+        }
+        super.promptForPassword(listener, errorInfo);
     }
 
 }

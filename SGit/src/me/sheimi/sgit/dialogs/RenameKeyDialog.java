@@ -1,32 +1,29 @@
 package me.sheimi.sgit.dialogs;
 
+import java.io.File;
+
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.io.File;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/24/13.
  */
 
-public class RenameKeyDialog extends DialogFragment implements
+public class RenameKeyDialog extends SheimiDialogFragment implements
         View.OnClickListener, DialogInterface.OnClickListener {
 
     private File mFromFile;
     private String mFromPath;
     private EditText mNewFilename;
-    private ViewUtils mViewUtils;
     private PrivateKeyManageActivity mActivity;
     private static final String FROM_PATH = "from path";
 
@@ -41,7 +38,6 @@ public class RenameKeyDialog extends DialogFragment implements
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (PrivateKeyManageActivity) getActivity();
-        mViewUtils = ViewUtils.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         if (savedInstanceState != null) {
@@ -91,21 +87,21 @@ public class RenameKeyDialog extends DialogFragment implements
     public void onClick(View view) {
         String newFilename = mNewFilename.getText().toString().trim();
         if (newFilename.equals("")) {
-            mViewUtils.showToastMessage(R.string.alert_new_filename_required);
+            showToastMessage(R.string.alert_new_filename_required);
             mNewFilename
                     .setError(getString(R.string.alert_new_filename_required));
             return;
         }
 
         if (newFilename.contains("/")) {
-            mViewUtils.showToastMessage(R.string.alert_filename_format);
+            showToastMessage(R.string.alert_filename_format);
             mNewFilename.setError(getString(R.string.alert_filename_format));
             return;
         }
 
         File file = new File(mFromFile.getParentFile(), newFilename);
         if (file.exists()) {
-            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            showToastMessage(R.string.alert_file_exists);
             mNewFilename.setError(getString(R.string.alert_file_exists));
             return;
         }
@@ -116,7 +112,7 @@ public class RenameKeyDialog extends DialogFragment implements
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        FsUtils.getInstance(mActivity).deleteFile(mFromFile);
+        FsUtils.deleteFile(mFromFile);
         mActivity.refreshList();
     }
 

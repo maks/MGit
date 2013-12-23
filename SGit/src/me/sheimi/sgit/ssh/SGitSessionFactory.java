@@ -1,29 +1,21 @@
-package me.sheimi.sgit.utils.ssh;
+package me.sheimi.sgit.ssh;
 
-import android.content.Context;
+import java.io.File;
 
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
+import me.sheimi.android.utils.FsUtils;
 
 import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.util.FS;
 
-import java.io.File;
-
-import me.sheimi.sgit.utils.FsUtils;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 /**
  * Created by sheimi on 8/22/13.
  */
 public class SGitSessionFactory extends JschConfigSessionFactory {
-
-    private Context mContext;
-
-    public SGitSessionFactory(Context context) {
-        mContext = context;
-    }
 
     @Override
     protected void configure(Host arg0, Session session) {
@@ -33,7 +25,7 @@ public class SGitSessionFactory extends JschConfigSessionFactory {
     @Override
     protected JSch createDefaultJSch(FS fs) throws JSchException {
         JSch jsch = new JSch();
-        File sshDir = FsUtils.getInstance(mContext).getDir("ssh");
+        File sshDir = FsUtils.getDir("ssh");
         for (File file : sshDir.listFiles()) {
             jsch.addIdentity(file.getAbsolutePath());
         }

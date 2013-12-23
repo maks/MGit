@@ -1,5 +1,7 @@
 package me.sheimi.sgit;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.Constants;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
 import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
@@ -8,20 +10,17 @@ import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.dialogs.ProfileDialog;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import com.umeng.analytics.MobclickAgent;
 
-public class RepoListActivity extends SherlockFragmentActivity implements CloneObserver {
+public class RepoListActivity extends SheimiFragmentActivity implements
+        CloneObserver {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
@@ -56,7 +55,7 @@ public class RepoListActivity extends SherlockFragmentActivity implements CloneO
         switch (item.getItemId()) {
             case R.id.action_add_private_key:
                 intent = new Intent(this, PrivateKeyManageActivity.class);
-                ActivityUtils.startActivity(this, intent);
+                finish();
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
@@ -70,7 +69,7 @@ public class RepoListActivity extends SherlockFragmentActivity implements CloneO
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_REPO);
-                ActivityUtils.forwardTransition(this);
+                finish();
                 return true;
             case R.id.action_feedback:
                 Intent feedback = new Intent(Intent.ACTION_SEND);
@@ -81,7 +80,7 @@ public class RepoListActivity extends SherlockFragmentActivity implements CloneO
                         getString(Constants.FEEDBACK_SUBJECT));
                 startActivity(Intent.createChooser(feedback,
                         getString(R.string.label_send_feedback)));
-                ActivityUtils.forwardTransition(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -100,7 +99,6 @@ public class RepoListActivity extends SherlockFragmentActivity implements CloneO
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
         if (mImportRepoIntent != null) {
             String path = mImportRepoIntent.getExtras().getString(
                     ExploreFileActivity.RESULT_PATH);
@@ -108,12 +106,6 @@ public class RepoListActivity extends SherlockFragmentActivity implements CloneO
             rld.show(getSupportFragmentManager(), "import-local-dialog");
             mImportRepoIntent = null;
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     @Override

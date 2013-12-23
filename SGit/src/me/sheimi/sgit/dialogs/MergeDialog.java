@@ -1,10 +1,18 @@
 package me.sheimi.sgit.dialogs;
 
+import java.util.List;
+
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
+
+import org.eclipse.jgit.lib.Ref;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +24,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.eclipse.jgit.lib.Ref;
-
-import java.util.List;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.database.models.Repo;
-
 /**
  * Created by sheimi on 8/16/13.
  */
-public class MergeDialog extends DialogFragment {
+public class MergeDialog extends SheimiDialogFragment {
 
     private Repo mRepo;
     private RepoDetailActivity mActivity;

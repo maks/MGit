@@ -1,21 +1,20 @@
 package me.sheimi.sgit.dialogs;
 
+import java.util.List;
+
+import me.sheimi.android.utils.CodeGuesser;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.ViewFileActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-
-import java.util.List;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.ViewFileActivity;
-import me.sheimi.sgit.utils.CodeUtils;
 
 /**
  * Created by sheimi on 8/16/13.
  */
-public class ChooseLanguageDialog extends DialogFragment {
+public class ChooseLanguageDialog extends SheimiDialogFragment {
 
     private ViewFileActivity mActivity;
 
@@ -25,7 +24,7 @@ public class ChooseLanguageDialog extends DialogFragment {
 
         mActivity = (ViewFileActivity) getActivity();
 
-        final List<String> langs = CodeUtils.getLanguageList();
+        final List<String> langs = CodeGuesser.getLanguageList();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         builder.setTitle(R.string.dialog_choose_language_title);
@@ -35,7 +34,7 @@ public class ChooseLanguageDialog extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface,
                             int position) {
                         String lang = langs.get(position);
-                        String tag = CodeUtils.getLanguageTag(lang);
+                        String tag = CodeGuesser.getLanguageTag(lang);
                         mActivity.setLanguage(tag);
                     }
                 });

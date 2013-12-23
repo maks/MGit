@@ -1,35 +1,31 @@
 package me.sheimi.sgit.dialogs;
 
+import java.io.File;
+
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.io.File;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
 
 /**
  * Created by sheimi on 8/24/13.
  */
 
-public class ImportLocalRepoDialog extends DialogFragment implements
+public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         View.OnClickListener {
 
     private File mFile;
     private String mFromPath;
-    private ViewUtils mViewUtils;
-    private FsUtils mFsUtils;
     private Activity mActivity;
     private EditText mLocalPath;
     private static final String FROM_PATH = "from path";
@@ -45,8 +41,6 @@ public class ImportLocalRepoDialog extends DialogFragment implements
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = getActivity();
-        mViewUtils = ViewUtils.getInstance(getActivity());
-        mFsUtils = FsUtils.getInstance(getActivity());
         if (savedInstanceState != null) {
             String fromPath = savedInstanceState.getString(FROM_PATH);
             if (fromPath != null) {
@@ -94,21 +88,21 @@ public class ImportLocalRepoDialog extends DialogFragment implements
     public void onClick(View view) {
         final String localPath = mLocalPath.getText().toString().trim();
         if (localPath.equals("")) {
-            mViewUtils.showToastMessage(R.string.alert_field_not_empty);
+            showToastMessage(R.string.alert_field_not_empty);
             mLocalPath.setError(getString(R.string.alert_field_not_empty));
             return;
         }
 
         if (localPath.contains("/")) {
-            mViewUtils.showToastMessage(R.string.alert_localpath_format);
+            showToastMessage(R.string.alert_localpath_format);
             mLocalPath.setError(getString(R.string.alert_localpath_format));
             return;
         }
 
-        final File file = mFsUtils.getRepo(localPath);
+        final File file = FsUtils.getRepo(localPath);
 
         if (file.exists()) {
-            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            showToastMessage(R.string.alert_file_exists);
             mLocalPath.setError(getString(R.string.alert_file_exists));
             return;
         }
@@ -125,7 +119,7 @@ public class ImportLocalRepoDialog extends DialogFragment implements
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                mFsUtils.copyDirectory(mFile, file);
+                FsUtils.copyDirectory(mFile, file);
                 final Repo repo = Repo.getRepoById(mActivity, id);
                 mActivity.runOnUiThread(new Runnable() {
                     @Override

@@ -1,5 +1,11 @@
 package me.sheimi.sgit.activities.explorer;
 
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
@@ -8,22 +14,13 @@ import android.widget.AdapterView;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.dialogs.RenameKeyDialog;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.FsUtils;
-
 public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     private static final int REQUSET_ADD_KEY = 0;
 
     @Override
     protected File getRootFolder() {
-        return FsUtils.getInstance(this).getDir("ssh");
+        return FsUtils.getDir("ssh");
     }
 
     @Override
@@ -38,8 +35,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
             public void onItemClick(AdapterView<?> adapterView, View view,
                     int positon, long id) {
                 File file = mFilesListAdapter.getItem(positon);
-                FsUtils.getInstance(PrivateKeyManageActivity.this).openFile(
-                        file, "text/plain");
+                FsUtils.openFile(file, "text/plain");
             }
         };
     }
@@ -72,7 +68,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
             case R.id.action_new:
                 Intent intent = new Intent(this, ExploreFileActivity.class);
                 startActivityForResult(intent, REQUSET_ADD_KEY);
-                ActivityUtils.forwardTransition(this);
+                forwardTransition();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -88,7 +84,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
                         ExploreFileActivity.RESULT_PATH);
                 File keyFile = new File(path);
                 File newKey = new File(getRootFolder(), keyFile.getName());
-                FsUtils.getInstance(this).copyFile(keyFile, newKey);
+                FsUtils.copyFile(keyFile, newKey);
                 refreshList();
                 break;
         }
@@ -97,7 +93,6 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     public void refreshList() {
         setCurrentDir(getRootFolder());
-        CommonUtils.getInstance(this).refreshSgitTransportCallback();
     }
 
 }

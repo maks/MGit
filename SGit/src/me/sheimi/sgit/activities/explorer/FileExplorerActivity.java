@@ -1,23 +1,21 @@
 package me.sheimi.sgit.activities.explorer;
 
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.adapters.FilesListAdapter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.adapters.FilesListAdapter;
-import me.sheimi.sgit.utils.ActivityUtils;
-
-public abstract class FileExplorerActivity extends SherlockFragmentActivity {
+public abstract class FileExplorerActivity extends SheimiFragmentActivity {
 
     public static final String RESULT_PATH = "result_path";
 
@@ -63,7 +61,7 @@ public abstract class FileExplorerActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.finishActivity(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -88,7 +86,7 @@ public abstract class FileExplorerActivity extends SherlockFragmentActivity {
                 setCurrentDir(mCurrentDir.getParentFile());
                 return true;
             }
-            ActivityUtils.finishActivity(this);
+            finish();
             return true;
         }
         return false;

@@ -1,4 +1,4 @@
-package me.sheimi.sgit.utils;
+package me.sheimi.android.utils;
 
 import me.sheimi.sgit.R;
 
@@ -15,6 +15,6 @@ public class Constants {
             + "+nXv63OB2xkDDQxtDSPIGtUzMm7D8F2OWmTjZWVD3gXGNxfaZokDesunm0a0caA0JH9A3aOMIU"
             + "+W1ROrYb9gUIELPIaa+Q36ycosfSVb1fUxANbHJy5ifzFTmLEGj9wbARSimQLGf9QdalBdRujiQql2m8hqMepSXVHIgoXGNylQBJO08kpKjhER5BUC2iJP5VOILrfM4MOst1wg7ldcclvFQIDAQAB";
 
-    public static final String INAPP_BILLING_ADS = "avoidads";
-    public static final String INAPP_BILLING_PAYLOAD = "bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ";
+    public static final boolean DEBUG = true;
+ 
 }

@@ -1,87 +1,74 @@
-package me.sheimi.sgit.utils;
+package me.sheimi.android.activities;
 
-import android.app.Activity;
+import java.io.File;
+
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.utils.Constants;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.analytics.MobclickAgent;
 
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.dialogs.DummyDialogListener;
+public class SheimiFragmentActivity extends SherlockFragmentActivity {
 
-/**
- * Created by sheimi on 8/22/13.
- */
-public class ViewUtils {
-
-    private static Map<Context, ViewUtils> mInstances = new HashMap<Context, ViewUtils>();
-
-    Context mContext;
-
-    private ViewUtils(Context context) {
-        mContext = context;
+    public static interface OnBackClickListener {
+        public boolean onClick();
     }
 
-    public static ViewUtils getInstance(Context context) {
-        ViewUtils viewUtils = mInstances.get(context);
-        if (viewUtils == null) {
-            viewUtils = new ViewUtils(context);
-            mInstances.put(context, viewUtils);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BasicFunctions.setActiveActivity(this);
+        setupImageLoader();
+        if (Constants.DEBUG) {
+            MobclickAgent.onResume(this);
         }
-        return viewUtils;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (Constants.DEBUG) {
+            MobclickAgent.onPause(this);
+        }
+    }
+
+    /* View Utils Start */
     public void showToastMessage(final String msg) {
-        ((Activity) mContext).runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(SheimiFragmentActivity.this, msg,
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
 
     public void showToastMessage(int resId) {
-        showToastMessage(mContext.getString(resId));
+        showToastMessage(getString(resId));
     }
 
     public int getColor(int resId) {
-        return mContext.getResources().getColor(resId);
-    }
-
-    public <T> void adapterAddAll(ArrayAdapter<T> adapter,
-            Collection<T> collection) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            adapter.addAll(collection);
-        } else {
-            for (T item : collection) {
-                adapter.add(item);
-            }
-        }
-    }
-
-    public <T> void adapterAddAll(ArrayAdapter<T> adapter, T[] collection) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            adapter.addAll(collection);
-        } else {
-            for (T item : collection) {
-                adapter.add(item);
-            }
-        }
+        return getResources().getColor(resId);
     }
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
             DialogInterface.OnClickListener positiveListenerr) {
-        showMessageDialog(title, mContext.getString(msg), positiveBtn,
+        showMessageDialog(title, getString(msg), positiveBtn,
                 R.string.label_cancel, positiveListenerr,
                 new DummyDialogListener());
     }
@@ -95,7 +82,7 @@ public class ViewUtils {
     public void showMessageDialog(int title, String msg, int positiveBtn,
             int negativeBtn, DialogInterface.OnClickListener positiveListener,
             DialogInterface.OnClickListener negativeListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(msg)
                 .setPositiveButton(positiveBtn, positiveListener)
                 .setNegativeButton(negativeBtn, negativeListener).show();
@@ -103,8 +90,8 @@ public class ViewUtils {
 
     public void showEditTextDialog(int title, int hint, int positiveBtn,
             final OnEditTextDialogClicked positiveListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_edit_text, null);
         final EditText editText = (EditText) layout.findViewById(R.id.editText);
         editText.setHint(hint);
@@ -123,10 +110,25 @@ public class ViewUtils {
                         new DummyDialogListener()).show();
     }
 
+    public void promptForPassword(OnPasswordEntered onPasswordEntered,
+            int errorId) {
+        promptForPassword(onPasswordEntered, errorId);
+    }
+
     public void promptForPassword(final OnPasswordEntered onPasswordEntered,
-            String errorInfo) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+            final String errorInfo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                promptForPasswordInner(onPasswordEntered, errorInfo);
+            }
+        });
+    }
+
+    private void promptForPasswordInner(
+            final OnPasswordEntered onPasswordEntered, String errorInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_prompt_for_password,
                 null);
         final EditText username = (EditText) layout.findViewById(R.id.username);
@@ -134,8 +136,7 @@ public class ViewUtils {
         final CheckBox checkBox = (CheckBox) layout
                 .findViewById(R.id.savePassword);
         if (errorInfo == null) {
-            errorInfo = mContext
-                    .getString(R.string.dialog_prompt_for_password_title);
+            errorInfo = getString(R.string.dialog_prompt_for_password_title);
         }
         builder.setTitle(errorInfo)
                 .setView(layout)
@@ -170,4 +171,48 @@ public class ViewUtils {
         void onCanceled();
     }
 
+    /* View Utils End */
+
+    /* Switch Actvity Animation Start */
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        forwardTransition();
+    }
+
+    public void finish() {
+        super.finish();
+        backTransition();
+    }
+
+    public void forwardTransition() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
+    public void backTransition() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    /* Switch Actvity Animation End */
+
+    /* ImageCache Start */
+
+    private static final int SIZE = 100 << 20;
+    private ImageLoader mImageLoader;
+
+    private void setupImageLoader() {
+        DisplayImageOptions mDiskCacheOption = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true).build();
+        File cacheDir = StorageUtils.getCacheDirectory(this);
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
+                this).defaultDisplayImageOptions(mDiskCacheOption)
+                .discCache(new TotalSizeLimitedDiscCache(cacheDir, SIZE))
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(configuration);
+    }
+
+    public ImageLoader getImageLoader() {
+        return mImageLoader;
+    }
+    /* ImageCache End */
 }

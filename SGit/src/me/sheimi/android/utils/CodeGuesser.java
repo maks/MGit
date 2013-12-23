@@ -1,4 +1,4 @@
-package me.sheimi.sgit.utils;
+package me.sheimi.android.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Created by sheimi on 8/23/13.
  */
-public class CodeUtils {
+public class CodeGuesser {
 
     private final static String[][] FILENAME_EXTENSION_ARRAY = {
             { "Python", "python", "py" },

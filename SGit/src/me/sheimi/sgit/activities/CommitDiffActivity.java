@@ -1,5 +1,15 @@
 package me.sheimi.sgit.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.CodeGuesser;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
+
+import org.eclipse.jgit.diff.DiffEntry;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -10,22 +20,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.diff.DiffEntry;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.CodeUtils;
-
-public class CommitDiffActivity extends SherlockFragmentActivity {
+public class CommitDiffActivity extends SheimiFragmentActivity {
 
     public final static String OLD_COMMIT = "old commit";
     public final static String NEW_COMMIT = "new commit";
@@ -92,28 +90,16 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.finishActivity(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
+    
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ActivityUtils.finishActivity(this);
+            finish();
             return true;
         }
         return false;
@@ -165,7 +151,7 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
                         @Override
                         public void run() {
                             mLoading.setVisibility(View.GONE);
-                            mDiffContent.loadUrl(CodeUtils
+                            mDiffContent.loadUrl(CodeGuesser
                                     .wrapUrlScript("notifyEntriesReady();"));
                         }
                     });
