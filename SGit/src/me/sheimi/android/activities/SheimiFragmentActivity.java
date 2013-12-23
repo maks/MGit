@@ -50,6 +50,7 @@ public class SheimiFragmentActivity extends SherlockFragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        mImageLoader.destroy();
         if (Constants.DEBUG) {
             MobclickAgent.onPause(this);
         }

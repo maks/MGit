@@ -113,7 +113,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
         values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
 
-        final long id = RepoDbManager.getInstance(mActivity).insertRepo(values);
+        final long id = RepoDbManager.insertRepo(values);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -131,8 +131,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
                         values.put(
                                 RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                                 RepoContract.REPO_STATUS_NULL);
-                        RepoDbManager.getInstance(mActivity).updateRepo(id,
-                                values);
+                        RepoDbManager.updateRepo(id, values);
                     }
                 });
             }

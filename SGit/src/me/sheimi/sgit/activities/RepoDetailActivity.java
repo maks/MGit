@@ -50,7 +50,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
 
-    private RepoDbManager mRepoDbManager;
     private Thread mRunningThread;
     private Repo mRepo;
 
@@ -73,7 +72,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
         setupActionBar();
         createFragments();
         setupPullProgressView();
-        mRepoDbManager = RepoDbManager.getInstance(this);
     }
 
     private void setupPullProgressView() {
@@ -498,7 +496,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                         username);
                 values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD,
                         password);
-                mRepoDbManager.updateRepo(mRepo.getID(), values);
+                RepoDbManager.updateRepo(mRepo.getID(), values);
             }
             showProgressBar(R.string.pull_msg_init);
             ;
@@ -541,7 +539,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                         username);
                 values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD,
                         password);
-                mRepoDbManager.updateRepo(mRepo.getID(), values);
+                RepoDbManager.updateRepo(mRepo.getID(), values);
             }
             showProgressBar(R.string.push_msg_init);
             mRunningThread = new Thread(new Runnable() {

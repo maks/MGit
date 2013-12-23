@@ -6,7 +6,6 @@ import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
 import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
-import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.dialogs.ProfileDialog;
@@ -19,8 +18,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 
-public class RepoListActivity extends SheimiFragmentActivity implements
-        CloneObserver {
+public class RepoListActivity extends SheimiFragmentActivity {
 
     private ListView mRepoList;
     private RepoListAdapter mRepoListAdapter;
@@ -146,16 +144,6 @@ public class RepoListActivity extends SheimiFragmentActivity implements
             return true;
         }
 
-    }
-
-    @Override
-    public void cloneStateUpdated() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mRepoListAdapter.nofityChanged();
-            }
-        });
     }
 
     public void finish() {

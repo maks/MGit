@@ -17,11 +17,10 @@ import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.RepoCloneMonitor.CloneObserver;
 import me.sheimi.sgit.dialogs.ProfileDialog;
+import me.sheimi.sgit.repo.tasks.CloneTask;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
-import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
@@ -30,7 +29,6 @@ import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -54,6 +52,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseArray;
 
 /**
  * Created by sheimi on 8/20/13.
@@ -82,19 +81,18 @@ public class Repo implements Comparable<Repo>, Serializable {
     private String mLastCommitterEmail;
     private Date mLastCommitDate;
     private String mLastCommitMsg;
-    private RepoCloneMonitor mCloneMonitor;
     private boolean isDeleted = false;
 
     private Context mContext;
-    private RepoDbManager mDbManager;
     private Git mGit;
 
     public static final String TEST_REPO = "https://github.com/sheimi/SGit.git";
     public static final String TEST_LOCAL = "SGit";
     public static final String DOT_GIT_DIR = ".git";
 
-    public Repo() {
+    private static SparseArray<CloneTask> mCloneTasks = new SparseArray<CloneTask>();
 
+    public Repo() {
     }
 
     public Repo(Context context, Cursor cursor) {
@@ -111,7 +109,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
         setContext(context);
     }
-    
+
     public Bundle getBundle() {
         Bundle bundle = new Bundle();
         bundle.putSerializable(TAG, this);
@@ -120,12 +118,15 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public void setContext(Context context) {
         mContext = context;
-        mDbManager = RepoDbManager.getInstance(context);
+        resetGit();
+    }
+
+    public void resetGit() {
         mGit = getGit();
     }
 
     public static Repo getRepoById(Context context, long id) {
-        Cursor c = RepoDbManager.getInstance(context).getRepoById(id);
+        Cursor c = RepoDbManager.getRepoById(id);
         c.moveToFirst();
         Repo repo = new Repo(context, c);
         c.close();
@@ -190,25 +191,19 @@ public class Repo implements Comparable<Repo>, Serializable {
         mPassword = password;
     }
 
-    public int getProgress() {
-        if (mCloneMonitor == null)
-            return 0;
-        return mCloneMonitor.getProgress();
-    }
-
     public void cancelClone() {
-        if (mCloneMonitor != null) {
-            mCloneMonitor.cancel();
-        }
+        CloneTask task = mCloneTasks.get(getID());
+        if (task == null)
+            return;
+        task.cancelClone();
         deleteRepo();
     }
 
     public void updateStatus(String status) {
         ContentValues values = new ContentValues();
         mRepoStatus = status;
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS, status
-                + " ...");
-        mDbManager.updateRepo(mID, values);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS, status);
+        RepoDbManager.updateRepo(mID, values);
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
@@ -242,6 +237,12 @@ public class Repo implements Comparable<Repo>, Serializable {
     public int compareTo(Repo repo) {
         return repo.getID() - getID();
     }
+    
+    public void cloneRepo() {
+        CloneTask task = new CloneTask();
+        mCloneTasks.put(getID(), task);
+        task.execute(this);
+    }
 
     public void deleteRepo() {
         Thread thread = new Thread(new Runnable() {
@@ -256,7 +257,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     public void deleteRepoSync() {
         if (isDeleted)
             return;
-        mDbManager.deleteRepo(mID);
+        RepoDbManager.deleteRepo(mID);
         File fileToDelete = FsUtils.getRepo(mLocalPath);
         FsUtils.deleteFile(fileToDelete);
         isDeleted = true;
@@ -356,9 +357,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public void pull(ProgressMonitor pm) throws TransportException {
-        PullCommand pullCommand = mGit
-                .pull()
-                .setProgressMonitor(pm)
+        PullCommand pullCommand = mGit.pull().setProgressMonitor(pm)
                 .setTransportConfigCallback(new SgitTransportCallback());
         if (mUsername != null && mPassword != null && !mUsername.equals("")
                 && !mPassword.equals("")) {
@@ -379,9 +378,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public void push(ProgressMonitor pm, boolean isPushAll)
             throws TransportException {
-        PushCommand pushCommand = mGit
-                .push()
-                .setPushTags()
+        PushCommand pushCommand = mGit.push().setPushTags()
                 .setProgressMonitor(pm)
                 .setTransportConfigCallback(new SgitTransportCallback());
         if (isPushAll) {
@@ -404,49 +401,6 @@ public class Repo implements Comparable<Repo>, Serializable {
             showError(e);
             throw e;
         } catch (Exception e) {
-            showError(e);
-        }
-    }
-
-    public void clone(CloneObserver observer) throws GitAPIException {
-        mCloneMonitor = new RepoCloneMonitor(this, observer);
-        File localRepo = new File(FsUtils.getDir(FsUtils.REPO_DIR), mLocalPath);
-        CloneCommand cloneCommand = Git
-                .cloneRepository()
-                .setURI(mRemoteURL)
-                .setCloneAllBranches(true)
-                .setProgressMonitor(mCloneMonitor)
-                .setTransportConfigCallback(new SgitTransportCallback())
-                .setDirectory(localRepo);
-
-        if (mUsername != null && mPassword != null && !mUsername.equals("")
-                && !mPassword.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    mUsername, mPassword);
-            cloneCommand.setCredentialsProvider(auth);
-        }
-        try {
-            cloneCommand.call();
-            mGit = getGit();
-        } catch (InvalidRemoteException e) {
-            e.printStackTrace();
-            showError(R.string.error_invalid_remote);
-            throw e;
-        } catch (TransportException e) {
-            showError(e);
-            throw e;
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-            showError(R.string.error_clone_failed);
-            throw e;
-        } catch (JGitInternalException e) {
-            showError(e);
-            throw e;
-        } catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            showError(R.string.error_out_of_memory);
-            throw e;
-        } catch (RuntimeException e) {
             showError(e);
         }
     }
@@ -478,7 +432,7 @@ public class Repo implements Comparable<Repo>, Serializable {
                         RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME,
                         uname);
             }
-            mDbManager.updateRepo(getID(), values);
+            RepoDbManager.updateRepo(getID(), values);
         }
     }
 

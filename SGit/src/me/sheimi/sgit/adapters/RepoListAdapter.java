@@ -38,16 +38,14 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
             "MM/dd/yyyy", Locale.getDefault());
 
-    private RepoDbManager mDb;
-
     private int mQueryType = QUERY_TYPE_QUERY;
     private String mSearchQueryString;
     private RepoListActivity mActivity;
 
     public RepoListAdapter(Context context) {
         super(context, 0);
-        mDb = RepoDbManager.getInstance(context);
-        mDb.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME, this);
+        RepoDbManager.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME,
+                this);
         mActivity = (RepoListActivity) context;
     }
 
@@ -66,10 +64,10 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
         Cursor cursor = null;
         switch (mQueryType) {
             case QUERY_TYPE_SEARCH:
-                cursor = mDb.searchRepo(mSearchQueryString);
+                cursor = RepoDbManager.searchRepo(mSearchQueryString);
                 break;
             case QUERY_TYPE_QUERY:
-                cursor = mDb.queryAllRepo();
+                cursor = RepoDbManager.queryAllRepo();
                 break;
         }
         List<Repo> repo = Repo.getRepoList(mActivity, cursor);
@@ -117,14 +115,7 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
         if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL)) {
             holder.commitMsgContainer.setVisibility(View.GONE);
             holder.progressContainer.setVisibility(View.VISIBLE);
-            int progress = repo.getProgress();
-            if (progress != -1) {
-                holder.progressMsg.setText(String.format("%s  (%d%%)",
-                        repo.getRepoStatus(), progress));
-            } else {
-                holder.progressMsg.setText(String.format("%s",
-                        repo.getRepoStatus()));
-            }
+            holder.progressMsg.setText(repo.getRepoStatus());
             holder.cancelBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
