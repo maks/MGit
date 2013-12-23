@@ -28,19 +28,17 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
     private String mFromPath;
     private Activity mActivity;
     private EditText mLocalPath;
-    private static final String FROM_PATH = "from path";
-
-    public ImportLocalRepoDialog() {
-    }
-
-    public ImportLocalRepoDialog(String fromPath) {
-        mFromPath = fromPath;
-    }
+    public static final String FROM_PATH = "from path";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+
         mActivity = getActivity();
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(FROM_PATH)) {
+            mFromPath = args.getString(Repo.TAG);
+        }
         if (savedInstanceState != null) {
             String fromPath = savedInstanceState.getString(FROM_PATH);
             if (fromPath != null) {

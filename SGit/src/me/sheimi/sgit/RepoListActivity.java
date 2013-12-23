@@ -55,7 +55,7 @@ public class RepoListActivity extends SheimiFragmentActivity implements
         switch (item.getItemId()) {
             case R.id.action_add_private_key:
                 intent = new Intent(this, PrivateKeyManageActivity.class);
-                finish();
+                startActivity(intent);
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
@@ -69,7 +69,7 @@ public class RepoListActivity extends SheimiFragmentActivity implements
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_REPO);
-                finish();
+                forwardTransition();
                 return true;
             case R.id.action_feedback:
                 Intent feedback = new Intent(Intent.ACTION_SEND);
@@ -80,7 +80,6 @@ public class RepoListActivity extends SheimiFragmentActivity implements
                         getString(Constants.FEEDBACK_SUBJECT));
                 startActivity(Intent.createChooser(feedback,
                         getString(R.string.label_send_feedback)));
-                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -102,7 +101,10 @@ public class RepoListActivity extends SheimiFragmentActivity implements
         if (mImportRepoIntent != null) {
             String path = mImportRepoIntent.getExtras().getString(
                     ExploreFileActivity.RESULT_PATH);
-            ImportLocalRepoDialog rld = new ImportLocalRepoDialog(path);
+            Bundle args = new Bundle();
+            args.putString(ImportLocalRepoDialog.FROM_PATH, path);
+            ImportLocalRepoDialog rld = new ImportLocalRepoDialog();
+            rld.setArguments(args);
             rld.show(getSupportFragmentManager(), "import-local-dialog");
             mImportRepoIntent = null;
         }
@@ -154,6 +156,10 @@ public class RepoListActivity extends SheimiFragmentActivity implements
                 mRepoListAdapter.nofityChanged();
             }
         });
+    }
+
+    public void finish() {
+        rawfinish();
     }
 
 }

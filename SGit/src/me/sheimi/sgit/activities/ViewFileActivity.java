@@ -112,15 +112,6 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
-        }
-        return false;
-    }
-
     public void setLanguage(String lang) {
         String js = String.format("setLanguage('%s')", lang);
         mFileContent.loadUrl(CodeGuesser.wrapUrlScript(js));

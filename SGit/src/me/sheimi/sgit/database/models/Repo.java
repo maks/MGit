@@ -53,6 +53,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.os.Bundle;
 
 /**
  * Created by sheimi on 8/20/13.
@@ -109,6 +110,12 @@ public class Repo implements Comparable<Repo>, Serializable {
         mLastCommitMsg = RepoContract.getLatestCommitMsg(cursor);
 
         setContext(context);
+    }
+    
+    public Bundle getBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TAG, this);
+        return bundle;
     }
 
     public void setContext(Context context) {

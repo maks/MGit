@@ -6,6 +6,7 @@ import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
+import me.sheimi.sgit.database.models.Repo;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -25,21 +26,17 @@ public class RenameKeyDialog extends SheimiDialogFragment implements
     private String mFromPath;
     private EditText mNewFilename;
     private PrivateKeyManageActivity mActivity;
-    private static final String FROM_PATH = "from path";
-
-    public RenameKeyDialog() {
-    }
-
-    public RenameKeyDialog(String fromPath) {
-        mFromPath = fromPath;
-    }
+    public static final String FROM_PATH = "from path";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (PrivateKeyManageActivity) getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(FROM_PATH)) {
+            mFromPath = args.getString(Repo.TAG);
+        }
         if (savedInstanceState != null) {
             String fromPath = savedInstanceState.getString(FROM_PATH);
             if (fromPath != null) {

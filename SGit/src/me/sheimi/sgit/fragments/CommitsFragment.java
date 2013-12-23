@@ -83,7 +83,8 @@ public class CommitsFragment extends RepoDetailFragment implements
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog(mRepo);
+                ChooseCommitDialog cbd = new ChooseCommitDialog();
+                cbd.setArguments(mRepo.getBundle());
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });

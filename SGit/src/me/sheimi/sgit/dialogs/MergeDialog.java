@@ -36,13 +36,6 @@ public class MergeDialog extends SheimiDialogFragment {
     private BranchTagListAdapter mAdapter;
     private CheckBox mCheckbox;
 
-    public MergeDialog() {
-    }
-
-    public MergeDialog(Repo repo) {
-        mRepo = repo;
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -52,6 +45,10 @@ public class MergeDialog extends SheimiDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(Repo.TAG)) {
+            mRepo = (Repo) args.getSerializable(Repo.TAG);
+        }
         if (mRepo == null && savedInstanceState != null) {
             mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
             mRepo.setContext(getActivity());

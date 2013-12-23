@@ -8,6 +8,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -47,8 +48,11 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView,
                     View view, int position, long id) {
                 File file = mFilesListAdapter.getItem(position);
-                RenameKeyDialog rkd = new RenameKeyDialog(
+                Bundle pathArg = new Bundle();
+                pathArg.putString(RenameKeyDialog.FROM_PATH,
                         file.getAbsolutePath());
+                RenameKeyDialog rkd = new RenameKeyDialog();
+                rkd.setArguments(pathArg);
                 rkd.show(getSupportFragmentManager(), "rename-dialog");
                 return true;
             }

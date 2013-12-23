@@ -12,7 +12,6 @@ import org.eclipse.jgit.diff.DiffEntry;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -94,15 +93,6 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
-        }
-        return false;
     }
 
     private class CodeLoader {

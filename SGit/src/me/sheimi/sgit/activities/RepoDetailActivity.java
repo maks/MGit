@@ -165,7 +165,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                 mCommitsFragment.enterDiffActionMode();
                 return true;
             case R.id.action_merge:
-                MergeDialog md = new MergeDialog(mRepo);
+                MergeDialog md = new MergeDialog();
+                md.setArguments(mRepo.getBundle());
                 md.show(getSupportFragmentManager(), "merge-repo-dialog");
                 return true;
             case R.id.action_push:
