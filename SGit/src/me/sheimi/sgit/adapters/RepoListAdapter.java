@@ -119,7 +119,7 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
             holder.cancelBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    repo.cancelClone();
+                    repo.cancelTask();
                 }
             });
         } else if (repo.getLastCommitter() != null) {

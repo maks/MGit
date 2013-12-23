@@ -51,7 +51,7 @@ public class CloneTask extends SheimiAsyncTask<Repo, Integer, Boolean> {
 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
-        if (!isSuccess && !mIsCanceled) {
+        if (!isSuccess && !isTaskCanceled()) {
             showError();
             return;
         }
@@ -107,18 +107,16 @@ public class CloneTask extends SheimiAsyncTask<Repo, Integer, Boolean> {
 
     private int mTotalWork;
     private int mWorkDone;
-    private boolean mIsCanceled;
     private String mTitle;
-
-    public void cancelClone() {
-        mIsCanceled = true;
+    
+    @Override
+    public void cancelTask() {
+        super.cancelTask();
+        mRepo.deleteRepo();
     }
 
-    public class RepoCloneMonitor implements ProgressMonitor {
 
-        public RepoCloneMonitor() {
-            mIsCanceled = false;
-        }
+    public class RepoCloneMonitor implements ProgressMonitor {
 
         @Override
         public void start(int totalTasks) {
@@ -145,7 +143,7 @@ public class CloneTask extends SheimiAsyncTask<Repo, Integer, Boolean> {
 
         @Override
         public boolean isCancelled() {
-            return mIsCanceled;
+            return isTaskCanceled();
         }
 
     }

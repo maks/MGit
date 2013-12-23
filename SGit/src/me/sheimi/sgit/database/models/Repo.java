@@ -19,6 +19,7 @@ import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.dialogs.ProfileDialog;
 import me.sheimi.sgit.repo.tasks.CloneTask;
+import me.sheimi.sgit.repo.tasks.SheimiAsyncTask;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
@@ -90,7 +91,8 @@ public class Repo implements Comparable<Repo>, Serializable {
     public static final String TEST_LOCAL = "SGit";
     public static final String DOT_GIT_DIR = ".git";
 
-    private static SparseArray<CloneTask> mCloneTasks = new SparseArray<CloneTask>();
+    @SuppressWarnings("rawtypes")
+    private static SparseArray<SheimiAsyncTask> mRepoTasks = new SparseArray<SheimiAsyncTask>();
 
     public Repo() {
     }
@@ -191,12 +193,16 @@ public class Repo implements Comparable<Repo>, Serializable {
         mPassword = password;
     }
 
-    public void cancelClone() {
-        CloneTask task = mCloneTasks.get(getID());
+    @SuppressWarnings("rawtypes")
+    public void cancelTask() {
+        SheimiAsyncTask task = mRepoTasks.get(getID());
         if (task == null)
             return;
-        task.cancelClone();
-        deleteRepo();
+        task.cancelTask();
+    }
+    
+    public void removeTask() {
+        mRepoTasks.remove(getID());
     }
 
     public void updateStatus(String status) {
@@ -240,7 +246,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     
     public void cloneRepo() {
         CloneTask task = new CloneTask();
-        mCloneTasks.put(getID(), task);
+        mRepoTasks.put(getID(), task);
         task.execute(this);
     }
 

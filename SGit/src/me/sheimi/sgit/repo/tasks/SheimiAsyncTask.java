@@ -30,4 +30,13 @@ public abstract class SheimiAsyncTask<A, B, C> extends
         }
     }
     
+    private boolean mIsCanceled = false;
+
+    public void cancelTask() {
+        mIsCanceled = true;
+    }
+    
+    public boolean isTaskCanceled() {
+        return mIsCanceled;
+    }
 }
