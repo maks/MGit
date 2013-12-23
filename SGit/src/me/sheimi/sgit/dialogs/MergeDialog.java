@@ -51,7 +51,6 @@ public class MergeDialog extends SheimiDialogFragment {
         }
         if (mRepo == null && savedInstanceState != null) {
             mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
-            mRepo.setContext(getActivity());
         }
 
         mActivity = (RepoDetailActivity) getActivity();

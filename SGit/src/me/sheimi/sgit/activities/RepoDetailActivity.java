@@ -2,27 +2,29 @@ package me.sheimi.sgit.activities;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
+import me.sheimi.sgit.repo.tasks.CheckoutTask;
+import me.sheimi.sgit.repo.tasks.CommitChangesTask;
+import me.sheimi.sgit.repo.tasks.MergeTask;
+import me.sheimi.sgit.repo.tasks.PullTask;
+import me.sheimi.sgit.repo.tasks.PushTask;
+import me.sheimi.sgit.repo.tasks.ResetCommitTask;
+import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
+import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
 
-import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -50,7 +52,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
 
-    private Thread mRunningThread;
     private Repo mRepo;
 
     private View mPullProgressContainer;
@@ -59,14 +60,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
 
-    private PushRepo mPushRepo = new PushRepo();
-    private PullRepo mPullRepo = new PullRepo();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
-        mRepo.setContext(this);
         setTitle(mRepo.getLocalPath());
         setContentView(R.layout.activity_repo_detail);
         setupActionBar();
@@ -117,26 +114,15 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     }
 
     public void resetCommits(final String commitName) {
-        if (mRunningThread != null) {
-            showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRepo.checkout(commitName);
-                mRepo.updateLatestCommitInfo();
-                runOnUiThread(new Runnable() {
+        CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName,
+                new AsyncTaskPostCallback() {
                     @Override
-                    public void run() {
+                    public void onPostExecute(Boolean isSuccess) {
                         mFilesFragment.reset(commitName);
                         mCommitsFragment.reset(commitName);
-                        mRunningThread = null;
                     }
                 });
-            }
-        });
-        mRunningThread.start();
+        checkoutTask.executeTask();
     }
 
     @Override
@@ -156,7 +142,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                 deleteRepo();
                 return true;
             case R.id.action_pull:
-                mPullRepo.pull();
+                pullRepo();
                 return true;
             case R.id.action_diff:
                 mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
@@ -296,69 +282,44 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
 
     public void mergeBranch(final Ref commit, final String ffModeStr,
             final boolean autoCommit) {
-        if (mRunningThread != null) {
-            showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRepo.mergeBranch(commit, ffModeStr, autoCommit);
-                runOnUiThread(new Runnable() {
+        MergeTask mergeTask = new MergeTask(mRepo, commit, ffModeStr,
+                autoCommit, new AsyncTaskPostCallback() {
                     @Override
-                    public void run() {
+                    public void onPostExecute(Boolean isSuccess) {
                         reset();
-                        mRunningThread = null;
                     }
                 });
-            }
-        });
-        mRunningThread.start();
+        mergeTask.executeTask();
     }
 
-    public void commitChanges(final String commitMsg) {
-        if (mRunningThread != null) {
-            showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public void commitChanges(String commitMsg) {
+        CommitChangesTask commitTask = new CommitChangesTask(mRepo, commitMsg,
+                new AsyncTaskPostCallback() {
 
-                mRepo.commitAllChanges(commitMsg);
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
+                    public void onPostExecute(Boolean isSuccess) {
                         reset();
                         showToastMessage(R.string.toast_commit_success);
-                        mRunningThread = null;
                     }
                 });
-            }
-        });
-        mRunningThread.start();
+        commitTask.executeTask();
     }
 
     private void resetCommitChanges() {
-        if (mRunningThread != null) {
-            showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        mRunningThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mRepo.resetCommitChanges();
-                runOnUiThread(new Runnable() {
+        ResetCommitTask resetTask = new ResetCommitTask(mRepo,
+                new AsyncTaskPostCallback() {
                     @Override
-                    public void run() {
+                    public void onPostExecute(Boolean isSuccess) {
                         reset();
                         showToastMessage(R.string.toast_reset_success);
-                        mRunningThread = null;
                     }
                 });
-            }
-        });
-        mRunningThread.start();
+        resetTask.executeTask();
+    }
+
+    public void error() {
+        finish();
+        showToastMessage(R.string.error_unknown);
     }
 
     private void deleteRepo() {
@@ -373,205 +334,56 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                 });
     }
 
-    private ProgressMonitor getProgressMonitor() {
-        return new ProgressMonitor() {
-
-            private int mTotalWork;
-            private int mWorkDone;
-
-            @Override
-            public void start(int i) {
-                Log.d("pull start", String.valueOf(i));
-            }
-
-            @Override
-            public void beginTask(String title, int totalWork) {
-                mTotalWork = totalWork;
-                mWorkDone = 0;
-                Log.d("pull beginTask", String.valueOf(totalWork));
-                setProgress(title, mWorkDone, mTotalWork);
-            }
-
-            @Override
-            public void update(int i) {
-                mWorkDone += i;
-                Log.d("pull update workDone", String.valueOf(mWorkDone));
-                Log.d("pull update totlaWork", String.valueOf(mTotalWork));
-                if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0) {
-                    setProgress(null, mWorkDone, mTotalWork);
-                }
-            }
-
-            @Override
-            public void endTask() {
-
-            }
-
-            @Override
-            public boolean isCancelled() {
-                return false;
-            }
-
-            private void setProgress(final String title, final int workDone,
-                    final int totalWork) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (title != null)
-                            mPullMsg.setText(title + " ... ");
-                        if (totalWork != 0) {
-                            int showedWorkDown = Math.min(workDone, totalWork);
-                            int progress = 100 * showedWorkDown / totalWork;
-                            String leftHint = progress + "%";
-                            String rightHint = showedWorkDown + "/" + totalWork;
-                            mPullLeftHint.setText(leftHint);
-                            mPullRightHint.setText(rightHint);
-                            mPullProgressBar.setProgress(progress);
-                            Log.d("pull update ui", String.valueOf(leftHint));
-                            Log.d("pull update ui", String.valueOf(rightHint));
-                        }
-                    }
-                });
-            }
-
-        };
-    }
-
-    public void error() {
-        finish();
-        showToastMessage(R.string.error_unknown);
-    }
-
-    public void showProgressBar(int initMsg) {
-        if (mRunningThread != null) {
-            showToastMessage(R.string.alert_please_wait_previous_op);
-            return;
-        }
-        Animation anim = AnimationUtils.loadAnimation(RepoDetailActivity.this,
-                R.anim.fade_in);
-        mPullProgressContainer.setAnimation(anim);
-        mPullProgressContainer.setVisibility(View.VISIBLE);
-        mPullMsg.setText(initMsg);
-        mPullLeftHint.setText(R.string.progress_left_init);
-        mPullRightHint.setText(R.string.progress_right_init);
-    }
-
-    public void hideProgressBar() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Animation anim = AnimationUtils.loadAnimation(
-                        RepoDetailActivity.this, R.anim.fade_out);
-                mPullProgressContainer.setAnimation(anim);
-                mPullProgressContainer.setVisibility(View.GONE);
-                reset();
-                mRunningThread = null;
-            }
-        });
+    public void pullRepo() {
+        mPullMsg.setText(R.string.pull_msg_init);
+        PullTask pullTask = new PullTask(mRepo, new ProgressCallback());
+        pullTask.executeTask();
     }
 
     public void pushRepo(boolean pushAll) {
-        mPushRepo.push(pushAll);
+        mPullMsg.setText(R.string.push_msg_init);
+        PushTask pushTask = new PushTask(mRepo, pushAll, new ProgressCallback());
+        pushTask.executeTask();
     }
 
-    private class PullRepo implements OnPasswordEntered {
+    private class ProgressCallback implements AsyncTaskCallback {
 
-        public void pull() {
-            onClicked(mRepo.getUsername(), mRepo.getPassword(), false);
+        @Override
+        public void onPreExecute() {
+            Animation anim = AnimationUtils.loadAnimation(
+                    RepoDetailActivity.this, R.anim.fade_in);
+            mPullProgressContainer.setAnimation(anim);
+            mPullProgressContainer.setVisibility(View.VISIBLE);
+            mPullLeftHint.setText(R.string.progress_left_init);
+            mPullRightHint.setText(R.string.progress_right_init);
         }
 
         @Override
-        public void onClicked(String username, String password,
-                boolean savePassword) {
-            mRepo.setUsername(username);
-            mRepo.setPassword(password);
-            if (savePassword) {
-                ContentValues values = new ContentValues();
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME,
-                        username);
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD,
-                        password);
-                RepoDbManager.updateRepo(mRepo.getID(), values);
+        public void onProgressUpdate(String... progress) {
+            mPullMsg.setText(progress[0]);
+            mPullLeftHint.setText(progress[1]);
+            mPullRightHint.setText(progress[2]);
+            mPullProgressBar.setProgress(Integer.parseInt(progress[3]));
+        }
+
+        @Override
+        public void onPostExecute(Boolean isSuccess) {
+            Animation anim = AnimationUtils.loadAnimation(
+                    RepoDetailActivity.this, R.anim.fade_out);
+            mPullProgressContainer.setAnimation(anim);
+            mPullProgressContainer.setVisibility(View.GONE);
+            reset();
+        }
+
+        @Override
+        public boolean doInBackground(Void... params) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return false;
             }
-            showProgressBar(R.string.pull_msg_init);
-            ;
-            mRunningThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mRepo.pull(getProgressMonitor());
-                    } catch (TransportException e) {
-                        promptForPassword(mPullRepo, e.getMessage());
-                    }
-                    hideProgressBar();
-                }
-            });
-            mRunningThread.start();
+            return true;
         }
 
-        @Override
-        public void onCanceled() {
-        }
     }
-
-    private class PushRepo implements OnPasswordEntered {
-
-        private boolean mPushAll = false;
-
-        public void push(boolean pushAll) {
-            mPushAll = pushAll;
-            onClicked(mRepo.getUsername(), mRepo.getPassword(), false);
-        }
-
-        @Override
-        public void onClicked(String username, String password,
-                boolean savePassword) {
-            mRepo.setUsername(username);
-            mRepo.setPassword(password);
-            if (savePassword) {
-                ContentValues values = new ContentValues();
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME,
-                        username);
-                values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD,
-                        password);
-                RepoDbManager.updateRepo(mRepo.getID(), values);
-            }
-            showProgressBar(R.string.push_msg_init);
-            mRunningThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mRepo.push(getProgressMonitor(), mPushAll);
-                    } catch (TransportException e) {
-                        promptForPassword(mPushRepo, e.getMessage());
-                    }
-                    hideProgressBar();
-                }
-            });
-            mRunningThread.start();
-        }
-
-        @Override
-        public void onCanceled() {
-        }
-    }
-
-    public void promptForPassword(final OnPasswordEntered listener,
-            final String msg) {
-        if ((!msg.contains("Auth fail"))
-                && (!msg.toLowerCase().contains("auth"))) {
-            return;
-        }
-        String errorInfo = null;
-        if (msg.contains("Auth fail")) {
-            errorInfo = getString(R.string.dialog_prompt_for_password_title_auth_fail);
-        }
-        super.promptForPassword(listener, errorInfo);
-    }
-
 }

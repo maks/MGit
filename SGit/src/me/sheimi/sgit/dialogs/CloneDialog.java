@@ -2,9 +2,7 @@ package me.sheimi.sgit.dialogs;
 
 import java.io.File;
 
-import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
-import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Constants;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
@@ -13,9 +11,7 @@ import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-
-import org.eclipse.jgit.api.errors.TransportException;
-
+import me.sheimi.sgit.repo.tasks.CloneTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
@@ -147,25 +143,10 @@ public class CloneDialog extends SheimiDialogFragment implements
 
         mRepo.setUsername(username);
         mRepo.setPassword(password);
-        mRepo.cloneRepo();
-        /**
-         * Thread thread = new Thread(new Runnable() {
-         * 
-         * @Override public void run() { try { mRepo.cloneRepo();
-         *           mRepo.updateLatestCommitInfo(); ContentValues values = new
-         *           ContentValues();
-         *           values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-         *           RepoContract.REPO_STATUS_NULL);
-         *           RepoDbManager.updateRepo(mRepo.getID(), values); } catch
-         *           (TransportException e) { String msg = e.getMessage(); if
-         *           (msg.contains("Auth fail")) { promptForPassword(
-         *           CloneDialog.this,
-         *           R.string.dialog_prompt_for_password_title_auth_fail); }
-         *           else if (msg.toLowerCase().contains("auth")) {
-         *           promptForPassword(CloneDialog.this); }
-         *           mRepo.deleteRepoSync(); } catch (Exception e) {
-         *           mRepo.deleteRepoSync(); } } }); thread.start();
-         */
+
+        CloneTask task = new CloneTask(mRepo, this);
+        task.executeTask();
+
     }
 
     @Override

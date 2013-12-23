@@ -62,7 +62,6 @@ public class FilesFragment extends RepoDetailFragment {
         if (mRepo == null) {
             return v;
         }
-        mRepo.setContext(getRawActivity());
         mRootDir = FsUtils.getRepo(mRepo.getLocalPath());
 
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);

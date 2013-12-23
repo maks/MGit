@@ -3,6 +3,7 @@ package me.sheimi.sgit.repo.tasks;
 import java.io.File;
 import java.util.Locale;
 
+import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
@@ -20,12 +21,16 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public class CloneTask extends RepoOpTask {
 
-    private Repo mRepo;
+    private OnPasswordEntered mOnPasswordEnter;
+
+    public CloneTask(Repo repo, OnPasswordEntered onPasswordEnter) {
+        super(repo);
+        mOnPasswordEnter = onPasswordEnter;
+    }
 
     @Override
-    protected Boolean doInBackground(Repo... repos) {
-        mRepo = repos[0];
-        boolean result = cloneRepo(mRepo);
+    protected Boolean doInBackground(Void... v) {
+        boolean result = cloneRepo();
         if (!result) {
             mRepo.deleteRepoSync();
             return false;
@@ -34,7 +39,7 @@ public class CloneTask extends RepoOpTask {
     }
 
     @Override
-    protected void onProgressUpdate(Integer... progress) {
+    protected void onProgressUpdate(String... progress) {
         super.onProgressUpdate(progress);
         String status = "";
         String percent = "";
@@ -51,7 +56,6 @@ public class CloneTask extends RepoOpTask {
 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
-        mRepo.removeTask();
         if (!isSuccess && !isTaskCanceled()) {
             showError();
             return;
@@ -60,17 +64,17 @@ public class CloneTask extends RepoOpTask {
         mRepo.updateStatus(RepoContract.REPO_STATUS_NULL);
     }
 
-    public boolean cloneRepo(Repo repo) {
+    public boolean cloneRepo() {
         File localRepo = new File(FsUtils.getDir(FsUtils.REPO_DIR),
-                repo.getLocalPath());
+                mRepo.getLocalPath());
         CloneCommand cloneCommand = Git.cloneRepository()
-                .setURI(repo.getRemoteURL()).setCloneAllBranches(true)
+                .setURI(mRepo.getRemoteURL()).setCloneAllBranches(true)
                 .setProgressMonitor(new RepoCloneMonitor())
                 .setTransportConfigCallback(new SgitTransportCallback())
                 .setDirectory(localRepo);
 
-        String username = repo.getUsername();
-        String password = repo.getPassword();
+        String username = mRepo.getUsername();
+        String password = mRepo.getPassword();
 
         if (username != null && password != null && !username.equals("")
                 && !password.equals("")) {
@@ -80,13 +84,13 @@ public class CloneTask extends RepoOpTask {
         }
         try {
             cloneCommand.call();
-            repo.resetGit();
         } catch (InvalidRemoteException e) {
             setException(e);
             setErrorRes(R.string.error_invalid_remote);
             return false;
         } catch (TransportException e) {
             setException(e);
+            handleAuthError(mOnPasswordEnter);
             return false;
         } catch (GitAPIException e) {
             setException(e);
@@ -109,13 +113,12 @@ public class CloneTask extends RepoOpTask {
     private int mTotalWork;
     private int mWorkDone;
     private String mTitle;
-    
+
     @Override
     public void cancelTask() {
         super.cancelTask();
         mRepo.deleteRepo();
     }
-
 
     public class RepoCloneMonitor implements ProgressMonitor {
 

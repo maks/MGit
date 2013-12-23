@@ -70,8 +70,6 @@ public class CommitsFragment extends RepoDetailFragment implements
         if (mRepo == null) {
             return v;
         }
-        mRepo.setContext(getRawActivity());
-
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);

@@ -1,12 +1,13 @@
 package me.sheimi.sgit.activities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.CommitDiffTask;
+import me.sheimi.sgit.repo.tasks.CommitDiffTask.CommitDiffResult;
 
 import org.eclipse.jgit.diff.DiffEntry;
 
@@ -45,7 +46,6 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         mOldCommit = extras.getString(OLD_COMMIT);
         mNewCommit = extras.getString(NEW_COMMIT);
         mRepo = (Repo) extras.getSerializable(Repo.TAG);
-        mRepo.setContext(this);
 
         String title = Repo.getCommitDisplayName(mNewCommit) + " : "
                 + Repo.getCommitDisplayName(mOldCommit);
@@ -128,26 +128,19 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
 
         @JavascriptInterface
         public void getDiffEntries() {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mDiffEntries = mRepo.getCommitDiff(mOldCommit, mNewCommit);
-                    mDiffStrs = new ArrayList<String>(mDiffEntries.size());
-                    for (DiffEntry diffEntry : mDiffEntries) {
-                        String diffStr = mRepo.parseDiffEntry(diffEntry);
-                        mDiffStrs.add(diffStr);
-                    }
-                    runOnUiThread(new Runnable() {
+            CommitDiffTask diffTask = new CommitDiffTask(mRepo, mOldCommit,
+                    mNewCommit, new CommitDiffResult() {
                         @Override
-                        public void run() {
+                        public void pushResult(List<DiffEntry> diffEntries,
+                                List<String> diffStrs) {
+                            mDiffEntries = diffEntries;
+                            mDiffStrs = diffStrs;
                             mLoading.setVisibility(View.GONE);
                             mDiffContent.loadUrl(CodeGuesser
                                     .wrapUrlScript("notifyEntriesReady();"));
                         }
                     });
-                }
-            });
-            thread.start();
+            diffTask.executeTask();
         }
 
         @JavascriptInterface

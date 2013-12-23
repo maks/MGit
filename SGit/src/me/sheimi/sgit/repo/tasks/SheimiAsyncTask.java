@@ -1,14 +1,12 @@
 package me.sheimi.sgit.repo.tasks;
 
 import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.sgit.database.models.Repo;
 import android.os.AsyncTask;
 
-public abstract class SheimiAsyncTask<A, B, C> extends
-        AsyncTask<Repo, Integer, Boolean> {
+public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
 
-    private Throwable mException;
-    private int mErrorRes = 0;
+    protected Throwable mException;
+    protected int mErrorRes = 0;
 
     protected void setException(Throwable e) {
         mException = e;
@@ -29,14 +27,28 @@ public abstract class SheimiAsyncTask<A, B, C> extends
                     mException.getMessage());
         }
     }
-    
+
     private boolean mIsCanceled = false;
 
     public void cancelTask() {
         mIsCanceled = true;
     }
-    
+
     public boolean isTaskCanceled() {
         return mIsCanceled;
+    }
+    
+    public static interface AsyncTaskPostCallback {
+        public void onPostExecute(Boolean isSuccess);
+    }
+
+    public static interface AsyncTaskCallback {
+        public boolean doInBackground(Void... params);
+        
+        public void onPreExecute();
+
+        public void onProgressUpdate(String... progress);
+
+        public void onPostExecute(Boolean isSuccess);
     }
 }
