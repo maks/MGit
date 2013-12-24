@@ -1,5 +1,7 @@
 package me.sheimi.sgit.dialogs;
 
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,18 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-
-import me.sheimi.sgit.R;
 
 /**
  * Created by sheimi on 8/24/13.
  */
 
-public class ProfileDialog extends DialogFragment implements
+public class ProfileDialog extends SheimiDialogFragment implements
         DialogInterface.OnClickListener {
 
     private EditText mGitName;

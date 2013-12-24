@@ -1,5 +1,16 @@
 package me.sheimi.sgit.fragments;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+
+import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.ViewFileActivity;
+import me.sheimi.sgit.adapters.FilesListAdapter;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,30 +23,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.activities.ViewFileActivity;
-import me.sheimi.sgit.adapters.FilesListAdapter;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
-import me.sheimi.sgit.listeners.OnBackClickListener;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
-
 /**
  * Created by sheimi on 8/5/13.
  */
-public class FilesFragment extends BaseFragment {
+public class FilesFragment extends RepoDetailFragment {
 
     private static String CURRENT_DIR = "current_dir";
-
-    private FsUtils mFsUtils;
-    private ViewUtils mViewUtils;
 
     private Button mCommitNameButton;
     private ImageView mCommitType;
@@ -46,8 +39,6 @@ public class FilesFragment extends BaseFragment {
     private File mRootDir;
 
     private Repo mRepo;
-
-    private RepoDetailActivity mActivity;
 
     public static FilesFragment newInstance(Repo mRepo) {
         FilesFragment fragment = new FilesFragment();
@@ -61,10 +52,7 @@ public class FilesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_files, container, false);
-        mActivity = (RepoDetailActivity) getActivity();
-        mViewUtils = ViewUtils.getInstance(mActivity);
-        mFsUtils = FsUtils.getInstance(mActivity);
-        mActivity.setFilesFragment(this);
+        getRawActivity().setFilesFragment(this);
 
         Bundle bundle = getArguments();
         mRepo = (Repo) bundle.getSerializable(Repo.TAG);
@@ -74,8 +62,7 @@ public class FilesFragment extends BaseFragment {
         if (mRepo == null) {
             return v;
         }
-        mRepo.setContext(mActivity);
-        mRootDir = mFsUtils.getRepo(mRepo.getLocalPath());
+        mRootDir = FsUtils.getRepo(mRepo.getLocalPath());
 
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
@@ -103,16 +90,16 @@ public class FilesFragment extends BaseFragment {
                             setCurrentDir(file);
                             return;
                         }
-                        String mime = mFsUtils.getMimeType(file);
+                        String mime = FsUtils.getMimeType(file);
                         if (mime.startsWith("text")) {
                             Intent intent = new Intent(getActivity(),
                                     ViewFileActivity.class);
                             intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
                                     file.getAbsolutePath());
-                            ActivityUtils.startActivity(mActivity, intent);
+                            getRawActivity().startActivity(intent);
                             return;
                         }
-                        mFsUtils.openFile(file);
+                        FsUtils.openFile(file);
                     }
                 });
 
@@ -122,8 +109,7 @@ public class FilesFragment extends BaseFragment {
                     public boolean onItemLongClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
                         final File file = mFilesListAdapter.getItem(position);
-                        mViewUtils.showMessageDialog(
-                                R.string.dialog_file_delete,
+                        showMessageDialog(R.string.dialog_file_delete,
                                 R.string.dialog_file_delete_msg,
                                 R.string.label_delete,
                                 new DialogInterface.OnClickListener() {
@@ -131,7 +117,7 @@ public class FilesFragment extends BaseFragment {
                                     public void onClick(
                                             DialogInterface dialogInterface,
                                             int i) {
-                                        mFsUtils.deleteFile(file);
+                                        FsUtils.deleteFile(file);
                                         reset();
                                     }
                                 });
@@ -142,7 +128,8 @@ public class FilesFragment extends BaseFragment {
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog(mRepo);
+                ChooseCommitDialog cbd = new ChooseCommitDialog();
+                cbd.setArguments(mRepo.getBundle());
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });
@@ -208,7 +195,7 @@ public class FilesFragment extends BaseFragment {
     public boolean newDir(String name) {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {
-            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            showToastMessage(R.string.alert_file_exists);
             return false;
         }
         return file.mkdir();
@@ -218,14 +205,14 @@ public class FilesFragment extends BaseFragment {
         File file = new File(mCurrentDir, name);
         Log.d("name", name);
         if (file.exists()) {
-            mViewUtils.showToastMessage(R.string.alert_file_exists);
+            showToastMessage(R.string.alert_file_exists);
             return false;
         }
         try {
             return file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
-            mViewUtils.showToastMessage(e.getMessage());
+            showToastMessage(e.getMessage());
             return false;
         }
     }

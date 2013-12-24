@@ -1,33 +1,29 @@
 package me.sheimi.sgit.adapters;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.utils.ViewUtils;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by sheimi on 8/18/13.
  */
-public class FilesListAdapter extends ArrayAdapter<File> {
+public class FilesListAdapter extends SheimiArrayAdapter<File> {
 
     private File mDir;
-    private ViewUtils mViewUtils;
     private FileFilter mFileFilter;
 
     public FilesListAdapter(Context context, FileFilter fileFilter) {
         super(context, 0);
-        mViewUtils = ViewUtils.getInstance(context);
         mFileFilter = fileFilter;
     }
 
@@ -82,9 +78,8 @@ public class FilesListAdapter extends ArrayAdapter<File> {
                 return file1.isDirectory() ? -1 : 1;
             }
         });
-        mViewUtils.adapterAddAll(this, files);
+        addAll(files);
         notifyDataSetChanged();
-        ;
     }
 
     private static class FilesListItemHolder {

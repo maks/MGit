@@ -1,46 +1,43 @@
 package me.sheimi.sgit.adapters;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
-
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.revwalk.RevCommit;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.ImageCache;
-import me.sheimi.sgit.utils.ViewUtils;
+
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by sheimi on 8/18/13.
  */
-public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
+public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
 
     private Repo mRepo;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
             "MM/dd/yyyy", Locale.getDefault());
     private Set<Integer> mChosenItems;
-    private ViewUtils mViewUtils;
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems,
             Repo repo) {
         super(context, 0);
         mChosenItems = chosenItems;
-        mViewUtils = ViewUtils.getInstance(context);
         mRepo = repo;
     }
 
@@ -79,18 +76,25 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         holder.commitTime.setText(COMMITTIME_FORMATTER.format(date));
         holder.commitsIcon.setImageResource(R.drawable.ic_default_author);
 
-        ImageLoader im = ImageCache.getInstance(getContext()).getImageLoader();
-        im.displayImage(CommonUtils.buildGravatarURL(email), holder.commitsIcon);
+        ImageLoader im = BasicFunctions.getImageLoader();
+        im.displayImage(BasicFunctions.buildGravatarURL(email), holder.commitsIcon);
 
         if (mChosenItems.contains(position)) {
-            convertView.setBackgroundColor(mViewUtils
-                    .getColor(R.color.pressed_sgit));
+            convertView.setBackgroundColor(getColor(R.color.pressed_sgit));
         } else {
-            convertView.setBackgroundColor(mViewUtils
-                    .getColor(android.R.color.transparent));
+            convertView
+                    .setBackgroundColor(getColor(android.R.color.transparent));
         }
 
         return convertView;
+    }
+
+    private int getColor(int resId) {
+        Context context = getContext();
+        if (context instanceof SheimiFragmentActivity) {
+            return ((SheimiFragmentActivity) context).getColor(resId);
+        }
+        return 0;
     }
 
     public void resetCommit() {
@@ -98,7 +102,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         List<RevCommit> commitsList = mRepo.getCommitsList();
         if (commitsList != null) {
             // TODO why == null
-            mViewUtils.adapterAddAll(this, commitsList);
+            addAll(commitsList);
         }
         notifyDataSetChanged();
     }

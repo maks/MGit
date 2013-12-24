@@ -1,43 +1,35 @@
 package me.sheimi.sgit.adapters;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import org.eclipse.jgit.lib.ProgressMonitor;
-
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.ImageCache;
-import me.sheimi.sgit.utils.ViewUtils;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * Created by sheimi on 8/6/13.
  */
-public class RepoListAdapter extends ArrayAdapter<Repo> implements
+public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
         RepoDbManager.RepoDbObserver, AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
 
@@ -46,19 +38,15 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
             "MM/dd/yyyy", Locale.getDefault());
 
-    private RepoDbManager mDb;
-
     private int mQueryType = QUERY_TYPE_QUERY;
     private String mSearchQueryString;
     private RepoListActivity mActivity;
-    private ViewUtils mViewUtils;
 
     public RepoListAdapter(Context context) {
         super(context, 0);
-        mDb = RepoDbManager.getInstance(context);
-        mDb.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME, this);
+        RepoDbManager.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME,
+                this);
         mActivity = (RepoListActivity) context;
-        mViewUtils = ViewUtils.getInstance(context);
     }
 
     public void searchRepo(String query) {
@@ -76,17 +64,17 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         Cursor cursor = null;
         switch (mQueryType) {
             case QUERY_TYPE_SEARCH:
-                cursor = mDb.searchRepo(mSearchQueryString);
+                cursor = RepoDbManager.searchRepo(mSearchQueryString);
                 break;
             case QUERY_TYPE_QUERY:
-                cursor = mDb.queryAllRepo();
+                cursor = RepoDbManager.queryAllRepo();
                 break;
         }
         List<Repo> repo = Repo.getRepoList(mActivity, cursor);
         Collections.sort(repo);
         cursor.close();
         clear();
-        mViewUtils.adapterAddAll(this, repo);
+        addAll(repo);
         notifyDataSetChanged();
     }
 
@@ -127,18 +115,11 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL)) {
             holder.commitMsgContainer.setVisibility(View.GONE);
             holder.progressContainer.setVisibility(View.VISIBLE);
-            int progress = repo.getProgress();
-            if (progress != -1) {
-                holder.progressMsg.setText(String.format("%s  (%d%%)",
-                        repo.getRepoStatus(), progress));
-            } else {
-                holder.progressMsg.setText(String.format("%s",
-                        repo.getRepoStatus()));
-            }
+            holder.progressMsg.setText(repo.getRepoStatus());
             holder.cancelBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    repo.cancelClone();
+                    repo.cancelTask();
                 }
             });
         } else if (repo.getLastCommitter() != null) {
@@ -151,10 +132,10 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
             holder.commitAuthor.setText(repo.getLastCommitter());
             holder.authorIcon.setVisibility(View.VISIBLE);
             holder.authorIcon.setImageResource(R.drawable.ic_default_author);
-            String authorIconURL = CommonUtils.buildGravatarURL(repo
+            String authorIconURL = BasicFunctions.buildGravatarURL(repo
                     .getLastCommitterEmail());
-            ImageCache.getInstance(mActivity).getImageLoader()
-                    .displayImage(authorIconURL, holder.authorIcon);
+            BasicFunctions.getImageLoader().displayImage(authorIconURL,
+                    holder.authorIcon);
         }
     }
 
@@ -176,7 +157,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
             return;
         Intent intent = new Intent(mActivity, RepoDetailActivity.class);
         intent.putExtra(Repo.TAG, repo);
-        ActivityUtils.startActivity(mActivity, intent);
+        mActivity.startActivity(intent);
     }
 
     @Override
@@ -185,14 +166,19 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         final Repo repo = getItem(position);
         if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
             return false;
-        mViewUtils.showMessageDialog(R.string.dialog_delete_repo_title,
-                R.string.dialog_delete_repo_msg, R.string.label_delete,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        repo.deleteRepo();
-                    }
-                });
+        Context context = getContext();
+        if (context instanceof SheimiFragmentActivity) {
+            ((SheimiFragmentActivity) context).showMessageDialog(
+                    R.string.dialog_delete_repo_title,
+                    R.string.dialog_delete_repo_msg, R.string.label_delete,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface,
+                                int i) {
+                            repo.deleteRepo();
+                        }
+                    });
+        }
         return true;
     }
 

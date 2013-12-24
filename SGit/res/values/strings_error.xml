@@ -8,7 +8,9 @@
     <string name="error_diff_failed">Diff Failed</string>
     <string name="error_out_of_memory">Opps, Out of Memory</string>
     <string name="error_no_edit_app">Opps, no apps can edit source file.</string>
+    <string name="error_can_not_edit_file">Opps, can\'t edit this file in this device.</string>
     <string name="error_unknown">Something wrong!!!</string>
+    <string name="error_task_running">A task for this repo is running</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
@@ -23,8 +25,7 @@
     <string name="alert_choose_two_items">You can only choose two items</string>
     <string name="alert_no_items_selected">No items selected</string>
     <string name="alert_no_older_commits">No Older Commits to Compare With</string>
-    <string name="alert_in_app_billing_not_available">Sorry, in-app billing is not available.
-    </string>
+    <string name="alert_in_app_billing_not_available">Sorry, in-app billing is not available.</string>
     <string name="alert_have_paid">Ads has been disabled.</string>
     <string name="alert_in_app_billing_not_inited">In-app billing hasn\'t been initialized</string>
     <string name="alert_please_wait_previous_op">Previous operation is still running</string>

@@ -1,14 +1,15 @@
 package me.sheimi.sgit.database;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import me.sheimi.android.utils.BasicFunctions;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by sheimi on 8/7/13.
@@ -21,23 +22,22 @@ public class RepoDbManager {
     private SQLiteDatabase mReadableDatabase;
     private RepoDbHelper mDbHelper;
 
-    private Map<String, Set<RepoDbObserver>> mObservers;
+    private static Map<String, Set<RepoDbObserver>> mObservers = new HashMap<String, Set<RepoDbObserver>>();
 
     private RepoDbManager(Context context) {
         mDbHelper = new RepoDbHelper(context);
         mWritableDatabase = mDbHelper.getWritableDatabase();
         mReadableDatabase = mDbHelper.getReadableDatabase();
-        mObservers = new HashMap<String, Set<RepoDbObserver>>();
     }
 
-    public static RepoDbManager getInstance(Context context) {
+    private static RepoDbManager getInstance() {
         if (mInstance == null) {
-            mInstance = new RepoDbManager(context);
+            mInstance = new RepoDbManager(BasicFunctions.getActiveActivity());
         }
         return mInstance;
     }
 
-    public void registerDbObserver(String table, RepoDbObserver observer) {
+    public static void registerDbObserver(String table, RepoDbObserver observer) {
         Set<RepoDbObserver> set = mObservers.get(table);
         if (set == null) {
             set = new HashSet<RepoDbObserver>();
@@ -46,14 +46,15 @@ public class RepoDbManager {
         set.add(observer);
     }
 
-    public void unregisterDbObserver(String table, RepoDbObserver observer) {
+    public static void unregisterDbObserver(String table,
+            RepoDbObserver observer) {
         Set<RepoDbObserver> set = mObservers.get(table);
         if (set == null)
             return;
         set.remove(observer);
     }
 
-    public void notifyObservers(String table) {
+    public static void notifyObservers(String table) {
         Set<RepoDbObserver> set = mObservers.get(table);
         if (set == null)
             return;
@@ -66,7 +67,11 @@ public class RepoDbManager {
         public void nofityChanged();
     }
 
-    public Cursor searchRepo(String query) {
+    public static Cursor searchRepo(String query) {
+        return getInstance()._searchRepo(query);
+    }
+
+    private Cursor _searchRepo(String query) {
         String selection = RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH
                 + " LIKE ? OR " + RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL
                 + " LIKE ? OR "
@@ -83,7 +88,11 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public Cursor queryAllRepo() {
+    public static Cursor queryAllRepo() {
+        return getInstance()._queryAllRepo();
+    }
+
+    private Cursor _queryAllRepo() {
         Cursor cursor = mReadableDatabase.query(true,
                 RepoContract.RepoEntry.TABLE_NAME,
                 RepoContract.RepoEntry.ALL_COLUMNS, null, null, null, null,
@@ -91,7 +100,11 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public Cursor getRepoById(long id) {
+    public static Cursor getRepoById(long id) {
+        return getInstance()._getRepoById(id);
+    }
+
+    private Cursor _getRepoById(long id) {
         Cursor cursor = mReadableDatabase.query(true,
                 RepoContract.RepoEntry.TABLE_NAME,
                 RepoContract.RepoEntry.ALL_COLUMNS, RepoContract.RepoEntry._ID
@@ -104,14 +117,22 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public long insertRepo(ContentValues values) {
+    public static long insertRepo(ContentValues values) {
+        return getInstance()._insertRepo(values);
+    }
+
+    private long _insertRepo(ContentValues values) {
         long id = mWritableDatabase.insert(RepoContract.RepoEntry.TABLE_NAME,
                 null, values);
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
         return id;
     }
 
-    public void updateRepo(long id, ContentValues values) {
+    public static void updateRepo(long id, ContentValues values) {
+        getInstance()._updateRepo(id, values);
+    }
+
+    private void _updateRepo(long id, ContentValues values) {
         String selection = RepoContract.RepoEntry._ID + " = ?";
         String[] selectionArgs = { String.valueOf(id) };
         mWritableDatabase.update(RepoContract.RepoEntry.TABLE_NAME, values,
@@ -119,7 +140,11 @@ public class RepoDbManager {
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
     }
 
-    public void deleteRepo(long id) {
+    public static void deleteRepo(long id) {
+        getInstance()._deleteRepo(id);
+    }
+
+    private void _deleteRepo(long id) {
         String selection = RepoContract.RepoEntry._ID + " = ?";
         String[] selectionArgs = { String.valueOf(id) };
         mWritableDatabase.delete(RepoContract.RepoEntry.TABLE_NAME, selection,

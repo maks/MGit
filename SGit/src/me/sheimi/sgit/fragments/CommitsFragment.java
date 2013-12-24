@@ -1,5 +1,19 @@
 package me.sheimi.sgit.fragments;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.CommitDiffActivity;
+import me.sheimi.sgit.adapters.CommitsListAdapter;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.ChooseCommitDialog;
+
+import org.eclipse.jgit.revwalk.RevCommit;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,39 +30,20 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import org.eclipse.jgit.revwalk.RevCommit;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.CommitDiffActivity;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.adapters.CommitsListAdapter;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
-import me.sheimi.sgit.listeners.OnBackClickListener;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.ViewUtils;
-
 /**
  * Created by sheimi on 8/5/13.
  */
-public class CommitsFragment extends BaseFragment implements
+public class CommitsFragment extends RepoDetailFragment implements
         ActionMode.Callback {
 
     private final static String IS_ACTION_MODE = "is action mode";
     private final static String CHOSEN_ITEM = "chosen item";
 
-    private RepoDetailActivity mActivity;
     private Button mCommitNameButton;
     private ImageView mCommitType;
     private ListView mCommitsList;
     private CommitsListAdapter mCommitsListAdapter;
 
-    private ViewUtils mViewUtils;
     private ActionMode mActionMode;
     private Set<Integer> mChosenItem = new HashSet<Integer>();
     private Repo mRepo;
@@ -65,9 +60,7 @@ public class CommitsFragment extends BaseFragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_commits, container, false);
-        mActivity = (RepoDetailActivity) getActivity();
-        mActivity.setCommitsFragment(this);
-        mViewUtils = ViewUtils.getInstance(mActivity);
+        getRawActivity().setCommitsFragment(this);
 
         Bundle bundle = getArguments();
         mRepo = (Repo) bundle.getSerializable(Repo.TAG);
@@ -77,20 +70,19 @@ public class CommitsFragment extends BaseFragment implements
         if (mRepo == null) {
             return v;
         }
-        mRepo.setContext(mActivity);
-
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitNameButton = (Button) v.findViewById(R.id.commitName);
         mCommitType = (ImageView) v.findViewById(R.id.commitType);
-        mCommitsListAdapter = new CommitsListAdapter(mActivity, mChosenItem,
-                mRepo);
+        mCommitsListAdapter = new CommitsListAdapter(getRawActivity(),
+                mChosenItem, mRepo);
         mCommitsListAdapter.resetCommit();
         mCommitsList.setAdapter(mCommitsListAdapter);
 
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog(mRepo);
+                ChooseCommitDialog cbd = new ChooseCommitDialog();
+                cbd.setArguments(mRepo.getBundle());
                 cbd.show(getFragmentManager(), "choose-branch-dialog");
             }
         });
@@ -106,20 +98,18 @@ public class CommitsFragment extends BaseFragment implements
                             String message = getString(R.string.dialog_comfirm_checkout_commit_msg)
                                     + " "
                                     + Repo.getCommitDisplayName(fullCommitName);
-                            mViewUtils
-                                    .showMessageDialog(
-                                            R.string.dialog_comfirm_checkout_commit_title,
-                                            message,
-                                            R.string.label_checkout,
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(
-                                                        DialogInterface dialogInterface,
-                                                        int i) {
-                                                    mActivity
-                                                            .resetCommits(fullCommitName);
-                                                }
-                                            });
+                            showMessageDialog(
+                                    R.string.dialog_comfirm_checkout_commit_title,
+                                    message, R.string.label_checkout,
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialogInterface,
+                                                int i) {
+                                            getRawActivity().resetCommits(
+                                                    fullCommitName);
+                                        }
+                                    });
                             return;
                         }
                         chooseItem(position);
@@ -154,7 +144,7 @@ public class CommitsFragment extends BaseFragment implements
         if (isActionMode) {
             List<Integer> itemsInt = savedInstanceState
                     .getIntegerArrayList(CHOSEN_ITEM);
-            mActionMode = mActivity.startActionMode(this);
+            mActionMode = getRawActivity().startActionMode(this);
             mChosenItem.addAll(itemsInt);
             mCommitsListAdapter.notifyDataSetChanged();
         }
@@ -202,7 +192,7 @@ public class CommitsFragment extends BaseFragment implements
     }
 
     public void enterDiffActionMode() {
-        mActionMode = mActivity.startActionMode(CommitsFragment.this);
+        mActionMode = getRawActivity().startActionMode(CommitsFragment.this);
     }
 
     @Override
@@ -224,8 +214,7 @@ public class CommitsFragment extends BaseFragment implements
             case R.id.action_mode_diff:
                 Integer[] items = mChosenItem.toArray(new Integer[0]);
                 if (items.length == 0) {
-                    mViewUtils
-                            .showToastMessage(R.string.alert_no_items_selected);
+                    showToastMessage(R.string.alert_no_items_selected);
                     return true;
                 }
                 int item1,
@@ -234,14 +223,13 @@ public class CommitsFragment extends BaseFragment implements
                 if (items.length == 1) {
                     item2 = item1 + 1;
                     if (item2 == mCommitsListAdapter.getCount()) {
-                        mViewUtils
-                                .showToastMessage(R.string.alert_no_older_commits);
+                        showToastMessage(R.string.alert_no_older_commits);
                         return true;
                     }
                 } else {
                     item2 = items[1];
                 }
-                Intent intent = new Intent(getActivity(),
+                Intent intent = new Intent(getRawActivity(),
                         CommitDiffActivity.class);
                 int smaller = Math.min(item1, item2);
                 int larger = Math.max(item1, item2);
@@ -253,7 +241,7 @@ public class CommitsFragment extends BaseFragment implements
                 intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
                 intent.putExtra(Repo.TAG, mRepo);
                 actionMode.finish();
-                ActivityUtils.startActivity(getActivity(), intent);
+                getRawActivity().startActivity(intent);
                 return true;
         }
         return false;
@@ -273,7 +261,7 @@ public class CommitsFragment extends BaseFragment implements
             return;
         }
         if (mChosenItem.size() >= 2) {
-            mViewUtils.showToastMessage(R.string.alert_choose_two_items);
+            showToastMessage(R.string.alert_choose_two_items);
             return;
         }
         mChosenItem.add(position);

@@ -1,5 +1,10 @@
 package me.sheimi.sgit.activities.explorer;
 
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -7,13 +12,6 @@ import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
-
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.ActivityUtils;
 
 public class ImportRepositoryActivity extends FileExplorerActivity {
 
@@ -67,8 +65,7 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
                                 intent.putExtra(RESULT_PATH,
                                         file.getAbsolutePath());
                                 setResult(Activity.RESULT_OK, intent);
-                                ActivityUtils
-                                        .finishActivity(ImportRepositoryActivity.this);
+                                finish();
                             }
                         });
                 builder.show();

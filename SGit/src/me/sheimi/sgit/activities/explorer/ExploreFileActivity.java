@@ -1,15 +1,13 @@
 package me.sheimi.sgit.activities.explorer;
 
+import java.io.File;
+import java.io.FileFilter;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
-
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.sgit.utils.ActivityUtils;
 
 public class ExploreFileActivity extends FileExplorerActivity {
 
@@ -45,7 +43,7 @@ public class ExploreFileActivity extends FileExplorerActivity {
                 Intent intent = new Intent();
                 intent.putExtra(RESULT_PATH, file.getAbsolutePath());
                 setResult(Activity.RESULT_OK, intent);
-                ActivityUtils.finishActivity(ExploreFileActivity.this);
+                finish();
             }
         };
     }
