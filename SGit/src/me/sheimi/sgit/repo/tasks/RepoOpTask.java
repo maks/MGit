@@ -20,6 +20,10 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
         mRepo.removeTask();
+        if (!isSuccess && !isTaskCanceled()) {
+            showError();
+            return;
+        }
     }
 
     public void executeTask() {
@@ -51,6 +55,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
 
         private int mTotalWork;
         private int mWorkDone;
+        private String mTitle;
 
         @Override
         public void start(int i) {
@@ -60,14 +65,17 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
         public void beginTask(String title, int totalWork) {
             mTotalWork = totalWork;
             mWorkDone = 0;
-            setProgress(title, mWorkDone, mTotalWork);
+            if (title != null) {
+                mTitle = title;
+            }
+            setProgress();
         }
 
         @Override
         public void update(int i) {
             mWorkDone += i;
             if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0) {
-                setProgress(null, mWorkDone, mTotalWork);
+                setProgress();
             }
         }
 
@@ -81,12 +89,17 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
             return isTaskCanceled();
         }
 
-        private void setProgress(String title, int workDone, int totalWork) {
-            String msg = title != null ? title + "..." : "";
-            int showedWorkDown = Math.min(workDone, totalWork);
-            int progress = 100 * showedWorkDown / totalWork;
-            String rightHint = showedWorkDown + "/" + totalWork;
-            String leftHint = progress + "%";
+        private void setProgress() {
+            String msg = mTitle;
+            int showedWorkDown = Math.min(mWorkDone, mTotalWork);
+            int progress = 0;
+            String rightHint = "0/0";
+            String leftHint = "0%";
+            if (mTotalWork != 0) {
+                progress = 100 * showedWorkDown / mTotalWork;
+                rightHint = showedWorkDown + "/" + mTotalWork;
+                leftHint = progress + "%";
+            }
             publishProgress(msg, leftHint, rightHint,
                     Integer.toString(progress));
         }
