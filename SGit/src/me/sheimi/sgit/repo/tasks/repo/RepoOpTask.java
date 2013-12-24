@@ -1,9 +1,10 @@
-package me.sheimi.sgit.repo.tasks;
+package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.SheimiAsyncTask;
 
 import org.eclipse.jgit.lib.ProgressMonitor;
 

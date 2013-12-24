@@ -1,4 +1,4 @@
-package me.sheimi.sgit.repo.tasks;
+package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.sgit.R;
@@ -8,24 +8,27 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullCommand;
+import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import android.content.ContentValues;
 
-public class PullTask extends RepoOpTask implements OnPasswordEntered {
+public class PushTask extends RepoOpTask implements OnPasswordEntered {
 
     private AsyncTaskCallback mCallback;
+    private boolean mPushAll;
 
-    public PullTask(Repo repo, AsyncTaskCallback callback) {
+    public PushTask(Repo repo, boolean pushAll, AsyncTaskCallback callback) {
         super(repo);
         mCallback = callback;
+        mPushAll = pushAll;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = pullRepo();
+        boolean result = pushRepo();
         if (mCallback != null) {
             result = mCallback.doInBackground(params) & result;
         }
@@ -58,28 +61,35 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
         }
     }
 
-    public boolean pullRepo() {
+    public boolean pushRepo() {
         Git git = mRepo.getGit();
-        PullCommand pullCommand = git.pull()
+        PushCommand pushCommand = git.push().setPushTags()
                 .setProgressMonitor(new BasicProgressMonitor())
                 .setTransportConfigCallback(new SgitTransportCallback());
+        if (mPushAll) {
+            pushCommand.setPushAll();
+        } else {
+            RefSpec spec = new RefSpec(mRepo.getBranchName());
+            pushCommand.setRefSpecs(spec);
+        }
+
         String username = mRepo.getUsername();
         String password = mRepo.getPassword();
         if (username != null && password != null && !username.equals("")
                 && !password.equals("")) {
             UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
                     username, password);
-            pullCommand.setCredentialsProvider(auth);
+            pushCommand.setCredentialsProvider(auth);
         }
+
         try {
-            pullCommand.call();
+            pushCommand.call();
         } catch (TransportException e) {
             setException(e);
             handleAuthError(this);
             return false;
         } catch (Exception e) {
             setException(e);
-            setErrorRes(R.string.error_pull_failed);
             return false;
         } catch (OutOfMemoryError e) {
             setException(e);
@@ -101,11 +111,12 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
         }
 
         mRepo.removeTask();
-        PullTask pullTask = new PullTask(mRepo, mCallback);
-        pullTask.executeTask();
+        PushTask pushTask = new PushTask(mRepo, mPushAll, mCallback);
+        pushTask.executeTask();
     }
 
     @Override
     public void onCanceled() {
     }
+
 }

@@ -13,7 +13,7 @@ import java.util.Set;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.repo.tasks.RepoOpTask;
+import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;

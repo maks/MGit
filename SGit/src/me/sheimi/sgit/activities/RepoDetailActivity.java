@@ -8,14 +8,14 @@ import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
-import me.sheimi.sgit.repo.tasks.CheckoutTask;
-import me.sheimi.sgit.repo.tasks.CommitChangesTask;
-import me.sheimi.sgit.repo.tasks.MergeTask;
-import me.sheimi.sgit.repo.tasks.PullTask;
-import me.sheimi.sgit.repo.tasks.PushTask;
-import me.sheimi.sgit.repo.tasks.ResetCommitTask;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
+import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
+import me.sheimi.sgit.repo.tasks.repo.CommitChangesTask;
+import me.sheimi.sgit.repo.tasks.repo.MergeTask;
+import me.sheimi.sgit.repo.tasks.repo.PullTask;
+import me.sheimi.sgit.repo.tasks.repo.PushTask;
+import me.sheimi.sgit.repo.tasks.repo.ResetCommitTask;
 
 import org.eclipse.jgit.lib.Ref;
 

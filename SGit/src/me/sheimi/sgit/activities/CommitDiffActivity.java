@@ -6,8 +6,8 @@ import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.repo.tasks.CommitDiffTask;
-import me.sheimi.sgit.repo.tasks.CommitDiffTask.CommitDiffResult;
+import me.sheimi.sgit.repo.tasks.repo.CommitDiffTask;
+import me.sheimi.sgit.repo.tasks.repo.CommitDiffTask.CommitDiffResult;
 
 import org.eclipse.jgit.diff.DiffEntry;
 

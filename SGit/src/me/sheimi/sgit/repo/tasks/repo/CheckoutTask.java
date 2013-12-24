@@ -1,4 +1,4 @@
-package me.sheimi.sgit.repo.tasks;
+package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.database.models.Repo;
 
