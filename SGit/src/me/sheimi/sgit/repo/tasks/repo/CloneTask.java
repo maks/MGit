@@ -43,8 +43,10 @@ public class CloneTask extends RepoOpTask {
         if (isTaskCanceled()) {
             return;
         }
-        mRepo.updateLatestCommitInfo();
-        mRepo.updateStatus(RepoContract.REPO_STATUS_NULL);
+        if (isSuccess) {
+            mRepo.updateLatestCommitInfo();
+            mRepo.updateStatus(RepoContract.REPO_STATUS_NULL);
+        }
     }
 
     public boolean cloneRepo() {
