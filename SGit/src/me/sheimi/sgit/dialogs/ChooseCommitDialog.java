@@ -1,41 +1,31 @@
 package me.sheimi.sgit.dialogs;
 
+import me.sheimi.android.views.SheimiArrayAdapter;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.ViewUtils;
-
 /**
  * Created by sheimi on 8/16/13.
  */
-public class ChooseCommitDialog extends DialogFragment {
+public class ChooseCommitDialog extends SheimiDialogFragment {
 
     private Repo mRepo;
     private RepoDetailActivity mActivity;
-    private ViewUtils mViewUtils;
     private ListView mBranchTagList;
     private BranchTagListAdapter mAdapter;
-
-    public ChooseCommitDialog() {
-    }
-
-    public ChooseCommitDialog(Repo repo) {
-        mRepo = repo;
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -46,13 +36,15 @@ public class ChooseCommitDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(Repo.TAG)) {
+            mRepo = (Repo) args.getSerializable(Repo.TAG);
+        }
         if (mRepo == null && savedInstanceState != null) {
             mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
-            mRepo.setContext(getActivity());
         }
 
         mActivity = (RepoDetailActivity) getActivity();
-        mViewUtils = ViewUtils.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
         mBranchTagList = new ListView(mActivity);
@@ -62,8 +54,8 @@ public class ChooseCommitDialog extends DialogFragment {
 
         String[] branches = mRepo.getBranches();
         String[] tags = mRepo.getTags();
-        mViewUtils.adapterAddAll(mAdapter, branches);
-        mViewUtils.adapterAddAll(mAdapter, tags);
+        mAdapter.addAll(branches);
+        mAdapter.addAll(tags);
 
         builder.setTitle(R.string.dialog_choose_branch_title);
         mBranchTagList
@@ -80,7 +72,7 @@ public class ChooseCommitDialog extends DialogFragment {
         return builder.create();
     }
 
-    private class BranchTagListAdapter extends ArrayAdapter<String> {
+    private class BranchTagListAdapter extends SheimiArrayAdapter<String> {
 
         public BranchTagListAdapter(Context context) {
             super(context, 0);

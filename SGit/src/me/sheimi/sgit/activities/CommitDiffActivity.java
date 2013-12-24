@@ -1,8 +1,18 @@
 package me.sheimi.sgit.activities;
 
+import java.util.List;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.CodeGuesser;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.CommitDiffTask;
+import me.sheimi.sgit.repo.tasks.CommitDiffTask.CommitDiffResult;
+
+import org.eclipse.jgit.diff.DiffEntry;
+
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -10,22 +20,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.umeng.analytics.MobclickAgent;
 
-import org.eclipse.jgit.diff.DiffEntry;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.CodeUtils;
-
-public class CommitDiffActivity extends SherlockFragmentActivity {
+public class CommitDiffActivity extends SheimiFragmentActivity {
 
     public final static String OLD_COMMIT = "old commit";
     public final static String NEW_COMMIT = "new commit";
@@ -48,7 +46,6 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
         mOldCommit = extras.getString(OLD_COMMIT);
         mNewCommit = extras.getString(NEW_COMMIT);
         mRepo = (Repo) extras.getSerializable(Repo.TAG);
-        mRepo.setContext(this);
 
         String title = Repo.getCommitDisplayName(mNewCommit) + " : "
                 + Repo.getCommitDisplayName(mOldCommit);
@@ -92,31 +89,10 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.finishActivity(this);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ActivityUtils.finishActivity(this);
-            return true;
-        }
-        return false;
     }
 
     private class CodeLoader {
@@ -152,26 +128,19 @@ public class CommitDiffActivity extends SherlockFragmentActivity {
 
         @JavascriptInterface
         public void getDiffEntries() {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mDiffEntries = mRepo.getCommitDiff(mOldCommit, mNewCommit);
-                    mDiffStrs = new ArrayList<String>(mDiffEntries.size());
-                    for (DiffEntry diffEntry : mDiffEntries) {
-                        String diffStr = mRepo.parseDiffEntry(diffEntry);
-                        mDiffStrs.add(diffStr);
-                    }
-                    runOnUiThread(new Runnable() {
+            CommitDiffTask diffTask = new CommitDiffTask(mRepo, mOldCommit,
+                    mNewCommit, new CommitDiffResult() {
                         @Override
-                        public void run() {
+                        public void pushResult(List<DiffEntry> diffEntries,
+                                List<String> diffStrs) {
+                            mDiffEntries = diffEntries;
+                            mDiffStrs = diffStrs;
                             mLoading.setVisibility(View.GONE);
-                            mDiffContent.loadUrl(CodeUtils
+                            mDiffContent.loadUrl(CodeGuesser
                                     .wrapUrlScript("notifyEntriesReady();"));
                         }
                     });
-                }
-            });
-            thread.start();
+            diffTask.executeTask();
         }
 
         @JavascriptInterface

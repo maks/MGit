@@ -1,6 +1,4 @@
-package me.sheimi.sgit.utils.ssh;
-
-import android.content.Context;
+package me.sheimi.sgit.ssh;
 
 import org.eclipse.jgit.api.TransportConfigCallback;
 import org.eclipse.jgit.transport.SshTransport;
@@ -12,10 +10,6 @@ import org.eclipse.jgit.transport.Transport;
 public class SgitTransportCallback implements TransportConfigCallback {
 
     private SGitSessionFactory ssh;
-
-    public SgitTransportCallback(Context context) {
-        ssh = new SGitSessionFactory(context);
-    }
 
     @Override
     public void configure(Transport tn) {

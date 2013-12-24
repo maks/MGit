@@ -1,35 +1,33 @@
 package me.sheimi.sgit.dialogs;
 
+import java.io.File;
+
+import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
+import me.sheimi.android.utils.Constants;
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.RepoListActivity;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.CloneTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import org.eclipse.jgit.api.errors.TransportException;
-
-import java.io.File;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.RepoListActivity;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.utils.CommonUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
-
 /**
  * Created by sheimi on 8/24/13.
  */
 
-public class CloneDialog extends DialogFragment implements
-        View.OnClickListener, ViewUtils.OnPasswordEntered {
+public class CloneDialog extends SheimiDialogFragment implements
+        View.OnClickListener, OnPasswordEntered {
 
     private EditText mRemoteURL;
     private EditText mLocalPath;
@@ -37,18 +35,12 @@ public class CloneDialog extends DialogFragment implements
     private EditText mPassword;
     private CheckBox mIsSavePassword;
     private RepoListActivity mActivity;
-    private ViewUtils mViewUtils;
-    private FsUtils mFsUtils;
     private Repo mRepo;
-    private RepoDbManager mRepoDbManager;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
-        mViewUtils = ViewUtils.getInstance(mActivity);
-        mFsUtils = FsUtils.getInstance(mActivity);
-        mRepoDbManager = RepoDbManager.getInstance(mActivity);
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_clone, null);
@@ -60,7 +52,7 @@ public class CloneDialog extends DialogFragment implements
         mPassword = (EditText) layout.findViewById(R.id.password);
         mIsSavePassword = (CheckBox) layout.findViewById(R.id.savePassword);
 
-        if (CommonUtils.isDebug(mActivity)) {
+        if (Constants.DEBUG) {
             mRemoteURL.setText(Repo.TEST_REPO);
             mLocalPath.setText(Repo.TEST_LOCAL);
         }
@@ -92,27 +84,27 @@ public class CloneDialog extends DialogFragment implements
         String localPath = mLocalPath.getText().toString().trim();
 
         if (remoteURL.equals("")) {
-            mViewUtils.showToastMessage(R.string.alert_remoteurl_required);
+            showToastMessage(R.string.alert_remoteurl_required);
             mRemoteURL.setError(getString(R.string.alert_remoteurl_required));
             mRemoteURL.requestFocus();
             return;
         }
         if (localPath.equals("")) {
-            mViewUtils.showToastMessage(R.string.alert_localpath_required);
+            showToastMessage(R.string.alert_localpath_required);
             mLocalPath.setError(getString(R.string.alert_localpath_required));
             mLocalPath.requestFocus();
             return;
         }
         if (localPath.contains("/")) {
-            mViewUtils.showToastMessage(R.string.alert_localpath_format);
+            showToastMessage(R.string.alert_localpath_format);
             mLocalPath.setError(getString(R.string.alert_localpath_format));
             mLocalPath.requestFocus();
             return;
         }
 
-        File file = mFsUtils.getRepo(localPath);
+        File file = FsUtils.getRepo(localPath);
         if (file.exists()) {
-            mViewUtils.showToastMessage(R.string.alert_localpath_repo_exists);
+            showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath
                     .setError(getString(R.string.alert_localpath_repo_exists));
             mLocalPath.requestFocus();
@@ -146,50 +138,19 @@ public class CloneDialog extends DialogFragment implements
             values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
             values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
         }
-        long id = mRepoDbManager.insertRepo(values);
+        long id = RepoDbManager.insertRepo(values);
         mRepo = Repo.getRepoById(mActivity, id);
 
         mRepo.setUsername(username);
         mRepo.setPassword(password);
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mRepo.clone(mActivity);
-                    mRepo.updateLatestCommitInfo();
-                    ContentValues values = new ContentValues();
-                    values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                            RepoContract.REPO_STATUS_NULL);
-                    RepoDbManager.getInstance(mActivity).updateRepo(
-                            mRepo.getID(), values);
-                } catch (TransportException e) {
-                    String msg = e.getMessage();
-                    if (msg.contains("Auth fail")) {
-                        promptForPassword(mActivity
-                                .getString(R.string.dialog_prompt_for_password_title_auth_fail));
-                    } else if (msg.toLowerCase().contains("auth")) {
-                        promptForPassword(null);
-                    }
-                    mRepo.deleteRepoSync();
-                } catch (Exception e) {
-                    mRepo.deleteRepoSync();
-                }
-            }
-        });
-        thread.start();
+
+        CloneTask task = new CloneTask(mRepo, this);
+        task.executeTask();
+
     }
 
     @Override
     public void onCanceled() {
         mRepo.deleteRepo();
-    }
-
-    public void promptForPassword(final String errorInfo) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mViewUtils.promptForPassword(CloneDialog.this, errorInfo);
-            }
-        });
     }
 }

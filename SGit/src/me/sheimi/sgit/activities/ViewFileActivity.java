@@ -1,5 +1,16 @@
 package me.sheimi.sgit.activities;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.CodeGuesser;
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,41 +24,22 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.umeng.analytics.MobclickAgent;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
-import me.sheimi.sgit.utils.ActivityUtils;
-import me.sheimi.sgit.utils.CodeUtils;
-import me.sheimi.sgit.utils.FsUtils;
-import me.sheimi.sgit.utils.ViewUtils;
-
-public class ViewFileActivity extends SherlockFragmentActivity {
+public class ViewFileActivity extends SheimiFragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     private WebView mFileContent;
     private static final String JS_INF = "CodeLoader";
     private ProgressBar mLoading;
     private File mFile;
-    private FsUtils mFsUtils;
-    private ViewUtils mViewUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_file);
         setupActionBar();
-        mFsUtils = FsUtils.getInstance(this);
-        mViewUtils = ViewUtils.getInstance(this);
         mFileContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);
 
@@ -60,14 +52,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onResume(this);
         loadFileContent();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
     }
 
     private void loadFileContent() {
@@ -104,19 +89,19 @@ public class ViewFileActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ActivityUtils.finishActivity(this);
+                finish();
                 return true;
             case R.id.action_edit:
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_EDIT);
                 Uri uri = Uri.fromFile(mFile);
-                String mimeType = mFsUtils.getMimeType(uri.toString());
+                String mimeType = FsUtils.getMimeType(uri.toString());
                 intent.setDataAndType(uri, mimeType);
                 try {
                     startActivity(intent);
-                    ActivityUtils.forwardTransition(this);
+                    forwardTransition();
                 } catch (ActivityNotFoundException e) {
-                    mViewUtils.showToastMessage(R.string.error_no_edit_app);
+                    showToastMessage(R.string.error_no_edit_app);
                 }
                 return true;
             case R.id.action_choose_language:
@@ -127,18 +112,9 @@ public class ViewFileActivity extends SherlockFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            ActivityUtils.finishActivity(this);
-            return true;
-        }
-        return false;
-    }
-
     public void setLanguage(String lang) {
         String js = String.format("setLanguage('%s')", lang);
-        mFileContent.loadUrl(CodeUtils.wrapUrlScript(js));
+        mFileContent.loadUrl(CodeGuesser.wrapUrlScript(js));
     }
 
     private class CodeLoader {
@@ -158,7 +134,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
 
         @JavascriptInterface
         public String getLanguage() {
-            return CodeUtils.guessCodeType(mFile.getName());
+            return CodeGuesser.guessCodeType(mFile.getName());
         }
 
         @JavascriptInterface()
@@ -188,7 +164,7 @@ public class ViewFileActivity extends SherlockFragmentActivity {
                         @Override
                         public void run() {
                             mLoading.setVisibility(View.INVISIBLE);
-                            mFileContent.loadUrl(CodeUtils
+                            mFileContent.loadUrl(CodeGuesser
                                     .wrapUrlScript("notifyFileLoaded();"));
                         }
                     });

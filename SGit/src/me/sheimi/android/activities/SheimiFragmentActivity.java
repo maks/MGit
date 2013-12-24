@@ -1,0 +1,240 @@
+package me.sheimi.android.activities;
+
+import java.io.File;
+
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.utils.Constants;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.analytics.MobclickAgent;
+
+public class SheimiFragmentActivity extends SherlockFragmentActivity {
+
+    public static interface OnBackClickListener {
+        public boolean onClick();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        BasicFunctions.setActiveActivity(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BasicFunctions.setActiveActivity(this);
+        setupImageLoader();
+        if (Constants.DEBUG) {
+            MobclickAgent.onResume(this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mImageLoader.destroy();
+        if (Constants.DEBUG) {
+            MobclickAgent.onPause(this);
+        }
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            return true;
+        }
+        return false;
+    }
+    
+    /* View Utils Start */
+    public void showToastMessage(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(SheimiFragmentActivity.this, msg,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void showToastMessage(int resId) {
+        showToastMessage(getString(resId));
+    }
+
+    public int getColor(int resId) {
+        return getResources().getColor(resId);
+    }
+
+    public void showMessageDialog(int title, int msg, int positiveBtn,
+            DialogInterface.OnClickListener positiveListenerr) {
+        showMessageDialog(title, getString(msg), positiveBtn,
+                R.string.label_cancel, positiveListenerr,
+                new DummyDialogListener());
+    }
+
+    public void showMessageDialog(int title, String msg, int positiveBtn,
+            DialogInterface.OnClickListener positiveListenerr) {
+        showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
+                positiveListenerr, new DummyDialogListener());
+    }
+
+    public void showMessageDialog(int title, String msg, int positiveBtn,
+            int negativeBtn, DialogInterface.OnClickListener positiveListener,
+            DialogInterface.OnClickListener negativeListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title).setMessage(msg)
+                .setPositiveButton(positiveBtn, positiveListener)
+                .setNegativeButton(negativeBtn, negativeListener).show();
+    }
+
+    public void showEditTextDialog(int title, int hint, int positiveBtn,
+            final OnEditTextDialogClicked positiveListener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_edit_text, null);
+        final EditText editText = (EditText) layout.findViewById(R.id.editText);
+        editText.setHint(hint);
+        builder.setTitle(title)
+                .setView(layout)
+                .setPositiveButton(positiveBtn,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface, int i) {
+                                positiveListener.onClicked(editText.getText()
+                                        .toString());
+                            }
+                        })
+                .setNegativeButton(R.string.label_cancel,
+                        new DummyDialogListener()).show();
+    }
+
+    public void promptForPassword(OnPasswordEntered onPasswordEntered,
+            int errorId) {
+        promptForPassword(onPasswordEntered, errorId);
+    }
+
+    public void promptForPassword(final OnPasswordEntered onPasswordEntered,
+            final String errorInfo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                promptForPasswordInner(onPasswordEntered, errorInfo);
+            }
+        });
+    }
+
+    private void promptForPasswordInner(
+            final OnPasswordEntered onPasswordEntered, String errorInfo) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_prompt_for_password,
+                null);
+        final EditText username = (EditText) layout.findViewById(R.id.username);
+        final EditText password = (EditText) layout.findViewById(R.id.password);
+        final CheckBox checkBox = (CheckBox) layout
+                .findViewById(R.id.savePassword);
+        if (errorInfo == null) {
+            errorInfo = getString(R.string.dialog_prompt_for_password_title);
+        }
+        builder.setTitle(errorInfo)
+                .setView(layout)
+                .setPositiveButton(R.string.label_done,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface, int i) {
+                                onPasswordEntered.onClicked(username.getText()
+                                        .toString(), password.getText()
+                                        .toString(), checkBox.isChecked());
+
+                            }
+                        })
+                .setNegativeButton(R.string.label_cancel,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface, int i) {
+                                onPasswordEntered.onCanceled();
+                            }
+                        }).show();
+    }
+
+    public static interface OnEditTextDialogClicked {
+        void onClicked(String text);
+    }
+
+    public static interface OnPasswordEntered {
+        void onClicked(String username, String password, boolean savePassword);
+
+        void onCanceled();
+    }
+
+    /* View Utils End */
+
+    /* Switch Actvity Animation Start */
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        forwardTransition();
+    }
+
+    public void finish() {
+        super.finish();
+        backTransition();
+    }
+    
+    public void rawfinish() {
+        super.finish();
+    }
+
+    public void forwardTransition() {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
+    public void backTransition() {
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+    }
+
+    /* Switch Actvity Animation End */
+
+    /* ImageCache Start */
+
+    private static final int SIZE = 100 << 20;
+    private ImageLoader mImageLoader;
+
+    private void setupImageLoader() {
+        DisplayImageOptions mDiskCacheOption = new DisplayImageOptions.Builder()
+                .cacheOnDisc(true).cacheInMemory(true).build();
+        File cacheDir = StorageUtils.getCacheDirectory(this);
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
+                this).defaultDisplayImageOptions(mDiskCacheOption)
+                .discCache(new TotalSizeLimitedDiscCache(cacheDir, SIZE))
+                .build();
+        mImageLoader = ImageLoader.getInstance();
+        mImageLoader.init(configuration);
+    }
+
+    public ImageLoader getImageLoader() {
+        return mImageLoader;
+    }
+    /* ImageCache End */
+}
