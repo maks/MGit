@@ -19,22 +19,21 @@ import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
 
 import org.eclipse.jgit.lib.Ref;
 
+import android.app.ActionBar;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 public class RepoDetailActivity extends SheimiFragmentActivity implements
         ActionBar.TabListener {
@@ -85,8 +84,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
 
     private void setupActionBar() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mActionBar = getSupportActionBar();
-        mViewPagerAdapter = new TabItemPagerAdapter(getSupportFragmentManager());
+        mActionBar = getActionBar();
+        mViewPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
 
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager
@@ -128,7 +127,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.repo_detail, menu);
+        getMenuInflater().inflate(R.menu.repo_detail, menu);
         return true;
     }
 
@@ -151,11 +150,11 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
             case R.id.action_merge:
                 MergeDialog md = new MergeDialog();
                 md.setArguments(mRepo.getBundle());
-                md.show(getSupportFragmentManager(), "merge-repo-dialog");
+                md.show(getFragmentManager(), "merge-repo-dialog");
                 return true;
             case R.id.action_push:
                 PushRepoDialog prd = new PushRepoDialog();
-                prd.show(getSupportFragmentManager(), "push-repo-dialog");
+                prd.show(getFragmentManager(), "push-repo-dialog");
                 return true;
             case R.id.action_commit:
                 showEditTextDialog(R.string.dialog_commit_title,
@@ -236,7 +235,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
             FragmentTransaction fragmentTransaction) {
     }
 
-    private class TabItemPagerAdapter extends FragmentStatePagerAdapter {
+    private class TabItemPagerAdapter extends FragmentPagerAdapter {
 
         public TabItemPagerAdapter(FragmentManager fm) {
             super(fm);

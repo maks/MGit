@@ -17,18 +17,17 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Created by sheimi on 8/5/13.

@@ -16,16 +16,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 public class ViewFileActivity extends SheimiFragmentActivity {
 
@@ -75,13 +73,13 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     }
 
     private void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.view_file, menu);
+        getMenuInflater().inflate(R.menu.view_file, menu);
         return true;
     }
 
@@ -108,7 +106,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
-                cld.show(getSupportFragmentManager(), "choose language");
+                cld.show(getFragmentManager(), "choose language");
                 return true;
         }
         return super.onOptionsItemSelected(item);

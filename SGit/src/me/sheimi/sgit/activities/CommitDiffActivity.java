@@ -13,15 +13,14 @@ import org.eclipse.jgit.diff.DiffEntry;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 public class CommitDiffActivity extends SheimiFragmentActivity {
 
@@ -75,13 +74,13 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
     }
 
     private void setupActionBar() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.diff_commits, menu);
+        getMenuInflater().inflate(R.menu.diff_commits, menu);
         return true;
     }
 

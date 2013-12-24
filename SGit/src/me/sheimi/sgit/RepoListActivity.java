@@ -12,11 +12,10 @@ import me.sheimi.sgit.dialogs.ProfileDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
+import android.widget.SearchView;
 
 public class RepoListActivity extends SheimiFragmentActivity {
 
@@ -41,7 +40,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         configSearchAction(searchItem);
         return true;
@@ -57,11 +56,11 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
-                cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                cloneDialog.show(getFragmentManager(), "clone-dialog");
                 return true;
             case R.id.action_git_profile:
                 ProfileDialog profileDialog = new ProfileDialog();
-                profileDialog.show(getSupportFragmentManager(),
+                profileDialog.show(getFragmentManager(),
                         "profile-dialog");
                 return true;
             case R.id.action_import_repo:
@@ -103,7 +102,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
             args.putString(ImportLocalRepoDialog.FROM_PATH, path);
             ImportLocalRepoDialog rld = new ImportLocalRepoDialog();
             rld.setArguments(args);
-            rld.show(getSupportFragmentManager(), "import-local-dialog");
+            rld.show(getFragmentManager(), "import-local-dialog");
             mImportRepoIntent = null;
         }
     }

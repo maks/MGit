@@ -3,8 +3,8 @@ package me.sheimi.sgit.fragments;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
 
 /**
  * Created by sheimi on 8/7/13.

@@ -8,11 +8,11 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.umeng.analytics.MobclickAgent;
 
 public abstract class FileExplorerActivity extends SheimiFragmentActivity {
@@ -36,7 +36,7 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         mRootFolder = getRootFolder();
         mCurrentDir = mRootFolder;
         mFileList = (ListView) findViewById(R.id.fileList);
@@ -53,7 +53,7 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getSupportMenuInflater().inflate(R.menu.empty_menu, menu);
+        getMenuInflater().inflate(R.menu.empty_menu, menu);
         return true;
     }
 
