@@ -1,62 +1,27 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <android.support.v4.view.ViewPager
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".RepoDetailActivity"/>
+    <include layout="@layout/activity_repo_detail_content" />
 
-    <LinearLayout
-            android:id="@+id/pullProgressContainer"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/general_padding_larger"
-            android:layout_margin="@dimen/general_horizontal_margin"
-            android:background="@drawable/bg_listitem"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone">
+    <!--
+         android:layout_gravity="start" tells DrawerLayout to treat
+         this as a sliding drawer on the left side for left-to-right
+         languages and on the right side for right-to-left languages.
+         The drawer is given a fixed width in dp and extends the full height of
+         the container. A solid background is used for contrast
+         with the content view.
+    -->
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/default_text"
-                android:id="@+id/pullMsg"
-                android:textSize="@dimen/file_list_header_msg_size"
-                android:textColor="@color/general_gray_text_color"/>
+    <ListView
+        android:id="@+id/right_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="#eee"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp" />
 
-        <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/pullProgress"/>
-
-        <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/default_text"
-                    android:id="@+id/leftHint"
-                    android:textSize="@dimen/file_list_header_hint_size"
-                    android:textColor="@color/general_gray_text_color"
-                    android:gravity="left"/>
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/default_text"
-                    android:id="@+id/rightHint"
-                    android:textSize="@dimen/file_list_header_hint_size"
-                    android:textColor="@color/general_gray_text_color"
-                    android:layout_alignParentRight="true"
-                    android:gravity="right"/>
-
-        </RelativeLayout>
-    </LinearLayout>
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

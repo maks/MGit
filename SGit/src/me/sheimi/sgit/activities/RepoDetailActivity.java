@@ -20,36 +20,31 @@ import me.sheimi.sgit.repo.tasks.repo.ResetCommitTask;
 import org.eclipse.jgit.lib.Ref;
 
 import android.app.ActionBar;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class RepoDetailActivity extends SheimiFragmentActivity implements
-        ActionBar.TabListener {
+public class RepoDetailActivity extends SheimiFragmentActivity {
 
-    private static final int[] NAV_TABS = { R.string.tab_files_label,
-            R.string.tab_commits_label };
-
-    private static final int FILES_FRAGMENT_INDEX = 0;
-    private static final int COMMITS_FRAGMENT_INDEX = 1;
-
-    private ViewPager mViewPager;
     private ActionBar mActionBar;
-    private TabItemPagerAdapter mViewPagerAdapter;
 
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
+    private BaseFragment mCurrentFragment;
+    private ListView mRightDrawer;
+    private DrawerLayout mDrawerLayout;
 
     private Repo mRepo;
 
@@ -68,6 +63,46 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
         setupActionBar();
         createFragments();
         setupPullProgressView();
+        setupDrawer();
+    }
+
+    private void setupDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mRightDrawer = (ListView) findViewById(R.id.right_drawer);
+        String[] titles = { "FILES", "COMMITS" };
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, titles);
+        mRightDrawer.setAdapter(adapter);
+        mRightDrawer.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                // TODO Auto-generated method stub
+                select(position);
+            }
+        });
+        select(mFilesFragment);
+    }
+
+    private void select(int position) {
+        switch (position) {
+            case 0:
+                select(mFilesFragment);
+                break;
+            case 1:
+                select(mCommitsFragment);
+                break;
+        }
+    }
+    
+    private void select(BaseFragment fragment) {
+        if (fragment == mCurrentFragment)
+            return;
+        mCurrentFragment = fragment;
+        getFragmentManager().beginTransaction()
+                .replace(R.id.content_frame, mCurrentFragment).commit();
+        mDrawerLayout.closeDrawer(mRightDrawer);
     }
 
     private void setupPullProgressView() {
@@ -83,27 +118,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     }
 
     private void setupActionBar() {
-        mViewPager = (ViewPager) findViewById(R.id.pager);
         mActionBar = getActionBar();
-        mViewPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
-
-        mViewPager.setAdapter(mViewPagerAdapter);
-        mViewPager
-                .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        mActionBar.setSelectedNavigationItem(position);
-                    }
-                });
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         mActionBar.setDisplayShowTitleEnabled(true);
-
-        for (int textId : NAV_TABS) {
-            ActionBar.Tab tab = mActionBar.newTab().setText(getString(textId))
-                    .setTabListener(this);
-            mActionBar.addTab(tab);
-        }
-
         mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -144,7 +160,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
                 pullRepo();
                 return true;
             case R.id.action_diff:
-                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
+                select(1); // TODO
                 mCommitsFragment.enterDiffActionMode();
                 return true;
             case R.id.action_merge:
@@ -218,57 +234,13 @@ public class RepoDetailActivity extends SheimiFragmentActivity implements
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab,
-            FragmentTransaction fragmentTransaction) {
-        // When the given tab is selected, switch to the corresponding page in
-        // the ViewPager.
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab,
-            FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab,
-            FragmentTransaction fragmentTransaction) {
-    }
-
-    private class TabItemPagerAdapter extends FragmentPagerAdapter {
-
-        public TabItemPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public BaseFragment getItem(int i) {
-            switch (i) {
-                case COMMITS_FRAGMENT_INDEX:
-                    return mCommitsFragment;
-                case FILES_FRAGMENT_INDEX:
-                default:
-                    return mFilesFragment;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return NAV_TABS.length;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return getString(NAV_TABS[position]);
-        }
-    }
-
-    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            int position = mViewPager.getCurrentItem();
-            OnBackClickListener onBackClickListener = mViewPagerAdapter
-                    .getItem(position).getOnBackClickListener();
+            if (mCurrentFragment == null) {
+                return false;
+            }
+            OnBackClickListener onBackClickListener = mCurrentFragment
+                    .getOnBackClickListener();
             if (onBackClickListener != null) {
                 if (onBackClickListener.onClick())
                     return true;

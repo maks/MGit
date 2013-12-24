@@ -11,6 +11,8 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.repo.GetCommitTask;
+import me.sheimi.sgit.repo.tasks.repo.GetCommitTask.GetCommitCallback;
 
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -77,7 +79,8 @@ public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
         holder.commitsIcon.setImageResource(R.drawable.ic_default_author);
 
         ImageLoader im = BasicFunctions.getImageLoader();
-        im.displayImage(BasicFunctions.buildGravatarURL(email), holder.commitsIcon);
+        im.displayImage(BasicFunctions.buildGravatarURL(email),
+                holder.commitsIcon);
 
         if (mChosenItems.contains(position)) {
             convertView.setBackgroundColor(getColor(R.color.pressed_sgit));
@@ -99,12 +102,20 @@ public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
 
     public void resetCommit() {
         clear();
-        List<RevCommit> commitsList = mRepo.getCommitsList();
-        if (commitsList != null) {
-            // TODO why == null
-            addAll(commitsList);
-        }
-        notifyDataSetChanged();
+        GetCommitTask getCommitTask = new GetCommitTask(mRepo,
+                new GetCommitCallback() {
+
+                    @Override
+                    public void postCommits(List<RevCommit> commits) {
+                        // TODO Auto-generated method stub
+                        if (commits != null) {
+                            // TODO why == null
+                            addAll(commits);
+                        }
+                        notifyDataSetChanged();
+                    }
+                });
+        getCommitTask.executeTask();
     }
 
     private static class CommitsListItemHolder {

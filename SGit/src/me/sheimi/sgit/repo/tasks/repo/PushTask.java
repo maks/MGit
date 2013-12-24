@@ -110,7 +110,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
             RepoDbManager.updateRepo(mRepo.getID(), values);
         }
 
-        mRepo.removeTask();
+        mRepo.removeTask(this);
         PushTask pushTask = new PushTask(mRepo, mPushAll, mCallback);
         pushTask.executeTask();
     }
