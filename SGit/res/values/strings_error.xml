@@ -8,6 +8,7 @@
     <string name="error_diff_failed">Diff Failed</string>
     <string name="error_out_of_memory">Opps, Out of Memory</string>
     <string name="error_no_edit_app">Opps, no apps can edit source file.</string>
+    <string name="error_can_not_edit_file">Opps, can\'t edit this file in this device.</string>
     <string name="error_unknown">Something wrong!!!</string>
     <string name="error_task_running">A task for this repo is running</string>
 

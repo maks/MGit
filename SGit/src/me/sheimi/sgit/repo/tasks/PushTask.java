@@ -1,6 +1,7 @@
 package me.sheimi.sgit.repo.tasks;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
@@ -89,6 +90,10 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
             return false;
         } catch (Exception e) {
             setException(e);
+            return false;
+        } catch (OutOfMemoryError e) {
+            setException(e);
+            setErrorRes(R.string.error_out_of_memory);
             return false;
         }
         return true;

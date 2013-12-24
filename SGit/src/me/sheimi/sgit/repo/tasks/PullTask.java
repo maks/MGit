@@ -81,6 +81,10 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
             setException(e);
             setErrorRes(R.string.error_pull_failed);
             return false;
+        } catch (OutOfMemoryError e) {
+            setException(e);
+            setErrorRes(R.string.error_out_of_memory);
+            return false;
         }
         return true;
     }

@@ -102,6 +102,8 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
                     showToastMessage(R.string.error_no_edit_app);
+                } catch (Throwable e) {
+                    showToastMessage(R.string.error_can_not_edit_file);
                 }
                 return true;
             case R.id.action_choose_language:
