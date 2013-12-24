@@ -27,6 +27,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 
 /**
@@ -227,10 +228,12 @@ public class Repo implements Comparable<Repo>, Serializable {
     public void deleteRepoSync() {
         if (isDeleted)
             return;
+        Log.i("deleting start", "deleting start");
         RepoDbManager.deleteRepo(mID);
         File fileToDelete = FsUtils.getRepo(mLocalPath);
         FsUtils.deleteFile(fileToDelete);
         isDeleted = true;
+        Log.i("deleting end", "deleting end");
     }
 
     public void updateLatestCommitInfo() {

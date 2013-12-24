@@ -40,7 +40,10 @@ public class CloneTask extends RepoOpTask {
 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
-        if (!isSuccess && !isTaskCanceled()) {
+        if (isTaskCanceled()) {
+            return;
+        }
+        if (!isSuccess) {
             showError();
             return;
         }

@@ -101,16 +101,22 @@ public class FsUtils {
     }
 
     public static void deleteFile(File file) {
-        if (!file.exists())
-            return;
+        File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
+        file.renameTo(to);
+        deleteFileInner(to);
+    }
+
+    private static void deleteFileInner(File file) {
         if (!file.isDirectory()) {
             file.delete();
             return;
         }
-        for (File f : file.listFiles()) {
-            deleteFile(f);
+        try {
+            FileUtils.deleteDirectory(file);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        file.delete();
     }
 
     public static void copyFile(File from, File to) {
