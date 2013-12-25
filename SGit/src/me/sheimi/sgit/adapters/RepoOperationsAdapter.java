@@ -64,8 +64,7 @@ public class RepoOperationsAdapter extends SheimiArrayAdapter<DrawerItem>
         }
     }
 
-    private static final int[][] repoOps = { { R.string.drawer_file, 0 },
-            { R.string.drawer_commit, 0 },
+    private static final int[][] repoOps = {
             { R.string.action_merge, R.drawable.ic_merge },
             { R.string.action_pull, R.drawable.ic_download },
             { R.string.action_push, R.drawable.ic_push },
@@ -79,15 +78,6 @@ public class RepoOperationsAdapter extends SheimiArrayAdapter<DrawerItem>
             long id) {
         RepoDetailActivity context = (RepoDetailActivity) getContext();
         DrawerItem item = getItem(position);
-        switch (item.name) {
-            case R.string.drawer_file:
-            case R.string.drawer_commit:
-                context.selectFragment(position);
-                break;
-            default:
-                context.selectRepoOperation(item.name);
-                break;
-        }
-
+        context.selectRepoOperation(item.name);
     }
 }

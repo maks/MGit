@@ -188,6 +188,7 @@ public class FilesFragment extends RepoDetailFragment {
         resetCurrentDir();
     }
 
+    @Override
     public void reset() {
         resetCurrentDir();
     }

@@ -21,8 +21,11 @@ import me.sheimi.sgit.repo.tasks.repo.ResetCommitTask;
 import org.eclipse.jgit.lib.Ref;
 
 import android.app.ActionBar;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -40,10 +43,11 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
-    private BaseFragment mCurrentFragment;
     private ListView mRightDrawer;
     private DrawerLayout mDrawerLayout;
     private RepoOperationsAdapter mDrawerAdapter;
+    private TabItemPagerAdapter mTabItemPagerAdapter;
+    private ViewPager mViewPager;
 
     private Repo mRepo;
 
@@ -52,9 +56,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private TextView mPullMsg;
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
-
-    private static final int FILE_FRAGMENT_INDEX = 0;
-    private static final int COMMIT_FRAGMENT_INDEX = 1;
+    
+    private static final int FILES_FRAGMENT_INDEX = 0;
+    private static final int COMMITS_FRAGMENT_INDEX = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,15 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         setContentView(R.layout.activity_repo_detail);
         setupActionBar();
         createFragments();
+        setupViewPager();
         setupPullProgressView();
         setupDrawer();
+    }
+
+    private void setupViewPager() {
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mTabItemPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mTabItemPagerAdapter);
     }
 
     private void setupDrawer() {
@@ -74,27 +85,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         mDrawerAdapter = new RepoOperationsAdapter(this);
         mRightDrawer.setAdapter(mDrawerAdapter);
         mRightDrawer.setOnItemClickListener(mDrawerAdapter);
-        selectFragment(mFilesFragment);
-    }
-
-    public void selectFragment(int position) {
-        switch (position) {
-            case FILE_FRAGMENT_INDEX:
-                selectFragment(mFilesFragment);
-                break;
-            case COMMIT_FRAGMENT_INDEX:
-                selectFragment(mCommitsFragment);
-                break;
-        }
-    }
-
-    private void selectFragment(BaseFragment fragment) {
-        if (fragment == mCurrentFragment)
-            return;
-        mCurrentFragment = fragment;
-        getFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, mCurrentFragment).commit();
-        mDrawerLayout.closeDrawer(mRightDrawer);
     }
 
     private void setupPullProgressView() {
@@ -134,7 +124,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.repo_detail, menu);
         return true;
     }
@@ -155,11 +144,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (mCurrentFragment == null) {
-                return false;
-            }
-            OnBackClickListener onBackClickListener = mCurrentFragment
-                    .getOnBackClickListener();
+            int position = mViewPager.getCurrentItem();
+            OnBackClickListener onBackClickListener = mTabItemPagerAdapter
+                    .getItem(position).getOnBackClickListener();
             if (onBackClickListener != null) {
                 if (onBackClickListener.onClick())
                     return true;
@@ -305,7 +292,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
                 mDrawerLayout.closeDrawer(mRightDrawer);
                 break;
             case R.string.action_diff:
-                selectFragment(mCommitsFragment); // TODO
+                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
                 mCommitsFragment.enterDiffActionMode();
                 mDrawerLayout.closeDrawer(mRightDrawer);
                 break;
@@ -368,6 +355,37 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
                         });
                 mDrawerLayout.closeDrawer(mRightDrawer);
                 break;
+        }
+    }
+
+    class TabItemPagerAdapter extends FragmentPagerAdapter {
+
+        private final int[] PAGE_TITLE = { R.string.tab_files_label,
+                R.string.tab_commits_label };
+
+        public TabItemPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public BaseFragment getItem(int position) {
+            switch (position) {
+                case FILES_FRAGMENT_INDEX:
+                    return mFilesFragment;
+                case COMMITS_FRAGMENT_INDEX:
+                    return mCommitsFragment;
+            }
+            return mFilesFragment;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return getString(PAGE_TITLE[position]);
+        }
+
+        @Override
+        public int getCount() {
+            return PAGE_TITLE.length;
         }
     }
 }

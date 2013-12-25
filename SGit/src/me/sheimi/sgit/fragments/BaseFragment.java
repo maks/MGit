@@ -15,6 +15,8 @@ public abstract class BaseFragment extends Fragment {
 
     private SheimiFragmentActivity mActivity;
 
+    public abstract void reset();
+
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mActivity = (SheimiFragmentActivity) activity;

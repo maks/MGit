@@ -13,6 +13,6 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="#111" />
+        android:textColor="#333" />
 
 </RelativeLayout>

@@ -31,11 +31,6 @@
     <string name="action_new_file">New File</string>
     <string name="action_new_dir">New Directory</string>
     <string name="action_toggle_drawer">Toggle Drawer</string>
-    
-    <!-- Drawer -->
-    <string name="drawer_file">Files</string>
-    <string name="drawer_commit">Commits</string>
-
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>
@@ -110,11 +105,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_explore_file">Explore Files</string>
 
-
     <!-- toast msg -->
     <string name="toast_commit_success">Changes has been committed</string>
     <string name="toast_reset_success">Changes has been discarded</string>
-
     <string name="feedback_subject">Feedback</string>
 
     <string-array name="merge_ff_type">

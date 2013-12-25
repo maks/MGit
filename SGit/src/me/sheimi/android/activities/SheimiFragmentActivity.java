@@ -42,7 +42,7 @@ public class SheimiFragmentActivity extends Activity {
         super.onResume();
         BasicFunctions.setActiveActivity(this);
         setupImageLoader();
-        if (Constants.DEBUG) {
+        if (!Constants.DEBUG) {
             MobclickAgent.onResume(this);
         }
     }
@@ -51,7 +51,7 @@ public class SheimiFragmentActivity extends Activity {
     protected void onPause() {
         super.onPause();
         mImageLoader.destroy();
-        if (Constants.DEBUG) {
+        if (!Constants.DEBUG) {
             MobclickAgent.onPause(this);
         }
     }
@@ -64,7 +64,7 @@ public class SheimiFragmentActivity extends Activity {
         }
         return false;
     }
-    
+
     /* View Utils Start */
     public void showToastMessage(final String msg) {
         runOnUiThread(new Runnable() {
@@ -201,7 +201,7 @@ public class SheimiFragmentActivity extends Activity {
         super.finish();
         backTransition();
     }
-    
+
     public void rawfinish() {
         super.finish();
     }

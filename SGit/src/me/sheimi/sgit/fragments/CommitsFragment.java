@@ -186,6 +186,7 @@ public class CommitsFragment extends RepoDetailFragment implements
         mCommitsListAdapter.resetCommit();
     }
 
+    @Override
     public void reset() {
         mCommitsListAdapter.resetCommit();
     }
