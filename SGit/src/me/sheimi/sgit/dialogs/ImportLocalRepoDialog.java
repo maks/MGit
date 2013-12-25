@@ -37,7 +37,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         mActivity = getActivity();
         Bundle args = getArguments();
         if (args != null && args.containsKey(FROM_PATH)) {
-            mFromPath = args.getString(Repo.TAG);
+            mFromPath = args.getString(FROM_PATH);
         }
         if (savedInstanceState != null) {
             String fromPath = savedInstanceState.getString(FROM_PATH);
