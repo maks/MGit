@@ -10,7 +10,6 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 /**
@@ -30,8 +27,6 @@ public class FilesFragment extends RepoDetailFragment {
 
     private static String CURRENT_DIR = "current_dir";
 
-    private Button mCommitNameButton;
-    private ImageView mCommitType;
     private ListView mFilesList;
     private FilesListAdapter mFilesListAdapter;
 
@@ -64,8 +59,6 @@ public class FilesFragment extends RepoDetailFragment {
         }
         mRootDir = FsUtils.getRepo(mRepo.getLocalPath());
 
-        mCommitNameButton = (Button) v.findViewById(R.id.commitName);
-        mCommitType = (ImageView) v.findViewById(R.id.commitType);
         mFilesList = (ListView) v.findViewById(R.id.filesList);
 
         mFilesListAdapter = new FilesListAdapter(getActivity(),
@@ -125,18 +118,6 @@ public class FilesFragment extends RepoDetailFragment {
                     }
                 });
 
-        mCommitNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog();
-                cbd.setArguments(mRepo.getBundle());
-                cbd.show(getFragmentManager(), "choose-branch-dialog");
-            }
-        });
-
-        String branchName = mRepo.getBranchName();
-        reset(branchName);
-
         if (savedInstanceState != null) {
             String currentDirPath = savedInstanceState.getString(CURRENT_DIR);
             if (currentDirPath != null) {
@@ -144,6 +125,7 @@ public class FilesFragment extends RepoDetailFragment {
                 setCurrentDir(mCurrentDir);
             }
         }
+        reset();
         return v;
     }
 
@@ -162,30 +144,9 @@ public class FilesFragment extends RepoDetailFragment {
     }
 
     public void resetCurrentDir() {
+        if (mRootDir == null)
+            return;
         setCurrentDir(mRootDir);
-    }
-
-    public void reset(String commitName) {
-        int commitType = Repo.getCommitType(commitName);
-        switch (commitType) {
-            case Repo.COMMIT_TYPE_REMOTE:
-                // change the display name to local branch
-                commitName = Repo.convertRemoteName(commitName);
-            case Repo.COMMIT_TYPE_HEAD:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_branch_w);
-                break;
-            case Repo.COMMIT_TYPE_TAG:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_tag_w);
-                break;
-            case Repo.COMMIT_TYPE_TEMP:
-                mCommitType.setVisibility(View.GONE);
-                break;
-        }
-        String displayName = Repo.getCommitDisplayName(commitName);
-        mCommitNameButton.setText(displayName);
-        resetCurrentDir();
     }
 
     @Override

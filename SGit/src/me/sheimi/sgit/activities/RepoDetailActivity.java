@@ -4,6 +4,7 @@ import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.adapters.RepoOperationsAdapter;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
@@ -33,6 +34,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -48,6 +51,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private RepoOperationsAdapter mDrawerAdapter;
     private TabItemPagerAdapter mTabItemPagerAdapter;
     private ViewPager mViewPager;
+    private Button mCommitNameButton;
+    private ImageView mCommitType;
 
     private Repo mRepo;
 
@@ -56,7 +61,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private TextView mPullMsg;
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
-    
+
     private static final int FILES_FRAGMENT_INDEX = 0;
     private static final int COMMITS_FRAGMENT_INDEX = 1;
 
@@ -71,6 +76,18 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         setupViewPager();
         setupPullProgressView();
         setupDrawer();
+        mCommitNameButton = (Button) findViewById(R.id.commitName);
+        mCommitType = (ImageView) findViewById(R.id.commitType);
+        mCommitNameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChooseCommitDialog cbd = new ChooseCommitDialog();
+                cbd.setArguments(mRepo.getBundle());
+                cbd.show(getFragmentManager(), "choose-branch-dialog");
+            }
+        });
+        String branchName = mRepo.getBranchName();
+        resetCommitButtonName(branchName);
     }
 
     private void setupViewPager() {
@@ -115,11 +132,37 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
                 new AsyncTaskPostCallback() {
                     @Override
                     public void onPostExecute(Boolean isSuccess) {
-                        mFilesFragment.reset(commitName);
-                        mCommitsFragment.reset(commitName);
+                        reset(commitName);
                     }
                 });
         checkoutTask.executeTask();
+    }
+
+    private void resetCommitButtonName(String commitName) {
+        int commitType = Repo.getCommitType(commitName);
+        switch (commitType) {
+            case Repo.COMMIT_TYPE_REMOTE:
+                // change the display name to local branch
+                commitName = Repo.convertRemoteName(commitName);
+            case Repo.COMMIT_TYPE_HEAD:
+                mCommitType.setVisibility(View.VISIBLE);
+                mCommitType.setImageResource(R.drawable.ic_branch_w);
+                break;
+            case Repo.COMMIT_TYPE_TAG:
+                mCommitType.setVisibility(View.VISIBLE);
+                mCommitType.setImageResource(R.drawable.ic_tag_w);
+                break;
+            case Repo.COMMIT_TYPE_TEMP:
+                mCommitType.setVisibility(View.GONE);
+                break;
+        }
+        String displayName = Repo.getCommitDisplayName(commitName);
+        mCommitNameButton.setText(displayName);
+    }
+
+    public void reset(String commitName) {
+        resetCommitButtonName(commitName);
+        reset();
     }
 
     @Override
