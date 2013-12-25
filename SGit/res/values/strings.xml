@@ -30,6 +30,11 @@
     <string name="action_reset">Reset</string>
     <string name="action_new_file">New File</string>
     <string name="action_new_dir">New Directory</string>
+    <string name="action_toggle_drawer">Toggle Drawer</string>
+    
+    <!-- Drawer -->
+    <string name="drawer_file">Files</string>
+    <string name="drawer_commit">Commits</string>
 
 
     <!-- label msg -->
@@ -52,6 +57,8 @@
     <string name="label_git_name">Name</string>
     <string name="label_git_email">Email</string>
     <string name="label_done">Done</string>
+    <string name="label_choose_app_to_open">Choose App to Open</string>
+    <string name="label_choose_app_to_edit">Choose App to Edit</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">RepoDetailActivity</string>

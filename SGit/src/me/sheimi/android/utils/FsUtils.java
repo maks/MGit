@@ -93,10 +93,17 @@ public class FsUtils {
         }
         intent.setDataAndType(uri, mimeType);
         try {
-            BasicFunctions.getActiveActivity().startActivity(intent);
+            BasicFunctions.getActiveActivity().startActivity(
+                    Intent.createChooser(
+                            intent,
+                            BasicFunctions.getActiveActivity().getString(
+                                    R.string.label_choose_app_to_open)));
         } catch (ActivityNotFoundException e) {
             BasicFunctions.getActiveActivity().showToastMessage(
-                    R.string.error_no_edit_app);
+                    R.string.error_no_open_app);
+        } catch (Throwable e) {
+            BasicFunctions.getActiveActivity().showToastMessage(
+                    R.string.error_can_not_open_file);
         }
     }
 

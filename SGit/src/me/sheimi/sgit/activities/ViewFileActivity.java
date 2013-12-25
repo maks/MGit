@@ -96,7 +96,8 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 String mimeType = FsUtils.getMimeType(uri.toString());
                 intent.setDataAndType(uri, mimeType);
                 try {
-                    startActivity(intent);
+                    startActivity(Intent.createChooser(intent,
+                            getString(R.string.label_choose_app_to_edit)));
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
                     showToastMessage(R.string.error_no_edit_app);

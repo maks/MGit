@@ -2,6 +2,7 @@ package me.sheimi.sgit.activities;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.adapters.RepoOperationsAdapter;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.MergeDialog;
 import me.sheimi.sgit.dialogs.PushRepoDialog;
@@ -29,9 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,6 +43,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private BaseFragment mCurrentFragment;
     private ListView mRightDrawer;
     private DrawerLayout mDrawerLayout;
+    private RepoOperationsAdapter mDrawerAdapter;
 
     private Repo mRepo;
 
@@ -53,6 +52,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private TextView mPullMsg;
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
+
+    private static final int FILE_FRAGMENT_INDEX = 0;
+    private static final int COMMIT_FRAGMENT_INDEX = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,34 +71,24 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mRightDrawer = (ListView) findViewById(R.id.right_drawer);
-        String[] titles = { "FILES", "COMMITS" };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, titles);
-        mRightDrawer.setAdapter(adapter);
-        mRightDrawer.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
-                // TODO Auto-generated method stub
-                select(position);
-            }
-        });
-        select(mFilesFragment);
+        mDrawerAdapter = new RepoOperationsAdapter(this);
+        mRightDrawer.setAdapter(mDrawerAdapter);
+        mRightDrawer.setOnItemClickListener(mDrawerAdapter);
+        selectFragment(mFilesFragment);
     }
 
-    private void select(int position) {
+    public void selectFragment(int position) {
         switch (position) {
-            case 0:
-                select(mFilesFragment);
+            case FILE_FRAGMENT_INDEX:
+                selectFragment(mFilesFragment);
                 break;
-            case 1:
-                select(mCommitsFragment);
+            case COMMIT_FRAGMENT_INDEX:
+                selectFragment(mCommitsFragment);
                 break;
         }
     }
-    
-    private void select(BaseFragment fragment) {
+
+    private void selectFragment(BaseFragment fragment) {
         if (fragment == mCurrentFragment)
             return;
         mCurrentFragment = fragment;
@@ -145,79 +137,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.repo_detail, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_delete:
-                deleteRepo();
-                return true;
-            case R.id.action_pull:
-                pullRepo();
-                return true;
-            case R.id.action_diff:
-                select(1); // TODO
-                mCommitsFragment.enterDiffActionMode();
-                return true;
-            case R.id.action_merge:
-                MergeDialog md = new MergeDialog();
-                md.setArguments(mRepo.getBundle());
-                md.show(getFragmentManager(), "merge-repo-dialog");
-                return true;
-            case R.id.action_push:
-                PushRepoDialog prd = new PushRepoDialog();
-                prd.show(getFragmentManager(), "push-repo-dialog");
-                return true;
-            case R.id.action_commit:
-                showEditTextDialog(R.string.dialog_commit_title,
-                        R.string.dialog_commit_msg_hint, R.string.label_commit,
-                        new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                commitChanges(text);
-                            }
-                        });
-                return true;
-            case R.id.action_reset:
-                showMessageDialog(R.string.dialog_reset_commit_title,
-                        R.string.dialog_reset_commit_msg,
-                        R.string.action_reset,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                resetCommitChanges();
-                            }
-                        });
-                return true;
-            case R.id.action_new_dir:
-                showEditTextDialog(R.string.dialog_create_dir_title,
-                        R.string.dialog_create_dir_hint, R.string.label_create,
-                        new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                mFilesFragment.newDir(text);
-                                reset();
-                            }
-                        });
-                return true;
-            case R.id.action_new_file:
-                showEditTextDialog(R.string.dialog_create_file_title,
-                        R.string.dialog_create_file_hint,
-                        R.string.label_create, new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                mFilesFragment.newFile(text);
-                                reset();
-                            }
-                        });
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void reset() {
@@ -356,5 +275,99 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             return true;
         }
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_toggle_drawer:
+                if (mDrawerLayout.isDrawerOpen(mRightDrawer)) {
+                    mDrawerLayout.closeDrawer(mRightDrawer);
+                } else {
+                    mDrawerLayout.openDrawer(mRightDrawer);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void selectRepoOperation(int option) {
+        switch (option) {
+            case R.string.action_delete:
+                deleteRepo();
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_pull:
+                pullRepo();
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_diff:
+                selectFragment(mCommitsFragment); // TODO
+                mCommitsFragment.enterDiffActionMode();
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_merge:
+                MergeDialog md = new MergeDialog();
+                md.setArguments(mRepo.getBundle());
+                md.show(getFragmentManager(), "merge-repo-dialog");
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_push:
+                PushRepoDialog prd = new PushRepoDialog();
+                prd.show(getFragmentManager(), "push-repo-dialog");
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_commit:
+                showEditTextDialog(R.string.dialog_commit_title,
+                        R.string.dialog_commit_msg_hint, R.string.label_commit,
+                        new OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                commitChanges(text);
+                            }
+                        });
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_reset:
+                showMessageDialog(R.string.dialog_reset_commit_title,
+                        R.string.dialog_reset_commit_msg,
+                        R.string.action_reset,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface, int i) {
+                                resetCommitChanges();
+                            }
+                        });
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_new_dir:
+                showEditTextDialog(R.string.dialog_create_dir_title,
+                        R.string.dialog_create_dir_hint, R.string.label_create,
+                        new OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newDir(text);
+                                reset();
+                            }
+                        });
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+            case R.string.action_new_file:
+                showEditTextDialog(R.string.dialog_create_file_title,
+                        R.string.dialog_create_file_hint,
+                        R.string.label_create, new OnEditTextDialogClicked() {
+                            @Override
+                            public void onClicked(String text) {
+                                mFilesFragment.newFile(text);
+                                reset();
+                            }
+                        });
+                mDrawerLayout.closeDrawer(mRightDrawer);
+                break;
+        }
     }
 }
