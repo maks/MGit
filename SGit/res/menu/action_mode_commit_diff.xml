@@ -1,8 +1,14 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-            android:id="@+id/action_mode_diff"
-            android:icon="@drawable/ic_file"
-            android:title="@string/action_mode_diff"
-            android:showAsAction="ifRoom"/>
+        android:id="@+id/action_mode_diff"
+        android:icon="@drawable/ic_file"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_mode_diff"/>
+    <item
+        android:id="@+id/action_mode_copy_commit"
+        android:icon="@drawable/ic_action_copy"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_copy_commit_str"/>
+
 </menu>

@@ -162,6 +162,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     public void reset() {
         mFilesFragment.reset();
         mCommitsFragment.reset();
+        mStatusFragment.reset();
     }
 
     public void setFilesFragment(FilesFragment filesFragment) {

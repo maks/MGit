@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Cherry Pick -->
+    <string name="dialog_cherrypick_title">Cherry Pick</string>
+    <string name="dialog_cherrypick_msg_hint">Commit Hash (copy from commit list)</string>
+    <string name="dialog_label_cherrypick">Cherry Pick</string>
+    <string name="dialog_rebase_title">Choose upstream branch</string>
+
+</resources>

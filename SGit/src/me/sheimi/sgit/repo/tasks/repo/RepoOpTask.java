@@ -47,6 +47,9 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
     protected void handleAuthError(OnPasswordEntered onPassEntered) {
         String msg = mException.getMessage();
 
+        if (msg == null)
+            return;
+
         if ((!msg.contains("Auth fail"))
                 && (!msg.toLowerCase().contains("auth")))
             return;

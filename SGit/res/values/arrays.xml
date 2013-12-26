@@ -8,6 +8,7 @@
     </string-array>
     <string-array name="repo_file_operations">
         <item>Add to stage</item>
+        <item>Checkout (Reset Changes)</item>
         <item>Delete</item>
     </string-array>
     <string-array name="repo_operation_names">
@@ -17,6 +18,8 @@
         <item>Commit</item>
         <item>Reset</item>
         <item>Merge</item>
+        <item>Rebase</item>
+        <item>Cherry Pick</item>
         <item>Diff</item>
         <item>New File</item>
         <item>New Directory</item>

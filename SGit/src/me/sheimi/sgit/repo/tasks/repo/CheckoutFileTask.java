@@ -3,22 +3,22 @@ package me.sheimi.sgit.repo.tasks.repo;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 
-import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
-
-public class ResetCommitTask extends RepoOpTask {
+public class CheckoutFileTask extends RepoOpTask {
 
     private AsyncTaskPostCallback mCallback;
+    private String mPath;
 
-    public ResetCommitTask(Repo repo, AsyncTaskPostCallback callback) {
+    public CheckoutFileTask(Repo repo, String path,
+            AsyncTaskPostCallback callback) {
         super(repo);
         mCallback = callback;
-        setSuccessMsg(R.string.success_reset);
+        mPath = path;
+        setSuccessMsg(R.string.success_checkout_file);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return reset();
+        return checkout();
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -28,13 +28,14 @@ public class ResetCommitTask extends RepoOpTask {
         }
     }
 
-    public boolean reset() {
+    private boolean checkout() {
         try {
-            mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
-        } catch (GitAPIException e) {
+            mRepo.getGit().checkout().addPath(mPath).call();
+        } catch (Throwable e) {
             setException(e);
             return false;
         }
         return true;
     }
+
 }

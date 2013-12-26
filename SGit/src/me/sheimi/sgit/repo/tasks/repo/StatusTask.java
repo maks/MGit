@@ -23,11 +23,7 @@ public class StatusTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = status();
-        if (!result) {
-            return false;
-        }
-        return true;
+        return status();
     }
 
     protected void onPostExecute(Boolean isSuccess) {

@@ -15,7 +15,8 @@ public class RepoFileOperationDialog extends SheimiDialogFragment {
 
     private RepoDetailActivity mActivity;
     private static final int ADD_TO_STAGE = 0;
-    private static final int DELETE = 1;
+    private static final int CHECKOUT_FILE = 1;
+    private static final int DELETE = 2;
     public static final String FILE_PATH = "file path";
     private static String mFilePath;
 
@@ -38,6 +39,9 @@ public class RepoFileOperationDialog extends SheimiDialogFragment {
                             case ADD_TO_STAGE: // Add to stage
                                 mActivity.getRepoDelegate().addToStage(
                                         mFilePath);
+                                break;
+                            case CHECKOUT_FILE:
+                                mActivity.getRepoDelegate().checkoutFile(mFilePath);
                                 break;
                             case DELETE:
                                 showMessageDialog(R.string.dialog_file_delete,
