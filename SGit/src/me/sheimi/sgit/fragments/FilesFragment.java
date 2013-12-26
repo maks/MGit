@@ -137,6 +137,10 @@ public class FilesFragment extends RepoDetailFragment {
     }
 
     public void resetCurrentDir() {
+        if (mCurrentDir != null) {
+            setCurrentDir(mCurrentDir);
+            return;
+        }
         if (mRootDir == null)
             return;
         setCurrentDir(mRootDir);
@@ -147,27 +151,28 @@ public class FilesFragment extends RepoDetailFragment {
         resetCurrentDir();
     }
 
-    public boolean newDir(String name) {
+    public void newDir(String name) {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
-            return false;
+            return;
         }
-        return file.mkdir();
+        file.mkdir();
+        reset();
     }
 
-    public boolean newFile(String name) {
+    public void newFile(String name) {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
-            return false;
+            return;
         }
         try {
-            return file.createNewFile();
+            file.createNewFile();
+            reset();
         } catch (IOException e) {
             e.printStackTrace();
             showToastMessage(e.getMessage());
-            return false;
         }
     }
 

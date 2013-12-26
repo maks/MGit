@@ -144,4 +144,8 @@ public class FsUtils {
         }
     }
 
+    public static String getRelativePath(File file, File base) {
+        return base.toURI().relativize(file.toURI()).getPath();
+    }
+
 }

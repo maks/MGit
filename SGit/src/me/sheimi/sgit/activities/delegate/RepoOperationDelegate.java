@@ -6,6 +6,7 @@ import java.util.Map;
 
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.activities.delegate.actions.AddAllAction;
 import me.sheimi.sgit.activities.delegate.actions.CommitAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
 import me.sheimi.sgit.activities.delegate.actions.DiffAction;
@@ -46,6 +47,7 @@ public class RepoOperationDelegate {
         mActions.put("Pull", new PullAction(mRepo, mActivity));
         mActions.put("Push", new PushAction(mRepo, mActivity));
         mActions.put("Reset", new ResetAction(mRepo, mActivity));
+        mActions.put("Add all to stage", new AddAllAction(mRepo, mActivity));
     }
 
     public void executeAction(String key) {
@@ -85,7 +87,9 @@ public class RepoOperationDelegate {
     }
 
     public void addToStage(String filepath) {
-        AddToStageTask addToStageTask = new AddToStageTask(mRepo, filepath);
+        File base = FsUtils.getRepo(mRepo.getLocalPath());
+        String relative = FsUtils.getRelativePath(new File(filepath), base);
+        AddToStageTask addToStageTask = new AddToStageTask(mRepo, relative);
         addToStageTask.executeTask();
     }
 

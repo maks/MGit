@@ -50,7 +50,6 @@ public class CommitChangesTask extends RepoOpTask {
         String committerEmail = sharedPreferences.getString(
                 ProfileDialog.GIT_USER_EMAIL, "");
         try {
-            mRepo.getGit().add().addFilepattern(".").call();
             mRepo.getGit().commit().setMessage(mCommitMsg)
                     .setCommitter(committerName, committerEmail).setAll(true)
                     .call();

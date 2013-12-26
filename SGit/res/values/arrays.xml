@@ -13,6 +13,7 @@
     <string-array name="repo_operation_names">
         <item>Pull</item>
         <item>Push</item>
+        <item>Add all to stage</item>
         <item>Commit</item>
         <item>Reset</item>
         <item>Merge</item>

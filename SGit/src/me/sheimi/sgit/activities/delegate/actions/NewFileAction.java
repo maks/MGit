@@ -19,7 +19,6 @@ public class NewFileAction extends RepoAction {
                     @Override
                     public void onClicked(String text) {
                         mActivity.getFilesFragment().newFile(text);
-                        mActivity.reset();
                     }
                 });
         mActivity.closeOperationDrawer();

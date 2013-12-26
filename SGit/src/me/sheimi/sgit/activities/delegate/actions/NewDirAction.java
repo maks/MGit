@@ -19,7 +19,6 @@ public class NewDirAction extends RepoAction {
                     @Override
                     public void onClicked(String text) {
                         mActivity.getFilesFragment().newDir(text);
-                        mActivity.reset();
                     }
                 });
         mActivity.closeOperationDrawer();

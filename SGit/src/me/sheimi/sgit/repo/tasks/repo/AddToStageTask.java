@@ -28,7 +28,7 @@ public class AddToStageTask extends RepoOpTask {
 
     public boolean addToStage() {
         try {
-            mRepo.getGit().add().addFilepattern(mFilePattern);
+            mRepo.getGit().add().addFilepattern(mFilePattern).call();
         } catch (Throwable e) {
             setException(e);
             return false;
