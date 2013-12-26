@@ -6,7 +6,6 @@ import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.database.models.Repo;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -36,12 +35,6 @@ public class RenameKeyDialog extends SheimiDialogFragment implements
         Bundle args = getArguments();
         if (args != null && args.containsKey(FROM_PATH)) {
             mFromPath = args.getString(FROM_PATH);
-        }
-        if (savedInstanceState != null) {
-            String fromPath = savedInstanceState.getString(FROM_PATH);
-            if (fromPath != null) {
-                mFromPath = fromPath;
-            }
         }
         mFromFile = new File(mFromPath);
 

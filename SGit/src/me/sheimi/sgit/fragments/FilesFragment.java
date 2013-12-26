@@ -10,10 +10,9 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.database.models.Repo;
-import android.content.DialogInterface;
+import me.sheimi.sgit.dialogs.RepoFileOperationDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,19 +100,13 @@ public class FilesFragment extends RepoDetailFragment {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
-                        final File file = mFilesListAdapter.getItem(position);
-                        showMessageDialog(R.string.dialog_file_delete,
-                                R.string.dialog_file_delete_msg,
-                                R.string.label_delete,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialogInterface,
-                                            int i) {
-                                        FsUtils.deleteFile(file);
-                                        reset();
-                                    }
-                                });
+                        File file = mFilesListAdapter.getItem(position);
+                        RepoFileOperationDialog dialog = new RepoFileOperationDialog();
+                        Bundle args = new Bundle();
+                        args.putString(RepoFileOperationDialog.FILE_PATH,
+                                file.getAbsolutePath());
+                        dialog.setArguments(args);
+                        dialog.show(getFragmentManager(), "repo-file-op-dialog");
                         return true;
                     }
                 });
@@ -165,7 +158,6 @@ public class FilesFragment extends RepoDetailFragment {
 
     public boolean newFile(String name) {
         File file = new File(mCurrentDir, name);
-        Log.d("name", name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
             return false;

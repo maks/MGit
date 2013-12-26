@@ -2,28 +2,16 @@ package me.sheimi.sgit.activities;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.delegate.RepoOperationDelegate;
 import me.sheimi.sgit.adapters.RepoOperationsAdapter;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ChooseCommitDialog;
-import me.sheimi.sgit.dialogs.MergeDialog;
-import me.sheimi.sgit.dialogs.PushRepoDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
-import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
-import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
-import me.sheimi.sgit.repo.tasks.repo.CommitChangesTask;
-import me.sheimi.sgit.repo.tasks.repo.MergeTask;
-import me.sheimi.sgit.repo.tasks.repo.PullTask;
-import me.sheimi.sgit.repo.tasks.repo.PushTask;
-import me.sheimi.sgit.repo.tasks.repo.ResetCommitTask;
-
-import org.eclipse.jgit.lib.Ref;
-
 import android.app.ActionBar;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -38,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class RepoDetailActivity extends SheimiFragmentActivity {
@@ -46,7 +35,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
-    private ListView mRightDrawer;
+    private RelativeLayout mRightDrawer;
+    private ListView mRepoOperationList;
     private DrawerLayout mDrawerLayout;
     private RepoOperationsAdapter mDrawerAdapter;
     private TabItemPagerAdapter mTabItemPagerAdapter;
@@ -61,6 +51,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private TextView mPullMsg;
     private TextView mPullLeftHint;
     private TextView mPullRightHint;
+
+    private RepoOperationDelegate mRepoDelegate;
 
     private static final int FILES_FRAGMENT_INDEX = 0;
     private static final int COMMITS_FRAGMENT_INDEX = 1;
@@ -90,6 +82,13 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         resetCommitButtonName(branchName);
     }
 
+    public RepoOperationDelegate getRepoDelegate() {
+        if (mRepoDelegate == null) {
+            mRepoDelegate = new RepoOperationDelegate(mRepo, this);
+        }
+        return mRepoDelegate;
+    }
+
     private void setupViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mTabItemPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
@@ -98,10 +97,11 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mRightDrawer = (ListView) findViewById(R.id.right_drawer);
+        mRightDrawer = (RelativeLayout) findViewById(R.id.right_drawer);
+        mRepoOperationList = (ListView) findViewById(R.id.repoOperationList);
         mDrawerAdapter = new RepoOperationsAdapter(this);
-        mRightDrawer.setAdapter(mDrawerAdapter);
-        mRightDrawer.setOnItemClickListener(mDrawerAdapter);
+        mRepoOperationList.setAdapter(mDrawerAdapter);
+        mRepoOperationList.setOnItemClickListener(mDrawerAdapter);
     }
 
     private void setupPullProgressView() {
@@ -125,17 +125,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private void createFragments() {
         mFilesFragment = FilesFragment.newInstance(mRepo);
         mCommitsFragment = CommitsFragment.newInstance(mRepo);
-    }
-
-    public void resetCommits(final String commitName) {
-        CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName,
-                new AsyncTaskPostCallback() {
-                    @Override
-                    public void onPostExecute(Boolean isSuccess) {
-                        reset(commitName);
-                    }
-                });
-        checkoutTask.executeTask();
     }
 
     private void resetCommitButtonName(String commitName) {
@@ -165,13 +154,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         reset();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.repo_detail, menu);
-        return true;
-    }
-
-    private void reset() {
+    public void reset() {
         mFilesFragment.reset();
         mCommitsFragment.reset();
     }
@@ -180,8 +163,18 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         mFilesFragment = filesFragment;
     }
 
+    public FilesFragment getFilesFragment() {
+        return mFilesFragment;
+    }
+
     public void setCommitsFragment(CommitsFragment commitsFragment) {
         mCommitsFragment = commitsFragment;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.repo_detail, menu);
+        return true;
     }
 
     @Override
@@ -200,76 +193,22 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         return false;
     }
 
-    public void mergeBranch(final Ref commit, final String ffModeStr,
-            final boolean autoCommit) {
-        MergeTask mergeTask = new MergeTask(mRepo, commit, ffModeStr,
-                autoCommit, new AsyncTaskPostCallback() {
-                    @Override
-                    public void onPostExecute(Boolean isSuccess) {
-                        reset();
-                    }
-                });
-        mergeTask.executeTask();
-    }
-
-    public void commitChanges(String commitMsg) {
-        CommitChangesTask commitTask = new CommitChangesTask(mRepo, commitMsg,
-                new AsyncTaskPostCallback() {
-
-                    @Override
-                    public void onPostExecute(Boolean isSuccess) {
-                        reset();
-                        showToastMessage(R.string.toast_commit_success);
-                    }
-                });
-        commitTask.executeTask();
-    }
-
-    private void resetCommitChanges() {
-        ResetCommitTask resetTask = new ResetCommitTask(mRepo,
-                new AsyncTaskPostCallback() {
-                    @Override
-                    public void onPostExecute(Boolean isSuccess) {
-                        reset();
-                        showToastMessage(R.string.toast_reset_success);
-                    }
-                });
-        resetTask.executeTask();
-    }
-
     public void error() {
         finish();
         showToastMessage(R.string.error_unknown);
     }
 
-    private void deleteRepo() {
-        showMessageDialog(R.string.dialog_delete_repo_title,
-                R.string.dialog_delete_repo_msg, R.string.label_delete,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mRepo.deleteRepo();
-                        finish();
-                    }
-                });
-    }
+    public class ProgressCallback implements AsyncTaskCallback {
 
-    public void pullRepo() {
-        mPullMsg.setText(R.string.pull_msg_init);
-        PullTask pullTask = new PullTask(mRepo, new ProgressCallback());
-        pullTask.executeTask();
-    }
+        private int mInitMsg;
 
-    public void pushRepo(boolean pushAll) {
-        mPullMsg.setText(R.string.push_msg_init);
-        PushTask pushTask = new PushTask(mRepo, pushAll, new ProgressCallback());
-        pushTask.executeTask();
-    }
-
-    private class ProgressCallback implements AsyncTaskCallback {
+        public ProgressCallback(int initMsg) {
+            mInitMsg = initMsg;
+        }
 
         @Override
         public void onPreExecute() {
+            mPullMsg.setText(mInitMsg);
             Animation anim = AnimationUtils.loadAnimation(
                     RepoDetailActivity.this, R.anim.fade_in);
             mPullProgressContainer.setAnimation(anim);
@@ -324,81 +263,13 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectRepoOperation(int option) {
-        switch (option) {
-            case R.string.action_delete:
-                deleteRepo();
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_pull:
-                pullRepo();
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_diff:
-                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
-                mCommitsFragment.enterDiffActionMode();
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_merge:
-                MergeDialog md = new MergeDialog();
-                md.setArguments(mRepo.getBundle());
-                md.show(getFragmentManager(), "merge-repo-dialog");
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_push:
-                PushRepoDialog prd = new PushRepoDialog();
-                prd.show(getFragmentManager(), "push-repo-dialog");
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_commit:
-                showEditTextDialog(R.string.dialog_commit_title,
-                        R.string.dialog_commit_msg_hint, R.string.label_commit,
-                        new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                commitChanges(text);
-                            }
-                        });
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_reset:
-                showMessageDialog(R.string.dialog_reset_commit_title,
-                        R.string.dialog_reset_commit_msg,
-                        R.string.action_reset,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                resetCommitChanges();
-                            }
-                        });
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_new_dir:
-                showEditTextDialog(R.string.dialog_create_dir_title,
-                        R.string.dialog_create_dir_hint, R.string.label_create,
-                        new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                mFilesFragment.newDir(text);
-                                reset();
-                            }
-                        });
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-            case R.string.action_new_file:
-                showEditTextDialog(R.string.dialog_create_file_title,
-                        R.string.dialog_create_file_hint,
-                        R.string.label_create, new OnEditTextDialogClicked() {
-                            @Override
-                            public void onClicked(String text) {
-                                mFilesFragment.newFile(text);
-                                reset();
-                            }
-                        });
-                mDrawerLayout.closeDrawer(mRightDrawer);
-                break;
-        }
+    public void closeOperationDrawer() {
+        mDrawerLayout.closeDrawer(mRightDrawer);
+    }
+
+    public void enterDiffActionMode() {
+        mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
+        mCommitsFragment.enterDiffActionMode();
     }
 
     class TabItemPagerAdapter extends FragmentPagerAdapter {

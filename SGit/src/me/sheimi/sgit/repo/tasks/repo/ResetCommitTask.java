@@ -1,5 +1,6 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 
 import org.eclipse.jgit.api.ResetCommand;
@@ -12,6 +13,7 @@ public class ResetCommitTask extends RepoOpTask {
     public ResetCommitTask(Repo repo, AsyncTaskPostCallback callback) {
         super(repo);
         mCallback = callback;
+        setSuccessMsg(R.string.success_reset);
     }
 
     @Override

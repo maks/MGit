@@ -12,6 +12,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
 
     protected Repo mRepo;
     protected boolean mIsTaskAdded;
+    private int mSuccessMsg = 0;
 
     public RepoOpTask(Repo repo) {
         mRepo = repo;
@@ -25,6 +26,13 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
             showError();
             return;
         }
+        if (isSuccess && mSuccessMsg != 0) {
+            BasicFunctions.getActiveActivity().showToastMessage(mSuccessMsg);
+        }
+    }
+
+    protected void setSuccessMsg(int successMsg) {
+        mSuccessMsg = successMsg;
     }
 
     public void executeTask() {

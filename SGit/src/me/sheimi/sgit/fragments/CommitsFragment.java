@@ -58,9 +58,6 @@ public class CommitsFragment extends RepoDetailFragment implements
 
         Bundle bundle = getArguments();
         mRepo = (Repo) bundle.getSerializable(Repo.TAG);
-        if (mRepo == null && savedInstanceState != null) {
-            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
-        }
         if (mRepo == null) {
             return v;
         }
@@ -90,8 +87,9 @@ public class CommitsFragment extends RepoDetailFragment implements
                                         public void onClick(
                                                 DialogInterface dialogInterface,
                                                 int i) {
-                                            getRawActivity().resetCommits(
-                                                    fullCommitName);
+                                            getRawActivity().getRepoDelegate()
+                                                    .checkoutCommit(
+                                                            fullCommitName);
                                         }
                                     });
                             return;
@@ -135,7 +133,6 @@ public class CommitsFragment extends RepoDetailFragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(Repo.TAG, mRepo);
         outState.putBoolean(IS_ACTION_MODE, mActionMode != null);
         ArrayList<Integer> itemsList = new ArrayList<Integer>(mChosenItem);
         outState.putIntegerArrayList(CHOSEN_ITEM, itemsList);

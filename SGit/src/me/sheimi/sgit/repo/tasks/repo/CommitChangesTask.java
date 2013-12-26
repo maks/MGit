@@ -20,6 +20,7 @@ public class CommitChangesTask extends RepoOpTask {
         super(repo);
         mCallback = callback;
         mCommitMsg = commitMsg;
+        setSuccessMsg(R.string.success_commit);
     }
 
     @Override

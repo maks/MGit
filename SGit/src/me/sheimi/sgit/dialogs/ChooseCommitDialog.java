@@ -28,20 +28,11 @@ public class ChooseCommitDialog extends SheimiDialogFragment {
     private BranchTagListAdapter mAdapter;
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(Repo.TAG, mRepo);
-    }
-
-    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         Bundle args = getArguments();
         if (args != null && args.containsKey(Repo.TAG)) {
             mRepo = (Repo) args.getSerializable(Repo.TAG);
-        }
-        if (mRepo == null && savedInstanceState != null) {
-            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
         }
 
         mActivity = (RepoDetailActivity) getActivity();
@@ -64,7 +55,7 @@ public class ChooseCommitDialog extends SheimiDialogFragment {
                     public void onItemClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
                         String commitName = mAdapter.getItem(position);
-                        mActivity.resetCommits(commitName);
+                        mActivity.getRepoDelegate().checkoutCommit(commitName);
                         getDialog().cancel();
                     }
                 });

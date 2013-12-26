@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">file has been added to stage</string>
+    <string name="success_commit">Changes has been committed</string>
+    <string name="success_reset">Changes has been discarded</string>
+
+</resources>

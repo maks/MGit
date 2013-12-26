@@ -5,12 +5,19 @@
 
     <include layout="@layout/activity_repo_detail_content" />
 
-    <ListView
+    <RelativeLayout
         android:id="@+id/right_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="#eee"
-        android:dividerHeight="0dp" />
+        android:background="#eee" >
+
+        <ListView
+            android:id="@+id/repoOperationList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0dp" >
+        </ListView>
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

@@ -49,35 +49,28 @@ public class RepoOperationsAdapter extends SheimiArrayAdapter<DrawerItem>
     }
 
     public static class DrawerItem {
-        public int name;
+        public String name;
         public int icon;
 
-        public DrawerItem(int name, int icon) {
+        public DrawerItem(String name, int icon) {
             this.name = name;
             this.icon = icon;
         }
     }
 
     private void setupDrawerItem() {
-        for (int[] op : repoOps) {
-            add(new DrawerItem(op[0], op[1]));
+        String[] ops = getContext().getResources().getStringArray(
+                R.array.repo_operation_names);
+        for (String op : ops) {
+            add(new DrawerItem(op, 0));
         }
     }
-
-    private static final int[][] repoOps = {
-            { R.string.action_merge, R.drawable.ic_merge },
-            { R.string.action_pull, R.drawable.ic_download },
-            { R.string.action_push, R.drawable.ic_push },
-            { R.string.action_diff, R.drawable.ic_file },
-            { R.string.action_commit, 0 }, { R.string.action_reset, 0 },
-            { R.string.action_new_file, 0 }, { R.string.action_new_dir, 0 },
-            { R.string.action_delete, 0 }, };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         RepoDetailActivity context = (RepoDetailActivity) getContext();
-        DrawerItem item = getItem(position);
-        context.selectRepoOperation(item.name);
+        context.getRepoDelegate().executeAction(getItem(position).name);
     }
+
 }
