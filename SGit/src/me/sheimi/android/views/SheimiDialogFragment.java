@@ -3,8 +3,8 @@ package me.sheimi.android.views;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
 
 public class SheimiDialogFragment extends DialogFragment {
 

@@ -13,7 +13,7 @@ import java.util.Set;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.repo.tasks.RepoOpTask;
+import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
@@ -159,7 +159,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         if (task == null)
             return;
         task.cancelTask();
-        removeTask();
+        removeTask(task);
     }
 
     public boolean addTask(RepoOpTask task) {
@@ -169,8 +169,9 @@ public class Repo implements Comparable<Repo>, Serializable {
         return true;
     }
 
-    public void removeTask() {
-        if (mRepoTasks.get(getID()) == null)
+    public void removeTask(RepoOpTask task) {
+        RepoOpTask runningTask = mRepoTasks.get(getID());
+        if (runningTask == null || runningTask != task)
             return;
         mRepoTasks.remove(getID());
     }
@@ -330,20 +331,6 @@ public class Repo implements Comparable<Repo>, Serializable {
                 tags[i] = refs.get(i).getName();
             }
             return tags;
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public List<RevCommit> getCommitsList() {
-        try {
-            Iterable<RevCommit> commits = getGit().log().call();
-            List<RevCommit> commitsList = new ArrayList<RevCommit>();
-            for (RevCommit commit : commits) {
-                commitsList.add(commit);
-            }
-            return commitsList;
         } catch (GitAPIException e) {
             e.printStackTrace();
         }

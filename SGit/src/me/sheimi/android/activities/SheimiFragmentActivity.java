@@ -6,6 +6,7 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Constants;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,7 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.umeng.analytics.MobclickAgent;
 
-public class SheimiFragmentActivity extends SherlockFragmentActivity {
+public class SheimiFragmentActivity extends Activity {
 
     public static interface OnBackClickListener {
         public boolean onClick();
@@ -42,7 +42,7 @@ public class SheimiFragmentActivity extends SherlockFragmentActivity {
         super.onResume();
         BasicFunctions.setActiveActivity(this);
         setupImageLoader();
-        if (Constants.DEBUG) {
+        if (!Constants.DEBUG) {
             MobclickAgent.onResume(this);
         }
     }
@@ -51,7 +51,7 @@ public class SheimiFragmentActivity extends SherlockFragmentActivity {
     protected void onPause() {
         super.onPause();
         mImageLoader.destroy();
-        if (Constants.DEBUG) {
+        if (!Constants.DEBUG) {
             MobclickAgent.onPause(this);
         }
     }
@@ -64,7 +64,7 @@ public class SheimiFragmentActivity extends SherlockFragmentActivity {
         }
         return false;
     }
-    
+
     /* View Utils Start */
     public void showToastMessage(final String msg) {
         runOnUiThread(new Runnable() {
@@ -201,7 +201,7 @@ public class SheimiFragmentActivity extends SherlockFragmentActivity {
         super.finish();
         backTransition();
     }
-    
+
     public void rawfinish() {
         super.finish();
     }

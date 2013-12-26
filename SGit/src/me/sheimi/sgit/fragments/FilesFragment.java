@@ -10,17 +10,13 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
-import android.content.DialogInterface;
+import me.sheimi.sgit.dialogs.RepoFileOperationDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 /**
@@ -30,8 +26,6 @@ public class FilesFragment extends RepoDetailFragment {
 
     private static String CURRENT_DIR = "current_dir";
 
-    private Button mCommitNameButton;
-    private ImageView mCommitType;
     private ListView mFilesList;
     private FilesListAdapter mFilesListAdapter;
 
@@ -64,8 +58,6 @@ public class FilesFragment extends RepoDetailFragment {
         }
         mRootDir = FsUtils.getRepo(mRepo.getLocalPath());
 
-        mCommitNameButton = (Button) v.findViewById(R.id.commitName);
-        mCommitType = (ImageView) v.findViewById(R.id.commitType);
         mFilesList = (ListView) v.findViewById(R.id.filesList);
 
         mFilesListAdapter = new FilesListAdapter(getActivity(),
@@ -108,34 +100,16 @@ public class FilesFragment extends RepoDetailFragment {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
-                        final File file = mFilesListAdapter.getItem(position);
-                        showMessageDialog(R.string.dialog_file_delete,
-                                R.string.dialog_file_delete_msg,
-                                R.string.label_delete,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialogInterface,
-                                            int i) {
-                                        FsUtils.deleteFile(file);
-                                        reset();
-                                    }
-                                });
+                        File file = mFilesListAdapter.getItem(position);
+                        RepoFileOperationDialog dialog = new RepoFileOperationDialog();
+                        Bundle args = new Bundle();
+                        args.putString(RepoFileOperationDialog.FILE_PATH,
+                                file.getAbsolutePath());
+                        dialog.setArguments(args);
+                        dialog.show(getFragmentManager(), "repo-file-op-dialog");
                         return true;
                     }
                 });
-
-        mCommitNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog();
-                cbd.setArguments(mRepo.getBundle());
-                cbd.show(getFragmentManager(), "choose-branch-dialog");
-            }
-        });
-
-        String branchName = mRepo.getBranchName();
-        reset(branchName);
 
         if (savedInstanceState != null) {
             String currentDirPath = savedInstanceState.getString(CURRENT_DIR);
@@ -144,6 +118,7 @@ public class FilesFragment extends RepoDetailFragment {
                 setCurrentDir(mCurrentDir);
             }
         }
+        reset();
         return v;
     }
 
@@ -151,7 +126,9 @@ public class FilesFragment extends RepoDetailFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(Repo.TAG, mRepo);
-        outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
+        if (mCurrentDir != null) {
+            outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
+        }
     }
 
     public void setCurrentDir(File dir) {
@@ -162,58 +139,42 @@ public class FilesFragment extends RepoDetailFragment {
     }
 
     public void resetCurrentDir() {
+        if (mCurrentDir != null) {
+            setCurrentDir(mCurrentDir);
+            return;
+        }
+        if (mRootDir == null)
+            return;
         setCurrentDir(mRootDir);
     }
 
-    public void reset(String commitName) {
-        int commitType = Repo.getCommitType(commitName);
-        switch (commitType) {
-            case Repo.COMMIT_TYPE_REMOTE:
-                // change the display name to local branch
-                commitName = Repo.convertRemoteName(commitName);
-            case Repo.COMMIT_TYPE_HEAD:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_branch_w);
-                break;
-            case Repo.COMMIT_TYPE_TAG:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_tag_w);
-                break;
-            case Repo.COMMIT_TYPE_TEMP:
-                mCommitType.setVisibility(View.GONE);
-                break;
-        }
-        String displayName = Repo.getCommitDisplayName(commitName);
-        mCommitNameButton.setText(displayName);
-        resetCurrentDir();
-    }
-
+    @Override
     public void reset() {
         resetCurrentDir();
     }
 
-    public boolean newDir(String name) {
+    public void newDir(String name) {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
-            return false;
+            return;
         }
-        return file.mkdir();
+        file.mkdir();
+        reset();
     }
 
-    public boolean newFile(String name) {
+    public void newFile(String name) {
         File file = new File(mCurrentDir, name);
-        Log.d("name", name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
-            return false;
+            return;
         }
         try {
-            return file.createNewFile();
+            file.createNewFile();
+            reset();
         } catch (IOException e) {
             e.printStackTrace();
             showToastMessage(e.getMessage());
-            return false;
         }
     }
 

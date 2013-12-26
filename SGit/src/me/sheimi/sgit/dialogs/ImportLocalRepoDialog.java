@@ -39,12 +39,6 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         if (args != null && args.containsKey(FROM_PATH)) {
             mFromPath = args.getString(FROM_PATH);
         }
-        if (savedInstanceState != null) {
-            String fromPath = savedInstanceState.getString(FROM_PATH);
-            if (fromPath != null) {
-                mFromPath = fromPath;
-            }
-        }
         mFile = new File(mFromPath);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -63,12 +57,6 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
                 new DummyDialogListener());
 
         return builder.create();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(FROM_PATH, mFromPath);
     }
 
     @Override

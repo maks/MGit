@@ -11,7 +11,7 @@ import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.repo.tasks.CloneTask;
+import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;

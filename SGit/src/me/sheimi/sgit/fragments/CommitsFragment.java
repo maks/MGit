@@ -10,25 +10,21 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.CommitDiffActivity;
 import me.sheimi.sgit.adapters.CommitsListAdapter;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Created by sheimi on 8/5/13.
@@ -39,8 +35,6 @@ public class CommitsFragment extends RepoDetailFragment implements
     private final static String IS_ACTION_MODE = "is action mode";
     private final static String CHOSEN_ITEM = "chosen item";
 
-    private Button mCommitNameButton;
-    private ImageView mCommitType;
     private ListView mCommitsList;
     private CommitsListAdapter mCommitsListAdapter;
 
@@ -64,28 +58,15 @@ public class CommitsFragment extends RepoDetailFragment implements
 
         Bundle bundle = getArguments();
         mRepo = (Repo) bundle.getSerializable(Repo.TAG);
-        if (mRepo == null && savedInstanceState != null) {
-            mRepo = (Repo) savedInstanceState.getSerializable(Repo.TAG);
-        }
         if (mRepo == null) {
             return v;
         }
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
-        mCommitNameButton = (Button) v.findViewById(R.id.commitName);
-        mCommitType = (ImageView) v.findViewById(R.id.commitType);
         mCommitsListAdapter = new CommitsListAdapter(getRawActivity(),
                 mChosenItem, mRepo);
         mCommitsListAdapter.resetCommit();
         mCommitsList.setAdapter(mCommitsListAdapter);
 
-        mCommitNameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog();
-                cbd.setArguments(mRepo.getBundle());
-                cbd.show(getFragmentManager(), "choose-branch-dialog");
-            }
-        });
         mCommitsList
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -106,8 +87,9 @@ public class CommitsFragment extends RepoDetailFragment implements
                                         public void onClick(
                                                 DialogInterface dialogInterface,
                                                 int i) {
-                                            getRawActivity().resetCommits(
-                                                    fullCommitName);
+                                            getRawActivity().getRepoDelegate()
+                                                    .checkoutCommit(
+                                                            fullCommitName);
                                         }
                                     });
                             return;
@@ -128,9 +110,7 @@ public class CommitsFragment extends RepoDetailFragment implements
                         return true;
                     }
                 });
-
-        String branchName = mRepo.getBranchName();
-        reset(branchName);
+        reset();
         return v;
     }
 
@@ -153,7 +133,6 @@ public class CommitsFragment extends RepoDetailFragment implements
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(Repo.TAG, mRepo);
         outState.putBoolean(IS_ACTION_MODE, mActionMode != null);
         ArrayList<Integer> itemsList = new ArrayList<Integer>(mChosenItem);
         outState.putIntegerArrayList(CHOSEN_ITEM, itemsList);
@@ -164,30 +143,10 @@ public class CommitsFragment extends RepoDetailFragment implements
         return null;
     }
 
-    public void reset(String commitName) {
-        int commitType = Repo.getCommitType(commitName);
-        switch (commitType) {
-            case Repo.COMMIT_TYPE_REMOTE:
-                // change the display name to local branch
-                commitName = Repo.convertRemoteName(commitName);
-            case Repo.COMMIT_TYPE_HEAD:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_branch_w);
-                break;
-            case Repo.COMMIT_TYPE_TAG:
-                mCommitType.setVisibility(View.VISIBLE);
-                mCommitType.setImageResource(R.drawable.ic_tag_w);
-                break;
-            case Repo.COMMIT_TYPE_TEMP:
-                mCommitType.setVisibility(View.GONE);
-                break;
-        }
-        String displayName = Repo.getCommitDisplayName(commitName);
-        mCommitNameButton.setText(displayName);
-        mCommitsListAdapter.resetCommit();
-    }
-
+    @Override
     public void reset() {
+        if (mCommitsListAdapter == null)
+            return;
         mCommitsListAdapter.resetCommit();
     }
 

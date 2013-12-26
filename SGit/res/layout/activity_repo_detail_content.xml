@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/commitName" >
+
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="#33b5e5"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff" />
+    </android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/commitName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bt_branch_name_bg"
+        android:gravity="center"
+        android:padding="@dimen/branch_label_padding"
+        android:text="@string/default_text"
+        android:textAlignment="center"
+        android:textColor="@color/branch_name_text"
+        android:textSize="@dimen/branch_label_text_size" />
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/commitType"
+            android:layout_alignTop="@+id/commitName"
+            android:layout_alignBottom="@+id/commitName"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/ic_branch_w"
+            android:padding="@dimen/general_padding"/>
+
+    <LinearLayout
+        android:id="@+id/pullProgressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/general_horizontal_margin"
+        android:background="@drawable/bg_listitem"
+        android:orientation="vertical"
+        android:padding="@dimen/general_padding_larger"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/pullMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/default_text"
+            android:textColor="@color/general_gray_text_color"
+            android:textSize="@dimen/file_list_header_msg_size" />
+
+        <ProgressBar
+            android:id="@+id/pullProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/leftHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="@string/default_text"
+                android:textColor="@color/general_gray_text_color"
+                android:textSize="@dimen/file_list_header_hint_size" />
+
+            <TextView
+                android:id="@+id/rightHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:text="@string/default_text"
+                android:textColor="@color/general_gray_text_color"
+                android:textSize="@dimen/file_list_header_hint_size" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
