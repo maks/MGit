@@ -126,7 +126,9 @@ public class FilesFragment extends RepoDetailFragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(Repo.TAG, mRepo);
-        outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
+        if (mCurrentDir != null) {
+            outState.putString(CURRENT_DIR, mCurrentDir.getAbsolutePath());
+        }
     }
 
     public void setCurrentDir(File dir) {

@@ -9,6 +9,7 @@ import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
+import me.sheimi.sgit.fragments.StatusFragment;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
 import android.app.ActionBar;
 import android.app.FragmentManager;
@@ -35,6 +36,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private FilesFragment mFilesFragment;
     private CommitsFragment mCommitsFragment;
+    private StatusFragment mStatusFragment;
+
     private RelativeLayout mRightDrawer;
     private ListView mRepoOperationList;
     private DrawerLayout mDrawerLayout;
@@ -56,6 +59,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private static final int FILES_FRAGMENT_INDEX = 0;
     private static final int COMMITS_FRAGMENT_INDEX = 1;
+    private static final int STATUS_FRAGMENT_INDEX = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private void createFragments() {
         mFilesFragment = FilesFragment.newInstance(mRepo);
         mCommitsFragment = CommitsFragment.newInstance(mRepo);
+        mStatusFragment = StatusFragment.newInstance(mRepo);
     }
 
     private void resetCommitButtonName(String commitName) {
@@ -169,6 +174,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     public void setCommitsFragment(CommitsFragment commitsFragment) {
         mCommitsFragment = commitsFragment;
+    }
+
+    public void setStatusFragment(StatusFragment statusFragment) {
+        mStatusFragment = statusFragment;
     }
 
     @Override
@@ -275,7 +284,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     class TabItemPagerAdapter extends FragmentPagerAdapter {
 
         private final int[] PAGE_TITLE = { R.string.tab_files_label,
-                R.string.tab_commits_label };
+                R.string.tab_commits_label, R.string.tab_status_label };
 
         public TabItemPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -288,6 +297,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
                     return mFilesFragment;
                 case COMMITS_FRAGMENT_INDEX:
                     return mCommitsFragment;
+                case STATUS_FRAGMENT_INDEX:
+                    mStatusFragment.reset();
+                    return mStatusFragment;
             }
             return mFilesFragment;
         }
@@ -302,4 +314,5 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             return PAGE_TITLE.length;
         }
     }
+
 }

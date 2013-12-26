@@ -57,6 +57,7 @@
     <string name="title_section3">Section 3</string>
     <string name="tab_files_label">Files</string>
     <string name="tab_commits_label">Commits</string>
+    <string name="tab_status_label">Status</string>
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choose Branch</string>
