@@ -7,6 +7,7 @@ import java.util.Map;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.delegate.actions.AddAllAction;
+import me.sheimi.sgit.activities.delegate.actions.CherryPickAction;
 import me.sheimi.sgit.activities.delegate.actions.CommitAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
 import me.sheimi.sgit.activities.delegate.actions.DiffAction;
@@ -15,11 +16,13 @@ import me.sheimi.sgit.activities.delegate.actions.NewDirAction;
 import me.sheimi.sgit.activities.delegate.actions.NewFileAction;
 import me.sheimi.sgit.activities.delegate.actions.PullAction;
 import me.sheimi.sgit.activities.delegate.actions.PushAction;
+import me.sheimi.sgit.activities.delegate.actions.RebaseAction;
 import me.sheimi.sgit.activities.delegate.actions.RepoAction;
 import me.sheimi.sgit.activities.delegate.actions.ResetAction;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
 import me.sheimi.sgit.repo.tasks.repo.AddToStageTask;
+import me.sheimi.sgit.repo.tasks.repo.CheckoutFileTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
@@ -37,7 +40,7 @@ public class RepoOperationDelegate {
         initActions();
     }
 
-    public void initActions() {
+    private void initActions() {
         mActions.put("Commit", new CommitAction(mRepo, mActivity));
         mActions.put("Delete", new DeleteAction(mRepo, mActivity));
         mActions.put("Diff", new DiffAction(mRepo, mActivity));
@@ -48,6 +51,8 @@ public class RepoOperationDelegate {
         mActions.put("Push", new PushAction(mRepo, mActivity));
         mActions.put("Reset", new ResetAction(mRepo, mActivity));
         mActions.put("Add all to stage", new AddAllAction(mRepo, mActivity));
+        mActions.put("Cherry Pick", new CherryPickAction(mRepo, mActivity));
+        mActions.put("Rebase", new RebaseAction(mRepo, mActivity));
     }
 
     public void executeAction(String key) {
@@ -91,6 +96,13 @@ public class RepoOperationDelegate {
         String relative = FsUtils.getRelativePath(new File(filepath), base);
         AddToStageTask addToStageTask = new AddToStageTask(mRepo, relative);
         addToStageTask.executeTask();
+    }
+
+    public void checkoutFile(String filepath) {
+        File base = FsUtils.getRepo(mRepo.getLocalPath());
+        String relative = FsUtils.getRelativePath(new File(filepath), base);
+        CheckoutFileTask task = new CheckoutFileTask(mRepo, relative, null);
+        task.executeTask();
     }
 
 }

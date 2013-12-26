@@ -3,22 +3,21 @@ package me.sheimi.sgit.repo.tasks.repo;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 
-import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
+public class RebaseTask extends RepoOpTask {
 
-public class ResetCommitTask extends RepoOpTask {
-
+    public String mUpstream;
     private AsyncTaskPostCallback mCallback;
 
-    public ResetCommitTask(Repo repo, AsyncTaskPostCallback callback) {
+    public RebaseTask(Repo repo, String upstream, AsyncTaskPostCallback callback) {
         super(repo);
+        mUpstream = upstream;
         mCallback = callback;
-        setSuccessMsg(R.string.success_reset);
+        setSuccessMsg(R.string.success_rebase);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return reset();
+        return rebase();
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -28,10 +27,10 @@ public class ResetCommitTask extends RepoOpTask {
         }
     }
 
-    public boolean reset() {
+    public boolean rebase() {
         try {
-            mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
-        } catch (GitAPIException e) {
+            mRepo.getGit().rebase().setUpstream(mUpstream).call();
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

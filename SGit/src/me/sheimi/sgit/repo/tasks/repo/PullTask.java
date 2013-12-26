@@ -29,10 +29,7 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
         if (mCallback != null) {
             result = mCallback.doInBackground(params) & result;
         }
-        if (!result) {
-            return false;
-        }
-        return true;
+        return result;
     }
 
     @Override

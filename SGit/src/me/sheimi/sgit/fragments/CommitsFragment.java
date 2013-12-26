@@ -13,6 +13,9 @@ import me.sheimi.sgit.database.models.Repo;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +45,8 @@ public class CommitsFragment extends RepoDetailFragment implements
     private Set<Integer> mChosenItem = new HashSet<Integer>();
     private Repo mRepo;
 
+    private ClipboardManager mClipboard;
+
     public static CommitsFragment newInstance(Repo mRepo) {
         CommitsFragment fragment = new CommitsFragment();
         Bundle bundle = new Bundle();
@@ -61,6 +66,8 @@ public class CommitsFragment extends RepoDetailFragment implements
         if (mRepo == null) {
             return v;
         }
+        mClipboard = (ClipboardManager) getRawActivity().getSystemService(
+                Activity.CLIPBOARD_SERVICE);
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitsListAdapter = new CommitsListAdapter(getRawActivity(),
                 mChosenItem, mRepo);
@@ -201,6 +208,18 @@ public class CommitsFragment extends RepoDetailFragment implements
                 intent.putExtra(Repo.TAG, mRepo);
                 actionMode.finish();
                 getRawActivity().startActivity(intent);
+                return true;
+            case R.id.action_mode_copy_commit:
+                if (mChosenItem.size() != 1) {
+                    showToastMessage(R.string.alert_you_must_choose_one_commit_to_copy);
+                    return true;
+                }
+                int item = mChosenItem.iterator().next();
+                String commit = mCommitsListAdapter.getItem(item).getName();
+                ClipData clip = ClipData.newPlainText("commit_to_copy", commit);
+                mClipboard.setPrimaryClip(clip);
+                showToastMessage(R.string.msg_commit_str_has_copied);
+                actionMode.finish();
                 return true;
         }
         return false;

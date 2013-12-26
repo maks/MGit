@@ -27,11 +27,7 @@ public class MergeTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = mergeBranch();
-        if (!result) {
-            return false;
-        }
-        return true;
+        return mergeBranch();
     }
 
     protected void onPostExecute(Boolean isSuccess) {

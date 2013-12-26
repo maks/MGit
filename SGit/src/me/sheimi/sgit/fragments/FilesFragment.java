@@ -139,10 +139,6 @@ public class FilesFragment extends RepoDetailFragment {
     }
 
     public void resetCurrentDir() {
-        if (mCurrentDir != null) {
-            setCurrentDir(mCurrentDir);
-            return;
-        }
         if (mRootDir == null)
             return;
         setCurrentDir(mRootDir);
@@ -160,7 +156,7 @@ public class FilesFragment extends RepoDetailFragment {
             return;
         }
         file.mkdir();
-        reset();
+        setCurrentDir(mCurrentDir);
     }
 
     public void newFile(String name) {
@@ -171,7 +167,7 @@ public class FilesFragment extends RepoDetailFragment {
         }
         try {
             file.createNewFile();
-            reset();
+            setCurrentDir(mCurrentDir);
         } catch (IOException e) {
             e.printStackTrace();
             showToastMessage(e.getMessage());

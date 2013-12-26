@@ -19,11 +19,7 @@ public class CheckoutTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = checkout(mCommitName);
-        if (!result) {
-            return false;
-        }
-        return true;
+        return checkout(mCommitName);
     }
 
     protected void onPostExecute(Boolean isSuccess) {

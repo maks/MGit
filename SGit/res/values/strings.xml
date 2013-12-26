@@ -23,6 +23,7 @@
     <string name="action_edit">Edit</string>
     <string name="action_reset">Reset</string>
     <string name="action_toggle_drawer">Toggle Drawer</string>
+    <string name="action_copy_commit_str">Copy Commit Hash</string>
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>

@@ -31,5 +31,8 @@
     <string name="alert_have_paid">Ads has been disabled.</string>
     <string name="alert_in_app_billing_not_inited">In-app billing hasn\'t been initialized</string>
     <string name="alert_please_wait_previous_op">Previous operation is still running</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">Please choose exact one commit to copy</string>
+    <string name="alert_you_should_input_something">You should input something</string>
+    
 
 </resources>

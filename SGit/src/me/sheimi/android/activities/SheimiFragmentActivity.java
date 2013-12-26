@@ -120,8 +120,12 @@ public class SheimiFragmentActivity extends Activity {
                             @Override
                             public void onClick(
                                     DialogInterface dialogInterface, int i) {
-                                positiveListener.onClicked(editText.getText()
-                                        .toString());
+                                String text = editText.getText().toString();
+                                if (text == null || text.trim().isEmpty()) {
+                                    showToastMessage(R.string.alert_you_should_input_something);
+                                    return;
+                                }
+                                positiveListener.onClicked(text);
                             }
                         })
                 .setNegativeButton(R.string.label_cancel,

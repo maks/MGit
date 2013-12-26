@@ -28,11 +28,7 @@ public class GetCommitTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = getCommitsList();
-        if (!result) {
-            return false;
-        }
-        return true;
+        return getCommitsList();
     }
 
     protected void onPostExecute(Boolean isSuccess) {

@@ -15,11 +15,7 @@ public class AddToStageTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = addToStage();
-        if (!result) {
-            return false;
-        }
-        return true;
+        return addToStage();
     }
 
     protected void onPostExecute(Boolean isSuccess) {

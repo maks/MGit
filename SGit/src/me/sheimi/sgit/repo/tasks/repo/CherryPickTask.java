@@ -3,22 +3,24 @@ package me.sheimi.sgit.repo.tasks.repo;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 
-import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.ObjectId;
 
-public class ResetCommitTask extends RepoOpTask {
+public class CherryPickTask extends RepoOpTask {
 
+    public String mCommitStr;
     private AsyncTaskPostCallback mCallback;
 
-    public ResetCommitTask(Repo repo, AsyncTaskPostCallback callback) {
+    public CherryPickTask(Repo repo, String commit,
+            AsyncTaskPostCallback callback) {
         super(repo);
+        mCommitStr = commit;
         mCallback = callback;
-        setSuccessMsg(R.string.success_reset);
+        setSuccessMsg(R.string.success_cherry_pick);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return reset();
+        return cherrypick();
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -28,10 +30,12 @@ public class ResetCommitTask extends RepoOpTask {
         }
     }
 
-    public boolean reset() {
+    public boolean cherrypick() {
         try {
-            mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
-        } catch (GitAPIException e) {
+            ObjectId commit = mRepo.getGit().getRepository()
+                    .resolve(mCommitStr);
+            mRepo.getGit().cherryPick().include(commit).call();
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

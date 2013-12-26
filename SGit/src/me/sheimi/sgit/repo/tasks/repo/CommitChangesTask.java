@@ -25,11 +25,7 @@ public class CommitChangesTask extends RepoOpTask {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        boolean result = commit();
-        if (!result) {
-            return false;
-        }
-        return true;
+        return commit();
     }
 
     protected void onPostExecute(Boolean isSuccess) {
