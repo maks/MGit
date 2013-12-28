@@ -65,7 +65,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
-        mRepo.updateLatestCommitInfo();
+        repoInit();
         setTitle(mRepo.getDiaplayName());
         setContentView(R.layout.activity_repo_detail);
         setupActionBar();
@@ -84,6 +84,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             }
         });
         String branchName = mRepo.getBranchName();
+        if (branchName == null) {
+            showToastMessage(R.string.error_something_wrong);
+            return;
+        }
         resetCommitButtonName(branchName);
     }
 
@@ -281,6 +285,11 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     public void enterDiffActionMode() {
         mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
         mCommitsFragment.enterDiffActionMode();
+    }
+
+    private void repoInit() {
+        mRepo.updateLatestCommitInfo();
+        mRepo.getRemotes();
     }
 
     class TabItemPagerAdapter extends FragmentPagerAdapter {

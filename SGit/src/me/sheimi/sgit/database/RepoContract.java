@@ -18,6 +18,7 @@ public final class RepoContract {
     public static final String REPO_STATUS_WAITING_CLONE = "cloning ... ";
     public static final String REPO_STATUS_IMPORTING = "importing ... ";
     public static final String REPO_STATUS_NULL = "";
+    public static final String REPO_STATUS_INITING = "initing ... ";
 
     public RepoContract() {
     }
@@ -85,7 +86,7 @@ public final class RepoContract {
 
     public static Date getLatestCommitDate(Cursor cursor) {
         String longStr = cursor.getString(6);
-        if (longStr == null) {
+        if (longStr == null || longStr.isEmpty()) {
             return null;
         }
         long time = Long.parseLong(longStr);

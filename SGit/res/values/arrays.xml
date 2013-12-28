@@ -23,6 +23,7 @@
         <item>Diff</item>
         <item>New File</item>
         <item>New Directory</item>
+        <item>Add Remote</item>
         <item>Delete</item>
     </string-array>
 

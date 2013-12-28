@@ -68,8 +68,6 @@
     <string name="dialog_comfirm_import_repo_msg">Are you sure to import this repository?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
-    <string name="dialog_push_repo_title">Push Repo</string>
-    <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
     <string name="dialog_file_delete">Delete File</string>
     <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
     <string name="dialog_reset_commit_title">Reset Changes</string>

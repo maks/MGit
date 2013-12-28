@@ -128,8 +128,11 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
             holder.commitMsgContainer.setVisibility(View.VISIBLE);
             holder.progressContainer.setVisibility(View.GONE);
 
-            holder.commitTime.setText(COMMITTIME_FORMATTER.format(repo
-                    .getLastCommitDate()));
+            String date = "";
+            if (repo.getLastCommitDate() != null) {
+                date = COMMITTIME_FORMATTER.format(repo.getLastCommitDate());
+            }
+            holder.commitTime.setText(date);
             holder.commitMsg.setText(repo.getLastCommitMsg());
             holder.commitAuthor.setText(repo.getLastCommitter());
             holder.authorIcon.setVisibility(View.VISIBLE);

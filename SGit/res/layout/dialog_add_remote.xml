@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/general_padding" >
+
+    <EditText
+        android:id="@+id/remoteName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:hint="@string/dialog_add_remote_hint_name"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:textSize="@dimen/general_dialog_text_size" />
+
+    <EditText
+        android:id="@+id/remoteUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:hint="@string/dialog_add_remote_hint_url"
+        android:imeOptions="actionDone"
+        android:inputType="textUri"
+        android:singleLine="true"
+        android:textSize="@dimen/general_dialog_text_size" />
+
+</LinearLayout>

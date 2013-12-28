@@ -148,11 +148,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
     private void updateRepoInformation(long repoId) {
         Repo repo = Repo.getRepoById(mActivity, repoId);
         repo.updateLatestCommitInfo();
-        String remote = repo.getRemoteOriginURL();
-        ContentValues values = new ContentValues();
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remote);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                RepoContract.REPO_STATUS_NULL);
-        RepoDbManager.updateRepo(repoId, values);
+        repo.updateRemote();
+        repo.updateStatus(RepoContract.REPO_STATUS_NULL);
     }
 }

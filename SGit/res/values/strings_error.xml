@@ -13,6 +13,7 @@
     <string name="error_can_not_open_file">Opps, can\'t open this file in this device.</string>
     <string name="error_unknown">Something wrong!!!</string>
     <string name="error_task_running">A task for this repo is running</string>
+    <string name="error_something_wrong">Something wrong happens</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
@@ -33,6 +34,6 @@
     <string name="alert_please_wait_previous_op">Previous operation is still running</string>
     <string name="alert_you_must_choose_one_commit_to_copy">Please choose exact one commit to copy</string>
     <string name="alert_you_should_input_something">You should input something</string>
-    
+    <string name="alert_please_add_a_remote">Please add a remote first</string>
 
 </resources>

@@ -18,8 +18,25 @@
     <string name="dialog_import_local_path_hint">Local Path</string>
     <string name="dialog_import_import_as_external_repo">Import as external repo</string>
     <string name="dialog_import_set_local_repo_title">Set Local Path</string>
-    
+
     <!-- Clone Repo -->
     <string name="dialog_clone_local_path_hint">Local Path</string>
+    <string name="dialog_clone_neutral_label">Init Local</string>
+
+    <!-- Init Repo -->
+    <string name="dialog_init_local_path_hint">Local Path</string>
+    <string name="dialog_init_repo_title">Local Path</string>
+    <string name="dialog_init_repo_positive_label">Init</string>
+
+    <!-- Add Remote -->
+    <string name="dialog_add_remote_title">Add Remote</string>
+    <string name="dialog_add_remote_hint_name">Remote name</string>
+    <string name="dialog_add_remote_hint_url">Remote url</string>
+    <string name="dialog_add_remote_positive_label">Done</string>
+    
+    <!-- Push -->
+    <string name="dialog_push_repo_title">Push to &#8230;</string>
+    <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
+    <string name="dialog_push_is_push_all">Push all?</string>
 
 </resources>

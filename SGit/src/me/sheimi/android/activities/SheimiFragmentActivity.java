@@ -41,9 +41,8 @@ public class SheimiFragmentActivity extends Activity {
     protected void onResume() {
         super.onResume();
         BasicFunctions.setActiveActivity(this);
-        if (!Constants.DEBUG) {
-            MobclickAgent.onResume(this);
-        }
+        MobclickAgent.onResume(this);
+        MobclickAgent.setDebugMode(Constants.DEBUG);
     }
 
     @Override
@@ -52,9 +51,7 @@ public class SheimiFragmentActivity extends Activity {
         if (mImageLoader != null && mImageLoader.isInited()) {
             mImageLoader.destroy();
         }
-        if (!Constants.DEBUG) {
-            MobclickAgent.onPause(this);
-        }
+        MobclickAgent.onPause(this);
     }
 
     @Override

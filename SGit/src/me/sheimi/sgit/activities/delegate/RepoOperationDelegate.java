@@ -7,6 +7,7 @@ import java.util.Map;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.delegate.actions.AddAllAction;
+import me.sheimi.sgit.activities.delegate.actions.AddRemoteAction;
 import me.sheimi.sgit.activities.delegate.actions.CherryPickAction;
 import me.sheimi.sgit.activities.delegate.actions.CommitAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
@@ -54,6 +55,7 @@ public class RepoOperationDelegate {
         mActions.put("Add all to stage", new AddAllAction(mRepo, mActivity));
         mActions.put("Cherry Pick", new CherryPickAction(mRepo, mActivity));
         mActions.put("Rebase", new RebaseAction(mRepo, mActivity));
+        mActions.put("Add Remote", new AddRemoteAction(mRepo, mActivity));
     }
 
     public void executeAction(String key) {

@@ -7,6 +7,7 @@
     <string name="success_cherry_pick">Cherry pick Success</string>
     <string name="success_rebase">Rebase Success</string>
     <string name="success_checkout_file">Checkout Success</string>
+    <string name="success_remote_added">Remote added</string>
     <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
 
 </resources>
