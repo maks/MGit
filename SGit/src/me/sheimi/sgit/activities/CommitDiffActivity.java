@@ -55,9 +55,9 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
     }
 
     private void loadFileContent() {
+        mDiffContent.addJavascriptInterface(new CodeLoader(), JS_INF);
         mDiffContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
                 "text/html", "utf-8", null);
-        mDiffContent.addJavascriptInterface(new CodeLoader(), JS_INF);
         WebSettings webSettings = mDiffContent.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mDiffContent.setWebChromeClient(new WebChromeClient() {

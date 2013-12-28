@@ -39,7 +39,6 @@
     <string name="label_import">Import</string>
     <string name="label_push">Push</string>
     <string name="label_push_all">Push All</string>
-    <string name="label_commit">Commit</string>
     <string name="label_create">Create</string>
     <string name="label_checkout">Checkout</string>
     <string name="label_git_name">Name</string>
@@ -73,8 +72,6 @@
     <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_push_repo_title">Push Repo</string>
     <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
-    <string name="dialog_commit_title">Commit Changes</string>
-    <string name="dialog_commit_msg_hint">Commit message</string>
     <string name="dialog_file_delete">Delete File</string>
     <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
     <string name="dialog_reset_commit_title">Reset Changes</string>

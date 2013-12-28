@@ -41,7 +41,6 @@ public class SheimiFragmentActivity extends Activity {
     protected void onResume() {
         super.onResume();
         BasicFunctions.setActiveActivity(this);
-        setupImageLoader();
         if (!Constants.DEBUG) {
             MobclickAgent.onResume(this);
         }
@@ -50,7 +49,9 @@ public class SheimiFragmentActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        mImageLoader.destroy();
+        if (mImageLoader != null && mImageLoader.isInited()) {
+            mImageLoader.destroy();
+        }
         if (!Constants.DEBUG) {
             MobclickAgent.onPause(this);
         }
@@ -238,6 +239,9 @@ public class SheimiFragmentActivity extends Activity {
     }
 
     public ImageLoader getImageLoader() {
+        if (mImageLoader == null || !mImageLoader.isInited()) {
+            setupImageLoader();
+        }
         return mImageLoader;
     }
     /* ImageCache End */

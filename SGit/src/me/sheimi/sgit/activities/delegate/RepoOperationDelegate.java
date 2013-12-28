@@ -24,6 +24,7 @@ import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
 import me.sheimi.sgit.repo.tasks.repo.AddToStageTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutFileTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
+import me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
 import org.eclipse.jgit.lib.Ref;
@@ -73,12 +74,6 @@ public class RepoOperationDelegate {
         checkoutTask.executeTask();
     }
 
-    public void deleteFileFromRepo(String filepath) {
-        File file = new File(filepath);
-        FsUtils.deleteFile(file);
-        mActivity.getFilesFragment().reset();
-    }
-
     public void mergeBranch(final Ref commit, final String ffModeStr,
             final boolean autoCommit) {
         MergeTask mergeTask = new MergeTask(mRepo, commit, ffModeStr,
@@ -92,17 +87,34 @@ public class RepoOperationDelegate {
     }
 
     public void addToStage(String filepath) {
-        File base = FsUtils.getRepo(mRepo.getLocalPath());
-        String relative = FsUtils.getRelativePath(new File(filepath), base);
+        String relative = getRelativePath(filepath);
         AddToStageTask addToStageTask = new AddToStageTask(mRepo, relative);
         addToStageTask.executeTask();
     }
 
     public void checkoutFile(String filepath) {
-        File base = FsUtils.getRepo(mRepo.getLocalPath());
-        String relative = FsUtils.getRelativePath(new File(filepath), base);
+        String relative = getRelativePath(filepath);
         CheckoutFileTask task = new CheckoutFileTask(mRepo, relative, null);
         task.executeTask();
+    }
+
+    public void deleteFileFromRepo(String filepath) {
+        String relative = getRelativePath(filepath);
+        DeleteFileFromRepoTask task = new DeleteFileFromRepoTask(mRepo,
+                relative, new AsyncTaskPostCallback() {
+                    @Override
+                    public void onPostExecute(Boolean isSuccess) {
+                        // TODO Auto-generated method stub
+                        mActivity.getFilesFragment().reset();
+                    }
+                });
+        task.executeTask();
+    }
+
+    private String getRelativePath(String filepath) {
+        File base = FsUtils.getRepo(mRepo.getLocalPath());
+        String relative = FsUtils.getRelativePath(new File(filepath), base);
+        return relative;
     }
 
 }
