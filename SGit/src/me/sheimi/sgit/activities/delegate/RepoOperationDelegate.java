@@ -112,7 +112,7 @@ public class RepoOperationDelegate {
     }
 
     private String getRelativePath(String filepath) {
-        File base = FsUtils.getRepo(mRepo.getLocalPath());
+        File base = mRepo.getDir();
         String relative = FsUtils.getRelativePath(new File(filepath), base);
         return relative;
     }

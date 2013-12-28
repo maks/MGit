@@ -27,7 +27,6 @@
 
     <!-- label msg -->
     <string name="label_remote_url">Remote URL</string>
-    <string name="label_local_path">Local Path</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
     <string name="label_delete">Delete</string>
@@ -67,7 +66,6 @@
     <string name="dialog_choose_language_title">Choose Language</string>
     <string name="dialog_comfirm_import_repo_title">Import Repository</string>
     <string name="dialog_comfirm_import_repo_msg">Are you sure to import this repository?</string>
-    <string name="dialog_set_local_repo_dialog">Set Local Path</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_push_repo_title">Push Repo</string>

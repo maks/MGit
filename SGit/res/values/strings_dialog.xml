@@ -6,12 +6,20 @@
     <string name="dialog_cherrypick_msg_hint">Commit Hash (copy from commit list)</string>
     <string name="dialog_label_cherrypick">Cherry Pick</string>
     <string name="dialog_rebase_title">Choose upstream branch</string>
-    
+
     <!-- Commit -->
     <string name="dialog_commit_title">Commit Changes</string>
     <string name="dialog_commit_msg_hint">Commit message</string>
     <string name="dialog_commit_is_amend">Is amend</string>
     <string name="dialog_commit_auto_stage">Auto stage modified files</string>
     <string name="dialog_commit_positive_label">Commit</string>
+
+    <!-- Import Repo -->
+    <string name="dialog_import_local_path_hint">Local Path</string>
+    <string name="dialog_import_import_as_external_repo">Import as external repo</string>
+    <string name="dialog_import_set_local_repo_title">Set Local Path</string>
+    
+    <!-- Clone Repo -->
+    <string name="dialog_clone_local_path_hint">Local Path</string>
 
 </resources>

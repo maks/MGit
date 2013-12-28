@@ -15,6 +15,9 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 
 /**
@@ -28,6 +31,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
     private String mFromPath;
     private Activity mActivity;
     private EditText mLocalPath;
+    private CheckBox mImportAsExternal;
     public static final String FROM_PATH = "from path";
 
     @Override
@@ -42,13 +46,28 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         mFile = new File(mFromPath);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(getString(R.string.dialog_set_local_repo_dialog));
+        builder.setTitle(getString(R.string.dialog_import_set_local_repo_title));
         View view = getActivity().getLayoutInflater().inflate(
                 R.layout.dialog_import_repo, null);
 
         builder.setView(view);
         mLocalPath = (EditText) view.findViewById(R.id.localPath);
         mLocalPath.setText(mFile.getName());
+        mImportAsExternal = (CheckBox) view.findViewById(R.id.importAsExternal);
+        mImportAsExternal
+                .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                            boolean isChecked) {
+                        if (isChecked) {
+                            mLocalPath.setText(Repo.EXTERNAL_PREFIX
+                                    + mFile.getAbsolutePath());
+                        } else {
+                            mLocalPath.setText(mFile.getName());
+                        }
+                        mLocalPath.setEnabled(isChecked);
+                    }
+                });
 
         // set button listener
         builder.setNegativeButton(R.string.label_cancel,
@@ -73,24 +92,26 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
     @Override
     public void onClick(View view) {
         final String localPath = mLocalPath.getText().toString().trim();
-        if (localPath.equals("")) {
-            showToastMessage(R.string.alert_field_not_empty);
-            mLocalPath.setError(getString(R.string.alert_field_not_empty));
-            return;
-        }
+        if (!mImportAsExternal.isChecked()) {
+            if (localPath.equals("")) {
+                showToastMessage(R.string.alert_field_not_empty);
+                mLocalPath.setError(getString(R.string.alert_field_not_empty));
+                return;
+            }
 
-        if (localPath.contains("/")) {
-            showToastMessage(R.string.alert_localpath_format);
-            mLocalPath.setError(getString(R.string.alert_localpath_format));
-            return;
-        }
+            if (localPath.contains("/")) {
+                showToastMessage(R.string.alert_localpath_format);
+                mLocalPath.setError(getString(R.string.alert_localpath_format));
+                return;
+            }
 
-        final File file = FsUtils.getRepo(localPath);
+            File file = Repo.getDir(localPath);
 
-        if (file.exists()) {
-            showToastMessage(R.string.alert_file_exists);
-            mLocalPath.setError(getString(R.string.alert_file_exists));
-            return;
+            if (file.exists()) {
+                showToastMessage(R.string.alert_file_exists);
+                mLocalPath.setError(getString(R.string.alert_file_exists));
+                return;
+            }
         }
 
         ContentValues values = new ContentValues();
@@ -102,29 +123,36 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
 
         final long id = RepoDbManager.insertRepo(values);
+        if (mImportAsExternal.isChecked()) {
+            updateRepoInformation(id);
+            dismiss();
+            return;
+        }
+        final File repoFile = Repo.getDir(localPath);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                FsUtils.copyDirectory(mFile, file);
-                final Repo repo = Repo.getRepoById(mActivity, id);
+                FsUtils.copyDirectory(mFile, repoFile);
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        repo.updateLatestCommitInfo();
-                        String remote = repo.getRemoteOriginURL();
-                        ContentValues values = new ContentValues();
-                        values.put(
-                                RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
-                                remote);
-                        values.put(
-                                RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                                RepoContract.REPO_STATUS_NULL);
-                        RepoDbManager.updateRepo(id, values);
+                        updateRepoInformation(id);
                     }
                 });
             }
         });
         thread.start();
         dismiss();
+    }
+
+    private void updateRepoInformation(long repoId) {
+        Repo repo = Repo.getRepoById(mActivity, repoId);
+        repo.updateLatestCommitInfo();
+        String remote = repo.getRemoteOriginURL();
+        ContentValues values = new ContentValues();
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remote);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
+                RepoContract.REPO_STATUS_NULL);
+        RepoDbManager.updateRepo(repoId, values);
     }
 }

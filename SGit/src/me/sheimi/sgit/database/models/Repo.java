@@ -63,6 +63,8 @@ public class Repo implements Comparable<Repo>, Serializable {
     public static final String TEST_REPO = "https://github.com/sheimi/SGit.git";
     public static final String TEST_LOCAL = "SGit";
     public static final String DOT_GIT_DIR = ".git";
+    public static final String EXTERNAL_PREFIX = "external://";
+    public static final String REPO_DIR = "repo";
 
     private static SparseArray<RepoOpTask> mRepoTasks = new SparseArray<RepoOpTask>();
 
@@ -112,6 +114,21 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public String getLocalPath() {
         return mLocalPath;
+    }
+
+    public String getDiaplayName() {
+        if (!isExternal())
+            return getLocalPath();
+        String[] strs = mLocalPath.split("/");
+        return strs[strs.length - 1] + "(external)";
+    }
+
+    public static boolean isExternal(String path) {
+        return path.startsWith(EXTERNAL_PREFIX);
+    }
+
+    public boolean isExternal() {
+        return isExternal(getLocalPath());
     }
 
     public String getRemoteURL() {
@@ -229,8 +246,10 @@ public class Repo implements Comparable<Repo>, Serializable {
         if (isDeleted)
             return;
         RepoDbManager.deleteRepo(mID);
-        File fileToDelete = FsUtils.getRepo(mLocalPath);
-        FsUtils.deleteFile(fileToDelete);
+        if (!isExternal()) {
+            File fileToDelete = getDir();
+            FsUtils.deleteFile(fileToDelete);
+        }
         isDeleted = true;
     }
 
@@ -401,11 +420,20 @@ public class Repo implements Comparable<Repo>, Serializable {
         return String.format("refs/heads/%s", splits[3]);
     }
 
+    public static File getDir(String localpath) {
+        if (!Repo.isExternal(localpath))
+            return FsUtils.getDir(REPO_DIR + "/" + localpath, false);
+        return new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
+    }
+
+    public File getDir() {
+        return Repo.getDir(getLocalPath());
+    }
+
     public Git getGit() {
         if (mGit != null)
             return mGit;
-        File repoFile = new File(FsUtils.getDir(FsUtils.REPO_DIR),
-                getLocalPath());
+        File repoFile = getDir();
         try {
             mGit = Git.open(repoFile);
             return mGit;

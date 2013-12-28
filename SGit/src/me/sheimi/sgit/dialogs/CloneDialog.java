@@ -4,7 +4,6 @@ import java.io.File;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.Constants;
-import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
@@ -102,7 +101,7 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
 
-        File file = FsUtils.getRepo(localPath);
+        File file = Repo.getDir(localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath

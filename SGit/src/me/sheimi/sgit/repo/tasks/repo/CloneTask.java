@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
-import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
@@ -50,8 +49,7 @@ public class CloneTask extends RepoOpTask {
     }
 
     public boolean cloneRepo() {
-        File localRepo = new File(FsUtils.getDir(FsUtils.REPO_DIR),
-                mRepo.getLocalPath());
+        File localRepo = mRepo.getDir();
         CloneCommand cloneCommand = Git.cloneRepository()
                 .setURI(mRepo.getRemoteURL()).setCloneAllBranches(true)
                 .setProgressMonitor(new RepoCloneMonitor())

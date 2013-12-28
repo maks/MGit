@@ -65,7 +65,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
-        setTitle(mRepo.getLocalPath());
+        mRepo.updateLatestCommitInfo();
+        setTitle(mRepo.getDiaplayName());
         setContentView(R.layout.activity_repo_detail);
         setupActionBar();
         createFragments();
