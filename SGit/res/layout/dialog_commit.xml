@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/general_padding" >
+
+    <EditText
+        android:id="@+id/commitMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:hint="@string/dialog_commit_msg_hint"
+        android:textSize="@dimen/general_dialog_text_size" />
+
+    <CheckBox
+        android:id="@+id/autoStage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:checked="true"
+        android:text="@string/dialog_commit_auto_stage" />
+
+    <CheckBox
+        android:id="@+id/isAmend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:checked="false"
+        android:text="@string/dialog_commit_is_amend" />
+
+</LinearLayout>

@@ -112,4 +112,9 @@ public class CommitDiffTask extends RepoOpTask {
         }
         return null;
     }
+
+    public void executeTask() {
+        execute();
+    }
+
 }

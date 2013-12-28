@@ -54,9 +54,9 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     }
 
     private void loadFileContent() {
+        mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
         mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
                 "text/html", "utf-8", null);
-        mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
         WebSettings webSettings = mFileContent.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mFileContent.setWebChromeClient(new WebChromeClient() {

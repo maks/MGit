@@ -5,6 +5,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ProfileDialog;
 
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import android.content.Context;
@@ -14,12 +15,16 @@ public class CommitChangesTask extends RepoOpTask {
 
     private AsyncTaskPostCallback mCallback;
     private String mCommitMsg;
+    private boolean mIsAmend;
+    private boolean mStageAll;
 
-    public CommitChangesTask(Repo repo, String commitMsg,
-            AsyncTaskPostCallback callback) {
+    public CommitChangesTask(Repo repo, String commitMsg, boolean isAmend,
+            boolean stageAll, AsyncTaskPostCallback callback) {
         super(repo);
         mCallback = callback;
         mCommitMsg = commitMsg;
+        mIsAmend = isAmend;
+        mStageAll = stageAll;
         setSuccessMsg(R.string.success_commit);
     }
 
@@ -45,10 +50,11 @@ public class CommitChangesTask extends RepoOpTask {
                 ProfileDialog.GIT_USER_NAME, "");
         String committerEmail = sharedPreferences.getString(
                 ProfileDialog.GIT_USER_EMAIL, "");
+        CommitCommand cc = mRepo.getGit().commit()
+                .setCommitter(committerName, committerEmail).setAll(mStageAll)
+                .setAmend(mIsAmend).setMessage(mCommitMsg);
         try {
-            mRepo.getGit().commit().setMessage(mCommitMsg)
-                    .setCommitter(committerName, committerEmail).setAll(true)
-                    .call();
+            cc.call();
         } catch (GitAPIException e) {
             setException(e);
             return false;
