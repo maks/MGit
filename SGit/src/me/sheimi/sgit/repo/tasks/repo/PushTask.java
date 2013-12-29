@@ -19,9 +19,12 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
 
     private AsyncTaskCallback mCallback;
     private boolean mPushAll;
+    private String mRemote;
 
-    public PushTask(Repo repo, boolean pushAll, AsyncTaskCallback callback) {
+    public PushTask(Repo repo, String remote, boolean pushAll,
+            AsyncTaskCallback callback) {
         super(repo);
+        mRemote = remote;
         mCallback = callback;
         mPushAll = pushAll;
     }
@@ -62,7 +65,8 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         Git git = mRepo.getGit();
         PushCommand pushCommand = git.push().setPushTags()
                 .setProgressMonitor(new BasicProgressMonitor())
-                .setTransportConfigCallback(new SgitTransportCallback());
+                .setTransportConfigCallback(new SgitTransportCallback())
+                .setRemote(mRemote);
         if (mPushAll) {
             pushCommand.setPushAll();
         } else {
@@ -108,7 +112,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         }
 
         mRepo.removeTask(this);
-        PushTask pushTask = new PushTask(mRepo, mPushAll, mCallback);
+        PushTask pushTask = new PushTask(mRepo, mRemote, mPushAll, mCallback);
         pushTask.executeTask();
     }
 

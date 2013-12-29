@@ -25,7 +25,7 @@
             android:layout_margin="@dimen/general_vertial_margin"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:hint="@string/label_local_path"/>
+            android:hint="@string/dialog_clone_local_path_hint"/>
 
     <EditText
             android:id="@+id/username"

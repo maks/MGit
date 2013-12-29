@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
@@ -22,6 +23,8 @@ import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
+
+import com.umeng.analytics.MobclickAgent;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -58,11 +61,16 @@ public class Repo implements Comparable<Repo>, Serializable {
     private String mLastCommitMsg;
     private boolean isDeleted = false;
 
+    // lazy load
+    private Set<String> mRemotes;
     private Git mGit;
+    private StoredConfig mStoredConfig;
 
-    public static final String TEST_REPO = "https://github.com/sheimi/SGit.git";
+    public static final String TEST_REPO = "https://github.com/sheimi/test.git";
     public static final String TEST_LOCAL = "SGit";
     public static final String DOT_GIT_DIR = ".git";
+    public static final String EXTERNAL_PREFIX = "external://";
+    public static final String REPO_DIR = "repo";
 
     private static SparseArray<RepoOpTask> mRepoTasks = new SparseArray<RepoOpTask>();
 
@@ -112,6 +120,21 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public String getLocalPath() {
         return mLocalPath;
+    }
+
+    public String getDiaplayName() {
+        if (!isExternal())
+            return getLocalPath();
+        String[] strs = mLocalPath.split("/");
+        return strs[strs.length - 1] + "(external)";
+    }
+
+    public static boolean isExternal(String path) {
+        return path.startsWith(EXTERNAL_PREFIX);
+    }
+
+    public boolean isExternal() {
+        return isExternal(getLocalPath());
     }
 
     public String getRemoteURL() {
@@ -183,6 +206,13 @@ public class Repo implements Comparable<Repo>, Serializable {
         RepoDbManager.updateRepo(mID, values);
     }
 
+    public void updateRemote() {
+        ContentValues values = new ContentValues();
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
+                getRemoteOriginURL());
+        RepoDbManager.updateRepo(mID, values);
+    }
+
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.writeInt(mID);
         out.writeObject(mRemoteURL);
@@ -229,40 +259,42 @@ public class Repo implements Comparable<Repo>, Serializable {
         if (isDeleted)
             return;
         RepoDbManager.deleteRepo(mID);
-        File fileToDelete = FsUtils.getRepo(mLocalPath);
-        FsUtils.deleteFile(fileToDelete);
+        if (!isExternal()) {
+            File fileToDelete = getDir();
+            FsUtils.deleteFile(fileToDelete);
+        }
         isDeleted = true;
     }
 
     public void updateLatestCommitInfo() {
         RevCommit commit = getLatestCommit();
         ContentValues values = new ContentValues();
+        String email = "";
+        String uname = "";
+        String commitDateStr = "";
+        String msg = "";
         if (commit != null) {
             PersonIdent committer = commit.getCommitterIdent();
-            String email = committer.getEmailAddress();
-            String uname = committer.getName();
+            if (committer != null) {
+                email = committer.getEmailAddress() != null ? committer
+                        .getEmailAddress() : email;
+                uname = committer.getName() != null ? committer.getName()
+                        : uname;
+            }
+            msg = commit.getShortMessage() != null ? commit.getShortMessage()
+                    : msg;
             long date = committer.getWhen().getTime();
-            String msg = commit.getShortMessage();
+            commitDateStr = Long.toString(date);
 
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
-                    Long.toString(date));
-            if (msg != null) {
-                values.put(
-                        RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG,
-                        msg);
-            }
-            if (email != null) {
-                values.put(
-                        RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
-                        email);
-            }
-            if (uname != null) {
-                values.put(
-                        RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME,
-                        uname);
-            }
-            RepoDbManager.updateRepo(getID(), values);
         }
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_DATE,
+                commitDateStr);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMIT_MSG, msg);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_EMAIL,
+                email);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LATEST_COMMITTER_UNAME,
+                uname);
+        RepoDbManager.updateRepo(getID(), values);
     }
 
     public String getBranchName() {
@@ -270,6 +302,9 @@ public class Repo implements Comparable<Repo>, Serializable {
             return getGit().getRepository().getFullBranch();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            MobclickAgent.reportError(BasicFunctions.getActiveActivity(), e);
         }
         return null;
     }
@@ -308,6 +343,8 @@ public class Repo implements Comparable<Repo>, Serializable {
             return it.next();
         } catch (GitAPIException e) {
             e.printStackTrace();
+        } catch (Throwable e) {
+            MobclickAgent.reportError(BasicFunctions.getActiveActivity(), e);
         }
         return null;
     }
@@ -335,12 +372,6 @@ public class Repo implements Comparable<Repo>, Serializable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public String getRemoteOriginURL() {
-        StoredConfig config = getGit().getRepository().getConfig();
-        String origin = config.getString("remote", "origin", "url");
-        return origin;
     }
 
     public String getCurrentDisplayName() {
@@ -401,18 +432,73 @@ public class Repo implements Comparable<Repo>, Serializable {
         return String.format("refs/heads/%s", splits[3]);
     }
 
-    public Git getGit() {
-        if (mGit != null)
-            return mGit;
-        File repoFile = new File(FsUtils.getDir(FsUtils.REPO_DIR),
-                getLocalPath());
-        try {
-            mGit = Git.open(repoFile);
-            return mGit;
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static File getDir(String localpath) {
+        if (Repo.isExternal(localpath)) {
+            return new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
         }
-        return null;
+        File repoDir = FsUtils.getDir(REPO_DIR, true);
+        return new File(repoDir, localpath);
+    }
+
+    public File getDir() {
+        return Repo.getDir(getLocalPath());
+    }
+
+    public Git getGit() {
+        if (mGit == null) {
+            File repoFile = getDir();
+            try {
+                mGit = Git.open(repoFile);
+                return mGit;
+            } catch (IOException e) {
+                e.printStackTrace();
+                MobclickAgent
+                        .reportError(BasicFunctions.getActiveActivity(), e);
+            }
+        }
+        return mGit;
+    }
+
+    public StoredConfig getStoredConfig() {
+        if (mStoredConfig == null) {
+            mStoredConfig = getGit().getRepository().getConfig();
+        }
+        return mStoredConfig;
+    }
+
+    public String getRemoteOriginURL() {
+        StoredConfig config = getStoredConfig();
+        String origin = config.getString("remote", "origin", "url");
+        if (origin != null && !origin.isEmpty())
+            return origin;
+        Set<String> remoteNames = config.getSubsections("remote");
+        if (remoteNames.size() == 0)
+            return "";
+        String url = config.getString("remote", remoteNames.iterator().next(),
+                "url");
+        return url;
+    }
+
+    public Set<String> getRemotes() {
+        if (mRemotes == null) {
+            StoredConfig config = getStoredConfig();
+            mRemotes = config.getSubsections("remote");
+        }
+        return mRemotes;
+    }
+
+    public void setRemote(String remote, String url) throws IOException {
+        StoredConfig config = getStoredConfig();
+        Set<String> remoteNames = config.getSubsections("remote");
+        if (remoteNames.contains(remote)) {
+            throw new IOException(String.format("Remote %s already exists.",
+                    remote));
+        }
+        config.setString("remote", remote, "url", url);
+        String fetch = String.format("+refs/heads/*:refs/remotes/%s/*", remote);
+        config.setString("remote", remote, "fetch", fetch);
+        config.save();
+        mRemotes.add(remote);
     }
 
 }

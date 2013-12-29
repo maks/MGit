@@ -56,7 +56,7 @@ public class FilesFragment extends RepoDetailFragment {
         if (mRepo == null) {
             return v;
         }
-        mRootDir = FsUtils.getRepo(mRepo.getLocalPath());
+        mRootDir = mRepo.getDir();
 
         mFilesList = (ListView) v.findViewById(R.id.filesList);
 

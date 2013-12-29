@@ -24,7 +24,6 @@ public class FsUtils {
             "yyyyMMdd_HHmmss", Locale.getDefault());
     public static final String PNG_SUFFIX = ".png";
     public static final String TEMP_DIR = "temp";
-    public static final String REPO_DIR = "repo";
 
     private FsUtils() {
     }
@@ -52,10 +51,6 @@ public class FsUtils {
             mDir.mkdir();
         }
         return mDir;
-    }
-
-    public static File getRepo(String localPath) {
-        return getDir(REPO_DIR + "/" + localPath, false);
     }
 
     public static File getAppDir() {

@@ -4,7 +4,6 @@ import java.io.File;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.Constants;
-import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
@@ -15,6 +14,8 @@ import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,9 +60,17 @@ public class CloneDialog extends SheimiDialogFragment implements
 
         // set button listener
         builder.setTitle(R.string.title_clone_repo);
-        builder.setNegativeButton(getString(R.string.label_cancel),
+        builder.setNegativeButton(R.string.label_cancel,
                 new DummyDialogListener());
-        builder.setPositiveButton(getString(R.string.label_clone),
+        builder.setNeutralButton(R.string.dialog_clone_neutral_label,
+                new OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        InitDialog id = new InitDialog();
+                        id.show(getFragmentManager(), "init-dialog");
+                    }
+                });
+        builder.setPositiveButton(R.string.label_clone,
                 new DummyDialogListener());
 
         return builder.create();
@@ -102,7 +111,7 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
 
-        File file = FsUtils.getRepo(localPath);
+        File file = Repo.getDir(localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath

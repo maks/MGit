@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/general_padding" >
+
+    <EditText
+        android:id="@+id/localPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:hint="@string/dialog_init_local_path_hint"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:textSize="@dimen/general_dialog_text_size" />
+
+</LinearLayout>
