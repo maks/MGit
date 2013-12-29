@@ -91,7 +91,7 @@ public class InitDialog extends SheimiDialogFragment implements
         localPath = mLocalPath.getText().toString().trim();
         ContentValues values = new ContentValues();
         values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, "");
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, "local repository");
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                 RepoContract.REPO_STATUS_INITING);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");

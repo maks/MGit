@@ -96,5 +96,9 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
         mCurrentDir = dir;
         mFilesListAdapter.setDir(mCurrentDir);
     }
+    
+    protected File getCurrentDir() {
+        return mCurrentDir;
+    }
 
 }

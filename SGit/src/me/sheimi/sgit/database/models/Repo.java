@@ -434,7 +434,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public static File getDir(String localpath) {
         if (Repo.isExternal(localpath)) {
-            new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
+            return new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
         }
         File repoDir = FsUtils.getDir(REPO_DIR, true);
         return new File(repoDir, localpath);

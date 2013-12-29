@@ -35,5 +35,6 @@
     <string name="alert_you_must_choose_one_commit_to_copy">Please choose exact one commit to copy</string>
     <string name="alert_you_should_input_something">You should input something</string>
     <string name="alert_please_add_a_remote">Please add a remote first</string>
+    <string name="alert_is_already_a_git_repo">This directory is already a git repo.</string>
 
 </resources>
