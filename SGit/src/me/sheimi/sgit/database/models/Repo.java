@@ -461,6 +461,7 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public StoredConfig getStoredConfig() {
         if (mStoredConfig == null) {
+
             mStoredConfig = getGit().getRepository().getConfig();
         }
         return mStoredConfig;
@@ -482,7 +483,8 @@ public class Repo implements Comparable<Repo>, Serializable {
     public Set<String> getRemotes() {
         if (mRemotes == null) {
             StoredConfig config = getStoredConfig();
-            mRemotes = config.getSubsections("remote");
+            Set<String> remotes = config.getSubsections("remote");
+            mRemotes = new HashSet<String>(remotes);
         }
         return mRemotes;
     }
