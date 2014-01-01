@@ -1,9 +1,6 @@
 package me.sheimi.sgit.activities;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
@@ -11,6 +8,9 @@ import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
+
+import org.apache.commons.io.FileUtils;
+
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -32,12 +32,17 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     private static final String JS_INF = "CodeLoader";
     private ProgressBar mLoading;
     private File mFile;
+    private boolean mEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initViewFile();
+    }
+
+    private void initViewFile() {
         setContentView(R.layout.activity_view_file);
-        setupActionBar();
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         mFileContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);
 
@@ -45,18 +50,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         String fileName = extras.getString(TAG_FILE_NAME);
         mFile = new File(fileName);
         setTitle(mFile.getName());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadFileContent();
-    }
-
-    private void loadFileContent() {
         mFileContent.addJavascriptInterface(new CodeLoader(), JS_INF);
-        mFileContent.loadDataWithBaseURL("file:///android_asset/", HTML_TMPL,
-                "text/html", "utf-8", null);
         WebSettings webSettings = mFileContent.getSettings();
         webSettings.setJavaScriptEnabled(true);
         mFileContent.setWebChromeClient(new WebChromeClient() {
@@ -72,14 +66,35 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         });
     }
 
-    private void setupActionBar() {
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadFileContent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onResume();
+        if (mEditMode) {
+            mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
+        }
+    }
+
+    private void loadFileContent() {
+        mFileContent.loadUrl("file:///android_asset/editor.html");
+        mFileContent.setFocusable(mEditMode);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_file, menu);
+        MenuItem mi = menu.findItem(R.id.action_edit);
+        if (mEditMode) {
+            mi.setIcon(R.drawable.ic_action_save);
+        } else {
+            mi.setIcon(R.drawable.ic_action_edit);
+        }
         return true;
     }
 
@@ -89,7 +104,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_edit:
+            case R.id.action_edit_in_other_app:
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_EDIT);
                 Uri uri = Uri.fromFile(mFile);
@@ -104,6 +119,19 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 } catch (Throwable e) {
                     showToastMessage(R.string.error_can_not_edit_file);
                 }
+                break;
+            case R.id.action_edit:
+                mEditMode = !mEditMode;
+                mFileContent.setFocusable(mEditMode);
+                mFileContent.setFocusableInTouchMode(mEditMode);
+                if (mEditMode) {
+                    mFileContent.loadUrl(CodeGuesser
+                            .wrapUrlScript("setEditable();"));
+                    showToastMessage(R.string.msg_now_you_can_edit);
+                } else {
+                    mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
+                }
+                invalidateOptionsMenu();
                 return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
@@ -114,14 +142,13 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     }
 
     public void setLanguage(String lang) {
-        String js = String.format("setLanguage('%s')", lang);
+        String js = String.format("setLang('%s')", lang);
         mFileContent.loadUrl(CodeGuesser.wrapUrlScript(js));
     }
 
     private class CodeLoader {
 
         private String mCode;
-        private int mCodeLines;
 
         @JavascriptInterface
         public String getCode() {
@@ -129,13 +156,32 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         }
 
         @JavascriptInterface
-        public int getLineNumber() {
-            return mCodeLines;
-        }
+        public void save(final String content) {
+            if (content == null) {
+                showToastMessage(R.string.alert_save_failed);
+                return;
+            }
+            Thread thread = new Thread(new Runnable() {
 
-        @JavascriptInterface
-        public String getLanguage() {
-            return CodeGuesser.guessCodeType(mFile.getName());
+                @Override
+                public void run() {
+                    try {
+                        FileUtils.writeStringToFile(mFile, content);
+                    } catch (IOException e) {
+                        showToastMessage(R.string.alert_save_failed);
+                    }
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            initViewFile();
+                            loadFileContent();
+                            showToastMessage(R.string.success_save);
+                        }
+                    });
+                }
+            });
+            thread.start();
         }
 
         @JavascriptInterface()
@@ -144,49 +190,47 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 @Override
                 public void run() {
                     try {
-                        BufferedReader br = new BufferedReader(new FileReader(
-                                mFile));
-                        StringBuffer sb = new StringBuffer();
-                        String line = br.readLine();
-                        mCodeLines = 0;
-                        while (null != line) {
-                            mCodeLines++;
-                            sb.append(line);
-                            sb.append('\n');
-                            line = br.readLine();
-                        }
-                        mCode = sb.toString();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        mCode = FileUtils.readFileToString(mFile);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mLoading.setVisibility(View.INVISIBLE);
-                            mFileContent.loadUrl(CodeGuesser
-                                    .wrapUrlScript("notifyFileLoaded();"));
-                        }
-                    });
+                    display();
                 }
             });
             thread.start();
         }
 
+        private void display() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String lang = CodeGuesser.guessCodeType(mFile.getName());
+                    String js = String.format("setLang('%s')", lang);
+                    mFileContent.loadUrl(CodeGuesser.wrapUrlScript(js));
+                    mLoading.setVisibility(View.INVISIBLE);
+                    mFileContent.loadUrl(CodeGuesser
+                            .wrapUrlScript("display();"));
+                    if (mEditMode) {
+                        mFileContent.loadUrl(CodeGuesser
+                                .wrapUrlScript("setEditable();"));
+                    }
+                }
+            });
+        }
+
     }
 
-    private static final String HTML_TMPL = "<!doctype html>"
-            + "<head>"
-            + " <script src=\"js/jquery.js\"></script>"
-            + " <script src=\"js/highlight.pack.js\"></script>"
-            + " <script src=\"js/local_viewfile.js\"></script>"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/rainbow.css\" />"
-            + " <link type=\"text/css\" rel=\"stylesheet\" href=\"css/local_viewfile.css\" />"
-            + "</head><body><table>"
-            + "<tbody><tr><td class=\"line_number_td\">"
-            + "<pre class=\"line_numbers\"></pre>"
-            + "</td><td class=\"codes_td\"><pre class=\"codes\"><code></code></pre>"
-            + "</td></tr></tbody></table></body>";
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("EditMode", mEditMode);
+        // etc.
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mEditMode = savedInstanceState.getBoolean("EditMode", false);
+    }
 
 }
