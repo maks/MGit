@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.sheimi.sgit"
-    android:versionCode="101"
-    android:versionName="1.2.3.1" >
+    android:versionCode="102"
+    android:versionName="1.2.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -39,6 +39,7 @@
         </activity>
         <activity
             android:name=".activities.ViewFileActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:parentActivityName=".activities.RepoDetailActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

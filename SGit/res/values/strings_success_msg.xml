@@ -8,6 +8,8 @@
     <string name="success_rebase">Rebase Success</string>
     <string name="success_checkout_file">Checkout Success</string>
     <string name="success_remote_added">Remote added</string>
+    <string name="success_save">Save file success</string>
+    <string name="msg_now_you_can_edit">Now you can edit</string>
     <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
 
 </resources>

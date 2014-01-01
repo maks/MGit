@@ -36,5 +36,6 @@
     <string name="alert_you_should_input_something">You should input something</string>
     <string name="alert_please_add_a_remote">Please add a remote first</string>
     <string name="alert_is_already_a_git_repo">This directory is already a git repo.</string>
+    <string name="alert_save_failed">Save failed</string>
 
 </resources>
