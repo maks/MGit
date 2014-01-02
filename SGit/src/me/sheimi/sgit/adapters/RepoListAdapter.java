@@ -119,8 +119,7 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
             holder.cancelBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (repo.isExternal())
-                        repo.deleteRepo();
+                    repo.deleteRepo();
                     repo.cancelTask();
                 }
             });
@@ -158,8 +157,6 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
     public void onItemClick(AdapterView<?> adapterView, View view,
             int position, long id) {
         Repo repo = getItem(position);
-        if (!repo.getRepoStatus().equals(RepoContract.REPO_STATUS_NULL))
-            return;
         Intent intent = new Intent(mActivity, RepoDetailActivity.class);
         intent.putExtra(Repo.TAG, repo);
         mActivity.startActivity(intent);
@@ -181,6 +178,7 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
                         public void onClick(DialogInterface dialogInterface,
                                 int i) {
                             repo.deleteRepo();
+                            repo.cancelTask();
                         }
                     });
         }
