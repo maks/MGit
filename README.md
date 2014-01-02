@@ -67,7 +67,7 @@ request.
 
 If you want to donate this project, you can donate via paypal
 
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KWFGX7RNJ6LM8&lc=US&item_name=Donate%20SGit&item_number=sgit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a>
+<a target='_blank' href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KWFGX7RNJ6LM8&lc=US&item_name=Donate%20SGit&item_number=sgit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted"><img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a>
 
 Or donate via [支付宝](https://me.alipay.com/sheimi)
 
