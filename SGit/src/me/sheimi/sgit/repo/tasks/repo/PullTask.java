@@ -83,6 +83,7 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
             setErrorRes(R.string.error_out_of_memory);
             return false;
         }
+        mRepo.updateLatestCommitInfo();
         return true;
     }
 
