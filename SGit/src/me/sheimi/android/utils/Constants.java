@@ -16,5 +16,7 @@ public class Constants {
             + "+W1ROrYb9gUIELPIaa+Q36ycosfSVb1fUxANbHJy5ifzFTmLEGj9wbARSimQLGf9QdalBdRujiQql2m8hqMepSXVHIgoXGNylQBJO08kpKjhER5BUC2iJP5VOILrfM4MOst1wg7ldcclvFQIDAQAB";
 
     public static final boolean DEBUG = true;
- 
+
+    public static final String DONATE_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=KWFGX7RNJ6LM8&lc=US&item_name=Donate%20SGit&item_number=sgit&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted";
+
 }

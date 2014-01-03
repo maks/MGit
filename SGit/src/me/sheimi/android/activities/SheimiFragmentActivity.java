@@ -103,6 +103,12 @@ public class SheimiFragmentActivity extends Activity {
                 .setPositiveButton(positiveBtn, positiveListener)
                 .setNegativeButton(negativeBtn, negativeListener).show();
     }
+    
+    public void showMessageDialog(int title, String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title).setMessage(msg)
+                .setPositiveButton(R.string.label_ok, new DummyDialogListener()).show();
+    }
 
     public void showEditTextDialog(int title, int hint, int positiveBtn,
             final OnEditTextDialogClicked positiveListener) {

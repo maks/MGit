@@ -60,9 +60,12 @@ public class MergeTask extends RepoOpTask {
             String b2 = mCommit.getName();
             String msg = null;
             if (b1 == null) {
-                msg = String.format("Merge branch '%s'", b2);
+                msg = String.format("Merge branch '%s'",
+                        Repo.getCommitDisplayName(b2));
             } else {
-                msg = String.format("Merge branch '%s' into %s", b2, b1);
+                msg = String.format("Merge branch '%s' into %s",
+                        Repo.getCommitDisplayName(b2),
+                        Repo.getCommitDisplayName(b1));
             }
             try {
                 CommitChangesTask.commit(mRepo, false, false, msg);
