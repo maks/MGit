@@ -3,6 +3,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 import java.util.Set;
 
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
@@ -45,6 +46,11 @@ public class StatusTask extends RepoOpTask {
             setException(e);
             return false;
         } catch (GitAPIException e) {
+            setException(e);
+            return false;
+        } catch (StopTaskException e) {
+            return false;
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

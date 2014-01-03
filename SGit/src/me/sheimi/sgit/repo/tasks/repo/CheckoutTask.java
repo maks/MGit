@@ -1,6 +1,7 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.CreateBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -36,12 +37,16 @@ public class CheckoutTask extends RepoOpTask {
             } else {
                 checkoutFromLocal(name);
             }
+        } catch (StopTaskException e) {
+            return false;
         } catch (GitAPIException e) {
             setException(mException);
             return false;
         } catch (JGitInternalException e) {
             setException(mException);
-            // TODO LOG ERROR
+            return false;
+        } catch (Throwable e) {
+            setException(mException);
             return false;
         }
         mRepo.updateLatestCommitInfo();
@@ -49,12 +54,12 @@ public class CheckoutTask extends RepoOpTask {
     }
 
     public void checkoutFromLocal(String name) throws GitAPIException,
-            JGitInternalException {
+            JGitInternalException, StopTaskException {
         mRepo.getGit().checkout().setName(name).call();
     }
 
     public void checkoutFromRemote(String remoteBranchName, String branchName)
-            throws GitAPIException, JGitInternalException {
+            throws GitAPIException, JGitInternalException, StopTaskException {
         mRepo.getGit().checkout().setCreateBranch(true).setName(branchName)
                 .setStartPoint(remoteBranchName).call();
         mRepo.getGit()

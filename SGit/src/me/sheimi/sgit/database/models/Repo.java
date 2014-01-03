@@ -12,19 +12,20 @@ import java.util.Set;
 
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.exception.StopTaskException;
 import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
-
-import com.umeng.analytics.MobclickAgent;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -301,12 +302,10 @@ public class Repo implements Comparable<Repo>, Serializable {
         try {
             return getGit().getRepository().getFullBranch();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Throwable e) {
-            e.printStackTrace();
-            MobclickAgent.reportError(BasicFunctions.getActiveActivity(), e);
+            BasicFunctions.showException(e);
+        } catch (StopTaskException e) {
         }
-        return null;
+        return "";
     }
 
     public String[] getBranches() {
@@ -329,12 +328,13 @@ public class Repo implements Comparable<Repo>, Serializable {
             }
             return branchList.toArray(new String[0]);
         } catch (GitAPIException e) {
-            e.printStackTrace();
+            BasicFunctions.showException(e);
+        } catch (StopTaskException e) {
         }
-        return null;
+        return new String[0];
     }
 
-    public RevCommit getLatestCommit() {
+    private RevCommit getLatestCommit() {
         try {
             Iterable<RevCommit> commits = getGit().log().setMaxCount(1).call();
             Iterator<RevCommit> it = commits.iterator();
@@ -342,9 +342,8 @@ public class Repo implements Comparable<Repo>, Serializable {
                 return null;
             return it.next();
         } catch (GitAPIException e) {
-            e.printStackTrace();
-        } catch (Throwable e) {
-            MobclickAgent.reportError(BasicFunctions.getActiveActivity(), e);
+            BasicFunctions.showException(e);
+        } catch (StopTaskException e) {
         }
         return null;
     }
@@ -354,9 +353,10 @@ public class Repo implements Comparable<Repo>, Serializable {
             List<Ref> localRefs = getGit().branchList().call();
             return localRefs;
         } catch (GitAPIException e) {
-            e.printStackTrace();
+            BasicFunctions.showException(e);
+        } catch (StopTaskException e) {
         }
-        return null;
+        return new ArrayList<Ref>();
     }
 
     public String[] getTags() {
@@ -369,9 +369,10 @@ public class Repo implements Comparable<Repo>, Serializable {
             }
             return tags;
         } catch (GitAPIException e) {
-            e.printStackTrace();
+            BasicFunctions.showException(e);
+        } catch (StopTaskException e) {
         }
-        return null;
+        return new String[0];
     }
 
     public String getCurrentDisplayName() {
@@ -444,63 +445,76 @@ public class Repo implements Comparable<Repo>, Serializable {
         return Repo.getDir(getLocalPath());
     }
 
-    public Git getGit() {
-        if (mGit == null) {
+    public Git getGit() throws StopTaskException {
+        if (mGit != null)
+            return mGit;
+        try {
             File repoFile = getDir();
-            try {
-                mGit = Git.open(repoFile);
-                return mGit;
-            } catch (IOException e) {
-                e.printStackTrace();
-                MobclickAgent
-                        .reportError(BasicFunctions.getActiveActivity(), e);
-            }
+            mGit = Git.open(repoFile);
+            return mGit;
+        } catch (RepositoryNotFoundException e) {
+            BasicFunctions
+                    .showException(e, R.string.error_repository_not_found);
+            throw new StopTaskException();
+        } catch (IOException e) {
+            BasicFunctions.showException(e);
+            throw new StopTaskException();
         }
-        return mGit;
     }
 
-    public StoredConfig getStoredConfig() {
+    public StoredConfig getStoredConfig() throws StopTaskException {
         if (mStoredConfig == null) {
-
             mStoredConfig = getGit().getRepository().getConfig();
         }
         return mStoredConfig;
     }
 
     public String getRemoteOriginURL() {
-        StoredConfig config = getStoredConfig();
-        String origin = config.getString("remote", "origin", "url");
-        if (origin != null && !origin.isEmpty())
-            return origin;
-        Set<String> remoteNames = config.getSubsections("remote");
-        if (remoteNames.size() == 0)
-            return "";
-        String url = config.getString("remote", remoteNames.iterator().next(),
-                "url");
-        return url;
+        try {
+            StoredConfig config = getStoredConfig();
+            String origin = config.getString("remote", "origin", "url");
+            if (origin != null && !origin.isEmpty())
+                return origin;
+            Set<String> remoteNames = config.getSubsections("remote");
+            if (remoteNames.size() == 0)
+                return "";
+            String url = config.getString("remote", remoteNames.iterator()
+                    .next(), "url");
+            return url;
+        } catch (StopTaskException e) {
+        }
+        return "";
     }
 
     public Set<String> getRemotes() {
-        if (mRemotes == null) {
+        if (mRemotes != null)
+            return mRemotes;
+        try {
             StoredConfig config = getStoredConfig();
             Set<String> remotes = config.getSubsections("remote");
             mRemotes = new HashSet<String>(remotes);
+            return mRemotes;
+        } catch (StopTaskException e) {
         }
-        return mRemotes;
+        return new HashSet<String>();
     }
 
     public void setRemote(String remote, String url) throws IOException {
-        StoredConfig config = getStoredConfig();
-        Set<String> remoteNames = config.getSubsections("remote");
-        if (remoteNames.contains(remote)) {
-            throw new IOException(String.format("Remote %s already exists.",
-                    remote));
+        try {
+            StoredConfig config = getStoredConfig();
+            Set<String> remoteNames = config.getSubsections("remote");
+            if (remoteNames.contains(remote)) {
+                throw new IOException(String.format(
+                        "Remote %s already exists.", remote));
+            }
+            config.setString("remote", remote, "url", url);
+            String fetch = String.format("+refs/heads/*:refs/remotes/%s/*",
+                    remote);
+            config.setString("remote", remote, "fetch", fetch);
+            config.save();
+            mRemotes.add(remote);
+        } catch (StopTaskException e) {
         }
-        config.setString("remote", remote, "url", url);
-        String fetch = String.format("+refs/heads/*:refs/remotes/%s/*", remote);
-        config.setString("remote", remote, "fetch", fetch);
-        config.save();
-        mRemotes.add(remote);
     }
 
 }

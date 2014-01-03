@@ -4,6 +4,7 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ProfileDialog;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
@@ -48,7 +49,12 @@ public class CommitChangesTask extends RepoOpTask {
     public boolean commit() {
         try {
             commit(mRepo, mStageAll, mIsAmend, mCommitMsg);
+        } catch (StopTaskException e) {
+            return false;
         } catch (GitAPIException e) {
+            setException(e);
+            return false;
+        } catch (Throwable e) {
             setException(e);
             return false;
         }
@@ -59,7 +65,7 @@ public class CommitChangesTask extends RepoOpTask {
     public static void commit(Repo repo, boolean stageAll, boolean isAmend,
             String msg) throws NoHeadException, NoMessageException,
             UnmergedPathsException, ConcurrentRefUpdateException,
-            WrongRepositoryStateException, GitAPIException {
+            WrongRepositoryStateException, GitAPIException, StopTaskException {
         SharedPreferences sharedPreferences = BasicFunctions
                 .getActiveActivity().getSharedPreferences(
                         BasicFunctions.getActiveActivity().getString(

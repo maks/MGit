@@ -28,16 +28,11 @@ public class FsUtils {
     private FsUtils() {
     }
 
-    public static File createTempFile(String subfix) {
+    public static File createTempFile(String subfix) throws IOException {
         File dir = getDir(TEMP_DIR);
         String fileName = TIMESTAMP_FORMATTER.format(new Date());
-        File file = null;
-        try {
-            file = File.createTempFile(fileName, subfix, dir);
-            file.deleteOnExit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = File.createTempFile(fileName, subfix, dir);
+        file.deleteOnExit();
         return file;
     }
 
@@ -94,11 +89,9 @@ public class FsUtils {
                             BasicFunctions.getActiveActivity().getString(
                                     R.string.label_choose_app_to_open)));
         } catch (ActivityNotFoundException e) {
-            BasicFunctions.getActiveActivity().showToastMessage(
-                    R.string.error_no_open_app);
+            BasicFunctions.showException(e, R.string.error_no_open_app);
         } catch (Throwable e) {
-            BasicFunctions.getActiveActivity().showToastMessage(
-                    R.string.error_can_not_open_file);
+            BasicFunctions.showException(e, R.string.error_can_not_open_file);
         }
     }
 
@@ -116,7 +109,7 @@ public class FsUtils {
         try {
             FileUtils.deleteDirectory(file);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            //TODO 
             e.printStackTrace();
         }
     }

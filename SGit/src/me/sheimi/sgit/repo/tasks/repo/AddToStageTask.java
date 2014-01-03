@@ -2,6 +2,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 public class AddToStageTask extends RepoOpTask {
 
@@ -25,6 +26,8 @@ public class AddToStageTask extends RepoOpTask {
     public boolean addToStage() {
         try {
             mRepo.getGit().add().addFilepattern(mFilePattern).call();
+        } catch (StopTaskException e) {
+            return false;
         } catch (Throwable e) {
             setException(e);
             return false;

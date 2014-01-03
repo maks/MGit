@@ -12,19 +12,16 @@ public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
         mException = e;
     }
 
-    protected void setErrorRes(int errorRes) {
+    protected void setException(Throwable e, int errorRes) {
+        mException = e;
         mErrorRes = errorRes;
     }
 
     protected void showError() {
-        if (mException != null) {
-            mException.printStackTrace();
-        }
         if (mErrorRes != 0) {
-            BasicFunctions.getActiveActivity().showToastMessage(mErrorRes);
+            BasicFunctions.showException(mException, mErrorRes);
         } else if (mException != null) {
-            BasicFunctions.getActiveActivity().showToastMessage(
-                    mException.getMessage());
+            BasicFunctions.showException(mException);
         }
     }
 
@@ -37,14 +34,14 @@ public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
     public boolean isTaskCanceled() {
         return mIsCanceled;
     }
-    
+
     public static interface AsyncTaskPostCallback {
         public void onPostExecute(Boolean isSuccess);
     }
 
     public static interface AsyncTaskCallback {
         public boolean doInBackground(Void... params);
-        
+
         public void onPreExecute();
 
         public void onProgressUpdate(String... progress);

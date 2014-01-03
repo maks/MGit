@@ -2,6 +2,7 @@ package me.sheimi.sgit.activities.delegate.actions;
 
 import java.io.IOException;
 
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.models.Repo;
@@ -30,7 +31,7 @@ public class AddRemoteAction extends RepoAction {
             mRepo.updateRemote();
             mActivity.showToastMessage(R.string.success_remote_added);
         } catch (IOException e) {
-            mActivity.showToastMessage(e.getMessage());
+            BasicFunctions.showException(e);
         }
     }
 
