@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
@@ -169,8 +170,7 @@ public class FilesFragment extends RepoDetailFragment {
             file.createNewFile();
             setCurrentDir(mCurrentDir);
         } catch (IOException e) {
-            e.printStackTrace();
-            showToastMessage(e.getMessage());
+            BasicFunctions.showException(e);
         }
     }
 

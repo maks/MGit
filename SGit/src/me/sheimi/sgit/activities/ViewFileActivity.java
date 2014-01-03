@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
@@ -115,9 +116,9 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                             getString(R.string.label_choose_app_to_edit)));
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
-                    showToastMessage(R.string.error_no_edit_app);
+                    BasicFunctions.showException(e, R.string.error_no_edit_app);
                 } catch (Throwable e) {
-                    showToastMessage(R.string.error_can_not_edit_file);
+                    BasicFunctions.showException(e);
                 }
                 break;
             case R.id.action_edit:
@@ -168,7 +169,8 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     try {
                         FileUtils.writeStringToFile(mFile, content);
                     } catch (IOException e) {
-                        showToastMessage(R.string.alert_save_failed);
+                        BasicFunctions.showException(e,
+                                R.string.alert_save_failed);
                     }
                     runOnUiThread(new Runnable() {
 
@@ -192,7 +194,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     try {
                         mCode = FileUtils.readFileToString(mFile);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        BasicFunctions.showException(e);
                     }
                     display();
                 }

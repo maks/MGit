@@ -2,6 +2,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.lib.ObjectId;
 
@@ -35,6 +36,8 @@ public class CherryPickTask extends RepoOpTask {
             ObjectId commit = mRepo.getGit().getRepository()
                     .resolve(mCommitStr);
             mRepo.getGit().cherryPick().include(commit).call();
+        } catch (StopTaskException e) {
+            return false;
         } catch (Throwable e) {
             setException(e);
             return false;

@@ -5,6 +5,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.Git;
@@ -56,7 +57,12 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
     }
 
     public boolean pullRepo() {
-        Git git = mRepo.getGit();
+        Git git;
+        try {
+            git = mRepo.getGit();
+        } catch (StopTaskException e) {
+            return false;
+        }
         PullCommand pullCommand = git.pull()
                 .setProgressMonitor(new BasicProgressMonitor())
                 .setTransportConfigCallback(new SgitTransportCallback());
@@ -75,12 +81,13 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
             handleAuthError(this);
             return false;
         } catch (Exception e) {
-            setException(e);
-            setErrorRes(R.string.error_pull_failed);
+            setException(e, R.string.error_pull_failed);
             return false;
         } catch (OutOfMemoryError e) {
+            setException(e, R.string.error_out_of_memory);
+            return false;
+        } catch (Throwable e) {
             setException(e);
-            setErrorRes(R.string.error_out_of_memory);
             return false;
         }
         mRepo.updateLatestCommitInfo();

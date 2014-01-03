@@ -2,6 +2,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 public class CheckoutFileTask extends RepoOpTask {
 
@@ -31,6 +32,8 @@ public class CheckoutFileTask extends RepoOpTask {
     private boolean checkout() {
         try {
             mRepo.getGit().checkout().addPath(mPath).call();
+        } catch (StopTaskException e) {
+            return false;
         } catch (Throwable e) {
             setException(e);
             return false;

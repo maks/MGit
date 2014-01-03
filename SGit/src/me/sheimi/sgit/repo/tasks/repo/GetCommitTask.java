@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -46,6 +47,11 @@ public class GetCommitTask extends RepoOpTask {
                 mResult.add(commit);
             }
         } catch (GitAPIException e) {
+            setException(e);
+            return false;
+        } catch (StopTaskException e) {
+            return false;
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

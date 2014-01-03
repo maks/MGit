@@ -68,25 +68,22 @@ public class CloneTask extends RepoOpTask {
         try {
             cloneCommand.call();
         } catch (InvalidRemoteException e) {
-            setException(e);
-            setErrorRes(R.string.error_invalid_remote);
+            setException(e, R.string.error_invalid_remote);
             return false;
         } catch (TransportException e) {
             setException(e);
             handleAuthError(mOnPasswordEnter);
             return false;
         } catch (GitAPIException e) {
-            setException(e);
-            setErrorRes(R.string.error_clone_failed);
+            setException(e, R.string.error_clone_failed);
             return false;
         } catch (JGitInternalException e) {
             setException(e);
             return false;
         } catch (OutOfMemoryError e) {
-            setException(e);
-            setErrorRes(R.string.error_out_of_memory);
+            setException(e, R.string.error_out_of_memory);
             return false;
-        } catch (RuntimeException e) {
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

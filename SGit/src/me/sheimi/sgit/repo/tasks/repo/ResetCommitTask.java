@@ -2,9 +2,9 @@ package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class ResetCommitTask extends RepoOpTask {
 
@@ -31,7 +31,9 @@ public class ResetCommitTask extends RepoOpTask {
     public boolean reset() {
         try {
             mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
-        } catch (GitAPIException e) {
+        } catch (StopTaskException e) {
+            return false;
+        } catch (Throwable e) {
             setException(e);
             return false;
         }

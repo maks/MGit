@@ -2,6 +2,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 public class RebaseTask extends RepoOpTask {
 
@@ -30,6 +31,8 @@ public class RebaseTask extends RepoOpTask {
     public boolean rebase() {
         try {
             mRepo.getGit().rebase().setUpstream(mUpstream).call();
+        } catch (StopTaskException e) {
+            return false;
         } catch (Throwable e) {
             setException(e);
             return false;

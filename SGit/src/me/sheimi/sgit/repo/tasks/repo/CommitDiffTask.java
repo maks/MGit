@@ -8,6 +8,7 @@ import java.util.List;
 
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -48,8 +49,12 @@ public class CommitDiffTask extends RepoOpTask {
         }
         mDiffStrs = new ArrayList<String>(mDiffEntries.size());
         for (DiffEntry diffEntry : mDiffEntries) {
-            String diffStr = parseDiffEntry(diffEntry);
-            mDiffStrs.add(diffStr);
+            try {
+                String diffStr = parseDiffEntry(diffEntry);
+                mDiffStrs.add(diffStr);
+            } catch (StopTaskException e) {
+                return false;
+            }
         }
         return true;
     }
@@ -62,8 +67,8 @@ public class CommitDiffTask extends RepoOpTask {
     }
 
     public boolean getCommitDiff() {
-        Repository repo = mRepo.getGit().getRepository();
         try {
+            Repository repo = mRepo.getGit().getRepository();
             ObjectId oldId = repo.resolve(mOldCommit + "^{tree}");
             ObjectId newId = repo.resolve(mNewCommit + "^{tree}");
 
@@ -82,35 +87,33 @@ public class CommitDiffTask extends RepoOpTask {
         } catch (GitAPIException e) {
             setException(e);
         } catch (IncorrectObjectTypeException e) {
-            setException(e);
-            setErrorRes(R.string.error_diff_failed);
+            setException(e, R.string.error_diff_failed);
         } catch (AmbiguousObjectException e) {
-            setException(e);
-            setErrorRes(R.string.error_diff_failed);
+            setException(e, R.string.error_diff_failed);
         } catch (IOException e) {
-            setException(e);
-            setErrorRes(R.string.error_diff_failed);
+            setException(e, R.string.error_diff_failed);
         } catch (IllegalStateException e) {
-            setException(e);
-            setErrorRes(R.string.error_diff_failed);
+            setException(e, R.string.error_diff_failed);
+        } catch (StopTaskException e) {
         }
         return false;
     }
 
-    private String parseDiffEntry(DiffEntry diffEntry) {
+    private String parseDiffEntry(DiffEntry diffEntry) throws StopTaskException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         DiffFormatter df = new DiffFormatter(out);
-        df.setRepository(mRepo.getGit().getRepository());
         try {
+            df.setRepository(mRepo.getGit().getRepository());
             df.format(diffEntry);
             String diffText = out.toString("UTF-8");
             return diffText;
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            setException(e, R.string.error_diff_failed);
+            throw new StopTaskException();
         } catch (IOException e) {
-            e.printStackTrace();
+            setException(e, R.string.error_diff_failed);
+            throw new StopTaskException();
         }
-        return null;
     }
 
     public void executeTask() {

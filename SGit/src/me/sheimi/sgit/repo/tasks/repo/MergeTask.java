@@ -3,6 +3,7 @@ package me.sheimi.sgit.repo.tasks.repo;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -54,6 +55,11 @@ public class MergeTask extends RepoOpTask {
         } catch (GitAPIException e) {
             setException(e);
             return false;
+        } catch (StopTaskException e) {
+            return false;
+        } catch (Throwable e) {
+            setException(e);
+            return false;
         }
         if (mAutoCommit) {
             String b1 = mRepo.getBranchName();
@@ -70,6 +76,11 @@ public class MergeTask extends RepoOpTask {
             try {
                 CommitChangesTask.commit(mRepo, false, false, msg);
             } catch (GitAPIException e) {
+                setException(e);
+                return false;
+            } catch (StopTaskException e) {
+                return false;
+            } catch (Throwable e) {
                 setException(e);
                 return false;
             }

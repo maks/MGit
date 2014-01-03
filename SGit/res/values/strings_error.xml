@@ -14,6 +14,7 @@
     <string name="error_unknown">Something wrong!!!</string>
     <string name="error_task_running">A task for this repo is running</string>
     <string name="error_something_wrong">Something wrong happens</string>
+    <string name="error_repository_not_found">Repository not found (there may be something wrong with this repo).</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
