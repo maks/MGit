@@ -80,27 +80,8 @@ public class CommitsFragment extends RepoDetailFragment implements
                     public void onItemClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
                         if (mActionMode == null) {
-                            RevCommit commit = mCommitsListAdapter
-                                    .getItem(position);
-                            final String fullCommitName = commit.getName();
-                            String message = getString(R.string.dialog_comfirm_checkout_commit_msg)
-                                    + " "
-                                    + Repo.getCommitDisplayName(fullCommitName);
-                            showMessageDialog(
-                                    R.string.dialog_comfirm_checkout_commit_title,
-                                    message, R.string.label_checkout,
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialogInterface,
-                                                int i) {
-                                            getRawActivity().getRepoDelegate()
-                                                    .checkoutCommit(
-                                                            fullCommitName);
-                                        }
-                                    });
-                            return;
-                        }
+                            enterDiffActionMode();
+                        }   
                         chooseItem(position);
                     }
                 });
@@ -112,8 +93,24 @@ public class CommitsFragment extends RepoDetailFragment implements
                         if (mActionMode != null) {
                             return false;
                         }
-                        enterDiffActionMode();
-                        chooseItem(position);
+                        RevCommit commit = mCommitsListAdapter
+                                .getItem(position);
+                        final String fullCommitName = commit.getName();
+                        String message = getString(R.string.dialog_comfirm_checkout_commit_msg)
+                                + " "
+                                + Repo.getCommitDisplayName(fullCommitName);
+                        showMessageDialog(
+                                R.string.dialog_comfirm_checkout_commit_title,
+                                message, R.string.label_checkout,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(
+                                            DialogInterface dialogInterface,
+                                            int i) {
+                                        getRawActivity().getRepoDelegate()
+                                                .checkoutCommit(fullCommitName);
+                                    }
+                                });
                         return true;
                     }
                 });
