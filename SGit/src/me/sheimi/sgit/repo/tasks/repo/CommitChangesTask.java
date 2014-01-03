@@ -6,7 +6,12 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ProfileDialog;
 
 import org.eclipse.jgit.api.CommitCommand;
+import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.api.errors.NoMessageException;
+import org.eclipse.jgit.api.errors.UnmergedPathsException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -41,6 +46,20 @@ public class CommitChangesTask extends RepoOpTask {
     }
 
     public boolean commit() {
+        try {
+            commit(mRepo, mStageAll, mIsAmend, mCommitMsg);
+        } catch (GitAPIException e) {
+            setException(e);
+            return false;
+        }
+        mRepo.updateLatestCommitInfo();
+        return true;
+    }
+
+    public static void commit(Repo repo, boolean stageAll, boolean isAmend,
+            String msg) throws NoHeadException, NoMessageException,
+            UnmergedPathsException, ConcurrentRefUpdateException,
+            WrongRepositoryStateException, GitAPIException {
         SharedPreferences sharedPreferences = BasicFunctions
                 .getActiveActivity().getSharedPreferences(
                         BasicFunctions.getActiveActivity().getString(
@@ -50,16 +69,10 @@ public class CommitChangesTask extends RepoOpTask {
                 ProfileDialog.GIT_USER_NAME, "");
         String committerEmail = sharedPreferences.getString(
                 ProfileDialog.GIT_USER_EMAIL, "");
-        CommitCommand cc = mRepo.getGit().commit()
-                .setCommitter(committerName, committerEmail).setAll(mStageAll)
-                .setAmend(mIsAmend).setMessage(mCommitMsg);
-        try {
-            cc.call();
-        } catch (GitAPIException e) {
-            setException(e);
-            return false;
-        }
-        mRepo.updateLatestCommitInfo();
-        return true;
+        CommitCommand cc = repo.getGit().commit()
+                .setCommitter(committerName, committerEmail).setAll(stageAll)
+                .setAmend(isAmend).setMessage(msg);
+        cc.call();
+        repo.updateLatestCommitInfo();
     }
 }
