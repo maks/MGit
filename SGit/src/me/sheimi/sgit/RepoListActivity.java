@@ -11,6 +11,7 @@ import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.dialogs.ProfileDialog;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,8 +61,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 return true;
             case R.id.action_git_profile:
                 ProfileDialog profileDialog = new ProfileDialog();
-                profileDialog.show(getFragmentManager(),
-                        "profile-dialog");
+                profileDialog.show(getFragmentManager(), "profile-dialog");
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -77,6 +77,11 @@ public class RepoListActivity extends SheimiFragmentActivity {
                         getString(Constants.FEEDBACK_SUBJECT));
                 startActivity(Intent.createChooser(feedback,
                         getString(R.string.label_send_feedback)));
+                return true;
+            case R.id.action_donate:
+                Uri uri = Uri.parse(Constants.DONATE_URL);
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -1,6 +1,9 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import java.util.Collection;
+
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
@@ -10,7 +13,9 @@ import me.sheimi.sgit.ssh.SgitTransportCallback;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 import android.content.ContentValues;
@@ -20,6 +25,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
     private AsyncTaskCallback mCallback;
     private boolean mPushAll;
     private String mRemote;
+    private StringBuffer resultMsg = new StringBuffer();
 
     public PushTask(Repo repo, String remote, boolean pushAll,
             AsyncTaskCallback callback) {
@@ -59,6 +65,10 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         if (mCallback != null) {
             mCallback.onPostExecute(isSuccess);
         }
+        if (isSuccess) {
+            BasicFunctions.getActiveActivity().showMessageDialog(
+                    R.string.dialog_push_result, resultMsg.toString());
+        }
     }
 
     public boolean pushRepo() {
@@ -84,7 +94,13 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         }
 
         try {
-            pushCommand.call();
+            Iterable<PushResult> result = pushCommand.call();
+            for (PushResult r : result) {
+                Collection<RemoteRefUpdate> updates = r.getRemoteUpdates();
+                for (RemoteRefUpdate update : updates) {
+                    parseRemoteRefUpdate(update);
+                }
+            }
         } catch (TransportException e) {
             setException(e);
             handleAuthError(this);
@@ -98,6 +114,64 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
             return false;
         }
         return true;
+    }
+
+    private void parseRemoteRefUpdate(RemoteRefUpdate update) {
+        String msg = null;
+        switch (update.getStatus()) {
+            case AWAITING_REPORT:
+                msg = String
+                        .format("[%s] Push process is awaiting update report from remote repository.\n",
+                                update.getRemoteName());
+                break;
+            case NON_EXISTING:
+                msg = String.format("[%s] Remote ref didn't exist.\n",
+                        update.getRemoteName());
+                break;
+            case NOT_ATTEMPTED:
+                msg = String
+                        .format("[%s] Push process hasn't yet attempted to update this ref.\n",
+                                update.getRemoteName());
+                break;
+            case OK:
+                msg = String.format("[%s] Success push to remote ref.\n",
+                        update.getRemoteName());
+                break;
+            case REJECTED_NODELETE:
+                msg = String
+                        .format("[%s] Remote ref update was rejected,"
+                                + " because remote side doesn't support/allow deleting refs.\n",
+                                update.getRemoteName());
+                break;
+            case REJECTED_NONFASTFORWARD:
+                msg = String.format("[%s] Remote ref update was rejected,"
+                        + " as it would cause non fast-forward update.\n",
+                        update.getRemoteName());
+            case REJECTED_OTHER_REASON:
+                String reason = update.getMessage();
+                if (reason == null || reason.isEmpty()) {
+                    msg = String.format(
+                            "[%s] Remote ref update was rejected.\n",
+                            update.getRemoteName());
+                } else {
+                    msg = String
+                            .format("[%s] Remote ref update was rejected, because %s.\n",
+                                    update.getRemoteName(), reason);
+                }
+                break;
+            case REJECTED_REMOTE_CHANGED:
+                msg = String
+                        .format("[%s] Remote ref update was rejected,"
+                                + " because old object id on remote "
+                                + "repository wasn't the same as defined expected old object.\n",
+                                update.getRemoteName());
+                break;
+            case UP_TO_DATE:
+                msg = String.format("[%s] remote ref is up to date\n",
+                        update.getRemoteName());
+                break;
+        }
+        resultMsg.append(msg);
     }
 
     @Override

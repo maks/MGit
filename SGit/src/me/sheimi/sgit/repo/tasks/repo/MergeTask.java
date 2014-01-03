@@ -49,11 +49,30 @@ public class MergeTask extends RepoOpTask {
             ffMode = MergeCommand.FastForwardMode.NO_FF;
         }
         try {
-            mRepo.getGit().merge().include(mCommit).setCommit(mAutoCommit)
-                    .setFastForward(ffMode).call();
+            mRepo.getGit().merge().include(mCommit).setFastForward(ffMode)
+                    .call();
         } catch (GitAPIException e) {
             setException(e);
             return false;
+        }
+        if (mAutoCommit) {
+            String b1 = mRepo.getBranchName();
+            String b2 = mCommit.getName();
+            String msg = null;
+            if (b1 == null) {
+                msg = String.format("Merge branch '%s'",
+                        Repo.getCommitDisplayName(b2));
+            } else {
+                msg = String.format("Merge branch '%s' into %s",
+                        Repo.getCommitDisplayName(b2),
+                        Repo.getCommitDisplayName(b1));
+            }
+            try {
+                CommitChangesTask.commit(mRepo, false, false, msg);
+            } catch (GitAPIException e) {
+                setException(e);
+                return false;
+            }
         }
         mRepo.updateLatestCommitInfo();
         return true;

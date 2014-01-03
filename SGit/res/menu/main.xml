@@ -27,6 +27,10 @@
         android:id="@+id/action_feedback"
         android:showAsAction="never"
         android:title="@string/action_feedback"/>
+    <item
+        android:id="@+id/action_donate"
+        android:showAsAction="never"
+        android:title="@string/action_donate"/>
 
     <!--
     TODO settings will be added in next release

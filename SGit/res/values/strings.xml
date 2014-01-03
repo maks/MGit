@@ -10,6 +10,7 @@
 
     <!-- action -->
     <string name="action_search">Search</string>
+    <string name="action_donate">Donate</string>
     <string name="action_clone">Clone</string>
     <string name="action_import_repo">Import Repository</string>
     <string name="action_git_profile">Git Profile</string>
@@ -28,6 +29,7 @@
     <string name="action_create_external_repo">Create External Repo</string>
 
     <!-- label msg -->
+    <string name="label_ok">OK</string>
     <string name="label_remote_url">Remote URL</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
