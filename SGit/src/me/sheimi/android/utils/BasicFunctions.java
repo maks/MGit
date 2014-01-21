@@ -4,10 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.analytics.MobclickAgent;
-
 import me.sheimi.android.activities.SheimiFragmentActivity;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by sheimi on 8/19/13.
@@ -64,14 +63,12 @@ public class BasicFunctions {
     public static void showException(Throwable t) {
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
         activity.showToastMessage(t.getMessage());
-        MobclickAgent.reportError(activity, t);
         t.printStackTrace();
     }
 
     public static void showException(Throwable t, int res) {
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
         activity.showToastMessage(res);
-        MobclickAgent.reportError(activity, t);
         t.printStackTrace();
     }
 
