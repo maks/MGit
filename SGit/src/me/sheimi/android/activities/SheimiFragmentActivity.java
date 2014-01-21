@@ -3,7 +3,6 @@ package me.sheimi.android.activities;
 import java.io.File;
 
 import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.Constants;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import android.app.Activity;
@@ -23,7 +22,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
-import com.umeng.analytics.MobclickAgent;
 
 public class SheimiFragmentActivity extends Activity {
 
@@ -41,8 +39,6 @@ public class SheimiFragmentActivity extends Activity {
     protected void onResume() {
         super.onResume();
         BasicFunctions.setActiveActivity(this);
-        MobclickAgent.onResume(this);
-        MobclickAgent.setDebugMode(Constants.DEBUG);
     }
 
     @Override
@@ -51,7 +47,6 @@ public class SheimiFragmentActivity extends Activity {
         if (mImageLoader != null && mImageLoader.isInited()) {
             mImageLoader.destroy();
         }
-        MobclickAgent.onPause(this);
     }
 
     @Override

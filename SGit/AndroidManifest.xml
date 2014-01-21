@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.sheimi.sgit"
-    android:versionCode="105"
-    android:versionName="1.2.4.3" >
+    android:versionCode="106"
+    android:versionName="1.2.4.4" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -10,9 +10,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -76,14 +73,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.explorer.PrivateKeyManageActivity" />
         </activity>
-
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5216c81356240b897d00007c" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="google play" >
-        </meta-data>
     </application>
 
 </manifest>

@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.umeng.analytics.MobclickAgent;
-
 public abstract class FileExplorerActivity extends SheimiFragmentActivity {
 
     public static final String RESULT_PATH = "result_path";
@@ -66,19 +64,7 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
+    
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
