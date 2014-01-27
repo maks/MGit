@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="dialog_cherrypick_msg_hint">Commit Hash (העתק מרשימת commit)</string>
+  <string name="dialog_rebase_title">בחר שלוחה</string>
+  <string name="dialog_commit_title">Commit שינויים</string>
+  <string name="dialog_commit_msg_hint">הודעת Commit</string>
+  <string name="dialog_commit_is_amend">לתקן Commit קודם</string>
+  <string name="dialog_commit_auto_stage">הוסף אוטומטית קבצים ששונו</string>
+  <string name="dialog_import_local_path_hint">נתיב מקומי</string>
+  <string name="dialog_import_import_as_external_repo">יבא כמאגר חיצוני</string>
+  <string name="dialog_import_set_local_repo_title">קבע נתיב מקומי</string>
+  <string name="dialog_clone_local_path_hint">נתיב מקומי</string>
+  <string name="dialog_clone_neutral_label">צור מקומי</string>
+  <string name="dialog_init_local_path_hint">נתיב מקומי</string>
+  <string name="dialog_init_repo_title">נתיב מקומי</string>
+  <string name="dialog_init_repo_positive_label">צור</string>
+  <string name="dialog_add_remote_title">הוסף שרת</string>
+  <string name="dialog_add_remote_hint_name">שם שרת</string>
+  <string name="dialog_add_remote_hint_url">URL שרת</string>
+  <string name="dialog_add_remote_positive_label">סיום</string>
+  <string name="dialog_push_repo_title">דחוף ל-…</string>
+  <string name="dialog_push_repo_msg">האם אתה בטוח בדחיפה שינויים מקומיים?</string>
+  <string name="dialog_push_is_push_all">לדחוף הכל?</string>
+  <string name="dialog_push_result">דחוף תוצאה</string>
+  <string name="dialog_create_external_title">צור מאגר חיצוני</string>
+  <string name="dialog_create_external_msg">ליצור מאגר git בתקייה זאת?</string>
+  <string name="dialog_create_external_positive_label">צור</string>
+</resources>
