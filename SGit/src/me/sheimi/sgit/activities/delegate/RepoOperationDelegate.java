@@ -1,8 +1,7 @@
 package me.sheimi.sgit.activities.delegate;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -34,7 +33,7 @@ public class RepoOperationDelegate {
 
     private Repo mRepo;
     private RepoDetailActivity mActivity;
-    private Map<String, RepoAction> mActions = new HashMap<String, RepoAction>();
+    private ArrayList<RepoAction> mActions = new ArrayList<RepoAction>();
 
     public RepoOperationDelegate(Repo repo, RepoDetailActivity activity) {
         mRepo = repo;
@@ -43,22 +42,22 @@ public class RepoOperationDelegate {
     }
 
     private void initActions() {
-        mActions.put("Commit", new CommitAction(mRepo, mActivity));
-        mActions.put("Delete", new DeleteAction(mRepo, mActivity));
-        mActions.put("Diff", new DiffAction(mRepo, mActivity));
-        mActions.put("Merge", new MergeAction(mRepo, mActivity));
-        mActions.put("New File", new NewFileAction(mRepo, mActivity));
-        mActions.put("New Directory", new NewDirAction(mRepo, mActivity));
-        mActions.put("Pull", new PullAction(mRepo, mActivity));
-        mActions.put("Push", new PushAction(mRepo, mActivity));
-        mActions.put("Reset", new ResetAction(mRepo, mActivity));
-        mActions.put("Add all to stage", new AddAllAction(mRepo, mActivity));
-        mActions.put("Cherry Pick", new CherryPickAction(mRepo, mActivity));
-        mActions.put("Rebase", new RebaseAction(mRepo, mActivity));
-        mActions.put("Add Remote", new AddRemoteAction(mRepo, mActivity));
+        mActions.add(new PullAction(mRepo, mActivity));
+        mActions.add(new PushAction(mRepo, mActivity));
+        mActions.add(new AddAllAction(mRepo, mActivity));
+        mActions.add(new CommitAction(mRepo, mActivity));
+        mActions.add(new ResetAction(mRepo, mActivity));
+        mActions.add(new MergeAction(mRepo, mActivity));
+        mActions.add(new RebaseAction(mRepo, mActivity));
+        mActions.add(new CherryPickAction(mRepo, mActivity));
+        mActions.add(new DiffAction(mRepo, mActivity));
+        mActions.add(new NewFileAction(mRepo, mActivity));
+        mActions.add(new NewDirAction(mRepo, mActivity));
+        mActions.add(new AddRemoteAction(mRepo, mActivity));
+        mActions.add(new DeleteAction(mRepo, mActivity));
     }
 
-    public void executeAction(String key) {
+    public void executeAction(int key) {
         RepoAction action = mActions.get(key);
         if (action == null)
             return;

@@ -70,7 +70,7 @@ public class RepoOperationsAdapter extends SheimiArrayAdapter<DrawerItem>
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         RepoDetailActivity context = (RepoDetailActivity) getContext();
-        context.getRepoDelegate().executeAction(getItem(position).name);
+        context.getRepoDelegate().executeAction(position);
     }
 
 }
