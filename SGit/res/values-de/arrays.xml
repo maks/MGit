@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="merge_ff_type">
+        <item>Fast Forward</item>
+        <item>nur Fast Forward</item>
+        <item>kein Fast Forward</item>
+    </string-array>
+    <string-array name="repo_file_operations">
+        <item>Zum Staging-Bereich hinzufügen</item>
+        <item>Auschecken (Änderungen zurücksetzen)</item>
+        <item>Löschen</item>
+    </string-array>
+    <string-array name="repo_operation_names">
+        <item>Pull</item>
+        <item>Push</item>
+        <item>Alles hinzufügen</item>
+        <item>Commit</item>
+        <item>Reset</item>
+        <item>Merge</item>
+        <item>Rebase</item>
+        <item>Cherry Pick</item>
+        <item>Diff</item>
+        <item>Neue Datei</item>
+        <item>Neuer Ordner</item>
+        <item>Remote hinzufügen</item>
+        <item>Löschen</item>
+    </string-array>
+
+</resources>
