@@ -87,7 +87,7 @@ public class PushAction extends RepoAction {
                 }
             });
 
-            builder.setTitle(R.string.dialog_add_remote_title)
+            builder.setTitle(R.string.dialog_push_repo_title)
                     .setView(layout)
                     .setNegativeButton(R.string.label_cancel,
                             new DummyDialogListener());
