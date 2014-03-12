@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">File has been added to stage</string>
+    <string name="success_commit">Changes has been committed</string>
+    <string name="success_reset">Changes has been discarded</string>
+    <string name="success_cherry_pick">Cherry pick Success</string>
+    <string name="success_rebase">Rebase Success</string>
+    <string name="success_checkout_file">Checkout Success</string>
+    <string name="success_remote_added">Remote added</string>
+    <string name="success_save">Save file success</string>
+    <string name="msg_now_you_can_edit">Now you can edit</string>
+    <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
+
+</resources>
