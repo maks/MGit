@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">ファイルはステージに追加されました。</string>
+    <string name="success_commit">変更はコミットされました。</string>
+    <string name="success_reset">変更は却下されました。</string>
+    <string name="success_cherry_pick">チェリーピックに成功しました。</string>
+    <string name="success_rebase">リベースに成功しました。</string>
+    <string name="success_checkout_file">チェックアウトに成功しました。</string>
+    <string name="success_remote_added">リモートに追加されました。</string>
+    <string name="success_save">ファイルの保存に成功</string>
+    <string name="msg_now_you_can_edit">編集可能です。</string>
+    <string name="msg_commit_str_has_copied">コミットハッシュはコピーされました。</string>
+
+</resources>

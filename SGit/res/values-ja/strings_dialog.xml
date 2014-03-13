@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Cherry Pick -->
+    <string name="dialog_cherrypick_title">チェリーピック</string>
+    <string name="dialog_cherrypick_msg_hint">コミットハッシュ (コミットリストからコピー)</string>
+    <string name="dialog_label_cherrypick">チェリーピック</string>
+    <string name="dialog_rebase_title">アップストリームブランチを選択</string>
+
+    <!-- Commit -->
+    <string name="dialog_commit_title">変更をコミット</string>
+    <string name="dialog_commit_msg_hint">コミットメッセージ</string>
+    <string name="dialog_commit_is_amend">変更済</string>
+    <string name="dialog_commit_auto_stage">変更を自動でステージに追加</string>
+    <string name="dialog_commit_positive_label">コミット</string>
+
+    <!-- Import Repo -->
+    <string name="dialog_import_local_path_hint">ローカルパス</string>
+    <string name="dialog_import_import_as_external_repo">内部リポジトリをインポート</string>
+    <string name="dialog_import_set_local_repo_title">ローカルパスを設定</string>
+
+    <!-- Clone Repo -->
+    <string name="dialog_clone_local_path_hint">ローカルパス</string>
+    <string name="dialog_clone_neutral_label">Init Local</string>
+
+    <!-- Init Repo -->
+    <string name="dialog_init_local_path_hint">ローカルパス</string>
+    <string name="dialog_init_repo_title">ローカルパス</string>
+    <string name="dialog_init_repo_positive_label">初期化</string>
+
+    <!-- Add Remote -->
+    <string name="dialog_add_remote_title">リモートに追加</string>
+    <string name="dialog_add_remote_hint_name">リモート名</string>
+    <string name="dialog_add_remote_hint_url">リモートURL</string>
+    <string name="dialog_add_remote_positive_label">完了</string>
+
+    <!-- Push -->
+    <string name="dialog_push_repo_title"> &#8230;にプッシュ</string>
+    <string name="dialog_push_repo_msg">ローカルでの変更をプッシュしてもよろしいですか?</string>
+    <string name="dialog_push_is_push_all">全てプッシュしますか ?</string>
+    <string name="dialog_push_result">プッシュ結果</string>
+
+    <!-- Create External -->
+    <string name="dialog_create_external_title">外部リポジトリを作成</string>
+    <string name="dialog_create_external_msg">このディレクトリにGitリポジトリを作成してよろしいですか?</string>
+    <string name="dialog_create_external_positive_label">作成</string>
+
+</resources>
