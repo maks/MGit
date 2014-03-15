@@ -32,9 +32,7 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
         return new FileFilter() {
             @Override
             public boolean accept(File file) {
-                if (!file.isDirectory())
-                    return false;
-                return true;
+                return file.isDirectory();
             }
         };
     }

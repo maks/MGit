@@ -15,9 +15,11 @@ public class CodeGuesser {
             { "APL", "text/apl", "apl" },
             { "Asterisk dialplan", "text/x-asterisk", "conf" },
             { "C", "text/x-csrc", "c", "m" },
-            { "C++", "text/x-c++src", "cpp", "hpp", "h" },
+            { "C++", "text/x-c++src", "cpp", "cc", "hpp", "hh", "h" },
             { "C#", "text/x-csharp", "cs" },
+            { "C-Shell", "application/x-csh", "csh" },
             { "Java", "text/x-java", },
+            { "CLIPS", "application/x-msclip", "clp" },
             { "Clojure", "text/x-clojure.", "clj", "cljs" },
             { "COBOL", "text/x-cobol", "cbl" },
             { "CoffeeScript", "text/x-coffeescript", "coffee" },
@@ -41,7 +43,7 @@ public class CodeGuesser {
             { "Haskell", "text/x-haskell", "hs" },
             { "ASP.net", "text/x-aspx", "asp", "aspx" },
             { "JSP", "text/x-jsp", "jsp" },
-            { "HTML", "text/html", "html", "htm" },
+            { "HTML", "text/html", "html", "htm", "xhtml" },
             { "Jade", "text/x-jade", "jade" },
             { "JavaScript", "text/javascript", "js", "javascript" },
             { "JinJia2", "jinja2" },
@@ -59,6 +61,7 @@ public class CodeGuesser {
             { "Ini", "text/x-ini", "ini" },
             { "Properties", "text/x-properties", "properties" },
             { "Python", "text/x-python", "py" },
+            //{ "Qt", "text/plain", "pro" },
             { "R", "text/x-rsrc", "r" },
             { "Ruby", "text/x-ruby", "rb" },
             { "Scala", "text/x-scala", "scala" },
@@ -66,7 +69,8 @@ public class CodeGuesser {
             { "Shell", "text/x-sh", "sh", "bash" },
             { "Smalltalk", "text/x-stsrc", "st" },
             { "SQL", "text/x-sql", "sql" },
-            { "Tex", "text/x-stex", "cls", "latex", "tex", "sty", "dtx", "ltx",
+            { "SVG", "image/svg+xml", "svg" },
+            { "TeX", "text/x-stex", "cls", "latex", "tex", "sty", "dtx", "ltx",
                     "bbl" },
             { "VBScript", "text/vbscript", "vbs", "vbe", "wsc" },
             { "XML", "application/xml", "xml" },
@@ -78,12 +82,12 @@ public class CodeGuesser {
     private static Map<String, String> mDisplayTagMap = new HashMap<String, String>();
 
     static {
-        for (int i = 0; i < FILENAME_EXTENSION_ARRAY.length; i++) {
+        for (int i = 0; i < FILENAME_EXTENSION_ARRAY.length; ++i) {
             String[] extensions = FILENAME_EXTENSION_ARRAY[i];
             String display = extensions[0];
             String tag = extensions[1];
             mDisplayTagMap.put(display, tag);
-            for (int j = 2; j < extensions.length; j++) {
+            for (int j = 2; j < extensions.length; ++j) {
                 mFilenameExtensionMap.put(extensions[j], tag);
             }
         }

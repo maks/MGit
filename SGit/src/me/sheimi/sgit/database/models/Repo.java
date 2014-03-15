@@ -364,7 +364,7 @@ public class Repo implements Comparable<Repo>, Serializable {
             List<Ref> refs = getGit().tagList().call();
             String[] tags = new String[refs.size()];
             // convert refs/tags/[branch] -> heads/[branch]
-            for (int i = 0; i < tags.length; i++) {
+            for (int i = 0; i < tags.length; ++i) {
                 tags[i] = refs.get(i).getName();
             }
             return tags;

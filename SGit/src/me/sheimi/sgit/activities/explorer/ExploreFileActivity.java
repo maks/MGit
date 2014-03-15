@@ -22,9 +22,7 @@ public class ExploreFileActivity extends FileExplorerActivity {
             @Override
             public boolean accept(File file) {
                 String filename = file.getName();
-                if (filename.startsWith("."))
-                    return false;
-                return true;
+                return !filename.startsWith(".");
             }
         };
     }
