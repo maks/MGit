@@ -110,6 +110,7 @@ public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
                         // TODO Auto-generated method stub
                         if (commits != null) {
                             // TODO why == null
+                        	clear();
                             addAll(commits);
                         }
                         notifyDataSetChanged();
