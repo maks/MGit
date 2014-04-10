@@ -3,6 +3,7 @@ package me.sheimi.sgit.activities.explorer;
 import java.io.File;
 import java.io.FileFilter;
 
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
@@ -13,14 +14,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class PrivateKeyManageActivity extends FileExplorerActivity {
 
     private static final int REQUSET_ADD_KEY = 0;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        BasicFunctions.setActiveActivity(this);
+        PrivateKeyUtils.migratePrivateKeys();
+
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     protected File getRootFolder() {
-        return FsUtils.getDir("ssh");
+        return PrivateKeyUtils.getPrivateKeyFolder();
     }
 
     @Override

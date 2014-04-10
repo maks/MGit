@@ -25,7 +25,8 @@ public class SGitSessionFactory extends JschConfigSessionFactory {
     @Override
     protected JSch createDefaultJSch(FS fs) throws JSchException {
         JSch jsch = new JSch();
-        File sshDir = FsUtils.getDir("ssh");
+        PrivateKeyUtils.migratePrivateKeys();
+        File sshDir = PrivateKeyUtils.getPrivateKeyFolder();
         for (File file : sshDir.listFiles()) {
             jsch.addIdentity(file.getAbsolutePath());
         }

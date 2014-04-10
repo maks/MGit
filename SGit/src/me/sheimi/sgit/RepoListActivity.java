@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
+import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class RepoListActivity extends SheimiFragmentActivity {
 
@@ -29,6 +30,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PrivateKeyUtils.migratePrivateKeys();
         setContentView(R.layout.activity_main);
         mRepoList = (ListView) findViewById(R.id.repoList);
         mRepoListAdapter = new RepoListAdapter(this);
