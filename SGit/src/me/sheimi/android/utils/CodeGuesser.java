@@ -18,7 +18,7 @@ public class CodeGuesser {
             { "C++", "text/x-c++src", "cpp", "cc", "hpp", "hh", "h" },
             { "C#", "text/x-csharp", "cs" },
             { "C-Shell", "application/x-csh", "csh" },
-            { "Java", "text/x-java", },
+            { "Java", "text/x-java", "java" },
             { "CLIPS", "application/x-msclip", "clp" },
             { "Clojure", "text/x-clojure.", "clj", "cljs" },
             { "COBOL", "text/x-cobol", "cbl" },
