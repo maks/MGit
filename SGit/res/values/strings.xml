@@ -65,17 +65,17 @@
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choose Branch</string>
     <string name="dialog_delete_repo_title">Delete Conformation</string>
-    <string name="dialog_delete_repo_msg">Are you sure to delete this repository?</string>
+    <string name="dialog_delete_repo_msg">Are you sure you want to delete this repository?</string>
     <string name="dialog_rename_key_title">Rename</string>
     <string name="dialog_choose_language_title">Choose Language</string>
     <string name="dialog_comfirm_import_repo_title">Import Repository</string>
-    <string name="dialog_comfirm_import_repo_msg">Are you sure to import this repository?</string>
+    <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_file_delete">Delete File</string>
-    <string name="dialog_file_delete_msg">Are you sure to delete this file or directory?</string>
+    <string name="dialog_file_delete_msg">Are you sure you want to delete this file or directory?</string>
     <string name="dialog_reset_commit_title">Reset Changes</string>
-    <string name="dialog_reset_commit_msg">Are you sure to discard all the changes?</string>
+    <string name="dialog_reset_commit_msg">Are you sure you want to discard all the changes?</string>
     <string name="dialog_create_dir_title">New Directory</string>
     <string name="dialog_create_dir_hint">Directory Name</string>
     <string name="dialog_create_file_title">New File</string>
