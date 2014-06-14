@@ -64,7 +64,7 @@
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choose Branch</string>
-    <string name="dialog_delete_repo_title">Delete Conformation</string>
+    <string name="dialog_delete_repo_title">Delete Confirmation</string>
     <string name="dialog_delete_repo_msg">Are you sure you want to delete this repository?</string>
     <string name="dialog_rename_key_title">Rename</string>
     <string name="dialog_choose_language_title">Choose Language</string>
