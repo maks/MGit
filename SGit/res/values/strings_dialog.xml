@@ -36,13 +36,13 @@
 
     <!-- Push -->
     <string name="dialog_push_repo_title">Push to &#8230;</string>
-    <string name="dialog_push_repo_msg">Are you sure to push local changes?</string>
-    <string name="dialog_push_is_push_all">Push all ?</string>
+    <string name="dialog_push_repo_msg">Are you sure you want to push local changes?</string>
+    <string name="dialog_push_is_push_all">Push all?</string>
     <string name="dialog_push_result">Push Result</string>
 
     <!-- Create External -->
     <string name="dialog_create_external_title">Create external repo</string>
-    <string name="dialog_create_external_msg">Are you create a git repository in this directory ?</string>
+    <string name="dialog_create_external_msg">Do you want to create a git repository in this directory?</string>
     <string name="dialog_create_external_positive_label">Create</string>
 
 </resources>
