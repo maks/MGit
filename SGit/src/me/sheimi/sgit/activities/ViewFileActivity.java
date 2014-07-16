@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -106,14 +107,17 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 finish();
                 return true;
             case R.id.action_edit_in_other_app:
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_EDIT);
                 Uri uri = Uri.fromFile(mFile);
                 String mimeType = FsUtils.getMimeType(uri.toString());
-                intent.setDataAndType(uri, mimeType);
+                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+                Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                viewIntent.setDataAndType(uri, mimeType);
+                editIntent.setDataAndType(uri, mimeType);
                 try {
-                    startActivity(Intent.createChooser(intent,
-                            getString(R.string.label_choose_app_to_edit)));
+                    Intent chooserIntent = Intent.createChooser(viewIntent, 
+                                getString(R.string.label_choose_app_to_edit));
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { editIntent });
+                    startActivity(chooserIntent);
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
                     BasicFunctions.showException(e, R.string.error_no_edit_app);
