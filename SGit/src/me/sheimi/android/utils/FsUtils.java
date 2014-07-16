@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
 
 import org.apache.commons.io.FileUtils;
@@ -40,16 +41,25 @@ public class FsUtils {
         return getDir(dirname, true);
     }
 
-    public static File getDir(String dirname, boolean isCreate) {
-        File mDir = new File(getAppDir(), dirname);
+    public static File getInternalDir(String dirname) { return getDir(dirname, true, false); }
+
+    public static File getDir(String dirname, boolean isCreate) { return getDir(dirname, isCreate, true); }
+
+    public static File getDir(String dirname, boolean isCreate, boolean isExternal) {
+        File mDir = new File(getAppDir(isExternal), dirname);
         if (!mDir.exists() && isCreate) {
             mDir.mkdir();
         }
         return mDir;
     }
 
-    public static File getAppDir() {
-        return BasicFunctions.getActiveActivity().getExternalFilesDir(null);
+    public static File getAppDir(boolean isExternal) {
+        SheimiFragmentActivity activeActivity = BasicFunctions.getActiveActivity();
+        if (isExternal) {
+            return activeActivity.getExternalFilesDir(null);
+        } else {
+            return activeActivity.getFilesDir();
+        }
     }
 
     public static String getMimeType(String url) {
