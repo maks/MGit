@@ -54,7 +54,31 @@ Features
 <a href="https://play.google.com/store/apps/details?id=me.sheimi.sgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
 <a href="https://f-droid.org/repository/browse/?fdfilter=sgit&fdid=me.sheimi.sgit"><img alt="Android app on F-Droid" src="https://fsfe.org/campaigns/android/f-droid.png" width="45" /></a>
 
+Quick start
+-----------
+### To clone a remote repository:
+1. Click on the *+* icon to add a new repository.
+2. Enter remote URL (see URL format below)
+3. Enter local repo name - note that this is not a path since sGit stores all repos in the same directory on the mobile device.
+4. Username - username to use for remote repo.
+5. Password - password for remote repo.
+6. Click the *Clone* button.
+7. If all the credentials are correct, sGit will download the repo (all branches) to your device.
 
+### To create a local repository:
+1. Click on the *+* icon to add a new repository.
+2. Click on "Init Local" to create a local repository.
+3. Enter the name for this repository when prompted.
+4. A local repo will be created.
+
+### URL format
+#### SSH URLs
+* SSH running on standard port (22): `ssh://username@server_name/path/to/repo`
+* SSH running on non-standard port: `ssh://username@server_name:port/path/to/repo`
+* `username` is needed - by default, sGit tries to connect as root!
+
+#### HTTP(S) URLs
+* HTTPS URL: https://server_name/path/to/repo
 
 License
 -------
