@@ -100,6 +100,7 @@ public class CloneTask extends RepoOpTask {
 
         private int mTotalWork;
         private int mWorkDone;
+        private int mLastProgress;
         private String mTitle;
 
         private void publishProgressInner() {
@@ -111,6 +112,10 @@ public class CloneTask extends RepoOpTask {
             }
             if (mTotalWork != 0) {
                 int p = 100 * mWorkDone / mTotalWork;
+                if (p - mLastProgress < 1) {
+                    return;
+                }
+                mLastProgress = p;
                 percent = String.format(Locale.getDefault(), "(%d%%)", p);
             }
             mRepo.updateStatus(status + percent);
@@ -125,6 +130,7 @@ public class CloneTask extends RepoOpTask {
         public void beginTask(String title, int totalWork) {
             mTotalWork = totalWork;
             mWorkDone = 0;
+            mLastProgress = -1;
             mTitle = title;
             publishProgressInner();
         }
