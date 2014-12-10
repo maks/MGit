@@ -2,8 +2,6 @@
 <resources>
 
     <string name="app_name">SGit</string>
-    <string name="admob_id">a15216f9d8d07d3</string>
-    <string name="inapp_billing_key"></string>
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key">me.sheimi.sgit</string>
@@ -18,7 +16,6 @@
     <string name="action_manage_private_key">Private Keys</string>
     <string name="action_add_private_key">Add Key</string>
     <string name="action_feedback">Feedback</string>
-    <string name="action_pay">Pay to Remove Ads</string>
     <string name="action_choose_language">Choose Language</string>
     <string name="action_mode_diff">Diff</string>
     <string name="action_edit">Edit</string>
@@ -47,11 +44,11 @@
     <string name="label_git_name">Name</string>
     <string name="label_git_email">Email</string>
     <string name="label_done">Done</string>
-    <string name="label_choose_app_to_open">Choose App to Open</string>
-    <string name="label_choose_app_to_edit">Choose App to Edit</string>
+    <string name="label_choose_app_to_open">Open With …</string>
+    <string name="label_choose_app_to_edit">Edit With …</string>
 
     <!-- for title -->
-    <string name="title_activity_repo_detail">RepoDetailActivity</string>
+    <string name="title_activity_repo_detail">Repository</string>
     <string name="title_activity_import_repository">Import Repository</string>
     <string name="title_activity_view_file">File: </string>
     <string name="title_activity_commit_diff">Diff:   </string>
@@ -83,10 +80,10 @@
     <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
     <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
     <string name="dialog_profile_git_profile_title">Git Profile</string>
-    <string name="dialog_prompt_for_password_title">Need Auth</string>
-    <string name="dialog_prompt_for_password_title_auth_fail">Auth Fail</string>
+    <string name="dialog_prompt_for_password_title">Needs Authentication</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">Authentication Failed</string>
     <string name="dialog_prompt_for_password_checkbox">Save username and password</string>
-    <string name="dialog_title_you_want_to">You want to &#8230;</string>
+    <string name="dialog_title_you_want_to">You want to …</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -94,10 +91,9 @@
     <string name="progress_right_init">0/0</string>
     <string name="push_msg_init">Pushing … </string>
     <string name="title_activity_private_key_manage">Manage Private Keys</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello, World!</string>
     <string name="title_activity_explore_file">Explore Files</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
-
 </resources>

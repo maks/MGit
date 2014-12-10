@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SGit</string>
-    <string name="admob_id">a15216f9d8d07d3</string>
-    <string name="inapp_billing_key"></string>
     <string name="default_text">Texte par défaut</string>
     <string name="title_clone_repo">Cloner le dépôt</string>
-    <string name="preference_file_key">me.sheimi.sgit</string>
 
     <!-- action -->
     <string name="action_search">Rechercher</string>
@@ -65,17 +61,17 @@
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choisir la branche</string>
     <string name="dialog_delete_repo_title">Delete Conformation</string>
-    <string name="dialog_delete_repo_msg">Êtes vous de vouloir supprimer ce dépôt ?</string>
+    <string name="dialog_delete_repo_msg">Êtes vous de vouloir supprimer ce dépôt?</string>
     <string name="dialog_rename_key_title">Renommer</string>
     <string name="dialog_choose_language_title">Choisir la langue</string>
     <string name="dialog_comfirm_import_repo_title">Importer le dépôt</string>
-    <string name="dialog_comfirm_import_repo_msg">Êtes-vous sûr de vouloir importer ce dépôt ?</string>
+    <string name="dialog_comfirm_import_repo_msg">Êtes-vous sûr de vouloir importer ce dépôt?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_file_delete">Supprimer le fichier</string>
-    <string name="dialog_file_delete_msg">Êtes-vous sûr de vouloir supprimmer ce fichier ou dossier ?</string>
+    <string name="dialog_file_delete_msg">Êtes-vous sûr de vouloir supprimmer ce fichier ou dossier?</string>
     <string name="dialog_reset_commit_title">Reset changes</string>
-    <string name="dialog_reset_commit_msg">Êtes-vous sûr de vouloir supprimer toutes les modifications ?</string>
+    <string name="dialog_reset_commit_msg">Êtes-vous sûr de vouloir supprimer toutes les modifications?</string>
     <string name="dialog_create_dir_title">Nouveau dossiery</string>
     <string name="dialog_create_dir_hint">Nom du dossier</string>
     <string name="dialog_create_file_title">Nouveau fichier</string>
@@ -86,15 +82,15 @@
     <string name="dialog_prompt_for_password_title">Authentification nécessaire</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Échec d\'authentification</string>
     <string name="dialog_prompt_for_password_checkbox">Sauvegarder le nom d\'utilisateur et le mot de passe</string>
-    <string name="dialog_title_you_want_to">Vous voulez &#8230;</string>
+    <string name="dialog_title_you_want_to">Vous voulez …</string>
 
     <!-- Others -->
-    <string name="pull_msg_init">Pulling … </string>
+    <string name="pull_msg_init">Pulling …</string>
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
-    <string name="push_msg_init">Pushing … </string>
+    <string name="push_msg_init">Pushing …</string>
     <string name="title_activity_private_key_manage">Gérer ses clés privées</string>
-    <string name="hello_world">Bonjour tout le monde !</string>
+    <string name="hello_world">Bonjour tout le monde!</string>
     <string name="title_activity_explore_file">Explorez les fichiers</string>
 
     <!-- toast msg -->

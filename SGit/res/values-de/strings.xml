@@ -76,7 +76,7 @@
     <string name="dialog_prompt_for_password_title">Passwort benötigt</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
     <string name="dialog_prompt_for_password_checkbox">Usernamen and Passwort speichern</string>
-    <string name="dialog_title_you_want_to">Diese Datei &#8230;</string>
+    <string name="dialog_title_you_want_to">Diese Datei …</string>
 
     <!-- Others -->
     <string name="title_activity_private_key_manage">Private Schlüssel verwalten</string>

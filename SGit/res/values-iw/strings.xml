@@ -10,7 +10,6 @@
   <string name="action_manage_private_key">מפתחות פרטיים</string>
   <string name="action_add_private_key">הוסף מפתח</string>
   <string name="action_feedback">משוב</string>
-  <string name="action_pay">שלם כדי להסיר מודעות</string>
   <string name="action_choose_language">בחר שפה</string>
   <string name="action_mode_diff">הבדלים</string>
   <string name="action_edit">ערוך</string>
@@ -70,7 +69,7 @@
   <string name="dialog_prompt_for_password_checkbox">שמור שם משתמש וסיסמה</string>
   <string name="dialog_title_you_want_to">אתה רוצה …</string>
   <string name="pull_msg_init">מושך …</string>
-  <string name="push_msg_init">דוחף… </string>
+  <string name="push_msg_init">דוחף …</string>
   <string name="title_activity_private_key_manage">נהל מפתחות פרטיים</string>
   <string name="title_activity_explore_file">חקור קבצים</string>
   <string name="feedback_subject">משוב</string>
