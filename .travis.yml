@@ -1,0 +1,27 @@
+language: android
+android:
+  components:
+    # The BuildTools version
+    - build-tools-19.1.0
+    # The SDK version
+    - android-14
+before_script:
+  - export DATE=$(date)
+  - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
+script:
+  - cd SGit
+  - sed -i -r "s/(android:versionCode=\")[0-9]+(\")/\1$VERSION\2/g" AndroidManifest.xml
+  - sed -i -r "s/(android:versionName=\"[0-9.]+)(\")/\1-dev-$VERSION\2/g" AndroidManifest.xml
+  - cat AndroidManifest.xml
+  - mv src/me/sheimi/sgit src/me/sheimi/sgit_dev
+  - find . -type f -exec sed -i "s/me\.sheimi\.sgit/me\.sheimi\.sgit_dev/g" '{}' \;
+  - ant debug
+  - cd ..
+after_success:
+  - cd SGit
+  - curl -sSL "https://raw.githubusercontent.com/h5bp-bot/scripts/0.6.0/update_site_branch.sh" |
+         bash -s -- --commands "true"
+                    --commit-message "Build generated on $DATE by Travis [ci skip]"
+                    --directory "bin"
+                    --distribution-branch "build"
+                    --source-branch "dev"
