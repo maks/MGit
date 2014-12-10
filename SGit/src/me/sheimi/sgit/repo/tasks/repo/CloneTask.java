@@ -130,7 +130,7 @@ public class CloneTask extends RepoOpTask {
         public void beginTask(String title, int totalWork) {
             mTotalWork = totalWork;
             mWorkDone = 0;
-            mLastProgress = -1;
+            mLastProgress = 0;
             mTitle = title;
             publishProgressInner();
         }

@@ -67,6 +67,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
 
         private int mTotalWork;
         private int mWorkDone;
+        private int mLastProgress;
         private String mTitle;
 
         @Override
@@ -77,6 +78,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
         public void beginTask(String title, int totalWork) {
             mTotalWork = totalWork;
             mWorkDone = 0;
+            mLastProgress = 0;
             if (title != null) {
                 mTitle = title;
             }
@@ -86,14 +88,14 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
         @Override
         public void update(int i) {
             mWorkDone += i;
-            if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0) {
+            if (mTotalWork != ProgressMonitor.UNKNOWN && mTotalWork != 0 && mTotalWork - mLastProgress >= 1) {
                 setProgress();
+                mLastProgress = mWorkDone;
             }
         }
 
         @Override
         public void endTask() {
-
         }
 
         @Override
