@@ -10,11 +10,13 @@ before_script:
   - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
 script:
   - cd SGit
-  - sed -i -r "s/(android:versionCode=\")[0-9]+(\")/\1$VERSION\2/g" AndroidManifest.xml
-  - sed -i -r "s/(android:versionName=\"[0-9.]+)(\")/\1-dev-$VERSION\2/g" AndroidManifest.xml
+  - sed -i -r -e "s/(android:versionCode=\")[0-9]+(\")/\1$VERSION\2/g"
+              -e "s/(android:versionName=\"[0-9.]+)(\")/\1-dev-$VERSION\2/g"
+              AndroidManifest.xml
   - cat AndroidManifest.xml
   - mv src/me/sheimi/sgit src/me/sheimi/sgit_dev
   - find . -type f -exec sed -i "s/me\.sheimi\.sgit/me\.sheimi\.sgit_dev/g" '{}' \;
+  - find res -type f -exec sed -i -r 's/(<string name="app_name">SGit)(<\/string>)/\1 Dev\2/g' '{}' \;
   - ant debug
   - cd ..
 after_success:
