@@ -17,7 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.cache.disc.impl.TotalSizeLimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedLimitedDiscCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -230,7 +230,8 @@ public class SheimiFragmentActivity extends Activity {
         File cacheDir = StorageUtils.getCacheDirectory(this);
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
                 this).defaultDisplayImageOptions(mDiskCacheOption)
-                .discCache(new TotalSizeLimitedDiscCache(cacheDir, SIZE))
+                .discCache(new UnlimitedDiscCache(cacheDir))
+                .diskCacheSize(SIZE)
                 .build();
         mImageLoader = ImageLoader.getInstance();
         mImageLoader.init(configuration);
