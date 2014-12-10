@@ -59,7 +59,7 @@ public class StatusTask extends RepoOpTask {
 
     private void convertStatus(org.eclipse.jgit.api.Status status) {
         if (!status.hasUncommittedChanges() && status.isClean()) {
-            mResult.append("nothing to commit, working directory clean");
+            mResult.append("Nothing to commit, working directory clean");
             return;
         }
         // TODO if working dir not clean

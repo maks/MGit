@@ -15,10 +15,10 @@ public final class RepoContract {
     private static final String PRIMARY_KEY_TYPE = INT_TYPE + "PRIMARY KEY "
             + "AUTOINCREMENT ";
     private static final String COMMA_SEP = ",";
-    public static final String REPO_STATUS_WAITING_CLONE = "cloning ... ";
-    public static final String REPO_STATUS_IMPORTING = "importing ... ";
+    public static final String REPO_STATUS_WAITING_CLONE = "Cloning ... ";
+    public static final String REPO_STATUS_IMPORTING = "Importing ... ";
     public static final String REPO_STATUS_NULL = "";
-    public static final String REPO_STATUS_INITING = "initing ... ";
+    public static final String REPO_STATUS_INITING = "Initialising ... ";
 
     public RepoContract() {
     }
