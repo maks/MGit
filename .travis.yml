@@ -1,10 +1,15 @@
 language: android
 android:
   components:
-    # The BuildTools version
-    - build-tools-19.1.0
-    # The SDK version
-    - android-14
+    - tools
+    - platform-tools
+    - build-tools-21.1.2
+    - android-21
+    - extra-android-support
+    - extra-android-m2repository
+env:
+  global:
+    - TERM=dumb
 before_script:
   - export DATE=$(date)
   - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
@@ -17,7 +22,7 @@ script:
   - mv src/me/sheimi/sgit src/me/sheimi/sgit_dev
   - find . -type f -exec sed -i "s/me\.sheimi\.sgit/me\.sheimi\.sgit_dev/g" '{}' \;
   - find res -type f -exec sed -i -r 's/(<string name="app_name">SGit)(<\/string>)/\1 Dev\2/g' '{}' \;
-  - ant debug
+  - ./gradlew build connectedCheck
   - cd ..
 after_success:
   - cd SGit

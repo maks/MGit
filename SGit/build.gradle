@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.1'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "me.sheimi.sgit"
+        minSdkVersion 14
+        targetSdkVersion 21
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v13:21.0.3'
+    compile 'com.jcraft:jsch:0.1.51'
+    compile 'commons-io:commons-io:2.4'
+    compile 'org.eclipse.jgit:org.eclipse.jgit:3.6.2.201501210735-r'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+}
