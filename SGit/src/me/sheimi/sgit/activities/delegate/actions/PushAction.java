@@ -39,8 +39,8 @@ public class PushAction extends RepoAction {
     }
 
     public static void push(Repo repo, RepoDetailActivity activity,
-            String remote, boolean pushAll) {
-        PushTask pushTask = new PushTask(repo, remote, pushAll,
+            String remote, boolean pushAll, boolean forcePush) {
+        PushTask pushTask = new PushTask(repo, remote, pushAll, forcePush,
                 activity.new ProgressCallback(R.string.push_msg_init));
         pushTask.executeTask();
     }
@@ -50,6 +50,7 @@ public class PushAction extends RepoAction {
         private Repo mRepo;
         private RepoDetailActivity mActivity;
         private CheckBox mPushAll;
+        private CheckBox mForcePush;
         private ListView mRemoteList;
         private ArrayAdapter<String> mAdapter;
 
@@ -67,6 +68,7 @@ public class PushAction extends RepoAction {
 
             View layout = inflater.inflate(R.layout.dialog_push, null);
             mPushAll = (CheckBox) layout.findViewById(R.id.pushAll);
+            mForcePush = (CheckBox) layout.findViewById(R.id.forcePush);
             mRemoteList = (ListView) layout.findViewById(R.id.remoteList);
 
             mAdapter = new ArrayAdapter<String>(mActivity,
@@ -82,7 +84,8 @@ public class PushAction extends RepoAction {
                         int position, long id) {
                     String remote = mAdapter.getItem(position);
                     boolean isPushAll = mPushAll.isChecked();
-                    push(mRepo, mActivity, remote, isPushAll);
+                    boolean isForcePush = mForcePush.isChecked();
+                    push(mRepo, mActivity, remote, isPushAll, isForcePush);
                     dismiss();
                 }
             });

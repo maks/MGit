@@ -25,15 +25,17 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
 
     private AsyncTaskCallback mCallback;
     private boolean mPushAll;
+    private boolean mForcePush;
     private String mRemote;
     private StringBuffer resultMsg = new StringBuffer();
 
-    public PushTask(Repo repo, String remote, boolean pushAll,
+    public PushTask(Repo repo, String remote, boolean pushAll, boolean forcePush,
             AsyncTaskCallback callback) {
         super(repo);
         mRemote = remote;
         mCallback = callback;
         mPushAll = pushAll;
+        mForcePush = forcePush;
     }
 
     @Override
@@ -88,6 +90,10 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         } else {
             RefSpec spec = new RefSpec(mRepo.getBranchName());
             pushCommand.setRefSpecs(spec);
+        }
+
+        if (mForcePush) {
+          pushCommand.setForce(true);
         }
 
         String username = mRepo.getUsername();
@@ -194,7 +200,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
         }
 
         mRepo.removeTask(this);
-        PushTask pushTask = new PushTask(mRepo, mRemote, mPushAll, mCallback);
+        PushTask pushTask = new PushTask(mRepo, mRemote, mPushAll, mForcePush, mCallback);
         pushTask.executeTask();
     }
 
