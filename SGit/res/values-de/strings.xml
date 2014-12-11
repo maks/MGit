@@ -45,6 +45,7 @@
     <string name="label_choose_app_to_edit">App zum bearbeiten auswählen</string>
 
     <!-- for title -->
+    <string name="title_activity_repo_detail">Repository</string>
     <string name="title_activity_import_repository">Repository importieren</string>
     <string name="title_activity_view_file">Datei: </string>
     <string name="title_activity_commit_diff">Diff:   </string>

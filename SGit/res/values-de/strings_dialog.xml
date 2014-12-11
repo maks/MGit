@@ -38,6 +38,7 @@
     <string name="dialog_push_repo_title">Pushen nach &#8230;</string>
     <string name="dialog_push_repo_msg">Die lokalen Änderungen wirklich pushen?</string>
     <string name="dialog_push_is_push_all">Alle pushen?</string>
+    <string name="dialog_push_is_force_push">Push erzwingen?</string>
     <string name="dialog_push_result">Push Ergebnis</string>
 
     <!-- Create External -->
