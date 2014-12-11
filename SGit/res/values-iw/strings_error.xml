@@ -12,7 +12,7 @@
   <string name="error_can_not_open_file">אופס, לא יכול לפתוח על התקן זה.</string>
   <string name="error_unknown">משהו לא בסדר!!!</string>
   <string name="error_task_running">משימה עבור המאגר כבר קיימת</string>
-  <string name="error_something_wrong">משהו רע קורה</string>
+  <string name="error_something_wrong">משהו רע קרה</string>
   <string name="error_repository_not_found">מאגר לא נמצא (יתכן ומשהו לא בסדר עם מאגר).</string>
   <string name="alert_field_not_empty">שדה לא צריך להיות ריק</string>
   <string name="alert_remoteurl_required">URL שרת נדרש</string>
