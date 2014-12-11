@@ -14,7 +14,7 @@
             android:layout_margin="@dimen/general_vertial_margin"
             android:singleLine="true"
             android:imeOptions="actionNext"
-            android:inputType="textUri"
+            android:inputType="textPersonName"
             android:hint="@string/label_git_name"/>
 
     <EditText
@@ -24,7 +24,8 @@
             android:textSize="@dimen/general_dialog_text_size"
             android:layout_margin="@dimen/general_vertial_margin"
             android:singleLine="true"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress"
             android:hint="@string/label_git_email"/>
 
 </LinearLayout>
