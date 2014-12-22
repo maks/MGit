@@ -1,5 +1,7 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import java.lang.Exception;
+
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
@@ -63,7 +65,7 @@ public class CommitChangesTask extends RepoOpTask {
     }
 
     public static void commit(Repo repo, boolean stageAll, boolean isAmend,
-            String msg) throws NoHeadException, NoMessageException,
+            String msg) throws Exception, NoHeadException, NoMessageException,
             UnmergedPathsException, ConcurrentRefUpdateException,
             WrongRepositoryStateException, GitAPIException, StopTaskException {
         SharedPreferences sharedPreferences = BasicFunctions
@@ -75,6 +77,9 @@ public class CommitChangesTask extends RepoOpTask {
                 ProfileDialog.GIT_USER_NAME, "");
         String committerEmail = sharedPreferences.getString(
                 ProfileDialog.GIT_USER_EMAIL, "");
+        if (committerName == "" || committerEmail == "") {
+            throw new Exception("Please set your name and email");
+        }
         CommitCommand cc = repo.getGit().commit()
                 .setCommitter(committerName, committerEmail).setAll(stageAll)
                 .setAmend(isAmend).setMessage(msg);
