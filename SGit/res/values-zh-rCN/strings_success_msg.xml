@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">文件已被添加到暂存区</string>
+    <string name="success_commit">更改已提交</string>
+    <string name="success_reset">放弃所有修改</string>
+    <string name="success_cherry_pick">择取成功</string>
+    <string name="success_rebase">改变基点成功</string>
+    <string name="success_checkout_file">检出成功</string>
+    <string name="success_remote_added">远程仓库已添加</string>
+    <string name="success_save">文件成功保存</string>
+    <string name="msg_now_you_can_edit">文件可以被编辑</string>
+    <string name="msg_commit_str_has_copied">添加的Hash值已被复制</string>
+
+</resources>

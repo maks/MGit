@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Cherry Pick -->
+    <string name="dialog_cherrypick_title">择取</string>
+    <string name="dialog_cherrypick_msg_hint">提交Hash值 (从提交列表里复制)</string>
+    <string name="dialog_label_cherrypick">择取</string>
+    <string name="dialog_rebase_title">选择上游分支</string>
+
+    <!-- Commit -->
+    <string name="dialog_commit_title">提交更改</string>
+    <string name="dialog_commit_msg_hint">提交信息</string>
+    <string name="dialog_commit_is_amend">修改之前的提交</string>
+    <string name="dialog_commit_auto_stage">自动添加已修改的文件到暂存区</string>
+    <string name="dialog_commit_positive_label">提交</string>
+
+    <!-- Import Repo -->
+    <string name="dialog_import_local_path_hint">本地路径</string>
+    <string name="dialog_import_import_as_external_repo">导入仓库</string>
+    <string name="dialog_import_set_local_repo_title">设置本地路径</string>
+
+    <!-- Clone Repo -->
+    <string name="dialog_clone_local_path_hint">本地路径</string>
+    <string name="dialog_clone_neutral_label">初始化本地路径</string>
+
+    <!-- Init Repo -->
+    <string name="dialog_init_local_path_hint">本地</string>
+    <string name="dialog_init_repo_title">本地路径</string>
+    <string name="dialog_init_repo_positive_label">初始化</string>
+
+    <!-- Add Remote -->
+    <string name="dialog_add_remote_title">添加远程仓库</string>
+    <string name="dialog_add_remote_hint_name">远程名称</string>
+    <string name="dialog_add_remote_hint_url">远程地址</string>
+    <string name="dialog_add_remote_positive_label">完成</string>
+
+    <!-- Push -->
+    <string name="dialog_push_repo_title">推送到 &#8230;</string>
+    <string name="dialog_push_repo_msg">你确定推送本地的修改？</string>
+    <string name="dialog_push_is_push_all">全部推送？</string>
+    <string name="dialog_push_is_force_push">强制推送？</string>
+    <string name="dialog_push_result">推送结果</string>
+
+    <!-- Create External -->
+    <string name="dialog_create_external_title">创建仓库</string>
+    <string name="dialog_create_external_msg">你想在该目录中创建一个Git仓库？</string>
+    <string name="dialog_create_external_positive_label">创建</string>
+
+</resources>
