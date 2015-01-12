@@ -42,7 +42,7 @@
     <string name="label_create">创建</string>
     <string name="label_checkout">检出</string>
     <string name="label_git_name">名称</string>
-    <string name="label_git_email">Email</string>
+    <string name="label_git_email">邮箱</string>
     <string name="label_done">完成</string>
     <string name="label_choose_app_to_open">打开...</string>
     <string name="label_choose_app_to_edit">编辑...</string>
