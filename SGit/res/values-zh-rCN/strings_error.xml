@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">远程仓库无效</string>
+    <string name="error_transport">传输错误</string>
+    <string name="error_clone_failed">克隆失败</string>
+    <string name="error_pull_failed">推送失败</string>
+    <string name="error_diff_failed">比较失败</string>
+    <string name="error_out_of_memory">内存不足</string>
+    <string name="error_no_edit_app">没有其他应用能编辑源文件</string>
+    <string name="error_no_open_app">没有其他应用能打开源文件</string>
+    <string name="error_can_not_edit_file">不能在这个设备编辑这个文件</string>
+    <string name="error_can_not_open_file">不能在这个设备打开这个文件</string>
+    <string name="error_unknown">出现未知错误</string>
+    <string name="error_task_running">这个仓库的一个任务已经在运行</string>
+    <string name="error_something_wrong">发生了一些错误</string>
+    <string name="error_repository_not_found">没有发现仓库 (可能是仓库已损坏)</string>
+
+    <!-- alerts -->
+    <string name="alert_field_not_empty">字段不能为空</string>
+    <string name="alert_remoteurl_required">远程仓库地址要求</string>
+    <string name="alert_localpath_required">仓库名要求</string>
+    <string name="alert_localpath_format">仓库名不能包含斜线</string>
+    <string name="alert_localpath_repo_exists">仓库已存在</string>
+    <string name="alert_new_filename_required">文件名要求</string>
+    <string name="alert_file_exists">文件已存在</string>
+    <string name="alert_filename_format">文件名格式错误</string>
+    <string name="alert_choose_two_items">你只能选择两个条目</string>
+    <string name="alert_no_items_selected">没有选中条目</string>
+    <string name="alert_no_older_commits">没有比较旧的提交来对比</string>
+    <string name="alert_please_wait_previous_op">之前的操作仍然在运行中</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">请选择一个提交来复制</string>
+    <string name="alert_you_should_input_something">请先输入</string>
+    <string name="alert_please_add_a_remote">请先添加一个远程仓库</string>
+    <string name="alert_is_already_a_git_repo">这个目录下已经有一个Git仓库</string>
+    <string name="alert_save_failed">保存失败</string>
+
+</resources>
