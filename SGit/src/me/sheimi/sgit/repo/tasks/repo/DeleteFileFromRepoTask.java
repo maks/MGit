@@ -1,5 +1,8 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import java.io.File;
+
+import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
@@ -8,18 +11,20 @@ public class DeleteFileFromRepoTask extends RepoOpTask {
 
     public String mFilePattern;
     public AsyncTaskPostCallback mCallback;
+    private DeleteOperationType mOperationType;
 
     public DeleteFileFromRepoTask(Repo repo, String filepattern,
-            AsyncTaskPostCallback callback) {
+            DeleteOperationType deleteOperationType,AsyncTaskPostCallback callback) {
         super(repo);
         mFilePattern = filepattern;
         mCallback = callback;
-        setSuccessMsg(R.string.success_add_to_stage);
+        mOperationType = deleteOperationType;
+        setSuccessMsg(R.string.success_remove_file);
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return addToStage();
+        return removeFile();
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -29,9 +34,20 @@ public class DeleteFileFromRepoTask extends RepoOpTask {
         }
     }
 
-    public boolean addToStage() {
+    public boolean removeFile() {
         try {
-            mRepo.getGit().rm().addFilepattern(mFilePattern).call();
+            switch (mOperationType) {
+                case DELETE:
+                    File fileToDelete = FsUtils.joinPath(mRepo.getDir(), mFilePattern);
+                    FsUtils.deleteFile(fileToDelete);
+                    break;
+                case REMOVE_CACHED:
+                    mRepo.getGit().rm().setCached(true).addFilepattern(mFilePattern).call();
+                    break;
+                case REMOVE_FORCE:
+                    mRepo.getGit().rm().addFilepattern(mFilePattern).call();
+                    break;
+            }
         } catch (StopTaskException e) {
             return false;
         } catch (Throwable e) {
@@ -39,5 +55,12 @@ public class DeleteFileFromRepoTask extends RepoOpTask {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Created by lee on 2015-01-30.
+     */
+    public static enum DeleteOperationType {
+        DELETE,REMOVE_CACHED,REMOVE_FORCE
     }
 }

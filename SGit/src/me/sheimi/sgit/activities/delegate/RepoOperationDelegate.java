@@ -30,6 +30,8 @@ import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
 import org.eclipse.jgit.lib.Ref;
 
+import static me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask.*;
+
 public class RepoOperationDelegate {
 
     private Repo mRepo;
@@ -101,10 +103,10 @@ public class RepoOperationDelegate {
         task.executeTask();
     }
 
-    public void deleteFileFromRepo(String filepath) {
+    public void deleteFileFromRepo(String filepath,DeleteOperationType deleteOperationType) {
         String relative = getRelativePath(filepath);
         DeleteFileFromRepoTask task = new DeleteFileFromRepoTask(mRepo,
-                relative, new AsyncTaskPostCallback() {
+                relative,deleteOperationType, new AsyncTaskPostCallback() {
                     @Override
                     public void onPostExecute(Boolean isSuccess) {
                         // TODO Auto-generated method stub
@@ -119,5 +121,6 @@ public class RepoOperationDelegate {
         String relative = FsUtils.getRelativePath(new File(filepath), base);
         return relative;
     }
+
 
 }

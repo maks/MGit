@@ -2,6 +2,7 @@
 <resources>
 
     <string name="success_add_to_stage">File has been added to stage</string>
+    <string name="success_remove_file">File has been removed</string>
     <string name="success_commit">Changes have been committed</string>
     <string name="success_reset">Changes have been discarded</string>
     <string name="success_cherry_pick">Cherrypicked successfully</string>
