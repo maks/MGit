@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
+import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
@@ -67,11 +68,14 @@ public class CloneTask extends RepoOpTask {
         }
         try {
             cloneCommand.call();
+            Profile.setLastCloneSuccess();
         } catch (InvalidRemoteException e) {
             setException(e, R.string.error_invalid_remote);
+            Profile.setLastCloneFailed(mRepo);
             return false;
         } catch (TransportException e) {
             setException(e);
+            Profile.setLastCloneFailed(mRepo);
             handleAuthError(mOnPasswordEnter);
             return false;
         } catch (GitAPIException e) {

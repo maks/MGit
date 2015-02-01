@@ -3,9 +3,9 @@ package me.sheimi.sgit.repo.tasks.repo;
 import java.lang.Exception;
 
 import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ProfileDialog;
 import me.sheimi.sgit.exception.StopTaskException;
 
 import org.eclipse.jgit.api.CommitCommand;
@@ -73,10 +73,8 @@ public class CommitChangesTask extends RepoOpTask {
                         BasicFunctions.getActiveActivity().getString(
                                 R.string.preference_file_key),
                         Context.MODE_PRIVATE);
-        String committerName = sharedPreferences.getString(
-                ProfileDialog.GIT_USER_NAME, "");
-        String committerEmail = sharedPreferences.getString(
-                ProfileDialog.GIT_USER_EMAIL, "");
+        String committerName = Profile.getUsername();
+        String committerEmail = Profile.getEmail();
         if (committerName == "" || committerEmail == "") {
             throw new Exception("Please set your name and email");
         }

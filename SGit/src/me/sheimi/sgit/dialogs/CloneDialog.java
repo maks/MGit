@@ -4,6 +4,7 @@ import java.io.File;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.Constants;
+import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
@@ -53,6 +54,9 @@ public class CloneDialog extends SheimiDialogFragment implements
         mPassword = (EditText) layout.findViewById(R.id.password);
         mIsSavePassword = (CheckBox) layout.findViewById(R.id.savePassword);
 
+        if ( Profile.hasLastCloneFailed() )
+            fillInformationFromPreviousCloneFail( Profile.getLastCloneTryRepo() );
+
         if (Constants.DEBUG) {
             mRemoteURL.setText(Repo.TEST_REPO);
             mLocalPath.setText(Repo.TEST_LOCAL);
@@ -74,6 +78,17 @@ public class CloneDialog extends SheimiDialogFragment implements
                 new DummyDialogListener());
 
         return builder.create();
+    }
+
+    private void fillInformationFromPreviousCloneFail(Repo lastCloneTryRepo) {
+        mRemoteURL.setText( lastCloneTryRepo.getRemoteURL() );
+        mLocalPath.setText( lastCloneTryRepo.getLocalPath() );
+        mUsername.setText( lastCloneTryRepo.getUsername() );
+        mPassword.setText( lastCloneTryRepo.getPassword() );
+        if ( lastCloneTryRepo.getUsername().equals("") && lastCloneTryRepo.getPassword().equals(""))
+            mIsSavePassword.setChecked(false);
+        else
+            mIsSavePassword.setChecked(true);
     }
 
     @Override
