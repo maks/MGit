@@ -3,16 +3,16 @@
 
     <!-- Cherry Pick -->
     <string name="dialog_cherrypick_title">Cherry Pick</string>
-    <string name="dialog_cherrypick_msg_hint">Commit Hash (aus der Commit-Liste kopieren)</string>
+    <string name="dialog_cherrypick_msg_hint">Änderungs-Hash (aus der Beitrags-Liste kopieren)</string>
     <string name="dialog_label_cherrypick">Cherry Pick</string>
     <string name="dialog_rebase_title">Upstream Branch auswählen</string>
 
     <!-- Commit -->
-    <string name="dialog_commit_title">Änderungen commiten</string>
-    <string name="dialog_commit_msg_hint">Commit-Beschreibung</string>
-    <string name="dialog_commit_is_amend">vorherigen Commit abändern</string>
+    <string name="dialog_commit_title">Änderungen beitragen</string>
+    <string name="dialog_commit_msg_hint">Änderungs-Beschreibung</string>
+    <string name="dialog_commit_is_amend">vorherige Änderungen abändern</string>
     <string name="dialog_commit_auto_stage">Geänderte Dateien automatisch stagen</string>
-    <string name="dialog_commit_positive_label">Commit</string>
+    <string name="dialog_commit_positive_label">Beitragen</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Lokaler Pfad</string>
@@ -29,17 +29,17 @@
     <string name="dialog_init_repo_positive_label">Erzeugen</string>
 
     <!-- Add Remote -->
-    <string name="dialog_add_remote_title">Remote hinzufügen</string>
-    <string name="dialog_add_remote_hint_name">Remote-Name</string>
-    <string name="dialog_add_remote_hint_url">Remote-Adresse</string>
+    <string name="dialog_add_remote_title">Entfernte Quelle hinzufügen</string>
+    <string name="dialog_add_remote_hint_name">Quellenname</string>
+    <string name="dialog_add_remote_hint_url">Quellenadresse</string>
     <string name="dialog_add_remote_positive_label">Fertig</string>
 
     <!-- Push -->
-    <string name="dialog_push_repo_title">Pushen nach &#8230;</string>
-    <string name="dialog_push_repo_msg">Die lokalen Änderungen wirklich pushen?</string>
-    <string name="dialog_push_is_push_all">Alle pushen?</string>
-    <string name="dialog_push_is_force_push">Push erzwingen?</string>
-    <string name="dialog_push_result">Push Ergebnis</string>
+    <string name="dialog_push_repo_title">Veröffentlichen nach &#8230;</string>
+    <string name="dialog_push_repo_msg">Die lokalen Änderungen wirklich veröffentlichen?</string>
+    <string name="dialog_push_is_push_all">Alles veröffentlichen?</string>
+    <string name="dialog_push_is_force_push">Veröffentlichung erzwingen?</string>
+    <string name="dialog_push_result">Ergebnis der Veröffentlichung</string>
 
     <!-- Create External -->
     <string name="dialog_create_external_title">Externes Repository erzeugen</string>
