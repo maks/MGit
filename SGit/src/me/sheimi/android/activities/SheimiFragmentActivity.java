@@ -105,6 +105,18 @@ public class SheimiFragmentActivity extends Activity {
                 .setPositiveButton(R.string.label_ok, new DummyDialogListener()).show();
     }
 
+    public void showOptionsDialog(int title,final int option_names,
+                                  final onOptionDialogClicked[] option_listeners) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setItems(option_names,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                option_listeners[which].onClicked();
+            }
+        }).create().show();
+    }
+
     public void showEditTextDialog(int title, int hint, int positiveBtn,
             final OnEditTextDialogClicked positiveListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -180,6 +192,10 @@ public class SheimiFragmentActivity extends Activity {
                                 onPasswordEntered.onCanceled();
                             }
                         }).show();
+    }
+
+    public static interface onOptionDialogClicked {
+        void onClicked();
     }
 
     public static interface OnEditTextDialogClicked {

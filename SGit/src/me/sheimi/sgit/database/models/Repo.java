@@ -267,6 +267,18 @@ public class Repo implements Comparable<Repo>, Serializable {
         isDeleted = true;
     }
 
+    public boolean renameRepo(String repoName) {
+        if (FsUtils.renameDirectory(getDir(), repoName)) {
+            ContentValues values = new ContentValues();
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, repoName);
+            RepoDbManager.updateRepo(getID(), values);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public void updateLatestCommitInfo() {
         RevCommit commit = getLatestCommit();
         ContentValues values = new ContentValues();

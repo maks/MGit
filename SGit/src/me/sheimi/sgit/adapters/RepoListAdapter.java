@@ -14,6 +14,7 @@ import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -170,19 +171,61 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
             return false;
         Context context = getContext();
         if (context instanceof SheimiFragmentActivity) {
-            ((SheimiFragmentActivity) context).showMessageDialog(
-                    R.string.dialog_delete_repo_title,
-                    R.string.dialog_delete_repo_msg, R.string.label_delete,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface,
-                                int i) {
-                            repo.deleteRepo();
-                            repo.cancelTask();
-                        }
-                    });
+            showRepoOptionsDialog((SheimiFragmentActivity) context, repo);
         }
         return true;
+    }
+
+    private void showRepoOptionsDialog(final SheimiFragmentActivity context, final Repo repo) {
+        context.showOptionsDialog(
+            R.string.dialog_choose_option,
+            R.array.dialog_choose_repo_action_items,
+            new SheimiFragmentActivity.onOptionDialogClicked[] {
+                new SheimiFragmentActivity.onOptionDialogClicked() {
+                    @Override
+                    public void onClicked() {
+                        showRenameRepoDialog(context, repo);
+                    }
+                },
+                new SheimiFragmentActivity.onOptionDialogClicked() {
+                    @Override
+                    public void onClicked() {
+                        showRemoveRepoDialog(context, repo);
+                    }
+                }
+            }
+        );
+    }
+
+    private void showRemoveRepoDialog(SheimiFragmentActivity context, final Repo repo) {
+        context.showMessageDialog(
+            R.string.dialog_delete_repo_title,
+            R.string.dialog_delete_repo_msg,
+            R.string.label_delete,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    repo.deleteRepo();
+                    repo.cancelTask();
+                }
+            }
+        );
+    }
+
+    private void showRenameRepoDialog(final SheimiFragmentActivity context, final Repo repo) {
+        context.showEditTextDialog(
+            R.string.dialog_rename_repo_title,
+            R.string.dialog_rename_repo_hint,
+            R.string.label_rename,
+            new SheimiFragmentActivity.OnEditTextDialogClicked() {
+                @Override
+                public void onClicked(String newRepoName) {
+                    if ( !repo.renameRepo(newRepoName) ){
+                        context.showToastMessage(R.string.dialog_rename_repo_err_msg);
+                    }
+                }
+            }
+        );
     }
 
     private class RepoListItemHolder {

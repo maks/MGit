@@ -142,6 +142,13 @@ public class FsUtils {
         }
     }
 
+    public static boolean renameDirectory(File dir, String name) {
+        String newDirPath = dir.getParent() + File.separator + name;
+        File newDirFile = new File(newDirPath);
+
+        return dir.renameTo(newDirFile);
+    }
+
     public static String getRelativePath(File file, File base) {
         return base.toURI().relativize(file.toURI()).getPath();
     }

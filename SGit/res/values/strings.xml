@@ -61,6 +61,10 @@
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choose Branch</string>
+    <string name="dialog_choose_option">Choose option...</string>
+    <string name="dialog_rename_repo_title">Rename Repository</string>
+    <string name="dialog_rename_repo_hint">Repository Name</string>
+    <string name="dialog_rename_repo_err_msg">Renaming repository failed</string>
     <string name="dialog_delete_repo_title">Delete Confirmation</string>
     <string name="dialog_delete_repo_msg">Are you sure you want to delete this repository?</string>
     <string name="dialog_rename_key_title">Rename</string>
