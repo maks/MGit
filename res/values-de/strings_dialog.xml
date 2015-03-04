@@ -3,20 +3,20 @@
 
     <!-- Cherry Pick -->
     <string name="dialog_cherrypick_title">Cherry Pick</string>
-    <string name="dialog_cherrypick_msg_hint">Änderungs-Hash (aus der Beitrags-Liste kopieren)</string>
+    <string name="dialog_cherrypick_msg_hint">Commit-Hash (aus der Beitrags-Liste kopieren)</string>
     <string name="dialog_label_cherrypick">Cherry Pick</string>
-    <string name="dialog_rebase_title">Upstream Branch auswählen</string>
+    <string name="dialog_rebase_title">Upstream Zweig auswählen</string>
 
     <!-- Commit -->
-    <string name="dialog_commit_title">Änderungen beitragen</string>
-    <string name="dialog_commit_msg_hint">Änderungs-Beschreibung</string>
-    <string name="dialog_commit_is_amend">vorherige Änderungen abändern</string>
+    <string name="dialog_commit_title">Änderungen freigeben</string>
+    <string name="dialog_commit_msg_hint">Commit-Beschreibung</string>
+    <string name="dialog_commit_is_amend">vorherigen Commit abändern</string>
     <string name="dialog_commit_auto_stage">Geänderte Dateien automatisch stagen</string>
-    <string name="dialog_commit_positive_label">Beitragen</string>
+    <string name="dialog_commit_positive_label">Freigeben</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Lokaler Pfad</string>
-    <string name="dialog_import_import_as_external_repo">Als externes Repository importieren</string>
+    <string name="dialog_import_import_as_external_repo">Als Remote Repository importieren</string>
     <string name="dialog_import_set_local_repo_title">Lokaler Pfad angeben</string>
 
     <!-- Clone Repo -->

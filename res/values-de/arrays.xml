@@ -12,18 +12,18 @@
         <item>Löschen</item>
     </string-array>
     <string-array name="repo_operation_names">
-        <item>Aktualisieren</item>
-        <item>Veröffentlichen</item>
+        <item>Pull</item>
+        <item>Push</item>
         <item>Alles zum Staging-Bereich hinzufügen</item>
-        <item>Beitragen</item>
+        <item>Commit erzeugen</item>
         <item>Zurücksetzen</item>
-        <item>Zusammenführen</item>
+        <item>Merge</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>
-        <item>Unterschiede</item>
+        <item>Unterschiede anzeigen</item>
         <item>Neue Datei</item>
         <item>Neuer Ordner</item>
-        <item>Entfernte Quelle hinzufügen</item>
+        <item>Remote Repository hinzufügen</item>
         <item>Löschen</item>
     </string-array>
 

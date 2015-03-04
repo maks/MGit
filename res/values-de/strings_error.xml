@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="error_invalid_remote">Ungültige entfernte Adresse</string>
+    <string name="error_invalid_remote">Ungültige Remote Repository</string>
     <string name="error_transport">Übertragungsfehler</string>
     <string name="error_clone_failed">Klonen fehlgeschlagen</string>
-    <string name="error_pull_failed">Aktualisierung fehlgeschlagen</string>
+    <string name="error_pull_failed">Herunterladen der Änderungen fehlgeschlagen</string>
     <string name="error_diff_failed">Anzeigen der Unterschiede fehlgeschlagen</string>
     <string name="error_out_of_memory">Fehler: Nicht genug Speicher.</string>
     <string name="error_no_edit_app">Fehler: Es sind keine Apps installiert, die diese Datei bearbeiten können.</string>
@@ -13,7 +13,7 @@
     <string name="error_can_not_open_file">Fehler: Die Datei kann auf diesem Gerät nicht geöffnet werden.</string>
     <string name="error_unknown">Unbekannter Fehler!</string>
     <string name="error_task_running">Es läuft grade ein Prozess für dieses Repository</string>
-    <string name="error_something_wrong">Etwas merkwürdiges ist passiert</string>
+    <string name="error_something_wrong">Etwas Merkwürdiges ist passiert</string>
     <string name="error_repository_not_found">Repository nicht gefunden (möglicherweise besteht ein Problem mit diesem Repository).</string>
 
     <!-- alerts -->
@@ -31,7 +31,7 @@
     <string name="alert_please_wait_previous_op">Vorherige Operation ist noch nicht abgeschlossen</string>
     <string name="alert_you_must_choose_one_commit_to_copy">Bitte genau einen Beitrag zum Kopieren auswählen</string>
     <string name="alert_you_should_input_something">Es wurde nichts eingegeben</string>
-    <string name="alert_please_add_a_remote">Bitte zuerst eine entfernte Quelle hinzufügen</string>
+    <string name="alert_please_add_a_remote">Bitte zuerst eine Remote Repository hinzufügen</string>
     <string name="alert_is_already_a_git_repo">Dieses Verzeichnis ist bereits ein Git-Repository.</string>
     <string name="alert_save_failed">Speichern fehlgeschlagen</string>
 

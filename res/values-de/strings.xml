@@ -14,13 +14,13 @@
     <string name="action_add_private_key">Schlüssel hinzufügen</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_choose_language">Sprache wählen</string>
-    <string name="action_mode_diff">Unterschiede</string>
+    <string name="action_mode_diff">Unterschiede anzeigen</string>
     <string name="action_edit">Bearbeiten</string>
     <string name="action_edit_in_other_app">In anderen Apps bearbeiten</string>
     <string name="action_reset">Zurücksetzen</string>
     <string name="action_toggle_drawer">Seitenleiste ein-/ausblenden</string>
     <string name="action_copy_commit_str">Änderungs-Hash kopieren</string>
-    <string name="action_create_external_repo">Externe Repository erstellen</string>
+    <string name="action_create_external_repo">Remote Repository erstellen</string>
 
     <!-- label msg -->
     <string name="label_ok">OK</string>
@@ -34,8 +34,8 @@
     <string name="label_rename">Umbenennen</string>
     <string name="label_send_feedback">Feedback senden</string>
     <string name="label_import">Importieren</string>
-    <string name="label_push">Veröffentlichen</string>
-    <string name="label_push_all">Alles veröffentlichen</string>
+    <string name="label_push">Änderungen hochladen</string>
+    <string name="label_push_all">Alle Änderungen hochladen</string>
     <string name="label_create">Erzeugen</string>
     <string name="label_checkout">Auschecken</string>
     <string name="label_git_name">Name</string>
@@ -50,7 +50,7 @@
     <string name="title_activity_view_file">Datei: </string>
     <string name="title_activity_commit_diff">Diff: </string>
     <string name="tab_files_label">Dateien</string>
-    <string name="tab_commits_label">Änderungen</string>
+    <string name="tab_commits_label">Commits</string>
     <string name="tab_status_label">Status</string>
 
     <!-- Dialog Msg -->
@@ -61,7 +61,7 @@
     <string name="dialog_choose_language_title">Sprache auswählen</string>
     <string name="dialog_comfirm_import_repo_title">Repository importieren</string>
     <string name="dialog_comfirm_import_repo_msg">Dieses Repository wirklich importieren?</string>
-    <string name="dialog_merge_title">Zweig zum Zusammenführen auswählen</string>
+    <string name="dialog_merge_title">Zweig zum Merging auswählen</string>
     <string name="dialog_merge_checkbox">Nach dem Zusammenführen veröffentlichen</string>
     <string name="dialog_file_delete">Datei löschen</string>
     <string name="dialog_file_delete_msg">Diese Datei wirklich löschen?</string>
