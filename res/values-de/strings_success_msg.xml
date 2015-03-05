@@ -2,7 +2,7 @@
 <resources>
 
     <string name="success_add_to_stage">Datei wurde zum Staging-Bereich hinzugefügt</string>
-    <string name="success_commit">Erfolgreich commited</string>
+    <string name="success_commit">Beitrag wurde erfolgreich commited</string>
     <string name="success_reset">Commit wurde verworfen</string>
     <string name="success_cherry_pick">Cherry Pick erfolgreich</string>
     <string name="success_rebase">Rebase erfolgreich</string>
@@ -10,6 +10,6 @@
     <string name="success_remote_added">Remote Repository erfolgreich hinzugefügt</string>
     <string name="success_save">Speichern erfolgreich</string>
     <string name="msg_now_you_can_edit">Bearbeiten ist jetzt möglich</string>
-    <string name="msg_commit_str_has_copied">Änderungs-Hash wurde kopiert</string>
+    <string name="msg_commit_str_has_copied">Commit-Hash wurde kopiert</string>
 
 </resources>

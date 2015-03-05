@@ -5,7 +5,7 @@
     <string name="dialog_cherrypick_title">Cherry Pick</string>
     <string name="dialog_cherrypick_msg_hint">Commit-Hash (aus der Beitrags-Liste kopieren)</string>
     <string name="dialog_label_cherrypick">Cherry Pick</string>
-    <string name="dialog_rebase_title">Upstream Zweig auswählen</string>
+    <string name="dialog_rebase_title">Upstream Branch auswählen</string>
 
     <!-- Commit -->
     <string name="dialog_commit_title">Änderungen freigeben</string>

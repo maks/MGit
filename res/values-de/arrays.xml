@@ -15,8 +15,8 @@
         <item>Pull</item>
         <item>Push</item>
         <item>Alles zum Staging-Bereich hinzufügen</item>
-        <item>Commit erzeugen</item>
-        <item>Zurücksetzen</item>
+        <item>Commit</item>
+        <item>Reset</item>
         <item>Merge</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>

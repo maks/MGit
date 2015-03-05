@@ -19,7 +19,7 @@
     <string name="action_edit_in_other_app">In anderen Apps bearbeiten</string>
     <string name="action_reset">Zurücksetzen</string>
     <string name="action_toggle_drawer">Seitenleiste ein-/ausblenden</string>
-    <string name="action_copy_commit_str">Änderungs-Hash kopieren</string>
+    <string name="action_copy_commit_str">Commit-Hash kopieren</string>
     <string name="action_create_external_repo">Remote Repository erstellen</string>
 
     <!-- label msg -->
@@ -54,14 +54,14 @@
     <string name="tab_status_label">Status</string>
 
     <!-- Dialog Msg -->
-    <string name="dialog_choose_branch_title">Zweig auswählen</string>
+    <string name="dialog_choose_branch_title">Branch auswählen</string>
     <string name="dialog_delete_repo_title">Löschen bestätigen</string>
     <string name="dialog_delete_repo_msg">Dieses Repository wirklich löschen?</string>
     <string name="dialog_rename_key_title">Umbenennen</string>
     <string name="dialog_choose_language_title">Sprache auswählen</string>
     <string name="dialog_comfirm_import_repo_title">Repository importieren</string>
     <string name="dialog_comfirm_import_repo_msg">Dieses Repository wirklich importieren?</string>
-    <string name="dialog_merge_title">Zweig zum Merging auswählen</string>
+    <string name="dialog_merge_title">Branch für Merge auswählen</string>
     <string name="dialog_merge_checkbox">Nach dem Zusammenführen veröffentlichen</string>
     <string name="dialog_file_delete">Datei löschen</string>
     <string name="dialog_file_delete_msg">Diese Datei wirklich löschen?</string>
@@ -72,7 +72,7 @@
     <string name="dialog_create_file_title">Neue Datei</string>
     <string name="dialog_create_file_hint">Dateiname</string>
     <string name="dialog_comfirm_checkout_commit_title">Checkout bestätigen</string>
-    <string name="dialog_comfirm_checkout_commit_msg">Zweig auschecken</string>
+    <string name="dialog_comfirm_checkout_commit_msg">Branch auschecken</string>
     <string name="dialog_profile_git_profile_title">Git-Profil</string>
     <string name="dialog_prompt_for_password_title">Passwort benötigt</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
