@@ -125,9 +125,9 @@ public class Repo implements Comparable<Repo>, Serializable {
 
     public String getDiaplayName() {
         if (!isExternal())
-            return getLocalPath();
+            return mLocalPath;
         String[] strs = mLocalPath.split("/");
-        return strs[strs.length - 1] + "(external)";
+        return strs[strs.length - 1] + " (external)";
     }
 
     public static boolean isExternal(String path) {
@@ -268,9 +268,13 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public boolean renameRepo(String repoName) {
-        if (FsUtils.renameDirectory(getDir(), repoName)) {
+        File directory = getDir();
+        if (FsUtils.renameDirectory(directory, repoName)) {
             ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, repoName);
+            mLocalPath = isExternal()
+                ? EXTERNAL_PREFIX + directory.getParent() + File.separator + repoName
+                : repoName;
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, mLocalPath);
             RepoDbManager.updateRepo(getID(), values);
 
             return true;

@@ -220,8 +220,8 @@ public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
             new SheimiFragmentActivity.OnEditTextDialogClicked() {
                 @Override
                 public void onClicked(String newRepoName) {
-                    if ( !repo.renameRepo(newRepoName) ){
-                        context.showToastMessage(R.string.dialog_rename_repo_err_msg);
+                    if (!repo.renameRepo(newRepoName)){
+                        context.showToastMessage(R.string.error_rename_repo_fail);
                     }
                 }
             }

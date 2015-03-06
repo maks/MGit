@@ -16,6 +16,8 @@
     <string name="error_something_wrong">Something wrong happened</string>
     <string name="error_repository_not_found">Repository not found (there may be something wrong with this repo)</string>
 
+    <string name="error_rename_repo_fail">Renaming repository failed</string>
+
     <!-- alerts -->
     <string name="alert_field_not_empty">Field should not be empty</string>
     <string name="alert_remoteurl_required">Remote URL required</string>
