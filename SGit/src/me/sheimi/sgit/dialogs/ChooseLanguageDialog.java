@@ -34,8 +34,8 @@ public class ChooseLanguageDialog extends SheimiDialogFragment {
                     public void onClick(DialogInterface dialogInterface,
                             int position) {
                         String lang = langs.get(position);
-                        String tag = CodeGuesser.getLanguageTag(lang);
-                        mActivity.setLanguage(tag);
+                        lang = CodeGuesser.normalizeLanguage(lang);
+                        mActivity.setLanguage(lang);
                     }
                 });
 

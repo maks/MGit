@@ -18,7 +18,7 @@
     <string name="action_feedback">Feedback</string>
     <string name="action_choose_language">Choose Language</string>
     <string name="action_mode_diff">Diff</string>
-    <string name="action_edit">Edit</string>
+    <string name="action_open_in_other_app">Open in other apps</string>
     <string name="action_edit_in_other_app">Edit in other apps</string>
     <string name="action_reset">Reset</string>
     <string name="action_toggle_drawer">Toggle Drawer</string>
