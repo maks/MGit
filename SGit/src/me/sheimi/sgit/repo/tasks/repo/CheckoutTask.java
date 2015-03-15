@@ -11,16 +11,18 @@ public class CheckoutTask extends RepoOpTask {
 
     private AsyncTaskPostCallback mCallback;
     private String mCommitName;
+    private boolean mCreateNewBranch;
 
-    public CheckoutTask(Repo repo, String name, AsyncTaskPostCallback callback) {
+    public CheckoutTask(Repo repo, String name, boolean createNewBranch,AsyncTaskPostCallback callback) {
         super(repo);
         mCallback = callback;
         mCommitName = name;
+        mCreateNewBranch = createNewBranch;
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return checkout(mCommitName);
+        return checkout(mCommitName,mCreateNewBranch);
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -30,12 +32,16 @@ public class CheckoutTask extends RepoOpTask {
         }
     }
 
-    public boolean checkout(String name) {
+    public boolean checkout(String name,boolean createNewBranch) {
         try {
-            if (Repo.COMMIT_TYPE_REMOTE == Repo.getCommitType(name)) {
-                checkoutFromRemote(name, Repo.getCommitName(name));
-            } else {
-                checkoutFromLocal(name);
+            if (createNewBranch) {
+                checkoutNewBranch(name);
+            }else {
+                if (Repo.COMMIT_TYPE_REMOTE == Repo.getCommitType(name)) {
+                    checkoutFromRemote(name, Repo.getCommitName(name));
+                } else {
+                    checkoutFromLocal(name);
+                }
             }
         } catch (StopTaskException e) {
             return false;
@@ -51,6 +57,11 @@ public class CheckoutTask extends RepoOpTask {
         }
         mRepo.updateLatestCommitInfo();
         return true;
+    }
+
+    public void checkoutNewBranch(String name) throws GitAPIException,
+            JGitInternalException, StopTaskException {
+        mRepo.getGit().checkout().setName(name).setCreateBranch(true).call();
     }
 
     public void checkoutFromLocal(String name) throws GitAPIException,

@@ -12,6 +12,7 @@ import me.sheimi.sgit.activities.delegate.actions.CommitAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
 import me.sheimi.sgit.activities.delegate.actions.DiffAction;
 import me.sheimi.sgit.activities.delegate.actions.MergeAction;
+import me.sheimi.sgit.activities.delegate.actions.NewBranchAction;
 import me.sheimi.sgit.activities.delegate.actions.NewDirAction;
 import me.sheimi.sgit.activities.delegate.actions.NewFileAction;
 import me.sheimi.sgit.activities.delegate.actions.PullAction;
@@ -42,6 +43,7 @@ public class RepoOperationDelegate {
     }
 
     private void initActions() {
+        mActions.add(new NewBranchAction(mRepo,mActivity));
         mActions.add(new PullAction(mRepo, mActivity));
         mActions.add(new PushAction(mRepo, mActivity));
         mActions.add(new AddAllAction(mRepo, mActivity));
@@ -66,7 +68,7 @@ public class RepoOperationDelegate {
 
     public void checkoutCommit(final String commitName) {
         CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName,
-                new AsyncTaskPostCallback() {
+                false,new AsyncTaskPostCallback() {
                     @Override
                     public void onPostExecute(Boolean isSuccess) {
                         mActivity.reset(commitName);
