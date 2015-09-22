@@ -55,4 +55,12 @@
             android:id="@+id/savePassword"
             android:layout_gravity="left|center_vertical"
             android:checked="true"/>
+
+    <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_clone_recursive"
+            android:id="@+id/cloneRecursive"
+            android:layout_gravity="left|center_vertical"
+            android:checked="false"/>
 </LinearLayout>
