@@ -6,19 +6,24 @@ import java.io.FileFilter;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
+import android.content.DialogInterface;
+import android.app.AlertDialog;
 
-public class PrivateKeyManageActivity extends FileExplorerActivity {
+public class PrivateKeyManageActivity extends FileExplorerActivity implements ActionMode.Callback {
 
-    private static final int REQUSET_ADD_KEY = 0;
+    private static final int REQUEST_IMPORT_KEY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +44,99 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
     }
 
     @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+	MenuInflater inflater = mode.getMenuInflater();
+	inflater.inflate(R.menu.action_mode_ssh_key, menu);
+	return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+	return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	switch (item.getItemId()) {
+	case R.id.action_mode_rename_key:
+	    Bundle pathArg = new Bundle();
+	    pathArg.putString(RenameKeyDialog.FROM_PATH,
+			      mChosenFile.getAbsolutePath());
+	    mode.finish();
+	    RenameKeyDialog rkd = new RenameKeyDialog();
+	    rkd.setArguments(pathArg);
+	    rkd.show(getFragmentManager(), "rename-dialog");
+	    return true;
+	case R.id.action_mode_show_private_key:
+	    {
+		Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
+		intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
+				mChosenFile.getAbsolutePath());
+		intent.putExtra(ViewFileActivity.TAG_MODE, ViewFileActivity.TAG_MODE_SSH_KEY);
+		mode.finish();
+		startActivity(intent);
+		return true;
+	    }
+	case R.id.action_mode_show_public_key:
+	    {
+		Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
+		intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
+				PrivateKeyUtils.getPublicKeyEnsure(mChosenFile).getAbsolutePath());
+		intent.putExtra(ViewFileActivity.TAG_MODE, ViewFileActivity.TAG_MODE_SSH_KEY);
+		mode.finish();
+		startActivity(intent);
+		return true;
+	    }
+	case R.id.action_mode_delete:
+	    mode.finish();
+	    new AlertDialog.Builder(this)
+		.setIcon(android.R.drawable.ic_dialog_alert)
+		.setTitle(R.string.dialog_key_delete)
+		.setMessage(R.string.dialog_key_delete_msg)
+		.setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			    FsUtils.deleteFile(mChosenFile);
+			    FsUtils.deleteFile(PrivateKeyUtils.getPublicKey(mChosenFile));
+			    refreshList();
+			}
+
+		    })
+		.setNegativeButton(R.string.label_cancel, null)
+		.show();
+	    return true;
+
+	default:
+	    return false;
+	}
+    }
+
+    private boolean mInActionMode;
+    private File mChosenFile;
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+	mInActionMode = false;
+    }
+
+    private void runActionMode(View view, int positon) {
+	if (mInActionMode) {
+	    return;
+	}
+
+	mInActionMode = true;
+	mChosenFile = mFilesListAdapter.getItem(positon);
+	PrivateKeyManageActivity.this.startActionMode(PrivateKeyManageActivity.this);
+	view.setSelected(true);
+    }
+
+    @Override
     protected AdapterView.OnItemClickListener getOnListItemClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,
-                    int positon, long id) {
-                File file = mFilesListAdapter.getItem(positon);
-                FsUtils.openFile(file, "text/plain");
+                    int position, long id) {
+		runActionMode(view, position);
             }
         };
     }
@@ -56,14 +147,8 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView,
                     View view, int position, long id) {
-                File file = mFilesListAdapter.getItem(position);
-                Bundle pathArg = new Bundle();
-                pathArg.putString(RenameKeyDialog.FROM_PATH,
-                        file.getAbsolutePath());
-                RenameKeyDialog rkd = new RenameKeyDialog();
-                rkd.setArguments(pathArg);
-                rkd.show(getFragmentManager(), "rename-dialog");
-                return true;
+		runActionMode(view, position);
+		return true;
             }
         };
     }
@@ -78,11 +163,19 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_new:
+	case R.id.action_import:
+	    {
                 Intent intent = new Intent(this, ExploreFileActivity.class);
-                startActivityForResult(intent, REQUSET_ADD_KEY);
+                startActivityForResult(intent, REQUEST_IMPORT_KEY);
                 forwardTransition();
                 return true;
+	    }
+	case R.id.action_generate:
+	    {
+		(new PrivateKeyGenerate(this)).show(getFragmentManager(), "generate-key");
+		refreshList();
+                return true;
+	    }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -92,7 +185,8 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
         if (resultCode != Activity.RESULT_OK)
             return;
         switch (requestCode) {
-            case REQUSET_ADD_KEY:
+	case REQUEST_IMPORT_KEY:
+	    {
                 String path = data.getExtras().getString(
                         ExploreFileActivity.RESULT_PATH);
                 File keyFile = new File(path);
@@ -100,6 +194,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity {
                 FsUtils.copyFile(keyFile, newKey);
                 refreshList();
                 break;
+	    }
         }
 
     }

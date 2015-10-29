@@ -19,6 +19,8 @@
     <string name="error_rename_repo_fail">Renaming repository failed</string>
 
     <!-- alerts -->
+    <string name="alert_too_short_key_size">Keylength is too small (at least 1024 bits for RSA and DSA)</string>
+    <string name="alert_too_long_key_size">Keylength is too large</string>
     <string name="alert_field_not_empty">Field should not be empty</string>
     <string name="alert_remoteurl_required">Remote URL required</string>
     <string name="alert_localpath_required">Repository name required</string>

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 /**
  * Created by sheimi on 8/24/13.
@@ -49,7 +50,6 @@ public class RenameKeyDialog extends SheimiDialogFragment implements
         // set button listener
         builder.setNegativeButton(R.string.label_cancel,
                 new DummyDialogListener());
-        builder.setNeutralButton(R.string.label_delete, this);
         builder.setPositiveButton(R.string.label_rename,
                 new DummyDialogListener());
 
@@ -96,14 +96,18 @@ public class RenameKeyDialog extends SheimiDialogFragment implements
             return;
         }
         mFromFile.renameTo(file);
+	try {
+	    PrivateKeyUtils.getPublicKey(mFromFile).renameTo(PrivateKeyUtils.getPublicKey(file));
+	} catch (Exception e) {
+	    //TODO 
+	    e.printStackTrace();
+	}
         mActivity.refreshList();
         dismiss();
     }
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        FsUtils.deleteFile(mFromFile);
-        mActivity.refreshList();
     }
 
 }

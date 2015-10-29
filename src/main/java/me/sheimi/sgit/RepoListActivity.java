@@ -1,22 +1,20 @@
 package me.sheimi.sgit;
 
-import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.utils.Constants;
-import me.sheimi.sgit.activities.UserSettingsActivity;
-import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
-import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
-import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.adapters.RepoListAdapter;
-import me.sheimi.sgit.dialogs.CloneDialog;
-import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.activities.UserSettingsActivity;
+import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
+import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
+import me.sheimi.sgit.adapters.RepoListAdapter;
+import me.sheimi.sgit.dialogs.CloneDialog;
+import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class RepoListActivity extends SheimiFragmentActivity {

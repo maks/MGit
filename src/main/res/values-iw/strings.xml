@@ -8,7 +8,6 @@
   <string name="action_git_profile">פרופיל git</string>
   <string name="action_settings">הגדרות</string>
   <string name="action_manage_private_key">מפתחות פרטיים</string>
-  <string name="action_add_private_key">הוסף מפתח</string>
   <string name="action_feedback">משוב</string>
   <string name="action_choose_language">בחר שפה</string>
   <string name="action_mode_diff">הבדלים</string>

@@ -11,7 +11,6 @@
     <string name="action_git_profile">Git プロフィール</string>
     <string name="action_settings">設定</string>
     <string name="action_manage_private_key">プライベートキー</string>
-    <string name="action_add_private_key">キーを追加</string>
     <string name="action_feedback">フィードバック</string>
     <string name="action_choose_language">言語の選択</string>
     <string name="action_mode_diff">Diff</string>
