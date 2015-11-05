@@ -10,5 +10,9 @@
         android:icon="@drawable/ic_action_copy"
         android:showAsAction="ifRoom"
         android:title="@string/action_copy_commit_str"/>
-
+    <item
+        android:id="@+id/action_mode_checkout"
+        android:icon="@drawable/ic_download"
+        android:showAsAction="ifRoom"
+        android:title="@string/label_checkout"/>
 </menu>
