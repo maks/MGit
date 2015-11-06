@@ -11,8 +11,13 @@ pre code {
     padding: 5px;
 }
 .path-block {
-	overflow: hidden;
+        overflow: hidden;
 }
+
+.commitinfo-block {
+	overflow: scroll;
+}
+
 .change-type {
     float: right;
     color: #999;

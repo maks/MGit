@@ -75,10 +75,21 @@ public class RepoOperationDelegate {
 
     public void checkoutCommit(final String commitName) {
         CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName,
-                false,new AsyncTaskPostCallback() {
+                null, new AsyncTaskPostCallback() {
                     @Override
                     public void onPostExecute(Boolean isSuccess) {
                         mActivity.reset(commitName);
+                    }
+                });
+        checkoutTask.executeTask();
+    }
+
+    public void checkoutCommit(final String commitName, final String branch) {
+        CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName, branch,
+                new AsyncTaskPostCallback() {
+                    @Override
+                    public void onPostExecute(Boolean isSuccess) {
+                        mActivity.reset(branch);
                     }
                 });
         checkoutTask.executeTask();

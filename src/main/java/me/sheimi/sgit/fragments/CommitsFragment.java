@@ -10,6 +10,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.CommitDiffActivity;
 import me.sheimi.sgit.adapters.CommitsListAdapter;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CheckoutDialog;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -84,7 +85,7 @@ public class CommitsFragment extends RepoDetailFragment implements
 				showToastMessage(R.string.alert_no_older_commits);
 				return;
 			    }
-			    showDiff(null, position, position + 1);
+			    showDiff(null, position, position + 1, true);
 			    return;
 			}
                         chooseItem(position);
@@ -159,7 +160,8 @@ public class CommitsFragment extends RepoDetailFragment implements
         return true;
     }
 
-    private void showDiff(ActionMode actionMode, int item1, int item2) {
+    private void showDiff(ActionMode actionMode, int item1, int item2,
+			  boolean showDescription) {
 	Intent intent = new Intent(getRawActivity(),
 				   CommitDiffActivity.class);
 	int smaller = Math.min(item1, item2);
@@ -170,6 +172,7 @@ public class CommitsFragment extends RepoDetailFragment implements
 	    .getName();
 	intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
 	intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
+	intent.putExtra(CommitDiffActivity.SHOW_DESCRIPTION, showDescription);
 	intent.putExtra(Repo.TAG, mRepo);
 	if (actionMode != null) {
 	    actionMode.finish();
@@ -199,7 +202,7 @@ public class CommitsFragment extends RepoDetailFragment implements
 		    item2 = items[1];
 		}
 
-		showDiff(actionMode, item1, item2);
+		showDiff(actionMode, item1, item2, false);
                 return true;
             case R.id.action_mode_copy_commit:
 		{
@@ -218,22 +221,15 @@ public class CommitsFragment extends RepoDetailFragment implements
 	case R.id.action_mode_checkout:
 	    {
 		int item = mChosenItem.iterator().next();
-		RevCommit commit = mCommitsListAdapter
-		    .getItem(item);
-		final String fullCommitName = commit.getName();
-		String message = getString(R.string.dialog_comfirm_checkout_commit_msg)
-		    + " "
-		    + Repo.getCommitDisplayName(fullCommitName);
-		showMessageDialog(R.string.dialog_comfirm_checkout_commit_title,
-				  message, R.string.label_checkout,
-				  new DialogInterface.OnClickListener() {
-				      @Override
-				      public void onClick(DialogInterface dialogInterface,
-							  int i) {
-					  getRawActivity().getRepoDelegate()
-					      .checkoutCommit(fullCommitName);
-				      }
-				  });
+		String commit = mCommitsListAdapter.getItem(item).getName();
+		Bundle pathArg = new Bundle();
+		pathArg.putString(CheckoutDialog.BASE_COMMIT, commit);
+		pathArg.putSerializable(Repo.TAG, mRepo);
+		actionMode.finish();
+		CheckoutDialog ckd = new CheckoutDialog();
+		ckd.setArguments(pathArg);
+		ckd.show(getFragmentManager(), "rename-dialog");
+
 		break;
 	    }
 

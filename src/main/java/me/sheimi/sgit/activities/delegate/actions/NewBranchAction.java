@@ -22,7 +22,7 @@ public class NewBranchAction extends RepoAction {
                 new SheimiFragmentActivity.OnEditTextDialogClicked() {
                     @Override
                     public void onClicked(String branchName) {
-                        CheckoutTask checkoutTask = new CheckoutTask(mRepo,branchName,true,
+                        CheckoutTask checkoutTask = new CheckoutTask(mRepo, null, branchName,
                                 new ActivityResetPostCallback(branchName));
                         checkoutTask.executeTask();
                     }

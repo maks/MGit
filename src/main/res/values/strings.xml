@@ -53,6 +53,8 @@
     <string name="label_done">Done</string>
     <string name="label_choose_app_to_open">Open With …</string>
     <string name="label_choose_app_to_edit">Edit With …</string>
+    <string name="label_new_branch_name">New Branch</string>
+    <string name="label_anonymous_checkout">Anonymous checkout</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">Repository</string>

@@ -18,6 +18,7 @@ import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
 public class CommitDiffTask extends RepoOpTask {
@@ -27,18 +28,21 @@ public class CommitDiffTask extends RepoOpTask {
     private List<DiffEntry> mDiffEntries;
     private List<String> mDiffStrs;
     private CommitDiffResult mCallback;
+    private boolean mShowDescription;
+    private Iterable<RevCommit> mCommits;
 
     public interface CommitDiffResult {
         public void pushResult(List<DiffEntry> diffEntries,
-                List<String> diffStrs);
+			       List<String> diffStrs, RevCommit description);
     }
 
     public CommitDiffTask(Repo repo, String oldCommit, String newCommit,
-            CommitDiffResult callback) {
+			  CommitDiffResult callback, boolean showDescription) {
         super(repo);
         mOldCommit = oldCommit;
         mNewCommit = newCommit;
         mCallback = callback;
+	mShowDescription = showDescription;
     }
 
     @Override
@@ -61,8 +65,15 @@ public class CommitDiffTask extends RepoOpTask {
 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
+	RevCommit retCommit = null;
         if (isSuccess && mCallback != null && mDiffEntries != null) {
-            mCallback.pushResult(mDiffEntries, mDiffStrs);
+	    if (mCommits != null) {
+		for (RevCommit commit : mCommits) {
+		    retCommit = commit;
+		    break;
+		}
+	    }
+            mCallback.pushResult(mDiffEntries, mDiffStrs, retCommit);
         }
     }
 
@@ -71,6 +82,7 @@ public class CommitDiffTask extends RepoOpTask {
             Repository repo = mRepo.getGit().getRepository();
             ObjectId oldId = repo.resolve(mOldCommit + "^{tree}");
             ObjectId newId = repo.resolve(mNewCommit + "^{tree}");
+            ObjectId newCommitId = repo.resolve(mNewCommit);
 
             CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
@@ -82,6 +94,11 @@ public class CommitDiffTask extends RepoOpTask {
 
             mDiffEntries = mRepo.getGit().diff().setOldTree(oldTreeIter)
                     .setNewTree(newTreeIter).call();
+	    if (mShowDescription) {
+		mCommits = mRepo.getGit().log().add(newCommitId).setMaxCount(1).call();
+	    } else {
+		mCommits = new ArrayList<RevCommit>();
+	    }
 
             return true;
         } catch (GitAPIException e) {
