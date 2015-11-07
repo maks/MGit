@@ -5,7 +5,6 @@ import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,11 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 /**
  * Created by sheimi on 8/18/13.
  */
-public class FilesListAdapter extends SheimiArrayAdapter<File> {
+public class FilesListAdapter extends ArrayAdapter<File> {
 
     private File mDir;
     private FileFilter mFileFilter;

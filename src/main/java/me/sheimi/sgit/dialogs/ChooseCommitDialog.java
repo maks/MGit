@@ -1,6 +1,5 @@
 package me.sheimi.sgit.dialogs;
 
-import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -13,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,7 +63,7 @@ public class ChooseCommitDialog extends SheimiDialogFragment {
         return builder.create();
     }
 
-    private class BranchTagListAdapter extends SheimiArrayAdapter<String> {
+    private class BranchTagListAdapter extends ArrayAdapter<String> {
 
         public BranchTagListAdapter(Context context) {
             super(context, 0);

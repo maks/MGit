@@ -8,7 +8,6 @@ import java.util.Set;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.repo.GetCommitTask;
@@ -23,13 +22,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by sheimi on 8/18/13.
  */
-public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
+public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
     private Repo mRepo;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
