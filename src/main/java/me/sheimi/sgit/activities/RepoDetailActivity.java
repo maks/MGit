@@ -5,7 +5,6 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.delegate.RepoOperationDelegate;
 import me.sheimi.sgit.adapters.RepoOperationsAdapter;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.ChooseCommitDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.FilesFragment;
@@ -29,6 +28,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.content.Intent;
+import me.sheimi.sgit.activities.BranchChooserActivity;
 
 public class RepoDetailActivity extends SheimiFragmentActivity {
 
@@ -60,6 +61,21 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int FILES_FRAGMENT_INDEX = 0;
     private static final int COMMITS_FRAGMENT_INDEX = 1;
     private static final int STATUS_FRAGMENT_INDEX = 2;
+    private static final int BRANCH_CHOOSE_ACTIVITY = 0;
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+	switch (requestCode) {
+	case BRANCH_CHOOSE_ACTIVITY:
+	    String branchName = mRepo.getBranchName();
+	    if (branchName == null) {
+		showToastMessage(R.string.error_something_wrong);
+		return;
+	    }
+	    reset(branchName);
+	    break;
+	}
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +94,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         mCommitNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChooseCommitDialog cbd = new ChooseCommitDialog();
-                cbd.setArguments(mRepo.getBundle());
-                cbd.show(getFragmentManager(), "choose-branch-dialog");
+		Intent intent = new Intent(RepoDetailActivity.this, BranchChooserActivity.class);
+		intent.putExtra(Repo.TAG, mRepo);
+		startActivityForResult(intent, BRANCH_CHOOSE_ACTIVITY);
             }
         });
         String branchName = mRepo.getBranchName();

@@ -1,6 +1,7 @@
 package me.sheimi.sgit.activities.delegate;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import me.sheimi.android.utils.FsUtils;
@@ -32,11 +33,9 @@ import me.sheimi.sgit.repo.tasks.repo.FetchTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
 import org.eclipse.jgit.lib.Ref;
-
 import static me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask.*;
 
 public class RepoOperationDelegate {
-
     private Repo mRepo;
     private RepoDetailActivity mActivity;
     private ArrayList<RepoAction> mActions = new ArrayList<RepoAction>();
