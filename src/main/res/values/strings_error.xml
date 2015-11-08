@@ -27,6 +27,7 @@
     <string name="alert_localpath_format">Repository name can\'t contain slash.</string>
     <string name="alert_localpath_repo_exists">Repository already exists</string>
     <string name="alert_new_filename_required">File name required</string>
+    <string name="alert_new_branchname_required">Branch name required</string>
     <string name="alert_file_exists">File already exists</string>
     <string name="alert_filename_format">File name format error</string>
     <string name="alert_choose_two_items">You can only choose two items</string>

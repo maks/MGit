@@ -1,17 +1,8 @@
 package me.sheimi.sgit.activities;
 
-import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.delegate.RepoOperationDelegate;
-import me.sheimi.sgit.adapters.RepoOperationsAdapter;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.fragments.BaseFragment;
-import me.sheimi.sgit.fragments.CommitsFragment;
-import me.sheimi.sgit.fragments.FilesFragment;
-import me.sheimi.sgit.fragments.StatusFragment;
-import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
 import android.app.ActionBar;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -28,8 +19,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.content.Intent;
-import me.sheimi.sgit.activities.BranchChooserActivity;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.delegate.RepoOperationDelegate;
+import me.sheimi.sgit.adapters.RepoOperationsAdapter;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.fragments.BaseFragment;
+import me.sheimi.sgit.fragments.CommitsFragment;
+import me.sheimi.sgit.fragments.FilesFragment;
+import me.sheimi.sgit.fragments.StatusFragment;
+import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskCallback;
 
 public class RepoDetailActivity extends SheimiFragmentActivity {
 
