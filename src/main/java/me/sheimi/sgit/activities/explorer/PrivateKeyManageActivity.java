@@ -92,7 +92,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 	    new AlertDialog.Builder(this)
 		.setIcon(android.R.drawable.ic_dialog_alert)
 		.setTitle(R.string.dialog_key_delete)
-		.setMessage(R.string.dialog_key_delete_msg)
+		.setMessage(getString(R.string.dialog_key_delete_msg) + " " + mChosenFile)
 		.setPositiveButton(R.string.label_delete, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
