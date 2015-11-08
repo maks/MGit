@@ -67,7 +67,7 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
             holder = (CommitsListItemHolder) convertView.getTag();
         }
         RevCommit commit = getItem(position);
-        PersonIdent person = commit.getCommitterIdent();
+        PersonIdent person = commit.getAuthorIdent();
         Date date = person.getWhen();
         String email = person.getEmailAddress();
 
