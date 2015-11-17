@@ -34,6 +34,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     private static final String JS_INF = "CodeLoader";
     private ProgressBar mLoading;
     private File mFile;
+    private boolean mEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         mFileContent.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber,
                     String sourceID) {
-                showToastMessage(message + " -- From line " + lineNumber
+                Log.d("MyApplication", message + " -- From line " + lineNumber
                         + " of " + sourceID);
             }
 
@@ -75,54 +76,47 @@ public class ViewFileActivity extends SheimiFragmentActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
+        super.onResume();
+        if (mEditMode) {
+            mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
+        }
     }
 
     private void loadFileContent() {
-        mFileContent.loadUrl("file:///android_asset/viewer.html");
+        mFileContent.loadUrl("file:///android_asset/editor.html");
+        mFileContent.setFocusable(mEditMode);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.view_file, menu);
+        MenuItem mi = menu.findItem(R.id.action_edit);
+        if (mEditMode) {
+            mi.setIcon(R.drawable.ic_action_save);
+        } else {
+            mi.setIcon(R.drawable.ic_action_edit);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Uri uri;
-        String mimeType;
-        Intent chooserIntent;
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_open_in_other_app:
-                uri = Uri.fromFile(mFile);
-                mimeType = FsUtils.getMimeType(uri.toString());
-                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-                viewIntent.setDataAndType(uri, mimeType);
-                try {
-                    chooserIntent = Intent.createChooser(viewIntent, 
-                                getString(R.string.label_choose_app_to_open));
-                    startActivity(chooserIntent);
-                    forwardTransition();
-                } catch (ActivityNotFoundException e) {
-                    BasicFunctions.showException(e, R.string.error_no_open_app);
-                } catch (Throwable e) {
-                    BasicFunctions.showException(e);
-                }
-                break;
             case R.id.action_edit_in_other_app:
-                uri = Uri.fromFile(mFile);
-                mimeType = FsUtils.getMimeType(uri.toString());
+                Uri uri = Uri.fromFile(mFile);
+                String mimeType = FsUtils.getMimeType(uri.toString());
+                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
                 Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                viewIntent.setDataAndType(uri, mimeType);
                 editIntent.setDataAndType(uri, mimeType);
                 try {
-                    chooserIntent = Intent.createChooser(editIntent, 
+                    Intent chooserIntent = Intent.createChooser(viewIntent, 
                                 getString(R.string.label_choose_app_to_edit));
+                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { editIntent });
                     startActivity(chooserIntent);
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
@@ -131,6 +125,19 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     BasicFunctions.showException(e);
                 }
                 break;
+            case R.id.action_edit:
+                mEditMode = !mEditMode;
+                mFileContent.setFocusable(mEditMode);
+                mFileContent.setFocusableInTouchMode(mEditMode);
+                if (mEditMode) {
+                    mFileContent.loadUrl(CodeGuesser
+                            .wrapUrlScript("setEditable();"));
+                    showToastMessage(R.string.msg_now_you_can_edit);
+                } else {
+                    mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
+                }
+                invalidateOptionsMenu();
+                return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
                 cld.show(getFragmentManager(), "choose language");
@@ -151,6 +158,36 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         @JavascriptInterface
         public String getCode() {
             return mCode;
+        }
+
+        @JavascriptInterface
+        public void save(final String content) {
+            if (content == null) {
+                showToastMessage(R.string.alert_save_failed);
+                return;
+            }
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    try {
+                        FileUtils.writeStringToFile(mFile, content);
+                    } catch (IOException e) {
+                        BasicFunctions.showException(e,
+                                R.string.alert_save_failed);
+                    }
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            initViewFile();
+                            loadFileContent();
+                            showToastMessage(R.string.success_save);
+                        }
+                    });
+                }
+            });
+            thread.start();
         }
 
         @JavascriptInterface()
@@ -178,7 +215,11 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     mFileContent.loadUrl(CodeGuesser.wrapUrlScript(js));
                     mLoading.setVisibility(View.INVISIBLE);
                     mFileContent.loadUrl(CodeGuesser
-                            .wrapUrlScript("display()"));
+                            .wrapUrlScript("display();"));
+                    if (mEditMode) {
+                        mFileContent.loadUrl(CodeGuesser
+                                .wrapUrlScript("setEditable();"));
+                    }
                 }
             });
         }
@@ -188,11 +229,14 @@ public class ViewFileActivity extends SheimiFragmentActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("EditMode", mEditMode);
+        // etc.
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        mEditMode = savedInstanceState.getBoolean("EditMode", false);
     }
 
 }
