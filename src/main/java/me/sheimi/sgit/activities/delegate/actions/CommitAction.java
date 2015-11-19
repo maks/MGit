@@ -54,7 +54,7 @@ public class CommitAction extends RepoAction {
             public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
                 if (isChecked) {
-                    commitMsg.setText(mRepo.getLastCommitMsg());
+                    commitMsg.setText(mRepo.getLastCommitFullMsg());
                 } else {
                     commitMsg.setText("");
                 }

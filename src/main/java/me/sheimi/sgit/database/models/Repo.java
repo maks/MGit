@@ -158,6 +158,14 @@ public class Repo implements Comparable<Repo>, Serializable {
         return mLastCommitMsg;
     }
 
+    public String getLastCommitFullMsg() {
+	RevCommit commit = getLatestCommit();
+	if (commit == null) {
+	    return getLastCommitMsg();
+	}
+	return commit.getFullMessage();
+    }
+
     public Date getLastCommitDate() {
         return mLastCommitDate;
     }
