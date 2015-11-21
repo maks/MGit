@@ -130,7 +130,7 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         return "commit " + mNewCommit + "\n"
                 + "Author:     " + author.getName() + " <" + author.getEmailAddress() + ">\n"
                 + "AuthorDate: " + author.getWhen() + "\n"
-                + "Commit:     " + committer.getName() + " <" + committer.getEmailAddress() + "\n"
+                + "Commit:     " + committer.getName() + " <" + committer.getEmailAddress() + ">\n"
                 + "CommitDate: " + committer.getWhen() + "\n";
     }
 
