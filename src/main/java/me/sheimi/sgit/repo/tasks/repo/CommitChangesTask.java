@@ -20,16 +20,21 @@ public class CommitChangesTask extends RepoOpTask {
 
     private AsyncTaskPostCallback mCallback;
     private String mCommitMsg;
+    private String mAuthorName;
+    private String mAuthorEmail;
     private boolean mIsAmend;
     private boolean mStageAll;
 
     public CommitChangesTask(Repo repo, String commitMsg, boolean isAmend,
-            boolean stageAll, AsyncTaskPostCallback callback) {
+                             boolean stageAll, String authorName, String authorEmail,
+                             AsyncTaskPostCallback callback) {
         super(repo);
         mCallback = callback;
         mCommitMsg = commitMsg;
         mIsAmend = isAmend;
         mStageAll = stageAll;
+        mAuthorName = authorName;
+        mAuthorEmail = authorEmail;
         setSuccessMsg(R.string.success_commit);
     }
 
@@ -47,7 +52,7 @@ public class CommitChangesTask extends RepoOpTask {
 
     public boolean commit() {
         try {
-            commit(mRepo, mStageAll, mIsAmend, mCommitMsg);
+            commit(mRepo, mStageAll, mIsAmend, mCommitMsg, mAuthorName, mAuthorEmail);
         } catch (StopTaskException e) {
             return false;
         } catch (GitAPIException e) {
@@ -62,7 +67,7 @@ public class CommitChangesTask extends RepoOpTask {
     }
 
     public static void commit(Repo repo, boolean stageAll, boolean isAmend,
-            String msg) throws Exception, NoHeadException, NoMessageException,
+            String msg, String authorName, String authorEmail) throws Exception, NoHeadException, NoMessageException,
             UnmergedPathsException, ConcurrentRefUpdateException,
             WrongRepositoryStateException, GitAPIException, StopTaskException {
         Context context = SGitApplication.getContext();
@@ -77,6 +82,9 @@ public class CommitChangesTask extends RepoOpTask {
         CommitCommand cc = repo.getGit().commit()
                 .setCommitter(committerName, committerEmail).setAll(stageAll)
                 .setAmend(isAmend).setMessage(msg);
+        if (authorName != null && authorEmail != null) {
+            cc.setAuthor(authorName, authorEmail);
+        }
         cc.call();
         repo.updateLatestCommitInfo();
     }
