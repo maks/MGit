@@ -10,6 +10,8 @@ import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
+import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
@@ -18,10 +20,14 @@ import android.content.ContentValues;
 public class PullTask extends RepoOpTask implements OnPasswordEntered {
 
     private AsyncTaskCallback mCallback;
+    private String mRemote;
+    private boolean mForcePull;
 
-    public PullTask(Repo repo, AsyncTaskCallback callback) {
+    public PullTask(Repo repo, String remote, boolean forcePull, AsyncTaskCallback callback) {
         super(repo);
         mCallback = callback;
+        mRemote = remote;
+        mForcePull = forcePull;
     }
 
     @Override
@@ -64,6 +70,7 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
             return false;
         }
         PullCommand pullCommand = git.pull()
+                .setRemote(mRemote)
                 .setProgressMonitor(new BasicProgressMonitor())
                 .setTransportConfigCallback(new SgitTransportCallback());
         String username = mRepo.getUsername();
@@ -75,7 +82,29 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
             pullCommand.setCredentialsProvider(auth);
         }
         try {
+            String branch = null;
+            if (mForcePull) {
+                branch = git.getRepository().getFullBranch();
+                if (!branch.startsWith("refs/heads/")) {
+                    setException(new GitAPIException("not on branch") {},
+                            R.string.error_pull_failed_not_on_branch);
+                    return false;
+                }
+                branch = branch.substring(11);
+                BasicProgressMonitor bpm = new BasicProgressMonitor();
+                bpm.beginTask("resetting to HEAD", 1);
+                git.reset().setMode(ResetCommand.ResetType.HARD)
+                        .setRef("HEAD").call();
+                bpm.endTask();
+            }
             pullCommand.call();
+            if (mForcePull) {
+                BasicProgressMonitor bpm = new BasicProgressMonitor();
+                bpm.beginTask("resetting to " + mRemote + "/" + branch, 1);
+                git.reset().setMode(ResetCommand.ResetType.HARD)
+                        .setRef(mRemote + "/" + branch).call();
+                bpm.endTask();
+            }
         } catch (TransportException e) {
             setException(e);
             handleAuthError(this);
@@ -106,7 +135,7 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
         }
 
         mRepo.removeTask(this);
-        PullTask pullTask = new PullTask(mRepo, mCallback);
+        PullTask pullTask = new PullTask(mRepo, mRemote, mForcePull, mCallback);
         pullTask.executeTask();
     }
 

@@ -46,6 +46,10 @@
     <string name="dialog_push_is_force_push">Force push?</string>
     <string name="dialog_push_result">Push Result</string>
 
+    <!-- Pull -->
+    <string name="dialog_pull_repo_title">Pull from &#8230;</string>
+    <string name="dialog_pull_is_force_pull">Force pull and reset to pulled?</string>
+
     <!-- Create External -->
     <string name="dialog_create_external_title">Create external repo</string>
     <string name="dialog_create_external_msg">Do you want to create a Git repository in this directory?</string>

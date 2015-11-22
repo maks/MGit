@@ -4,6 +4,7 @@
     <string name="error_invalid_remote">Invalid remote</string>
     <string name="error_transport">Transport error</string>
     <string name="error_clone_failed">Clone failed</string>
+    <string name="error_pull_failed_not_on_branch">Pull failed: not on branch</string>
     <string name="error_pull_failed">Pull failed</string>
     <string name="error_diff_failed">Diff failed</string>
     <string name="error_out_of_memory">Out of memory</string>
