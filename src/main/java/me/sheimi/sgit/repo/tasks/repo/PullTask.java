@@ -10,6 +10,7 @@ import me.sheimi.sgit.ssh.SgitTransportCallback;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
+import org.eclipse.jgit.api.RebaseCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.TransportException;
@@ -92,7 +93,16 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
                 }
                 branch = branch.substring(11);
                 BasicProgressMonitor bpm = new BasicProgressMonitor();
-                bpm.beginTask("resetting to HEAD", 1);
+                bpm.beginTask("clearing repo state", 3);
+
+                git.getRepository().writeMergeCommitMsg(null);
+                git.getRepository().writeMergeHeads(null);
+                bpm.update(1);
+                try {
+                    git.rebase().setOperation(RebaseCommand.Operation.ABORT).call();
+                } catch (Exception e) {
+                }
+                bpm.update(2);
                 git.reset().setMode(ResetCommand.ResetType.HARD)
                         .setRef("HEAD").call();
                 bpm.endTask();
