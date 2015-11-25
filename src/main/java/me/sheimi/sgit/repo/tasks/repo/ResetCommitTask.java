@@ -4,6 +4,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 
+import org.eclipse.jgit.api.RebaseCommand;
 import org.eclipse.jgit.api.ResetCommand;
 
 public class ResetCommitTask extends RepoOpTask {
@@ -30,6 +31,12 @@ public class ResetCommitTask extends RepoOpTask {
 
     public boolean reset() {
         try {
+            mRepo.getGit().getRepository().writeMergeCommitMsg(null);
+            mRepo.getGit().getRepository().writeMergeHeads(null);
+            try {
+                mRepo.getGit().rebase().setOperation(RebaseCommand.Operation.ABORT).call();
+            } catch (Exception e) {
+            }
             mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
         } catch (StopTaskException e) {
             return false;
