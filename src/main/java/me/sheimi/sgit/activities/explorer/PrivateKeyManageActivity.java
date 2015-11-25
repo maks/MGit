@@ -137,8 +137,13 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,
-                    int position, long id) {
-		runActionMode(view, position);
+                                    int position, long id) {
+                Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
+                intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
+                        PrivateKeyUtils.getPublicKeyEnsure(mFilesListAdapter.getItem(position))
+                                .getAbsolutePath());
+                intent.putExtra(ViewFileActivity.TAG_MODE, ViewFileActivity.TAG_MODE_SSH_KEY);
+                startActivity(intent);
             }
         };
     }
