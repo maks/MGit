@@ -236,7 +236,7 @@ public class CommitAction extends RepoAction {
                 .findViewById(R.id.autoStage);
 	    HashSet<Author> authors = new HashSet<Author>();
         try {
-            Iterable<RevCommit> commits = mRepo.getGit().log().call();
+            Iterable<RevCommit> commits = mRepo.getGit().log().setMaxCount(500).call();
             for (RevCommit commit : commits) {
                 authors.add(new Author(commit.getAuthorIdent()));
             }
