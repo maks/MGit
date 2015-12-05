@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.UnmergedPathsException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+import org.eclipse.jgit.lib.StoredConfig;
 
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
@@ -71,8 +72,16 @@ public class CommitChangesTask extends RepoOpTask {
             UnmergedPathsException, ConcurrentRefUpdateException,
             WrongRepositoryStateException, GitAPIException, StopTaskException {
         Context context = SGitApplication.getContext();
-        String committerName = Profile.getUsername(context);
-        String committerEmail = Profile.getEmail(context);
+        StoredConfig config = repo.getGit().getRepository().getConfig();
+        String committerEmail = config.getString("user", null, "email");
+        String committerName = config.getString("user", null, "name");
+
+        if (committerName == null || committerName.equals("")) {
+            committerName = Profile.getUsername(context);
+        }
+        if (committerEmail == null || committerEmail.equals("")) {
+            committerEmail = Profile.getEmail(context);
+        }
         if (committerName.isEmpty() || committerEmail.isEmpty()) {
             throw new Exception("Please set your name and email");
         }
