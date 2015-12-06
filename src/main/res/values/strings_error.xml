@@ -43,5 +43,6 @@
     <string name="alert_is_already_a_git_repo">This directory is already a Git repository</string>
     <string name="alert_save_failed">Save failed</string>
     <string name="alert_file_creation_failure">Couldn\'t create file</string>
+    <string name="error_no_repository">No repository found</string>
 
 </resources>
