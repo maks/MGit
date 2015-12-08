@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 /**
  * Created by sheimi on 8/5/13.
@@ -54,6 +55,10 @@ public class CommitsFragment extends RepoDetailFragment implements
         bundle.putSerializable(Repo.TAG, mRepo);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public void setFilter(String query){
+        mCommitsListAdapter.setFilter(query);
     }
 
     @Override

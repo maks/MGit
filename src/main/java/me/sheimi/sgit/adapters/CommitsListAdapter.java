@@ -1,6 +1,7 @@
 package me.sheimi.sgit.adapters;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +21,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
@@ -29,24 +32,84 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 /**
  * Created by sheimi on 8/18/13.
  */
-public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
+public class CommitsListAdapter extends BaseAdapter {
 
     private Repo mRepo;
     private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
             "MM/dd/yyyy", Locale.getDefault());
     private Set<Integer> mChosenItems;
+    private String mFilter;
+    private ArrayList<RevCommit> mAll;
+    private ArrayList<RevCommit> mFiltered;
+    private Context mContext;
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems,
             Repo repo) {
-        super(context, 0);
+        super();
+        mContext = context;
         mChosenItems = chosenItems;
         mRepo = repo;
+        mAll = new ArrayList<RevCommit>();
+        mFiltered = null;
+        mFilter = null;
+    }
+
+    private boolean isAccepted(RevCommit in) {
+        if (mFilter == null) {
+            return true;
+        }
+        return (in.getId().toString().startsWith("commit " + mFilter.toLowerCase())
+                || in.getAuthorIdent().getEmailAddress().contains(mFilter)
+                || in.getAuthorIdent().getName().contains(mFilter)
+                || in.getCommitterIdent().getEmailAddress().contains(mFilter)
+                || in.getCommitterIdent().getName().contains(mFilter)
+                || in.getFullMessage().contains(mFilter));
+    }
+
+    private void doFiltering() {
+        if (mFilter == null){
+            mFiltered = null;
+        } else {
+            mFiltered = new ArrayList<>();
+            for (RevCommit c : mAll)
+                if (isAccepted(c))
+                    mFiltered.add(c);
+
+        }
+    }
+
+    public void setFilter(String query) {
+        if (query == null || query.equals("")){
+            mFilter = null;
+        } else {
+            mFilter = query;
+        }
+        doFiltering();
+        notifyDataSetChanged();
+    }
+
+    private ArrayList<RevCommit> getEffectiveList() {
+        return (mFilter == null) ? mAll : mFiltered;
+    }
+
+    @Override
+    public int getCount() {
+        return getEffectiveList().size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public RevCommit getItem(int position) {
+        return getEffectiveList().get(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
+        LayoutInflater inflater = LayoutInflater.from(mContext);
         CommitsListItemHolder holder;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listitem_commits, parent,
@@ -82,22 +145,26 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
         im.displayImage(BasicFunctions.buildGravatarURL(email),
                 holder.commitsIcon);
 
+        int color, colorResId;
         if (mChosenItems.contains(position)) {
-            convertView.setBackgroundColor(getColor(R.color.pressed_sgit));
+            colorResId = R.color.pressed_sgit;
         } else {
-            convertView
-                    .setBackgroundColor(getColor(android.R.color.transparent));
+            colorResId = android.R.color.transparent;
         }
-
+        if (mContext instanceof SheimiFragmentActivity) {
+            color = mContext.getResources().getColor(colorResId);
+            convertView.setBackgroundColor(color);
+        }
         return convertView;
     }
 
-    private int getColor(int resId) {
-        Context context = getContext();
-        if (context instanceof SheimiFragmentActivity) {
-            return ((SheimiFragmentActivity) context).getResColor(resId);
+    public void clear() {
+        mAll = new ArrayList<>();
+        if (mFilter == null) {
+            mFiltered = null;
+        } else {
+            mFiltered = new ArrayList<>();
         }
-        return 0;
     }
 
     public void resetCommit() {
@@ -107,11 +174,10 @@ public class CommitsListAdapter extends ArrayAdapter<RevCommit> {
 
                     @Override
                     public void postCommits(List<RevCommit> commits) {
-                        // TODO Auto-generated method stub
                         if (commits != null) {
                             // TODO why == null
-                        	clear();
-                            addAll(commits);
+                            mAll = new ArrayList<>(commits);
+                            doFiltering();
                         }
                         notifyDataSetChanged();
                     }
