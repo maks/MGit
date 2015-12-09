@@ -22,6 +22,7 @@
     <string name="action_choose_language">Choose Language</string>
     <string name="action_mode_diff">Diff</string>
     <string name="action_edit">Edit</string>
+    <string name="action_edit_save">Save</string>
     <string name="action_copy_all">Copy whole file</string>
     <string name="action_edit_in_other_app">Edit in other apps</string>
     <string name="action_reset">Reset</string>
@@ -70,6 +71,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="tab_files_label">Files</string>
+    <string name="tab_file_label">File</string>
     <string name="tab_commits_label">Commits</string>
     <string name="tab_status_label">Status</string>
 

@@ -158,7 +158,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private void createFragments() {
         mFilesFragment = FilesFragment.newInstance(mRepo);
-        mCommitsFragment = CommitsFragment.newInstance(mRepo);
+        mCommitsFragment = CommitsFragment.newInstance(mRepo, null);
         mStatusFragment = StatusFragment.newInstance(mRepo);
     }
 

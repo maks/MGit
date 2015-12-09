@@ -42,10 +42,12 @@ public class CommitsListAdapter extends BaseAdapter {
     private ArrayList<RevCommit> mAll;
     private ArrayList<RevCommit> mFiltered;
     private Context mContext;
+    private String mFile;
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems,
-            Repo repo) {
+            Repo repo, String file) {
         super();
+        mFile = file;
         mContext = context;
         mChosenItems = chosenItems;
         mRepo = repo;
@@ -169,7 +171,7 @@ public class CommitsListAdapter extends BaseAdapter {
 
     public void resetCommit() {
         clear();
-        GetCommitTask getCommitTask = new GetCommitTask(mRepo,
+        GetCommitTask getCommitTask = new GetCommitTask(mRepo, mFile,
                 new GetCommitCallback() {
 
                     @Override

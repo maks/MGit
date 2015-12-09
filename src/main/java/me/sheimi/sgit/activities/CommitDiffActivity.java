@@ -56,7 +56,7 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_file);
+        setContentView(R.layout.activity_view_diff);
         setupActionBar();
         mDiffContent = (WebView) findViewById(R.id.fileContent);
         mLoading = (ProgressBar) findViewById(R.id.loading);

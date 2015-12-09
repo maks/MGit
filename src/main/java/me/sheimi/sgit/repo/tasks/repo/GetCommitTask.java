@@ -6,6 +6,7 @@ import java.util.List;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 
+import org.eclipse.jgit.api.LogCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -13,6 +14,7 @@ public class GetCommitTask extends RepoOpTask {
 
     private GetCommitCallback mCallback;
     private List<RevCommit> mResult;
+    private String mFile;
 
     public static interface GetCommitCallback {
         public void postCommits(List<RevCommit> commits);
@@ -22,8 +24,9 @@ public class GetCommitTask extends RepoOpTask {
         execute();
     }
 
-    public GetCommitTask(Repo repo, GetCommitCallback callback) {
+    public GetCommitTask(Repo repo, String file, GetCommitCallback callback) {
         super(repo);
+        mFile = file;
         mCallback = callback;
     }
 
@@ -41,7 +44,10 @@ public class GetCommitTask extends RepoOpTask {
 
     public boolean getCommitsList() {
         try {
-            Iterable<RevCommit> commits = mRepo.getGit().log().call();
+            LogCommand cmd = mRepo.getGit().log();
+            if (mFile != null)
+                cmd.addPath(mFile);
+            Iterable<RevCommit> commits = cmd.call();
             mResult = new ArrayList<RevCommit>();
             for (RevCommit commit : commits) {
                 mResult.add(commit);

@@ -4,15 +4,19 @@
                 android:layout_height="match_parent"
                 tools:context=".ViewFileActivity">
 
-    <WebView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fileContent"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
+        <android.support.v4.view.PagerTitleStrip
+            android:id="@+id/pager_title_strip"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/loading"
-            android:layout_centerInParent="true"/>
+            android:layout_gravity="top"
+            android:background="?drawable/pager_title_strip_background"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:textColor="#fff" />
+    </android.support.v4.view.ViewPager>
 </RelativeLayout>
