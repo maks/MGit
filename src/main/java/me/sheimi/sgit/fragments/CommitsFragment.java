@@ -96,11 +96,7 @@ public class CommitsFragment extends BaseFragment implements
                             View view, int position, long id) {
                         if (mActionMode == null) {
                             RevCommit newCommit = mCommitsListAdapter.getItem(position);
-                            if (newCommit.getParentCount() == 0) {
-                                showToastMessage(R.string.alert_no_older_commits);
-                                return;
-                            }
-                            showDiff(null, newCommit.getParent(0).getName(), newCommit.getName(), true);
+                            showDiff(null, null, newCommit.getName(), true);
                             return;
                         }
                         chooseItem(position);
@@ -179,7 +175,9 @@ public class CommitsFragment extends BaseFragment implements
                           boolean showDescription) {
         Intent intent = new Intent(getRawActivity(),
                 CommitDiffActivity.class);
-        intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
+        if (oldCommit != null) {
+            intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
+        }
         intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
         intent.putExtra(CommitDiffActivity.SHOW_DESCRIPTION, showDescription);
         intent.putExtra(Repo.TAG, mRepo);

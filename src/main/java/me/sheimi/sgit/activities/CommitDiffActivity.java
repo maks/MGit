@@ -67,8 +67,9 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         mShowDescription = extras.getBoolean(SHOW_DESCRIPTION);
         mRepo = (Repo) extras.getSerializable(Repo.TAG);
 
-        String title = Repo.getCommitDisplayName(mNewCommit) + " : "
-                + Repo.getCommitDisplayName(mOldCommit);
+        String title = Repo.getCommitDisplayName(mNewCommit);
+        if (mOldCommit != null)
+            title += " : " + Repo.getCommitDisplayName(mOldCommit);
 
         setTitle(getString(R.string.title_activity_commit_diff) + title);
         loadFileContent();
@@ -157,8 +158,10 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
 
     private File sharedDiffPathName() {
         // Should we rather use createTempFile?
-        return new File(FsUtils.getExternalDir("diff", true),
-                mNewCommit + "_" + mOldCommit + ".diff");
+        String fname = mNewCommit;
+        if (mOldCommit != null)
+            fname += "_" + mOldCommit;
+        return new File(FsUtils.getExternalDir("diff", true), fname + ".diff");
     }
 
     @Override
@@ -241,7 +244,8 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
 
         @JavascriptInterface
         public void getDiffEntries() {
-            CommitDiffTask diffTask = new CommitDiffTask(mRepo, mOldCommit,
+            String oldCommit = mOldCommit != null ? mOldCommit : (mNewCommit + "^");
+            CommitDiffTask diffTask = new CommitDiffTask(mRepo, oldCommit,
                     mNewCommit, new CommitDiffResult() {
                 @Override
                 public void pushResult(List<DiffEntry> diffEntries,
