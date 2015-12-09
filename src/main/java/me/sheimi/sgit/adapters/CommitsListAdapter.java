@@ -40,12 +40,12 @@ public class CommitsListAdapter extends BaseAdapter {
     private Set<Integer> mChosenItems;
     private String mFilter;
     private ArrayList<RevCommit> mAll;
-    private ArrayList<RevCommit> mFiltered;
+    private ArrayList<Integer> mFiltered;
     private Context mContext;
     private String mFile;
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems,
-            Repo repo, String file) {
+                              Repo repo, String file) {
         super();
         mFile = file;
         mContext = context;
@@ -61,27 +61,23 @@ public class CommitsListAdapter extends BaseAdapter {
             return true;
         }
         return (in.getId().toString().startsWith("commit " + mFilter.toLowerCase())
-                || in.getAuthorIdent().getEmailAddress().contains(mFilter)
-                || in.getAuthorIdent().getName().contains(mFilter)
-                || in.getCommitterIdent().getEmailAddress().contains(mFilter)
-                || in.getCommitterIdent().getName().contains(mFilter)
-                || in.getFullMessage().contains(mFilter));
+                || new String(in.getRawBuffer()).contains(mFilter));
     }
 
     private void doFiltering() {
-        if (mFilter == null){
+        if (mFilter == null) {
             mFiltered = null;
         } else {
             mFiltered = new ArrayList<>();
-            for (RevCommit c : mAll)
-                if (isAccepted(c))
-                    mFiltered.add(c);
-
+            int i;
+            for (i = 0; i < mAll.size(); i++)
+                if (isAccepted(mAll.get(i)))
+                    mFiltered.add(i);
         }
     }
 
     public void setFilter(String query) {
-        if (query == null || query.equals("")){
+        if (query == null || query.equals("")) {
             mFilter = null;
         } else {
             mFilter = query;
@@ -90,22 +86,22 @@ public class CommitsListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private ArrayList<RevCommit> getEffectiveList() {
-        return (mFilter == null) ? mAll : mFiltered;
-    }
-
     @Override
     public int getCount() {
-        return getEffectiveList().size();
+        return (mFilter == null) ? mAll.size() : mFiltered.size();
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        if (mFilter == null) {
+            return position;
+        } else {
+            return mFiltered.get(position);
+        }
     }
 
     public RevCommit getItem(int position) {
-        return getEffectiveList().get(position);
+        return (mFilter == null) ? mAll.get(position) : mAll.get(mFiltered.get(position));
     }
 
     @Override
