@@ -10,7 +10,6 @@
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
     <string name="action_import_repo">Import Repository</string>
-    <string name="action_git_profile">Git Profile</string>
     <string name="action_settings">Settings</string>
     <string name="action_mode_rename_key">Rename key</string>
     <string name="action_mode_rename_branch">Rename branch</string>
@@ -106,7 +105,7 @@
     <string name="dialog_create_file_hint">File Name</string>
     <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
     <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
-    <string name="dialog_profile_git_profile_title">Git Profile</string>
+    <string name="dialog_profile_preferences_title">Preferences</string>
     <string name="dialog_prompt_for_password_title">Needs Authentication</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Authentication Failed</string>
     <string name="dialog_prompt_for_password_checkbox">Save username and password</string>
@@ -161,4 +160,6 @@
     <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
     <string name="pref_category_title_security">Security</string>
+    <string name="preference_use_theme">Select Colour Theme</string>
+    <string name="pref_key_use_theme_id">color_theme_id</string>
 </resources>

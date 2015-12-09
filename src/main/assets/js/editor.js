@@ -18,6 +18,7 @@
     editorOption = {
       lineNumbers: true,
       mode: lang,
+      theme: CodeLoader.getTheme(),
       matchBrackets: true,
       lineWrapping: true,
       readOnly: true

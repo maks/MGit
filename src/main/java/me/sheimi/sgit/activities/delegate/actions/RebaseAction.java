@@ -2,6 +2,7 @@ package me.sheimi.sgit.activities.delegate.actions;
 
 import java.util.List;
 
+import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -126,10 +127,10 @@ public class RebaseAction extends RepoAction {
                 switch (commitType) {
                     case Repo.COMMIT_TYPE_HEAD:
                         holder.commitIcon
-                                .setImageResource(R.drawable.ic_branch_d);
+                                .setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_branch_l));
                         break;
                     case Repo.COMMIT_TYPE_TAG:
-                        holder.commitIcon.setImageResource(R.drawable.ic_tag_d);
+                        holder.commitIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_tag_l));
                         break;
                 }
                 holder.commitTitle.setText(displayName);

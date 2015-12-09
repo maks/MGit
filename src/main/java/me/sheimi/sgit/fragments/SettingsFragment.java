@@ -1,13 +1,20 @@
 package me.sheimi.sgit.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.RepoListActivity;
 
 public class SettingsFragment extends PreferenceFragment {
+    private SharedPreferences.OnSharedPreferenceChangeListener mListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +26,35 @@ public class SettingsFragment extends PreferenceFragment {
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+
+        final String themePrefKey = getString(R.string.pref_key_use_theme_id);
+
+        mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (themePrefKey.equals(key)) {
+                    // nice trick to recreate the back stack, to ensure existing activities onCreate() are
+                    // called to set new theme, courtesy of: http://stackoverflow.com/a/28799124/85472
+                    TaskStackBuilder.create(getActivity())
+                            .addNextIntent(new Intent(getActivity(), RepoListActivity.class))
+                            .addNextIntent(getActivity().getIntent())
+                            .startActivities();
+                }
+            }
+        };
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(mListener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(mListener);
     }
 }
 

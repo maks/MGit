@@ -5,6 +5,7 @@ import java.io.FileFilter;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -47,9 +48,9 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         File item = getItem(position);
         holder.fileTitle.setText(item.getName());
         if (item.isDirectory()) {
-            holder.fileIcon.setImageResource(R.drawable.ic_folder_d);
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_folder_fl));
         } else {
-            holder.fileIcon.setImageResource(R.drawable.ic_file_d);
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_file_fl));
         }
         // set if selected
         if (convertView.isSelected()) {

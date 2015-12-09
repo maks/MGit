@@ -1,7 +1,20 @@
 <resources>
 
+    <drawable name="pager_title_strip_background">@color/branch_name_bg</drawable>
+    <drawable name="drawer_text_color">#333</drawable>
+    <drawable name="drawer_background">@color/branch_name_bg</drawable>
+    <drawable name="ic_file_fl">@drawable/ic_file_d</drawable>
+    <drawable name="ic_folder_fl">@drawable/ic_folder_d</drawable>
+    <drawable name="ic_branch_l">@drawable/ic_branch_d</drawable>
+    <drawable name="ic_tag_l">@drawable/ic_tag_d</drawable>
+
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.Sgit">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="DarkAppTheme" parent="Theme.SgitDark">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
