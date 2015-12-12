@@ -64,6 +64,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int COMMITS_FRAGMENT_INDEX = 1;
     private static final int STATUS_FRAGMENT_INDEX = 2;
     private static final int BRANCH_CHOOSE_ACTIVITY = 0;
+    private int mSelectedTab;
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -216,6 +217,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         getMenuInflater().inflate(R.menu.repo_detail, menu);
         mSearchItem = menu.findItem(R.id.action_search);
         mSearchItem.setOnActionExpandListener(mTabItemPagerAdapter);
+        mSearchItem.setVisible(mSelectedTab == COMMITS_FRAGMENT_INDEX);
         SearchView searchView = (SearchView) mSearchItem.getActionView();
         if (searchView != null) {
             searchView.setIconifiedByDefault(true);
@@ -364,7 +366,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
         @Override
         public void onPageSelected(int position) {
-            mSearchItem.setVisible(position == COMMITS_FRAGMENT_INDEX);
+            mSelectedTab = position;
+            if (mSearchItem != null) {
+                mSearchItem.setVisible(position == COMMITS_FRAGMENT_INDEX);
+            }
         }
 
         @Override
