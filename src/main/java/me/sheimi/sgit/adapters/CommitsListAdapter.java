@@ -1,5 +1,6 @@
 package me.sheimi.sgit.adapters;
 
+import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,12 +19,14 @@ import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 
@@ -43,6 +46,49 @@ public class CommitsListAdapter extends BaseAdapter {
     private ArrayList<Integer> mFiltered;
     private Context mContext;
     private String mFile;
+    private BackgroundUpdate mUpdate;
+    private int mPosted;
+    private Object mProgressLock = new Object();
+    private boolean mIsIncomplete;
+    private int mProgressCursor;
+    private long mPostAtTime;
+
+    private class BackgroundUpdate extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            int i;
+            for (i = mProgressCursor; i < mAll.size(); i++) {
+                if (mFiltered.size() != mPosted && System.nanoTime() > mPostAtTime) {
+                    synchronized (mProgressLock) {
+                        mProgressCursor = i;
+                        mPosted = mFiltered.size();
+                        return null;
+                    }
+                }
+                if (isAccepted(mAll.get(i)))
+                    mFiltered.add(i);
+            }
+            synchronized (mProgressLock) {
+                mPosted = mFiltered.size();
+                mIsIncomplete = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            synchronized (mProgressLock) {
+                notifyDataSetChanged();
+                if (mIsIncomplete) {
+                    // Updates after 1 s
+                    mPostAtTime = System.nanoTime() + 1000000000;
+                    mUpdate = new BackgroundUpdate();
+                    mUpdate.execute();
+                }
+            }
+        }
+    }
 
     public CommitsListAdapter(Context context, Set<Integer> chosenItems,
                               Repo repo, String file) {
@@ -65,14 +111,23 @@ public class CommitsListAdapter extends BaseAdapter {
     }
 
     private void doFiltering() {
-        if (mFilter == null) {
+        synchronized (mProgressLock) {
+            try {
+                mUpdate.cancel(true);
+                mUpdate = null;
+            } catch (Exception e) {
+            }
             mFiltered = null;
-        } else {
-            mFiltered = new ArrayList<>();
-            int i;
-            for (i = 0; i < mAll.size(); i++)
-                if (isAccepted(mAll.get(i)))
-                    mFiltered.add(i);
+            if (mFilter != null) {
+                mUpdate = new BackgroundUpdate();
+                mPosted = 0;
+                mIsIncomplete = true;
+                mFiltered = new ArrayList<>();
+                mProgressCursor = 0;
+                // Show first result after 100 ms
+                mPostAtTime = System.nanoTime() + 100000000;
+                mUpdate.execute();
+            }
         }
     }
 
@@ -83,33 +138,65 @@ public class CommitsListAdapter extends BaseAdapter {
             mFilter = query;
         }
         doFiltering();
-        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return (mFilter == null) ? mAll.size() : mFiltered.size();
+        if (mFilter == null)
+            return mAll.size();
+        if (mIsIncomplete)
+            return mPosted + 1;
+        return mFiltered.size();
     }
 
     @Override
     public long getItemId(int position) {
+        if (mIsIncomplete && position >= mPosted) {
+            return -1;
+        }
         if (mFilter == null) {
             return position;
         } else {
-            return mFiltered.get(position);
+            try {
+                return mFiltered.get(position);
+            } catch (Exception e) {
+                return -1;
+            }
         }
     }
 
     public RevCommit getItem(int position) {
-        return (mFilter == null) ? mAll.get(position) : mAll.get(mFiltered.get(position));
+        if (mIsIncomplete && position >= mPosted) {
+            return null;
+        }
+        try {
+            return (mFilter == null) ? mAll.get(position) : mAll.get(mFiltered.get(position));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public boolean isProgressBar(int position) {
+        if (mFilter == null)
+            return position >= mAll.size();
+        if (mIsIncomplete)
+            return position >= mPosted;
+        return position >= mFiltered.size();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        CommitsListItemHolder holder;
-        if (convertView == null) {
+        if (isProgressBar(position)) {
+            ProgressBar pb = new ProgressBar(mContext, null, android.R.attr.progressBarStyleLarge);
+            return pb;
+        }
+        CommitsListItemHolder holder = null;
+        if (convertView != null) {
+            holder = (CommitsListItemHolder) convertView.getTag();
+        }
+        if (holder == null) {
             convertView = inflater.inflate(R.layout.listitem_commits, parent,
                     false);
             holder = new CommitsListItemHolder();
@@ -124,8 +211,6 @@ public class CommitsListAdapter extends BaseAdapter {
             holder.commitTime = (TextView) convertView
                     .findViewById(R.id.commitTime);
             convertView.setTag(holder);
-        } else {
-            holder = (CommitsListItemHolder) convertView.getTag();
         }
         RevCommit commit = getItem(position);
         PersonIdent person = commit.getAuthorIdent();

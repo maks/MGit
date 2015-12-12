@@ -256,6 +256,8 @@ public class CommitsFragment extends BaseFragment implements
     }
 
     private void chooseItem(int position) {
+        if (mCommitsListAdapter.isProgressBar(position))
+            return;
         if (mChosenItem.contains(position)) {
             mChosenItem.remove(position);
             mCommitsListAdapter.notifyDataSetChanged();
