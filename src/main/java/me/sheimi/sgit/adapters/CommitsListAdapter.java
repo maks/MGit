@@ -112,8 +112,21 @@ public class CommitsListAdapter extends BaseAdapter {
         if (mFilter == null) {
             return true;
         }
-        return (in.getId().toString().startsWith("commit " + mFilter.toLowerCase())
-                || new String(in.getRawBuffer()).contains(mFilter));
+        if (in.getId().toString().startsWith("commit " + mFilter.toLowerCase())) {
+            return true;
+        }
+        /* Search in raw buffer is fast but it may find the string in
+         * e.g. parents field or as part of keyword. So first search in
+         * raw buffer and then look in parsed components if raw buffer
+         * contains needle. */
+        if (!new String(in.getRawBuffer()).contains(mFilter)) {
+            return false;
+        }
+        return (in.getAuthorIdent().getName().contains(mFilter)
+                || in.getAuthorIdent().getEmailAddress().contains(mFilter)
+                || in.getCommitterIdent().getName().contains(mFilter)
+                || in.getCommitterIdent().getEmailAddress().contains(mFilter)
+                || in.getFullMessage().contains(mFilter));
     }
 
     private void stopFiltering() {
