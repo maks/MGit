@@ -65,6 +65,9 @@ public class CommitsListAdapter extends BaseAdapter {
                         return null;
                     }
                 }
+                if (isCancelled()) {
+                    return null;
+                }
                 if (isAccepted(mAll.get(i)))
                     mFiltered.add(i);
             }
@@ -78,6 +81,9 @@ public class CommitsListAdapter extends BaseAdapter {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            if (isCancelled()) {
+                return;
+            }
             synchronized (mProgressLock) {
                 notifyDataSetChanged();
                 if (mIsIncomplete) {
@@ -110,34 +116,40 @@ public class CommitsListAdapter extends BaseAdapter {
                 || new String(in.getRawBuffer()).contains(mFilter));
     }
 
+    private void stopFiltering() {
+        try {
+            mUpdate.cancel(true);
+            mUpdate = null;
+        } catch (Exception e) {
+        }
+    }
+
     private void doFiltering() {
-        synchronized (mProgressLock) {
-            try {
-                mUpdate.cancel(true);
-                mUpdate = null;
-            } catch (Exception e) {
-            }
-            mFiltered = null;
-            if (mFilter != null) {
-                mUpdate = new BackgroundUpdate();
-                mPosted = 0;
-                mIsIncomplete = true;
-                mFiltered = new ArrayList<>();
-                mProgressCursor = 0;
-                // Show first result after 100 ms
-                mPostAtTime = System.nanoTime() + 100000000;
-                mUpdate.execute();
-            }
+        mFiltered = null;
+        if (mFilter != null) {
+            mUpdate = new BackgroundUpdate();
+            mPosted = 0;
+            mIsIncomplete = true;
+            mFiltered = new ArrayList<>();
+            mProgressCursor = 0;
+            // Show first result after 100 ms
+            mPostAtTime = System.nanoTime() + 100000000;
+            mUpdate.execute();
+        } else {
+            notifyDataSetChanged();
         }
     }
 
     public void setFilter(String query) {
-        if (query == null || query.equals("")) {
-            mFilter = null;
-        } else {
-            mFilter = query;
+        synchronized (mProgressLock) {
+            stopFiltering();
+            if (query == null || query.equals("")) {
+                mFilter = null;
+            } else {
+                mFilter = query;
+            }
+            doFiltering();
         }
-        doFiltering();
     }
 
     @Override
@@ -242,11 +254,14 @@ public class CommitsListAdapter extends BaseAdapter {
     }
 
     public void clear() {
-        mAll = new ArrayList<>();
-        if (mFilter == null) {
-            mFiltered = null;
-        } else {
-            mFiltered = new ArrayList<>();
+        synchronized (mProgressLock) {
+            stopFiltering();
+            mAll = new ArrayList<>();
+            if (mFilter == null) {
+                mFiltered = null;
+            } else {
+                mFiltered = new ArrayList<>();
+            }
         }
     }
 
@@ -259,10 +274,12 @@ public class CommitsListAdapter extends BaseAdapter {
                     public void postCommits(List<RevCommit> commits) {
                         if (commits != null) {
                             // TODO why == null
-                            mAll = new ArrayList<>(commits);
-                            doFiltering();
+                            synchronized (mProgressLock) {
+                                stopFiltering();
+                                mAll = new ArrayList<>(commits);
+                                doFiltering();
+                            }
                         }
-                        notifyDataSetChanged();
                     }
                 });
         getCommitTask.executeTask();
