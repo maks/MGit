@@ -1,5 +1,5 @@
 # SGit (This repo is no longer maintained.)
-## After graduation, I don't have enough time for this application. Sorry!!
+## After graduation, I don't have enough time to maintain this application. Sorry!!
 
 
 A Git client for Android.
