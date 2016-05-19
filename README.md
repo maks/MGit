@@ -1,4 +1,6 @@
 # SGit (This repo is no longer maintained.)
+## After graduation, I don't have enough time for this application. Sorry!!
+
 
 A Git client for Android.
 
@@ -84,6 +86,6 @@ A Git client for Android.
 
 [GPLv3](./LICENSE)
 
-## Help & Donate
+## Help
 
 If you want to help improve this project you can fork it and send a pull request.
