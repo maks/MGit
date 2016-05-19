@@ -1,4 +1,4 @@
-# SGit
+# SGit (This repo is no longer maintained.)
 
 A Git client for Android.
 
