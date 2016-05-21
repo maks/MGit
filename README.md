@@ -1,6 +1,3 @@
-# SGit (This repo is no longer maintained.)
-## After graduation, I don't have enough time to maintain this application. Sorry!!
-
 
 A Git client for Android.
 
@@ -78,6 +75,7 @@ A Git client for Android.
 ## To Do List
 
  * Private key passphrase
+ * Submodule support
  * Dark theme
  * Commits related to a file
  * Commit graph (low priority)
