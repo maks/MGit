@@ -73,7 +73,7 @@ public class SheimiFragmentActivity extends Activity {
         showToastMessage(getString(resId));
     }
 
-    public int getColor(int resId) {
+    public int getResColor(int resId) {
         return getResources().getColor(resId);
     }
 

@@ -95,7 +95,7 @@ public class CommitsListAdapter extends SheimiArrayAdapter<RevCommit> {
     private int getColor(int resId) {
         Context context = getContext();
         if (context instanceof SheimiFragmentActivity) {
-            return ((SheimiFragmentActivity) context).getColor(resId);
+            return ((SheimiFragmentActivity) context).getResColor(resId);
         }
         return 0;
     }
