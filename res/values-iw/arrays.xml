@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="repo_file_operations">
+    <item>הוסף לשלב</item>
+    <item>בדיקה (אפס שינויים)</item>
+    <item>מחק</item>
+  </string-array>
+  <string-array name="repo_operation_names">
+    <item>משוך</item>
+    <item>דחוף</item>
+    <item>הוסף את כולם לשלב</item>
+    <item>Commit</item>
+    <item>אפס</item>
+    <item>מיזוג</item>
+    <item>Rebase</item>
+    <item>Cherry Pick</item>
+    <item>הבדלים</item>
+    <item>קובץ חדש</item>
+    <item>תיקייה חדשה</item>
+    <item>הוסף שרת</item>
+    <item>מחק</item>
+  </string-array>
+</resources>

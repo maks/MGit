@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SGit</string>
+    <string name="default_text">默认文字</string>
+    <string name="title_clone_repo">克隆仓库</string>
+    <string name="preference_file_key">me.sheimi.sgit</string>
+
+    <!-- action -->
+    <string name="action_search">查找</string>
+    <string name="action_donate">捐赠</string>
+    <string name="action_clone">克隆</string>
+    <string name="action_import_repo">导入仓库</string>
+    <string name="action_git_profile">Git配置</string>
+    <string name="action_settings">设置</string>
+    <string name="action_manage_private_key">私钥</string>
+    <string name="action_add_private_key">添加私钥</string>
+    <string name="action_feedback">反馈</string>
+    <string name="action_choose_language">选择语言</string>
+    <string name="action_mode_diff">比较</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_edit_in_other_app">在其他应用中编辑</string>
+    <string name="action_reset">重置</string>
+    <string name="action_toggle_drawer">开关抽屉</string>
+    <string name="action_copy_commit_str">复制提交Hash值</string>
+    <string name="action_create_external_repo">创建仓库</string>
+
+    <!-- label msg -->
+    <string name="label_ok">确定</string>
+    <string name="label_remote_url">远程地址</string>
+    <string name="label_cancel">取消</string>
+    <string name="label_clone">克隆</string>
+    <string name="label_delete">删除</string>
+    <string name="label_username">用户名</string>
+    <string name="label_password">密码</string>
+    <string name="label_new_file_name">新建文件名</string>
+    <string name="label_rename">重命名</string>
+    <string name="label_send_feedback">发送反馈</string>
+    <string name="label_import">导入</string>
+    <string name="label_push">推送</string>
+    <string name="label_push_all">全部推送</string>
+    <string name="label_create">创建</string>
+    <string name="label_checkout">检出</string>
+    <string name="label_git_name">名称</string>
+    <string name="label_git_email">邮箱</string>
+    <string name="label_done">完成</string>
+    <string name="label_choose_app_to_open">打开...</string>
+    <string name="label_choose_app_to_edit">编辑...</string>
+
+    <!-- for title -->
+    <string name="title_activity_repo_detail">仓库</string>
+    <string name="title_activity_import_repository">导入仓库</string>
+    <string name="title_activity_view_file">文件：</string>
+    <string name="title_activity_commit_diff">比较差异：</string>
+    <string name="title_section1">第1部分</string>
+    <string name="title_section2">第2部分</string>
+    <string name="title_section3">第3部分</string>
+    <string name="tab_files_label">文件</string>
+    <string name="tab_commits_label">提交</string>
+    <string name="tab_status_label">状态</string>
+
+    <!-- Dialog Msg -->
+    <string name="dialog_choose_branch_title">选择分支</string>
+    <string name="dialog_delete_repo_title">确认删除</string>
+    <string name="dialog_delete_repo_msg">你确定删除这个仓库吗？</string>
+    <string name="dialog_rename_key_title">重命名</string>
+    <string name="dialog_choose_language_title">选择语言</string>
+    <string name="dialog_comfirm_import_repo_title">导入仓库</string>
+    <string name="dialog_comfirm_import_repo_msg">你确定导入这个仓库吗？</string>
+    <string name="dialog_merge_title">选择分支来合并</string>
+    <string name="dialog_merge_checkbox">在提交后合并</string>
+    <string name="dialog_file_delete">删除文件</string>
+    <string name="dialog_file_delete_msg">你确定要删除文件或目录？</string>
+    <string name="dialog_reset_commit_title">重置更改</string>
+    <string name="dialog_reset_commit_msg">你确定放弃所有修改？</string>
+    <string name="dialog_create_dir_title">新建目录</string>
+    <string name="dialog_create_dir_hint">目录名</string>
+    <string name="dialog_create_file_title">新建文件</string>
+    <string name="dialog_create_file_hint">文件名</string>
+    <string name="dialog_comfirm_checkout_commit_title">确认检出</string>
+    <string name="dialog_comfirm_checkout_commit_msg">选择分支</string>
+    <string name="dialog_profile_git_profile_title">Git配置</string>
+    <string name="dialog_prompt_for_password_title">需要认证</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">认证失败</string>
+    <string name="dialog_prompt_for_password_checkbox">保存用户名和密码</string>
+    <string name="dialog_title_you_want_to">你正准备...</string>
+
+    <!-- Others -->
+    <string name="pull_msg_init">正在拉取...</string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
+    <string name="push_msg_init">正在推送...</string>
+    <string name="title_activity_private_key_manage">管理私钥</string>
+    <string name="hello_world">Hello, World!</string>
+    <string name="title_activity_explore_file">浏览文件</string>
+
+    <!-- toast msg -->
+    <string name="feedback_subject">反馈</string>
+
+</resources>

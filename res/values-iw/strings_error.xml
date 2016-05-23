@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="error_invalid_remote">שרת לא חוקי</string>
+  <string name="error_transport">שגיאת העברה</string>
+  <string name="error_clone_failed">העתקה נכשלה</string>
+  <string name="error_pull_failed">משיכה נכשלה</string>
+  <string name="error_diff_failed">מציאת שינויים נכשלה</string>
+  <string name="error_out_of_memory">אופס, נגמר הזיכרון הפנוי</string>
+  <string name="error_no_edit_app">אופס, אין יישומים שיכולים לערוך קובץ זה.</string>
+  <string name="error_no_open_app">אופס, אין יישומים שיכולים לערוך קובץ זה.</string>
+  <string name="error_can_not_edit_file">אופס, לא יכול לערוך על התקן זה.</string>
+  <string name="error_can_not_open_file">אופס, לא יכול לפתוח על התקן זה.</string>
+  <string name="error_unknown">משהו לא בסדר!!!</string>
+  <string name="error_task_running">משימה עבור המאגר כבר קיימת</string>
+  <string name="error_something_wrong">משהו רע קרה</string>
+  <string name="error_repository_not_found">מאגר לא נמצא (יתכן ומשהו לא בסדר עם מאגר).</string>
+  <string name="alert_field_not_empty">שדה לא צריך להיות ריק</string>
+  <string name="alert_remoteurl_required">URL שרת נדרש</string>
+  <string name="alert_localpath_required">שם למאגר נדרש</string>
+  <string name="alert_localpath_format">שגיאה בתבנית שם המאגר. שם המאגר אינו יכול להכיל סלאשים.</string>
+  <string name="alert_localpath_repo_exists">מאגר קיים</string>
+  <string name="alert_new_filename_required">צריך שם קובץ</string>
+  <string name="alert_file_exists">קובץ עם שם זה קיים</string>
+  <string name="alert_filename_format">תבנית שם הקובץ בעייתית</string>
+  <string name="alert_choose_two_items">אתה יכול לבחור רק שני פריטים</string>
+  <string name="alert_no_items_selected">לא נבחרו פריטים</string>
+  <string name="alert_no_older_commits">אין Commit ישן שניתן להשוות איתו</string>
+  <string name="alert_have_paid">מודעות בוטלו.</string>
+  <string name="alert_please_wait_previous_op">פעולה קודמת עדיין רצה</string>
+  <string name="alert_you_must_choose_one_commit_to_copy">אנה בחר ב-commit מסוים כדי להעתיקו</string>
+  <string name="alert_you_should_input_something">עליך להזין משהו</string>
+  <string name="alert_please_add_a_remote">הוסף שרת קודם</string>
+  <string name="alert_is_already_a_git_repo">תיקייה זו כבר מאגר git.</string>
+  <string name="alert_save_failed">שמירה נכשלה</string>
+</resources>

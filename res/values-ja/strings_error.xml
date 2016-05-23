@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">無効なリモート</string>
+    <string name="error_transport">転送エラー</string>
+    <string name="error_clone_failed">クローンに失敗</string>
+    <string name="error_pull_failed">プルに失敗</string>
+    <string name="error_diff_failed">Diffに失敗</string>
+    <string name="error_out_of_memory">おっと、メモリが不足しています。</string>
+    <string name="error_no_edit_app">おっと、どのアプリもソースファイルを編集できません。</string>
+    <string name="error_no_open_app">おっと、ソースファイルを編集できるアプリが在りません。</string>
+    <string name="error_can_not_edit_file">おっと、この端末ではこのファイルを編集できません。</string>
+    <string name="error_can_not_open_file">おっと、この端末ではこのファイルを開けません。</string>
+    <string name="error_unknown">何かが起こりました!!!</string>
+    <string name="error_task_running">このリポジトリのタスクがすでに動作しています。</string>
+    <string name="error_something_wrong">何かが起こりました。</string>
+    <string name="error_repository_not_found">リポジトリが見つかりません。 (このリポジトリに何か起こったかもしれません。).</string>
+
+    <!-- alerts -->
+    <string name="alert_field_not_empty">フィールドを空欄にしないでください。</string>
+    <string name="alert_remoteurl_required">リモート URLが必要です。</string>
+    <string name="alert_localpath_required">リポジトリ名が必要です。</string>
+    <string name="alert_localpath_format">リポジトリ名フォーマットエラー。リポジトリ名にスラッシュを含めることはできません。 </string>
+    <string name="alert_localpath_repo_exists">リポジトリが存在します。</string>
+    <string name="alert_new_filename_required">ファイル名が必要です。</string>
+    <string name="alert_file_exists">このファイル名はすでに存在しています。</string>
+    <string name="alert_filename_format">ファイル名フォーマットエラー</string>
+    <string name="alert_choose_two_items">2つまでアイテムを選択できます。</string>
+    <string name="alert_no_items_selected">アイテムが選択されていません。</string>
+    <string name="alert_no_older_commits">古いコミットと比較されています。</string>
+    <string name="alert_have_paid">広告は無効化されました。</string>
+    <string name="alert_please_wait_previous_op">前回のオペレーションがまだ実行されています。</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">コピーするコミットを1つ選んでください。</string>
+    <string name="alert_you_should_input_something">何か入力する必要がります。</string>
+    <string name="alert_please_add_a_remote">最初にリモートに追加してください。</string>
+    <string name="alert_is_already_a_git_repo">このディレクトリには既にGitリポジトリが作成されています。</string>
+    <string name="alert_save_failed">保存に失敗</string>
+
+</resources>

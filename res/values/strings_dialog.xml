@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Cherry Pick -->
+    <string name="dialog_cherrypick_title">Cherry Pick</string>
+    <string name="dialog_cherrypick_msg_hint">Commit Hash (copy from commit list)</string>
+    <string name="dialog_label_cherrypick">Cherry Pick</string>
+    <string name="dialog_rebase_title">Choose upstream branch</string>
+
+    <!-- Commit -->
+    <string name="dialog_commit_title">Commit Changes</string>
+    <string name="dialog_commit_msg_hint">Commit message</string>
+    <string name="dialog_commit_is_amend">Amend previous commit</string>
+    <string name="dialog_commit_auto_stage">Auto stage modified files</string>
+    <string name="dialog_commit_positive_label">Commit</string>
+
+    <!-- Import Repo -->
+    <string name="dialog_import_local_path_hint">Local Path</string>
+    <string name="dialog_import_import_as_external_repo">Import as external repo</string>
+    <string name="dialog_import_set_local_repo_title">Set Local Path</string>
+
+    <!-- Clone Repo -->
+    <string name="dialog_clone_local_path_hint">Local Path</string>
+    <string name="dialog_clone_neutral_label">Init Local</string>
+
+    <!-- Init Repo -->
+    <string name="dialog_init_local_path_hint">Local Path</string>
+    <string name="dialog_init_repo_title">Local Path</string>
+    <string name="dialog_init_repo_positive_label">Init</string>
+
+    <!-- Add Remote -->
+    <string name="dialog_add_remote_title">Add Remote</string>
+    <string name="dialog_add_remote_hint_name">Remote name</string>
+    <string name="dialog_add_remote_hint_url">Remote url</string>
+    <string name="dialog_add_remote_positive_label">Done</string>
+
+    <!-- Push -->
+    <string name="dialog_push_repo_title">Push to &#8230;</string>
+    <string name="dialog_push_repo_msg">Are you sure you want to push local changes?</string>
+    <string name="dialog_push_is_push_all">Push all?</string>
+    <string name="dialog_push_is_force_push">Force push?</string>
+    <string name="dialog_push_result">Push Result</string>
+
+    <!-- Create External -->
+    <string name="dialog_create_external_title">Create external repo</string>
+    <string name="dialog_create_external_msg">Do you want to create a Git repository in this directory?</string>
+    <string name="dialog_create_external_positive_label">Create</string>
+
+</resources>

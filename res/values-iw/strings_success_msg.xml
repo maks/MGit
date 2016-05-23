@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="success_add_to_stage">הקובץ נוסף לשלב</string>
+  <string name="success_commit">שינויים נוספו ל-commit</string>
+  <string name="success_reset">שינויים בוטלו</string>
+  <string name="success_cherry_pick">Cherry pick הוצלח</string>
+  <string name="success_rebase">Rebase הוצלח</string>
+  <string name="success_checkout_file">שחזור הוצלח</string>
+  <string name="success_remote_added">שרת הוסף</string>
+  <string name="success_save">שמירת קובץ הצליחה</string>
+  <string name="msg_now_you_can_edit">כעת ניתן לערוך</string>
+  <string name="msg_commit_str_has_copied">Commit hash הועתק</string>
+</resources>
