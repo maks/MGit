@@ -21,6 +21,9 @@ android {
         applicationId "me.sheimi.sgit"
         minSdkVersion 14
         targetSdkVersion 21
+
+        versionCode 108
+        versionName "1.3.0"
     }
 
     lintOptions {
