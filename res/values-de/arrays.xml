@@ -14,16 +14,16 @@
     <string-array name="repo_operation_names">
         <item>Pull</item>
         <item>Push</item>
-        <item>Alles hinzufügen</item>
+        <item>Alles zum Staging-Bereich hinzufügen</item>
         <item>Commit</item>
         <item>Reset</item>
         <item>Merge</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>
-        <item>Diff</item>
+        <item>Unterschiede anzeigen</item>
         <item>Neue Datei</item>
         <item>Neuer Ordner</item>
-        <item>Remote hinzufügen</item>
+        <item>Remote Repository hinzufügen</item>
         <item>Löschen</item>
     </string-array>
 

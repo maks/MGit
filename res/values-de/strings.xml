@@ -6,49 +6,49 @@
     <!-- action -->
     <string name="action_search">Suchen</string>
     <string name="action_donate">Spenden</string>
-    <string name="action_clone">Clonen</string>
+    <string name="action_clone">Klonen</string>
     <string name="action_import_repo">Repository importieren</string>
-    <string name="action_git_profile">Git Profil</string>
+    <string name="action_git_profile">Git-Profil</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_manage_private_key">Private Schlüssel</string>
     <string name="action_add_private_key">Schlüssel hinzufügen</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_choose_language">Sprache wählen</string>
-    <string name="action_mode_diff">Diff</string>
+    <string name="action_mode_diff">Unterschiede anzeigen</string>
     <string name="action_edit">Bearbeiten</string>
     <string name="action_edit_in_other_app">In anderen Apps bearbeiten</string>
-    <string name="action_reset">Reset</string>
-    <string name="action_toggle_drawer">Toggle Drawer</string>
-    <string name="action_copy_commit_str">Commit Hash kopieren</string>
-    <string name="action_create_external_repo">Create External Repo</string>
+    <string name="action_reset">Zurücksetzen</string>
+    <string name="action_toggle_drawer">Seitenleiste ein-/ausblenden</string>
+    <string name="action_copy_commit_str">Commit-Hash kopieren</string>
+    <string name="action_create_external_repo">Remote Repository erstellen</string>
 
     <!-- label msg -->
     <string name="label_ok">OK</string>
-    <string name="label_remote_url">Remote-Adresse</string>
+    <string name="label_remote_url">Entfernte Adresse</string>
     <string name="label_cancel">Abbrechen</string>
-    <string name="label_clone">Clonen</string>
+    <string name="label_clone">Klonen</string>
     <string name="label_delete">Löschen</string>
-    <string name="label_username">Username</string>
+    <string name="label_username">Benutzername</string>
     <string name="label_password">Passwort</string>
-    <string name="label_new_file_name">New Filename</string>
-    <string name="label_rename">Rename</string>
+    <string name="label_new_file_name">Neuer Dateiname</string>
+    <string name="label_rename">Umbenennen</string>
     <string name="label_send_feedback">Feedback senden</string>
     <string name="label_import">Importieren</string>
-    <string name="label_push">Pushen</string>
-    <string name="label_push_all">Push All</string>
+    <string name="label_push">Änderungen hochladen</string>
+    <string name="label_push_all">Alle Änderungen hochladen</string>
     <string name="label_create">Erzeugen</string>
-    <string name="label_checkout">Checkout</string>
+    <string name="label_checkout">Auschecken</string>
     <string name="label_git_name">Name</string>
     <string name="label_git_email">Email</string>
     <string name="label_done">Fertig</string>
-    <string name="label_choose_app_to_open">App zum öffnen auswählen</string>
-    <string name="label_choose_app_to_edit">App zum bearbeiten auswählen</string>
+    <string name="label_choose_app_to_open">App zum Öffnen auswählen</string>
+    <string name="label_choose_app_to_edit">App zum Bearbeiten auswählen</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">Repository</string>
     <string name="title_activity_import_repository">Repository importieren</string>
     <string name="title_activity_view_file">Datei: </string>
-    <string name="title_activity_commit_diff">Diff:   </string>
+    <string name="title_activity_commit_diff">Diff: </string>
     <string name="tab_files_label">Dateien</string>
     <string name="tab_commits_label">Commits</string>
     <string name="tab_status_label">Status</string>
@@ -56,13 +56,13 @@
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Branch auswählen</string>
     <string name="dialog_delete_repo_title">Löschen bestätigen</string>
-    <string name="dialog_delete_repo_msg">Dieses repository wirklich löschen?</string>
-    <string name="dialog_rename_key_title">Rename</string>
+    <string name="dialog_delete_repo_msg">Dieses Repository wirklich löschen?</string>
+    <string name="dialog_rename_key_title">Umbenennen</string>
     <string name="dialog_choose_language_title">Sprache auswählen</string>
     <string name="dialog_comfirm_import_repo_title">Repository importieren</string>
-    <string name="dialog_comfirm_import_repo_msg">Wirklich dieses Repository importieren?</string>
-    <string name="dialog_merge_title">Branch zum mergen auswählen</string>
-    <string name="dialog_merge_checkbox">Nach dem merge commiten</string>
+    <string name="dialog_comfirm_import_repo_msg">Dieses Repository wirklich importieren?</string>
+    <string name="dialog_merge_title">Branch für Merge auswählen</string>
+    <string name="dialog_merge_checkbox">Nach dem Zusammenführen veröffentlichen</string>
     <string name="dialog_file_delete">Datei löschen</string>
     <string name="dialog_file_delete_msg">Diese Datei wirklich löschen?</string>
     <string name="dialog_reset_commit_title">Änderungen zurücksetzen</string>
@@ -73,10 +73,10 @@
     <string name="dialog_create_file_hint">Dateiname</string>
     <string name="dialog_comfirm_checkout_commit_title">Checkout bestätigen</string>
     <string name="dialog_comfirm_checkout_commit_msg">Branch auschecken</string>
-    <string name="dialog_profile_git_profile_title">Git Profil</string>
+    <string name="dialog_profile_git_profile_title">Git-Profil</string>
     <string name="dialog_prompt_for_password_title">Passwort benötigt</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
-    <string name="dialog_prompt_for_password_checkbox">Usernamen and Passwort speichern</string>
+    <string name="dialog_prompt_for_password_checkbox">Benutzername and Passwort speichern</string>
     <string name="dialog_title_you_want_to">Diese Datei …</string>
 
     <!-- Others -->
