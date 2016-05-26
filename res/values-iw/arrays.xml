@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string-array name="merge_ff_type">
+    <item>Fast Forward</item>
+    <item>Fast Forward Only</item>
+    <item>No Fast Forward</item>
+  </string-array>
   <string-array name="repo_file_operations">
     <item>הוסף לשלב</item>
     <item>בדיקה (אפס שינויים)</item>
     <item>מחק</item>
+    <item>Remove cached from repository</item>
+    <item>Remove force from repository</item>
   </string-array>
   <string-array name="repo_operation_names">
+    <item>סניף חדש</item>
     <item>משוך</item>
     <item>דחוף</item>
     <item>הוסף את כולם לשלב</item>
@@ -18,6 +26,10 @@
     <item>קובץ חדש</item>
     <item>תיקייה חדשה</item>
     <item>הוסף שרת</item>
+    <item>מחק</item>
+  </string-array>
+  <string-array name="dialog_choose_repo_action_items">
+    <item>Rename</item>
     <item>מחק</item>
   </string-array>
 </resources>

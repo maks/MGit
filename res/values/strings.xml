@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SGit</string>
+    <string name="app_name" translatable="false">SGit</string>
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
-    <string name="preference_file_key">me.sheimi.sgit</string>
+    <string name="preference_file_key" translatable="false">me.sheimi.sgit</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
@@ -107,4 +107,6 @@
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
+    <string name="action_edit">Edit</string>
+    <string name="alert_have_paid">Ads have been removed</string>
 </resources>

@@ -10,8 +10,11 @@
         <item>添加到暂存区</item>
         <item>检出 (重置更改)</item>
         <item>删除</item>
+        <item>Remove cached from repository</item>
+        <item>Remove force from repository</item>
     </string-array>
     <string-array name="repo_operation_names">
+        <item>新的分支</item>
         <item>拉取</item>
         <item>推送</item>
         <item>添加到暂存区</item>
@@ -24,6 +27,10 @@
         <item>新建文件</item>
         <item>新建文件夹</item>
         <item>远程</item>
+        <item>删除</item>
+    </string-array>
+    <string-array name="dialog_choose_repo_action_items">
+        <item>Rename</item>
         <item>删除</item>
     </string-array>
 

@@ -10,8 +10,11 @@
         <item>Add to stage</item>
         <item>Checkout (Reset Changes)</item>
         <item>Supprimer</item>
+        <item>Remove cached from repository</item>
+        <item>Remove force from repository</item>
     </string-array>
     <string-array name="repo_operation_names">
+        <item>New Branch</item>
         <item>Pull</item>
         <item>Push</item>
         <item>Add all to stage</item>
@@ -24,6 +27,10 @@
         <item>Nouveau fichier</item>
         <item>Nouveau dépôt</item>
         <item>Add remote</item>
+        <item>Supprimer</item>
+    </string-array>
+    <string-array name="dialog_choose_repo_action_items">
+        <item>Rename</item>
         <item>Supprimer</item>
     </string-array>
 </resources>

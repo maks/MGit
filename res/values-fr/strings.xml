@@ -94,5 +94,39 @@
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
+    <string name="action_open_in_other_app">Open in other apps</string>
+    <string name="alert_no_older_commits"> Aucun ancien engage à comparer avec</string>
+    <string name="alert_file_exists">Le fichier existe déjà</string>
+    <string name="alert_filename_format">Fichier erreur de format de nom</string>
+    <string name="dialog_add_remote_hint_name">nom à distance</string>
+    <string name="dialog_add_remote_hint_url">URL à distance</string>
+    <string name="dialog_add_remote_title"> Ajouter à distance</string>
+    <string name="dialog_choose_option"> Choisissez l\'option ...</string>
+    <string name="dialog_clone_recursive">Clone récursive</string>
+    <string name="dialog_commit_auto_stage">étape automatique des fichiers modifiés</string>
+    <string name="dialog_commit_is_amend">Modifier engagement précédent</string>
+    <string name="dialog_commit_msg_hint">Engagez un message</string>
+    <string name="dialog_commit_positive_label">Consigner </string>
+    <string name="dialog_commit_title">Soumettre les changements</string>
+    <string name="dialog_create_branch_hint">Nom de la filiale</string>
+    <string name="dialog_create_branch_title">Créer nouvelle branche</string>
+    <string name="dialog_create_external_msg">Voulez-vous créer un dépôt Git dans ce répertoire?</string>
+    <string name="success_remove_file">Le fichier a été supprimé</string>
+    <string name="success_remote_added">Distant ajouté</string>
+    <string name="error_rename_repo_fail">référentiel Renommage échoué</string>
+    <string name="error_no_edit_app">Aucune application peut modifier le fichier source</string>
+    <string name="error_no_open_app">Aucune application peut ouvrir le fichier source</string>
+    <string name="error_can_not_open_file">Vous ne pouvez pas ouvrir ce fichier dans ce dispositif.</string>
+    <string name="error_can_not_edit_file">Vous ne pouvez pas éditer ce fichier dans ce dispositif.</string>
+    <string name="dialog_push_is_force_push">Force de poussée?</string>
+    <string name="dialog_push_is_push_all">Poussez tous?</string>
+    <string name="dialog_push_repo_msg">Etes-vous sûr de vouloir pousser les changements locaux?</string>
+    <string name="dialog_push_repo_title">Pousser à ...</string>
+    <string name="dialog_rename_repo_hint">Dépôt nom</string>
+    <string name="dialog_rename_repo_title">renommez Dépôt </string>
+    <string name="dialog_file_remove_cached">Supprimer le fichier cache</string>
+    <string name="dialog_file_remove_cached_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire de l\'index?</string>
+    <string name="dialog_file_remove_force">Supprimer le fichier de travail</string>
+    <string name="dialog_file_remove_force_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire à partir du répertoire et de l\'indice de travail?</string>
 
 </resources>
