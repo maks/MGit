@@ -19,7 +19,7 @@
   <string name="dialog_add_remote_hint_name">שם שרת</string>
   <string name="dialog_add_remote_hint_url">URL שרת</string>
   <string name="dialog_add_remote_positive_label">הושלם</string>
-  <string name="dialog_push_repo_title">דחוף ל-&#8230;</string>
+  <string name="dialog_push_repo_title">דחוף ל-...</string>
   <string name="dialog_push_repo_msg">האם אתה בטוח שברצונך להעלות שינויים אחרונים?</string>
   <string name="dialog_push_is_push_all">להעלות הכל?</string>
   <string name="dialog_push_result">דחוף תוצאה</string>

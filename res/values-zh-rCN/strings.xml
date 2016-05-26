@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SGit</string>
     <string name="default_text">默认文字</string>
     <string name="title_clone_repo">克隆仓库</string>
-    <string name="preference_file_key">me.sheimi.sgit</string>
 
     <!-- action -->
     <string name="action_search">查找</string>
@@ -96,5 +94,19 @@
 
     <!-- toast msg -->
     <string name="feedback_subject">反馈</string>
+    <string name="action_open_in_other_app">Open in other apps</string>
+    <string name="alert_have_paid">Ads have been removed</string>
+    <string name="dialog_create_branch_hint">分店名称</string>
+    <string name="dialog_create_branch_title">创建新的分支</string>
+    <string name="success_remove_file">文件已被删除</string>
+    <string name="error_rename_repo_fail">重命名库失败</string>
+    <string name="dialog_choose_option">选择选项...</string>
+    <string name="dialog_clone_recursive">递归克隆</string>
+    <string name="dialog_rename_repo_hint">库名</string>
+    <string name="dialog_rename_repo_title">重命名库</string>
+    <string name="dialog_file_remove_cached">删除缓存的文件</string>
+    <string name="dialog_file_remove_cached_msg">你确定要删除这个索引文件或目录？</string>
+    <string name="dialog_file_remove_force">删除文件力</string>
+    <string name="dialog_file_remove_force_msg">你确定要删除工作目录和索引文件或目录？</string>
 
 </resources>

@@ -94,5 +94,19 @@
 
     <!-- toast msg -->
     <string name="feedback_subject">フィードバック</string>
+    <string name="action_open_in_other_app">Open in other apps</string>
+    <string name="dialog_create_branch_hint">支店名</string>
+    <string name="dialog_create_branch_title">新しいブランチを作成します。</string>
+    <string name="success_remove_file">ファイルが削除されました</string>
+    <string name="error_rename_repo_fail">名前の変更リポジトリに失敗しました</string>
+    <string name="dialog_choose_option">オプションを選択します...</string>
+    <string name="dialog_clone_recursive">再帰的に複製します</string>
+    <string name="dialog_push_is_force_push">力のプッシュ？</string>
+    <string name="dialog_rename_repo_hint">リポジトリ名</string>
+    <string name="dialog_rename_repo_title">リポジトリの名前を変更します</string>
+    <string name="dialog_file_remove_cached">キャッシュされたファイルを削除します</string>
+    <string name="dialog_file_remove_cached_msg">あなたは、インデックスからこのファイルまたはディレクトリを削除してもよろしいですか？</string>
+    <string name="dialog_file_remove_force">強制ファイルの削除</string>
+    <string name="dialog_file_remove_force_msg">あなたはディレクトリとインデックス作業からこのファイルまたはディレクトリを削除してもよろしいですか？</string>
 
 </resources>

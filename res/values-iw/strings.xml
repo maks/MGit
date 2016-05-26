@@ -76,4 +76,25 @@
   <string name="title_activity_private_key_manage">נהל מפתחות פרטיים</string>
   <string name="title_activity_explore_file">חקור קבצים</string>
   <string name="feedback_subject">משוב</string>
+  <string name="action_open_in_other_app">Open in other apps</string>
+  <string name="dialog_cherrypick_title">Cherry Pick</string>
+  <string name="dialog_choose_option">בחר באפשרות ...</string>
+  <string name="dialog_clone_recursive">clone באופן רקורסיבי</string>
+  <string name="dialog_create_branch_hint">שם הסניף</string>
+  <string name="dialog_create_branch_title">צור סניף חדש</string>
+  <string name="success_remove_file">קובץ הוסר</string>
+  <string name="tab_commits_label">מבצע</string>
+  <string name="title_activity_repo_detail">מאגר</string>
+  <string name="error_rename_repo_fail">מאגר שינוי שם נכשל</string>
+  <string name="dialog_push_is_force_push">לדחוף בכוח?</string>
+  <string name="dialog_rename_repo_hint">שם מאגר</string>
+  <string name="dialog_rename_repo_title">שינוי שם Repository</string>
+  <string name="dialog_file_remove_cached">הסר קובץ Cached</string>
+  <string name="dialog_file_remove_cached_msg">האם אתה בטוח שברצונך למחוק את הקובץ או בספריה זו מהאינדקס?</string>
+  <string name="dialog_file_remove_force">הסר קובץ חיל</string>
+  <string name="dialog_file_remove_force_msg">האם אתה בטוח שאתה רוצה למחוק קובץ זה או ספריית מעבודה ספרייה ואינדקס?</string>
+  <string name="dialog_label_cherrypick">פיק שרי</string>
+  <string name="hello_world">שלום עולם!</string>
+  <string name="progress_left_init">0%</string>
+  <string name="progress_right_init">0/0</string>
 </resources>

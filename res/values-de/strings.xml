@@ -85,5 +85,28 @@
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
+    <string name="action_open_in_other_app">Open in other apps</string>
+    <string name="alert_have_paid">Ads have been removed</string>
+    <string name="default_text">Standardtext</string>
+    <string name="dialog_choose_option">Wählen Sie die Option ...</string>
+    <string name="dialog_clone_recursive">Clone rekursiv</string>
+    <string name="dialog_create_branch_hint">Zweigname</string>
+    <string name="dialog_create_branch_title">Erstellen Sie neue Niederlassung</string>
+    <string name="hello_world">Hallo Welt!</string>
+    <string name="pull_msg_init">Ziehen …</string>
+    <string name="push_msg_init">schieben …</string>
+    <string name="success_remove_file">Datei wurde entfernt</string>
+    <string name="error_rename_repo_fail">Umbenennen Repository fehlgeschlagen</string>
+    <string name="dialog_rename_repo_hint">Repository-Name</string>
+    <string name="dialog_rename_repo_title">Benennen Sie Repository</string>
+    <string name="title_section1"> Abschnitt 1</string>
+    <string name="title_section2"> Abschnitt 2</string>
+    <string name="title_section3">Abschnitt 3</string>
+    <string name="dialog_file_remove_cached">Entfernen Sie Cache-Datei</string>
+    <string name="dialog_file_remove_cached_msg">Sind Sie sicher, dass Sie diese Datei oder ein Verzeichnis aus dem Index zu löschen?</string>
+    <string name="dialog_file_remove_force">Entfernen Sie Force-Datei</string>
+    <string name="dialog_file_remove_force_msg">Sind Sie sicher, dass Sie diese Datei oder ein Verzeichnis zu löschen, aus Arbeitsverzeichnis und Index?</string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
 
 </resources>

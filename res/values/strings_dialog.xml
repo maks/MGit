@@ -35,7 +35,7 @@
     <string name="dialog_add_remote_positive_label">Done</string>
 
     <!-- Push -->
-    <string name="dialog_push_repo_title">Push to &#8230;</string>
+    <string name="dialog_push_repo_title">Push to ...</string>
     <string name="dialog_push_repo_msg">Are you sure you want to push local changes?</string>
     <string name="dialog_push_is_push_all">Push all?</string>
     <string name="dialog_push_is_force_push">Force push?</string>

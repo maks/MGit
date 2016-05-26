@@ -35,7 +35,7 @@
     <string name="dialog_add_remote_positive_label">Fertig</string>
 
     <!-- Push -->
-    <string name="dialog_push_repo_title">Veröffentlichen nach &#8230;</string>
+    <string name="dialog_push_repo_title">Veröffentlichen nach ...</string>
     <string name="dialog_push_repo_msg">Die lokalen Änderungen wirklich veröffentlichen?</string>
     <string name="dialog_push_is_push_all">Alles veröffentlichen?</string>
     <string name="dialog_push_is_force_push">Veröffentlichung erzwingen?</string>
