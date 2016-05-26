@@ -86,4 +86,6 @@ A Git client for Android.
 
 ## Help
 
-If you want to help improve this project you can fork it and send a pull request.
+If you want to help improve this project, contributions are very welcome.
+
+Fork from this repo: [sheimi/SGit](https://github.com/sheimi/SGit), create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
