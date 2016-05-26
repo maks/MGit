@@ -12,6 +12,7 @@
         <item>删除</item>
     </string-array>
     <string-array name="repo_operation_names">
+        <item>新的分支</item>
         <item>拉取</item>
         <item>推送</item>
         <item>添加到暂存区</item>

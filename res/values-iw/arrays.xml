@@ -6,6 +6,7 @@
     <item>מחק</item>
   </string-array>
   <string-array name="repo_operation_names">
+    <item>סניף חדש</item>
     <item>משוך</item>
     <item>דחוף</item>
     <item>הוסף את כולם לשלב</item>

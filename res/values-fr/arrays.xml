@@ -12,6 +12,7 @@
         <item>Supprimer</item>
     </string-array>
     <string-array name="repo_operation_names">
+        <item>New Branch</item>
         <item>Pull</item>
         <item>Push</item>
         <item>Add all to stage</item>
