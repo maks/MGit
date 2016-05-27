@@ -10,27 +10,27 @@
         <item>Zum Staging-Bereich hinzufügen</item>
         <item>Auschecken (Änderungen zurücksetzen)</item>
         <item>Löschen</item>
-        <item>Remove cached from repository</item>
-        <item>Remove force from repository</item>
+        <item>Löschen (cached, nur Repository)</item>
+        <item>Löschen (force, mit aktuellen Änderungen)</item>
     </string-array>
     <string-array name="repo_operation_names">
         <item>Neuer Branch</item>
         <item>Pull</item>
         <item>Push</item>
-        <item>Alles zum Staging-Bereich hinzufügen</item>
+        <item>Alles zum Staging-Bereich hinzufügen (Add)</item>
         <item>Commit</item>
         <item>Reset</item>
         <item>Merge</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>
-        <item>Unterschiede anzeigen</item>
+        <item>Unterschiede anzeigen (Diff)</item>
         <item>Neue Datei</item>
         <item>Neuer Ordner</item>
         <item>Remote Repository hinzufügen</item>
         <item>Löschen</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
-        <item>Rename</item>
+        <item>Umbenennen</item>
         <item>Löschen</item>
     </string-array>
 
