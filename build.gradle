@@ -44,6 +44,6 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.jcraft:jsch:0.1.51'
     compile 'commons-io:commons-io:2.4'
-    compile 'org.eclipse.jgit:org.eclipse.jgit:3.6.2.201501210735-r'
+    compile 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
 }
