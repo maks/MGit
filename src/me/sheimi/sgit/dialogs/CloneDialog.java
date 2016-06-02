@@ -40,7 +40,38 @@ public class CloneDialog extends SheimiDialogFragment implements
     private RepoListActivity mActivity;
     private Repo mRepo;
 
-    @Override
+    private class RemoteUrlFocusListener implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            if (!hasFocus) {
+                final String remoteUrl = mRemoteURL.getText().toString();
+                String localHint = stripUrlFromRepo(remoteUrl);
+                localHint = stripGitExtension(localHint);
+                if (!localHint.equals("")) {
+                    mLocalPath.setHint(localHint);
+                }
+            }
+        }
+
+        private String stripUrlFromRepo(final String remoteUrl) {
+            final int lastSlash = remoteUrl.lastIndexOf("/");
+            if (lastSlash != -1) {
+                return remoteUrl.substring(lastSlash + 1);
+            }
+
+            return remoteUrl;
+        }
+
+        private String stripGitExtension(final String remoteUrl) {
+            final int extension = remoteUrl.indexOf(".git");
+            if (extension != -1) {
+                return remoteUrl.substring(0, extension);
+            }
+
+            return remoteUrl;
+        }
+    }
+
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
@@ -63,6 +94,8 @@ public class CloneDialog extends SheimiDialogFragment implements
             mRemoteURL.setText(Repo.TEST_REPO);
             mLocalPath.setText(Repo.TEST_LOCAL);
         }
+
+        mRemoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
 
         // set button listener
         builder.setTitle(R.string.title_clone_repo);
@@ -116,10 +149,12 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
         if (localPath.equals("")) {
-            showToastMessage(R.string.alert_localpath_required);
-            mLocalPath.setError(getString(R.string.alert_localpath_required));
-            mLocalPath.requestFocus();
-            return;
+            if (mLocalPath.getHint().equals(getString(R.string.dialog_clone_local_path_hint))) {
+                showToastMessage(R.string.alert_localpath_required);
+                mLocalPath.setError(getString(R.string.alert_localpath_required));
+                mLocalPath.requestFocus();
+                return;
+            }
         }
         if (localPath.contains("/")) {
             showToastMessage(R.string.alert_localpath_format);
@@ -128,6 +163,11 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
 
+        // If user is accepting the default path in the hint, we need to set localPath to
+        // the string in the hint, so that the following checks don't fail.
+        if (mLocalPath.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
+            localPath = mLocalPath.getHint().toString();
+        }
         File file = Repo.getDir(localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
