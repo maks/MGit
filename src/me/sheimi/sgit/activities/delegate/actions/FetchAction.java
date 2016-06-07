@@ -15,10 +15,7 @@ import me.sheimi.sgit.repo.tasks.repo.FetchTask;
 public class FetchAction extends RepoAction {
     public FetchAction(Repo repo, RepoDetailActivity activity) {
         super(repo, activity);
-        remotes = new ArrayList<String>();
     }
-
-    private ArrayList<String> remotes;
 
     @Override
     public void execute() {
@@ -26,15 +23,15 @@ public class FetchAction extends RepoAction {
         mActivity.closeOperationDrawer();
     }
 
-    private void fetch() {
-        final String[] remotesArray = remotes.toArray(new String[0]);
-        final FetchTask fetchTask = new FetchTask(remotesArray, mRepo, mActivity.new ProgressCallback(R.string.fetch_msg_init));
+    private void fetch(String[] remotes) {
+        final FetchTask fetchTask = new FetchTask(remotes, mRepo, mActivity.new ProgressCallback(R.string.fetch_msg_init));
         fetchTask.executeTask();
     }
 
     private Dialog fetchDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         final String[] originRemotes = mRepo.getRemotes().toArray(new String[0]);
+        final ArrayList<String> remotes = new ArrayList<>();
         return builder.setTitle(R.string.dialog_fetch_title)
                 .setMultiChoiceItems(originRemotes, null, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -53,7 +50,13 @@ public class FetchAction extends RepoAction {
                 .setPositiveButton(R.string.dialog_fetch_positive_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        fetch();
+                        fetch(remotes.toArray(new String[0]));
+                    }
+                })
+                .setNeutralButton(R.string.dialog_fetch_all_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        fetch(originRemotes);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DummyDialogListener())

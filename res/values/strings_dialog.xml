@@ -49,5 +49,6 @@
     <!-- Fetch Remote -->
     <string name="dialog_fetch_title">Fetch</string>
     <string name="dialog_fetch_positive_button">Fetch</string>
+    <string name="dialog_fetch_all_button">Fetch All</string>
 
 </resources>
