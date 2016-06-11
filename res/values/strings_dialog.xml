@@ -46,4 +46,9 @@
     <string name="dialog_create_external_msg">Do you want to create a Git repository in this directory?</string>
     <string name="dialog_create_external_positive_label">Create</string>
 
+    <!-- Fetch Remote -->
+    <string name="dialog_fetch_title">Fetch</string>
+    <string name="dialog_fetch_positive_button">Fetch</string>
+    <string name="dialog_fetch_all_button">Fetch All</string>
+
 </resources>

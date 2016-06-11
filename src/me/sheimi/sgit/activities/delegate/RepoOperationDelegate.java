@@ -11,6 +11,7 @@ import me.sheimi.sgit.activities.delegate.actions.CherryPickAction;
 import me.sheimi.sgit.activities.delegate.actions.CommitAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
 import me.sheimi.sgit.activities.delegate.actions.DiffAction;
+import me.sheimi.sgit.activities.delegate.actions.FetchAction;
 import me.sheimi.sgit.activities.delegate.actions.MergeAction;
 import me.sheimi.sgit.activities.delegate.actions.NewBranchAction;
 import me.sheimi.sgit.activities.delegate.actions.NewDirAction;
@@ -26,6 +27,7 @@ import me.sheimi.sgit.repo.tasks.repo.AddToStageTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutFileTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
 import me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask;
+import me.sheimi.sgit.repo.tasks.repo.FetchTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
 import org.eclipse.jgit.lib.Ref;
@@ -52,6 +54,7 @@ public class RepoOperationDelegate {
         mActions.add(new CommitAction(mRepo, mActivity));
         mActions.add(new ResetAction(mRepo, mActivity));
         mActions.add(new MergeAction(mRepo, mActivity));
+        mActions.add(new FetchAction(mRepo, mActivity));
         mActions.add(new RebaseAction(mRepo, mActivity));
         mActions.add(new CherryPickAction(mRepo, mActivity));
         mActions.add(new DiffAction(mRepo, mActivity));
