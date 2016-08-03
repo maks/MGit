@@ -19,7 +19,7 @@ script:
               AndroidManifest.xml
   - mv src/me/sheimi/sgit src/me/sheimi/sgit_dev
   - find . -type f -exec sed -i "s/me\.sheimi\.sgit/me\.sheimi\.sgit_dev/g" '{}' \;
-  - find res -type f -exec sed -i -r 's/(<string name="app_name">SGit)(<\/string>)/\1 Dev\2/g' '{}' \;
+  - find src/main/res -type f -exec sed -i -r 's/(<string name="app_name">SGit)(<\/string>)/\1 Dev\2/g' '{}' \;
   - cd ..
 after_success:
   - curl -sSL "https://raw.githubusercontent.com/h5bp-bot/scripts/0.6.1/update_site_branch.sh" |
