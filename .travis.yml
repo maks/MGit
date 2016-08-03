@@ -17,8 +17,8 @@ script:
   - ./gradlew clean assembleDebug testDebug 
   - sed -i -r -e "s/(android:versionCode=\")[0-9]+(\")/\1$VERSION\2/g"
               -e "s/(android:versionName=\"[0-9.]+)(\")/\1-dev-$VERSION\2/g"
-              AndroidManifest.xml
-  - mv src/me/sheimi/sgit src/me/sheimi/sgit_dev
+              src/main/AndroidManifest.xml
+  - mv src/main/java/me/sheimi/sgit src/main/java/me/sheimi/sgit_dev
   - find . -type f -exec sed -i "s/me\.sheimi\.sgit/me\.sheimi\.sgit_dev/g" '{}' \;
   - find src/main/res -type f -exec sed -i -r 's/(<string name="app_name">SGit)(<\/string>)/\1 Dev\2/g' '{}' \;
   - cd ..
