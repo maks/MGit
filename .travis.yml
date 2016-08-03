@@ -14,6 +14,7 @@ before_script:
   - export DATE=$(date)
   - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
 script:
+  - ./gradlew clean assembleDebug testDebug 
   - sed -i -r -e "s/(android:versionCode=\")[0-9]+(\")/\1$VERSION\2/g"
               -e "s/(android:versionName=\"[0-9.]+)(\")/\1-dev-$VERSION\2/g"
               AndroidManifest.xml
