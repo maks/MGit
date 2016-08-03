@@ -22,8 +22,10 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -49,6 +51,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     public static final int COMMIT_TYPE_TAG = 1;
     public static final int COMMIT_TYPE_TEMP = 2;
     public static final int COMMIT_TYPE_REMOTE = 3;
+    public static final int COMMIT_TYPE_UNKNOWN = -1;
 
     private int mID;
     private String mLocalPath;
@@ -406,9 +409,17 @@ public class Repo implements Comparable<Repo>, Serializable {
         return COMMIT_TYPE_HEAD;
     }
 
-    public static int getCommitType(String str) {
-        String[] splits = str.split("/");
-        return getCommitType(splits);
+    public static int getCommitType(String fullRefName) {
+        if (fullRefName != null && fullRefName.startsWith(Constants.R_REFS)) {
+            if (fullRefName.startsWith(Constants.R_HEADS)) {
+                return COMMIT_TYPE_HEAD;
+            } else if (fullRefName.startsWith(Constants.R_TAGS)) {
+                return COMMIT_TYPE_TAG;
+            } else if (fullRefName.startsWith(Constants.R_REMOTES)) {
+                return  COMMIT_TYPE_REMOTE;
+            }
+        }
+        return COMMIT_TYPE_UNKNOWN;
     }
 
     public static String getCommitName(String name) {
@@ -425,21 +436,14 @@ public class Repo implements Comparable<Repo>, Serializable {
         return null;
     }
 
-    public static String getCommitDisplayName(String raw) {
-        String[] splits = raw.split("/");
-        int type = getCommitType(splits);
+    public static String getCommitDisplayName(String ref) {
+        int type = getCommitType(ref);
         switch (type) {
-            case COMMIT_TYPE_TEMP:
-                if (raw.length() <= 10)
-                    return raw;
-                return raw.substring(0, 10);
-            case COMMIT_TYPE_TAG:
-            case COMMIT_TYPE_HEAD:
-                return splits[2];
             case COMMIT_TYPE_REMOTE:
-                return splits[1] + "/" + splits[2] + "/" + splits[3];
+            case COMMIT_TYPE_UNKNOWN:
+            return ref.substring(Constants.R_REFS.length());
         }
-        return null;
+        return Repository.shortenRefName(ref);
     }
 
     public static String convertRemoteName(String remote) {
