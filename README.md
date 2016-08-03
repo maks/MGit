@@ -5,6 +5,8 @@ A Git client for Android.
 
 [![Join the chat at https://gitter.im/sheimi/SGit](https://badges.gitter.im/sheimi/SGit.svg)](https://gitter.im/sheimi/SGit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Build Status](https://travis-ci.org/sheimi/SGit.svg?branch=master)](https://travis-ci.org/sheimi/SGit)
+
  * All repositories are stored in `[sdcard dir]/Android/data/me.sheimi.sgit/files/[repo name]`. If you want to delete this app, you can manually backup repositories from this location.
  * The GitHub repo of this project is: [sheimi/SGit](https://github.com/sheimi/SGit).
  * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/sheimi/SGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
