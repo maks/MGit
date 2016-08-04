@@ -436,12 +436,17 @@ public class Repo implements Comparable<Repo>, Serializable {
         return null;
     }
 
+    /**
+     *
+     * @param ref
+     * @return  Shortened version of full ref path, suitable for display in UI
+     */
     public static String getCommitDisplayName(String ref) {
         int type = getCommitType(ref);
         switch (type) {
             case COMMIT_TYPE_REMOTE:
             case COMMIT_TYPE_UNKNOWN:
-            return ref.substring(Constants.R_REFS.length());
+            return (ref != null && ref.length() > Constants.R_REFS.length()) ? ref.substring(Constants.R_REFS.length()) : "";
         }
         return Repository.shortenRefName(ref);
     }
