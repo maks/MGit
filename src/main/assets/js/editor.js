@@ -45,6 +45,12 @@
     return CodeLoader.save(value);
   };
 
+  window.copy_all = function() {
+    value = editor.getValue().rtrim();
+    return CodeLoader.copy_all(value);
+  }
+
+
   $(document).ready(function() {
     return CodeLoader.loadCode();
   });

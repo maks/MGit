@@ -13,6 +13,9 @@ import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import org.apache.commons.io.FileUtils;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -138,6 +141,9 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 }
                 invalidateOptionsMenu();
                 return true;
+            case R.id.action_copy_all:
+    	        mFileContent.loadUrl(CodeGuesser.wrapUrlScript("copy_all();"));
+                return true;
             case R.id.action_choose_language:
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
                 cld.show(getFragmentManager(), "choose language");
@@ -158,6 +164,13 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         @JavascriptInterface
         public String getCode() {
             return mCode;
+        }
+
+        @JavascriptInterface
+            public void copy_all(final String content) {
+            ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("sgit", content);
+            clipboard.setPrimaryClip(clip);
         }
 
         @JavascriptInterface

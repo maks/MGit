@@ -11,6 +11,11 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_edit"/>
     <item
+        android:id="@+id/action_copy_all"
+        android:icon="@drawable/ic_action_copy"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_copy_all"/>
+    <item
         android:id="@+id/action_choose_language"
         android:showAsAction="never"
         android:title="@string/action_choose_language"/>
