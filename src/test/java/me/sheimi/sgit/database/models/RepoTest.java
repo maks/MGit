@@ -15,6 +15,8 @@ public class RepoTest {
         assertEquals("", "foo/bar", Repo.getCommitDisplayName("refs/tags/foo/bar"));
         assertEquals("", "foo/bar", Repo.getCommitDisplayName("refs/tags/foo/bar"));
         assertEquals("", "blah/foo/bar", Repo.getCommitDisplayName("refs/blah/foo/bar"));
+
+        assertEquals("short ref name must return mepty string, not cause exception", "", Repo.getCommitDisplayName("re"));
     }
 
     @Test
