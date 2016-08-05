@@ -46,7 +46,7 @@
   };
 
   window.copy_all = function() {
-    value = editor.getValue().rtrim();
+    value = editor.getValue();
     return CodeLoader.copy_all(value);
   }
 
