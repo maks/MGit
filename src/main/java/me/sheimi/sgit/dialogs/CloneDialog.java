@@ -1,5 +1,17 @@
 package me.sheimi.sgit.dialogs;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
 import java.io.File;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
@@ -12,17 +24,6 @@ import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 /**
  * Created by sheimi on 8/24/13.
@@ -45,10 +46,10 @@ public class CloneDialog extends SheimiDialogFragment implements
         public void onFocusChange(View view, boolean hasFocus) {
             if (!hasFocus) {
                 final String remoteUrl = mRemoteURL.getText().toString();
-                String localHint = stripUrlFromRepo(remoteUrl);
-                localHint = stripGitExtension(localHint);
-                if (!localHint.equals("")) {
-                    mLocalPath.setHint(localHint);
+                String localDefault = stripUrlFromRepo(remoteUrl);
+                localDefault = stripGitExtension(localDefault);
+                if (!localDefault.equals("")) {
+                    mLocalPath.setText(localDefault);
                 }
             }
         }
@@ -148,13 +149,11 @@ public class CloneDialog extends SheimiDialogFragment implements
             mRemoteURL.requestFocus();
             return;
         }
-        if (localPath.equals("")) {
-            if (mLocalPath.getHint().equals(getString(R.string.dialog_clone_local_path_hint))) {
-                showToastMessage(R.string.alert_localpath_required);
-                mLocalPath.setError(getString(R.string.alert_localpath_required));
-                mLocalPath.requestFocus();
-                return;
-            }
+        if (localPath.isEmpty()) {
+            showToastMessage(R.string.alert_localpath_required);
+            mLocalPath.setError(getString(R.string.alert_localpath_required));
+            mLocalPath.requestFocus();
+            return;
         }
         if (localPath.contains("/")) {
             showToastMessage(R.string.alert_localpath_format);
