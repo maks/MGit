@@ -105,9 +105,18 @@
     <string name="title_activity_private_key_manage">Manage Private Keys</string>
     <string name="hello_world">Hello, World!</string>
     <string name="title_activity_explore_file">Explore Files</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
     <string name="action_edit">Edit</string>
     <string name="alert_have_paid">Ads have been removed</string>
+
+    <!-- Preferences -->
+    <string name="preference_repo_location">Root storage location for repos</string>
+    <string name="pref_category_title_general">General</string>
+    <string name="pref_key_repo_root_location">repo_root_path</string>
+    <string name="action_select_root_dir">Select as Root folder</string>
+    <string name="action_create_new_dir">Create new folder</string>
+
 </resources>

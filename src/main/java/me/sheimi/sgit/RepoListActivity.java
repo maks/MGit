@@ -2,6 +2,7 @@ package me.sheimi.sgit;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.Constants;
+import me.sheimi.sgit.activities.UserSettingsActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
 import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
@@ -69,6 +70,10 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 intent = new Intent(this, ImportRepositoryActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_REPO);
                 forwardTransition();
+                return true;
+            case R.id.action_settings:
+                intent = new Intent(this, UserSettingsActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_feedback:
                 Intent feedback = new Intent(Intent.ACTION_SEND);

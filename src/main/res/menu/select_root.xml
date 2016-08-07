@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_select_root"
+        android:icon="@drawable/ic_action_save"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_select_root_dir"/>
+
+    <!-- TODO: allow creating new folders -->
+    <!-- item
+        android:id="@+id/action_create_new_dir"
+        android:icon="@drawable/ic_content_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_create_new_dir"/ -->
+
+</menu>
