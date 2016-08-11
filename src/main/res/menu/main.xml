@@ -20,16 +20,4 @@
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"
         android:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/action_add_private_key"
-        android:showAsAction="never"
-        android:title="@string/action_manage_private_key"/>
-    <item
-        android:id="@+id/action_feedback"
-        android:showAsAction="never"
-        android:title="@string/action_feedback"/>
-    <item
-        android:id="@+id/action_donate"
-        android:showAsAction="never"
-        android:title="@string/action_donate"/>
 </menu>

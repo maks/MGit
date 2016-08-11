@@ -53,10 +53,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.action_add_private_key:
-                intent = new Intent(this, PrivateKeyManageActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getFragmentManager(), "clone-dialog");
@@ -68,21 +64,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 return true;
             case R.id.action_settings:
                 intent = new Intent(this, UserSettingsActivity.class);
-                startActivity(intent);
-                return true;
-            case R.id.action_feedback:
-                Intent feedback = new Intent(Intent.ACTION_SEND);
-                feedback.setType("text/email");
-                feedback.putExtra(Intent.EXTRA_EMAIL,
-                        new String[] { Constants.FEEDBACK_EMAIL });
-                feedback.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(Constants.FEEDBACK_SUBJECT));
-                startActivity(Intent.createChooser(feedback,
-                        getString(R.string.label_send_feedback)));
-                return true;
-            case R.id.action_donate:
-                Uri uri = Uri.parse(Constants.DONATE_URL);
-                intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 return true;
         }
