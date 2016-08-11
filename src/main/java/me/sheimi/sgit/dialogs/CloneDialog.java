@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import java.io.File;
 
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
-import me.sheimi.android.utils.Constants;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
@@ -91,11 +89,6 @@ public class CloneDialog extends SheimiDialogFragment implements
 
         if ( Profile.hasLastCloneFailed() )
             fillInformationFromPreviousCloneFail( Profile.getLastCloneTryRepo() );
-
-        if (Constants.DEBUG) {
-            mRemoteURL.setText(Repo.TEST_REPO);
-            mLocalPath.setText(Repo.TEST_LOCAL);
-        }
 
         mRemoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
 
