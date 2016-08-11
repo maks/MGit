@@ -105,7 +105,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
                 return;
             }
 
-            File file = Repo.getDir(localPath);
+            File file = Repo.getDir(getActivity(), localPath);
 
             if (file.exists()) {
                 showToastMessage(R.string.alert_file_exists);
@@ -128,7 +128,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
             dismiss();
             return;
         }
-        final File repoFile = Repo.getDir(localPath);
+        final File repoFile = Repo.getDir(getActivity(), localPath);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

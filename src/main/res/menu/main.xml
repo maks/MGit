@@ -16,6 +16,11 @@
         android:showAsAction="never"
         android:title="@string/action_import_repo"/>
     <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:title="@string/action_settings"
+        android:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/action_git_profile"
         android:showAsAction="never"
         android:title="@string/action_git_profile"/>
@@ -31,15 +36,4 @@
         android:id="@+id/action_donate"
         android:showAsAction="never"
         android:title="@string/action_donate"/>
-
-    <!--
-    TODO settings will be added in next release
-    <item
-            android:id="@+id/action_settings"
-            android:icon="@drawable/ic_action_settings"
-            android:title="@string/action_settings"
-            android:orderInCategory="100"
-            android:showAsAction="never"/>
-    -->
-
 </menu>

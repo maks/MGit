@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -167,7 +168,7 @@ public class CloneDialog extends SheimiDialogFragment implements
         if (mLocalPath.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
             localPath = mLocalPath.getHint().toString();
         }
-        File file = Repo.getDir(localPath);
+        File file = Repo.getDir(getActivity(), localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath

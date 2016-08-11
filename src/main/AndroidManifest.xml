@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".SGitApplication"
         android:allowBackup="true"
         android:largeHeap="true" 
         android:icon="@drawable/ic_launcher"
@@ -70,6 +71,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.explorer.PrivateKeyManageActivity" />
         </activity>
+        <activity
+            android:name=".activities.UserSettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ExploreRootDirActivity"
+            android:label="@string/title_activity_explore_file"
+            android:parentActivityName=".activities.UserSettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.UserSettingsActivity" />
+        </activity>
+
     </application>
 
 </manifest>
