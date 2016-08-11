@@ -3,7 +3,6 @@
   <string name="default_text">טקסט ברירת מחדל</string>
   <string name="title_clone_repo">העתק מאגר</string>
   <string name="action_search">חיפוש</string>
-  <string name="action_donate">תרומה</string>
   <string name="action_clone">העתקה</string>
   <string name="action_import_repo">יבא מאגר</string>
   <string name="action_git_profile">פרופיל git</string>
@@ -97,4 +96,5 @@
   <string name="hello_world">שלום עולם!</string>
   <string name="progress_left_init">0%</string>
   <string name="progress_right_init">0/0</string>
+  <string name="preference_donate">תרומה</string>
 </resources>

@@ -6,7 +6,6 @@
 
     <!-- action -->
     <string name="action_search">Rechercher</string>
-    <string name="action_donate">Donner</string>
     <string name="action_clone">Cloner</string>
     <string name="action_import_repo">Importer le dépôt</string>
     <string name="action_git_profile">Profil Git</string>
@@ -128,5 +127,6 @@
     <string name="dialog_file_remove_cached_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire de l\'index?</string>
     <string name="dialog_file_remove_force">Supprimer le fichier de travail</string>
     <string name="dialog_file_remove_force_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire à partir du répertoire et de l\'indice de travail?</string>
+    <string name="preference_donate">Donner</string>
 
 </resources>

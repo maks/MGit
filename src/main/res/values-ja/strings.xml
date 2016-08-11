@@ -6,7 +6,6 @@
 
     <!-- action -->
     <string name="action_search">検索</string>
-    <string name="action_donate">寄付</string>
     <string name="action_clone">クローン</string>
     <string name="action_import_repo">リポジトリをインポート</string>
     <string name="action_git_profile">Git プロフィール</string>
@@ -108,5 +107,6 @@
     <string name="dialog_file_remove_cached_msg">あなたは、インデックスからこのファイルまたはディレクトリを削除してもよろしいですか？</string>
     <string name="dialog_file_remove_force">強制ファイルの削除</string>
     <string name="dialog_file_remove_force_msg">あなたはディレクトリとインデックス作業からこのファイルまたはディレクトリを削除してもよろしいですか？</string>
+    <string name="preference_donate">寄付</string>
 
 </resources>

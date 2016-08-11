@@ -6,7 +6,6 @@
 
     <!-- action -->
     <string name="action_search">查找</string>
-    <string name="action_donate">捐赠</string>
     <string name="action_clone">克隆</string>
     <string name="action_import_repo">导入仓库</string>
     <string name="action_git_profile">Git配置</string>
@@ -108,5 +107,6 @@
     <string name="dialog_file_remove_cached_msg">你确定要删除这个索引文件或目录？</string>
     <string name="dialog_file_remove_force">删除文件力</string>
     <string name="dialog_file_remove_force_msg">你确定要删除工作目录和索引文件或目录？</string>
+    <string name="preference_donate">捐赠</string>
 
 </resources>

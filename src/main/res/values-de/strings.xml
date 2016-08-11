@@ -5,7 +5,6 @@
 
     <!-- action -->
     <string name="action_search">Suchen</string>
-    <string name="action_donate">Spenden</string>
     <string name="action_clone">Klonen</string>
     <string name="action_import_repo">Repository importieren</string>
     <string name="action_git_profile">Git-Profil</string>
@@ -109,4 +108,5 @@
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
 
+    <string name="preference_donate">Spenden</string>
 </resources>
