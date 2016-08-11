@@ -9,7 +9,6 @@ import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
-import me.sheimi.sgit.dialogs.ProfileDialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -61,10 +60,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getFragmentManager(), "clone-dialog");
-                return true;
-            case R.id.action_git_profile:
-                ProfileDialog profileDialog = new ProfileDialog();
-                profileDialog.show(getFragmentManager(), "profile-dialog");
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);

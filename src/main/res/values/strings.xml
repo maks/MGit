@@ -118,5 +118,10 @@
     <string name="pref_key_repo_root_location">repo_root_path</string>
     <string name="action_select_root_dir">Select as Root folder</string>
     <string name="action_create_new_dir">Create new folder</string>
+    <string name="pref_category_title_git_profile">Git Profile</string>
+    <string name="pref_key_git_user_name">user.name</string>
+    <string name="preference_git_user_name">User Name</string>
+    <string name="pref_key_git_user_email">user.email</string>
+    <string name="preference_git_user_email">User Email</string>
 
 </resources>
