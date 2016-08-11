@@ -79,7 +79,7 @@ public class InitDialog extends SheimiDialogFragment implements
             return;
         }
 
-        File file = Repo.getDir(localPath);
+        File file = Repo.getDir(getActivity(), localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath

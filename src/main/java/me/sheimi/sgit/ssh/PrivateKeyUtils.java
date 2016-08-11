@@ -14,7 +14,7 @@ public class PrivateKeyUtils {
     }
 
     public static void migratePrivateKeys() {
-        File oldDir = FsUtils.getDir("ssh");
+        File oldDir = FsUtils.getExternalDir("ssh");
         if (oldDir.exists()) {
             try {
                 FileUtils.copyDirectory(oldDir, getPrivateKeyFolder());

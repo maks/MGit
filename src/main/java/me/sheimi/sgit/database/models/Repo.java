@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
@@ -33,6 +34,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 
 /**
@@ -45,7 +47,7 @@ public class Repo implements Comparable<Repo>, Serializable {
      */
     private static final long serialVersionUID = -4921633809823078219L;
 
-    public static final String TAG = "repo";
+    public static final String TAG = Repo.class.getSimpleName();
 
     public static final int COMMIT_TYPE_HEAD = 0;
     public static final int COMMIT_TYPE_TAG = 1;
@@ -77,9 +79,6 @@ public class Repo implements Comparable<Repo>, Serializable {
     public static final String REPO_DIR = "repo";
 
     private static SparseArray<RepoOpTask> mRepoTasks = new SparseArray<RepoOpTask>();
-
-    public Repo() {
-    }
 
     public Repo(Cursor cursor) {
         mID = RepoContract.getRepoID(cursor);
@@ -458,16 +457,23 @@ public class Repo implements Comparable<Repo>, Serializable {
         return String.format("refs/heads/%s", splits[3]);
     }
 
-    public static File getDir(String localpath) {
+    public static File getDir(Context context, String localpath) {
         if (Repo.isExternal(localpath)) {
             return new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
         }
-        File repoDir = FsUtils.getDir(REPO_DIR, true);
-        return new File(repoDir, localpath);
+        File repoDir = FsUtils.getRepoDir(context, localpath);
+        if (repoDir == null) {
+            repoDir = FsUtils.getExternalDir(REPO_DIR, true);
+            Log.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
+            return new File(repoDir, localpath);
+        } else {
+            Log.d("maks", "CUSTOM repo path:"+repoDir);
+            return repoDir;
+        }
     }
 
     public File getDir() {
-        return Repo.getDir(getLocalPath());
+        return Repo.getDir(SGitApplication.getContext(), getLocalPath());
     }
 
     public Git getGit() throws StopTaskException {

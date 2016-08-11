@@ -12,7 +12,9 @@ import me.sheimi.sgit.R;
 import org.apache.commons.io.FileUtils;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
@@ -23,29 +25,57 @@ public class FsUtils {
 
     public static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat(
             "yyyyMMdd_HHmmss", Locale.getDefault());
-    public static final String PNG_SUFFIX = ".png";
     public static final String TEMP_DIR = "temp";
+    private static final String LOGTAG = FsUtils.class.getSimpleName();
 
     private FsUtils() {
     }
 
     public static File createTempFile(String subfix) throws IOException {
-        File dir = getDir(TEMP_DIR);
+        File dir = getExternalDir(TEMP_DIR);
         String fileName = TIMESTAMP_FORMATTER.format(new Date());
         File file = File.createTempFile(fileName, subfix, dir);
         file.deleteOnExit();
         return file;
     }
 
-    public static File getDir(String dirname) {
-        return getDir(dirname, true);
+    /**
+     * Get a File representing a dir within the external shared location where files can be stored specific to this app
+     * creating the dir if it doesn't already exist
+     *
+     * @param dirname
+     * @return
+     */
+    public static File getExternalDir(String dirname) {
+        return getExternalDir(dirname, true);
     }
 
-    public static File getInternalDir(String dirname) { return getDir(dirname, true, false); }
+    /**
+     *
+     * @param dirname
+     * @return
+     */
+    public static File getInternalDir(String dirname) { return getExternalDir(dirname, true, false); }
 
-    public static File getDir(String dirname, boolean isCreate) { return getDir(dirname, isCreate, true); }
+    /**
+     * Get a File representing a dir within the external shared location where files can be stored specific to this app
+     *
+     * @param dirname
+     * @param isCreate  create the dir if it does not already exist
+     * @return
+     */
+    public static File getExternalDir(String dirname, boolean isCreate) { return getExternalDir(dirname, isCreate, true); }
 
-    public static File getDir(String dirname, boolean isCreate, boolean isExternal) {
+    /**
+     *
+     * Get a File representing a dir within the location where files can be stored specific to this app
+     *
+     * @param dirname  name of the dir to return
+     * @param isCreate  create the dir if it does not already exist
+     * @param isExternal if true, will use external *shared* storage
+     * @return
+     */
+    public static File getExternalDir(String dirname, boolean isCreate, boolean isExternal) {
         File mDir = new File(getAppDir(isExternal), dirname);
         if (!mDir.exists() && isCreate) {
             mDir.mkdir();
@@ -53,12 +83,37 @@ public class FsUtils {
         return mDir;
     }
 
+    /**
+     * Get a File representing the location where files can be stored specific to this app
+     *
+     * @param isExternal if true, will use external *shared* storage
+     * @return
+     */
     public static File getAppDir(boolean isExternal) {
         SheimiFragmentActivity activeActivity = BasicFunctions.getActiveActivity();
         if (isExternal) {
             return activeActivity.getExternalFilesDir(null);
         } else {
             return activeActivity.getFilesDir();
+        }
+    }
+
+    /**
+     * Returns the root directory on device storage in which local repos ar to be stored
+     *
+     * @param context
+     * @param name
+     * @return null if the custom repo location user preference is *not* set
+     */
+    public static File getRepoDir(Context context, String repoName) {
+        SharedPreferences sharedPreference = context.getSharedPreferences(
+                context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        String repoRootDir = sharedPreference.getString(context.getString(R.string.pref_key_repo_root_location), "");
+        if (repoRootDir != null && !repoRootDir.isEmpty()) {
+           return new File(repoRootDir, repoName);
+        } else {
+            return null;
         }
     }
 
