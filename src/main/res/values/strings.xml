@@ -129,4 +129,6 @@
     <string name="pref_category_title_about">About</string>
     <string name="preference_send_feedback">Feedback</string>
     <string name="preference_send_feedback_summary">Submit feedback by creating a new issue on GitHub</string>
+    <string name="preference_key_app_version">app_version</string>
+    <string name="preference_app_version">Version</string>
 </resources>
