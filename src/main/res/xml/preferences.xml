@@ -41,6 +41,21 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="@string/pref_category_title_security">
+
+        <Preference
+            android:title="@string/preference_manage_ssh_keys"
+            android:summary="@string/preference_manage_ssh_keys_summary"
+            android:persistent="true"
+            >
+            <intent
+                android:targetClass="me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity"
+                android:targetPackage="me.sheimi.sgit"
+                />
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/pref_category_title_about">
 
         <me.sheimi.sgit.preference.Preference

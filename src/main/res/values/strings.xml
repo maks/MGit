@@ -135,4 +135,7 @@
     <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
     <string name="donate_url" formatted="false">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=KWFGX7RNJ6LM8&amp;lc=US&amp;item_name=Donate%20SGit&amp;item_number=sgit&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
     </string>
+    <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
+    <string name="preference_manage_ssh_keys">SSH Keys</string>
+    <string name="pref_category_title_security">Security</string>
 </resources>

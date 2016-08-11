@@ -53,10 +53,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
         switch (item.getItemId()) {
-            case R.id.action_add_private_key:
-                intent = new Intent(this, PrivateKeyManageActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
                 cloneDialog.show(getFragmentManager(), "clone-dialog");
