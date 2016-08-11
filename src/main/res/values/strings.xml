@@ -8,7 +8,6 @@
 
     <!-- action -->
     <string name="action_search">Search</string>
-    <string name="action_donate">Donate</string>
     <string name="action_clone">Clone</string>
     <string name="action_import_repo">Import Repository</string>
     <string name="action_git_profile">Git Profile</string>
@@ -116,6 +115,7 @@
     <string name="alert_have_paid">Ads have been removed</string>
 
     <!-- Preferences -->
+
     <string name="preference_repo_location">Root storage location for repos</string>
     <string name="pref_category_title_general">General</string>
     <string name="pref_key_repo_root_location">repo_root_path</string>
@@ -131,4 +131,8 @@
     <string name="preference_send_feedback_summary">Submit feedback by creating a new issue on GitHub</string>
     <string name="preference_key_app_version">app_version</string>
     <string name="preference_app_version">Version</string>
+    <string name="preference_donate">Donate</string>
+    <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
+    <string name="donate_url" formatted="false">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=KWFGX7RNJ6LM8&amp;lc=US&amp;item_name=Donate%20SGit&amp;item_number=sgit&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+    </string>
 </resources>

@@ -70,11 +70,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 intent = new Intent(this, UserSettingsActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.action_donate:
-                Uri uri = Uri.parse(Constants.DONATE_URL);
-                intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

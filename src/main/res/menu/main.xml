@@ -24,8 +24,4 @@
         android:id="@+id/action_add_private_key"
         android:showAsAction="never"
         android:title="@string/action_manage_private_key"/>
-    <item
-        android:id="@+id/action_donate"
-        android:showAsAction="never"
-        android:title="@string/action_donate"/>
 </menu>
