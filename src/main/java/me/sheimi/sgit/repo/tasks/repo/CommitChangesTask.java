@@ -1,12 +1,6 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
-import java.lang.Exception;
-
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.Profile;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.exception.StopTaskException;
+import android.content.Context;
 
 import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
@@ -16,8 +10,11 @@ import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.UnmergedPathsException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import me.sheimi.android.utils.Profile;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
 
 public class CommitChangesTask extends RepoOpTask {
 
@@ -68,13 +65,9 @@ public class CommitChangesTask extends RepoOpTask {
             String msg) throws Exception, NoHeadException, NoMessageException,
             UnmergedPathsException, ConcurrentRefUpdateException,
             WrongRepositoryStateException, GitAPIException, StopTaskException {
-        SharedPreferences sharedPreferences = BasicFunctions
-                .getActiveActivity().getSharedPreferences(
-                        BasicFunctions.getActiveActivity().getString(
-                                R.string.preference_file_key),
-                        Context.MODE_PRIVATE);
-        String committerName = Profile.getUsername();
-        String committerEmail = Profile.getEmail();
+        Context context = SGitApplication.getContext();
+        String committerName = Profile.getUsername(context);
+        String committerEmail = Profile.getEmail(context);
         if (committerName == "" || committerEmail == "") {
             throw new Exception("Please set your name and email");
         }

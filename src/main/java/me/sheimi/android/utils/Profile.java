@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
 
 /**
@@ -11,35 +12,28 @@ import me.sheimi.sgit.database.models.Repo;
  */
 public class Profile {
 
-    private static final String GIT_USER_NAME = "user.name";
-    private static final String GIT_USER_EMAIL = "user.email";
     private static SharedPreferences sSharedPreference;
 
     private static boolean sHasLastCloneFail = false;
     private static Repo sLastFailRepo;
 
-    private static SharedPreferences getProfileSharedPreference() {
+    private static SharedPreferences getProfileSharedPreference(Context context) {
         if (sSharedPreference == null) {
-            sSharedPreference = BasicFunctions.getActiveActivity().getSharedPreferences(
-                                    BasicFunctions.getActiveActivity().getString(R.string.preference_file_key),
+            sSharedPreference = context.getSharedPreferences(
+                                    context.getString(R.string.preference_file_key),
                                     Context.MODE_PRIVATE);
         }
         return sSharedPreference;
     }
 
-    public static String getUsername() {
-        return getProfileSharedPreference().getString(GIT_USER_NAME, "");
+    public static String getUsername(Context context) {
+        String userNamePrefKey = context.getString(R.string.pref_key_git_user_name);
+        return getProfileSharedPreference(context).getString(userNamePrefKey, "");
     }
 
-    public static String getEmail() {
-        return getProfileSharedPreference().getString(GIT_USER_EMAIL, "");
-    }
-
-    public static void setProfileInformation(String username, String email) {
-        SharedPreferences.Editor editor = getProfileSharedPreference().edit();
-        editor.putString(Profile.GIT_USER_NAME, username);
-        editor.putString(Profile.GIT_USER_EMAIL, email);
-        editor.commit();
+    public static String getEmail(Context context) {
+        String userEmailPrefKey = context.getString(R.string.pref_key_git_user_email);
+        return getProfileSharedPreference(context).getString(userEmailPrefKey, "");
     }
 
     public static boolean hasLastCloneFailed() {
