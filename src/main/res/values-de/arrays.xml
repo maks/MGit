@@ -27,6 +27,7 @@
         <item>Neue Datei</item>
         <item>Neuer Ordner</item>
         <item>Remote Repository hinzufügen</item>
+        <item>Remove Remote</item>
         <item>Löschen</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">

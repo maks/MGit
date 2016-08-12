@@ -546,4 +546,18 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
     }
 
+    public void removeRemote(String remote) throws IOException {
+        try {
+            StoredConfig config = getStoredConfig();
+            Set<String> remoteNames = config.getSubsections("remote");
+            if (!remoteNames.contains(remote)) {
+                throw new IOException(String.format("Remote %s does not exist.", remote));
+            }
+            config.unsetSection("remote", remote);
+            config.save();
+            mRemotes.remove(remote);
+        } catch (StopTaskException e) {
+        }
+    }
+
 }

@@ -9,6 +9,7 @@
     <string name="success_rebase">Rebased successfully</string>
     <string name="success_checkout_file">Checkout successfull</string>
     <string name="success_remote_added">Remote added</string>
+    <string name="success_remote_removed">Remote removed</string>
     <string name="success_save">File saved Successfully</string>
     <string name="msg_now_you_can_edit">File can be edited</string>
     <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
