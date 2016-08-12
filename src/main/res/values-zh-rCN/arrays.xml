@@ -27,6 +27,7 @@
         <item>新建文件</item>
         <item>新建文件夹</item>
         <item>远程</item>
+        <item>Remove Remote</item>
         <item>删除</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
