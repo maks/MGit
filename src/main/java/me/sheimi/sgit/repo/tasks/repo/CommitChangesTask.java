@@ -68,8 +68,11 @@ public class CommitChangesTask extends RepoOpTask {
         Context context = SGitApplication.getContext();
         String committerName = Profile.getUsername(context);
         String committerEmail = Profile.getEmail(context);
-        if (committerName == "" || committerEmail == "") {
+        if (committerName.isEmpty() || committerEmail.isEmpty()) {
             throw new Exception("Please set your name and email");
+        }
+        if (msg.isEmpty()) {
+            throw new Exception("Please include a commit message");
         }
         CommitCommand cc = repo.getGit().commit()
                 .setCommitter(committerName, committerEmail).setAll(stageAll)
