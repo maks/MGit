@@ -4,6 +4,7 @@ import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.CodeGuesser;
+import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.repo.CommitDiffTask;
@@ -23,12 +24,21 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.lib.PersonIdent;
+import android.widget.ShareActionProvider;
+import android.content.Intent;
+import android.net.Uri;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class CommitDiffActivity extends SheimiFragmentActivity {
 
     public final static String OLD_COMMIT = "old commit";
     public final static String NEW_COMMIT = "new commit";
     public final static String SHOW_DESCRIPTION = "show_description";
+    private final static int REQUEST_SAVE_DIFF = 1;
     private static final String JS_INF = "CodeLoader";
     private WebView mDiffContent;
     private ProgressBar mLoading;
@@ -37,6 +47,8 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
     private boolean mShowDescription;
     private Repo mRepo;
     private RevCommit mCommit;
+    private List<String> mDiffStrs;
+    private List<DiffEntry> mDiffEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +61,7 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         Bundle extras = getIntent().getExtras();
         mOldCommit = extras.getString(OLD_COMMIT);
         mNewCommit = extras.getString(NEW_COMMIT);
-	    mShowDescription = extras.getBoolean(SHOW_DESCRIPTION);
+        mShowDescription = extras.getBoolean(SHOW_DESCRIPTION);
         mRepo = (Repo) extras.getSerializable(Repo.TAG);
 
         String title = Repo.getCommitDisplayName(mNewCommit) + " : "
@@ -67,7 +79,7 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         webSettings.setJavaScriptEnabled(true);
         mDiffContent.setWebChromeClient(new WebChromeClient() {
             public void onConsoleMessage(String message, int lineNumber,
-                    String sourceID) {
+                                         String sourceID) {
                 Log.d("MyApplication", message + " -- From line " + lineNumber
                         + " of " + sourceID);
             }
@@ -86,7 +98,75 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.diff_commits, menu);
+        MenuItem item = menu.findItem(R.id.action_share_diff);
+        ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
+        final Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri futurePathName = Uri.fromFile(sharedDiffPathName());
+        shareIntent.putExtra(Intent.EXTRA_STREAM, futurePathName);
+        shareIntent.setData(futurePathName);
+        shareIntent.setType("text/x-patch");
+
+        shareActionProvider.setOnShareTargetSelectedListener(new ShareActionProvider.OnShareTargetSelectedListener () {
+            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+                try {
+                    File diff = sharedDiffPathName();
+                    saveDiff(new FileOutputStream(diff));
+                } catch (IOException e) {
+                    showToastMessage(R.string.alert_file_creation_failure);
+                }
+                return false;
+            }
+        });
+
+        shareActionProvider.setShareIntent(shareIntent);
         return true;
+    }
+
+    private String formatCommitInfo() {
+        PersonIdent committer, author;
+        committer = mCommit.getCommitterIdent();
+        author = mCommit.getAuthorIdent();
+        return "commit " + mNewCommit + "\n"
+                + "Author:     " + author.getName() + " <" + author.getEmailAddress() + ">\n"
+                + "AuthorDate: " + author.getWhen() + "\n"
+                + "Commit:     " + committer.getName() + " <" + committer.getEmailAddress() + "\n"
+                + "CommitDate: " + committer.getWhen() + "\n";
+    }
+
+    private void saveDiff(OutputStream fos) throws IOException {
+	    /* FIXME: LOCK!!! */
+        if (mCommit != null) {
+            String message;
+            fos.write(formatCommitInfo().getBytes());
+            fos.write("\n".getBytes());
+            message = mCommit.getFullMessage();
+            for (String line : message.split("\n", -1)) {
+                fos.write(("    " + line + "\n").getBytes());
+            }
+            fos.write("\n".getBytes());
+        }
+        for (String str : mDiffStrs) {
+            fos.write(str.getBytes());
+        }
+    }
+
+    private File sharedDiffPathName() {
+        // Should we rather use createTempFile?
+        return new File(FsUtils.getExternalDir("diff", true),
+                mNewCommit + "_" + mOldCommit + ".diff");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SAVE_DIFF && resultCode == RESULT_OK) {
+            Uri diffUri = data.getData();
+            try {
+                saveDiff(getContentResolver().openOutputStream(diffUri));
+            } catch (IOException e) {
+                showToastMessage(R.string.alert_file_creation_failure);
+            }
+        }
     }
 
     @Override
@@ -95,15 +175,18 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.action_save_diff:
+                Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                        .setType("text/x-patch")
+                        .putExtra(Intent.EXTRA_TITLE, Repo.getCommitDisplayName(mNewCommit) + ".diff");
+
+                startActivityForResult(intent, REQUEST_SAVE_DIFF);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private class CodeLoader {
-
-        private List<String> mDiffStrs;
-        private List<DiffEntry> mDiffEntries;
-
         @JavascriptInterface
         public String getDiff(int index) {
             return mDiffStrs.get(index);
@@ -120,18 +203,8 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
                 return "";
             }
 
-            PersonIdent committer, author;
-            String ret;
-            committer = mCommit.getCommitterIdent();
-            author = mCommit.getAuthorIdent();
-            ret = "commit " + mNewCommit + "\n"
-                    + "Author:     " + author.getName() + " <" + author.getEmailAddress() + ">\n"
-                    + "AuthorDate: " + author.getWhen() + "\n"
-                    + "Commit:     " + committer.getName() + " <" + committer.getEmailAddress() + "\n"
-                    + "CommitDate: " + committer.getWhen() + "\n";
-            return ret;
+            return formatCommitInfo();
         }
-
 
         @JavascriptInterface
         public String getCommitMessage() {
