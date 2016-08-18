@@ -81,6 +81,12 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
+        // aweful hack! workaround for null repo when returning from BranchChooser, but going to
+        // shortly refactor passing in serialised repo, so not worth doing more to fix for now
+        if (mRepo == null) {
+            finish();
+            return;
+        }
         repoInit();
         setTitle(mRepo.getDiaplayName());
         setContentView(R.layout.activity_repo_detail);
