@@ -51,6 +51,12 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         } else {
             holder.fileIcon.setImageResource(R.drawable.ic_file_d);
         }
+        // set if selected
+        if (convertView.isSelected()) {
+            convertView.setBackgroundColor(convertView.getContext().getResources().getColor(R.color.pressed_sgit));
+        } else {
+            convertView.setBackgroundColor(convertView.getContext().getResources().getColor(android.R.color.transparent));
+        }
         return convertView;
     }
 

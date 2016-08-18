@@ -116,7 +116,8 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-	mInActionMode = false;
+	    mInActionMode = false;
+        mFilesListAdapter.notifyDataSetChanged();
     }
 
     private void runActionMode(View view, int positon) {
@@ -128,6 +129,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 	mChosenFile = mFilesListAdapter.getItem(positon);
 	PrivateKeyManageActivity.this.startActionMode(PrivateKeyManageActivity.this);
 	view.setSelected(true);
+        mFilesListAdapter.notifyDataSetChanged();
     }
 
     @Override
