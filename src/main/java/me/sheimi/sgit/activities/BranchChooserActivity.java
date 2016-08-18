@@ -44,6 +44,7 @@ public class BranchChooserActivity extends Activity implements ActionMode.Callba
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         mInActionMode = false;
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -155,7 +156,7 @@ public class BranchChooserActivity extends Activity implements ActionMode.Callba
         mLoadding = (ProgressBar) v.findViewById(R.id.loading);
         mAdapter = new BranchTagListAdapter(this);
         mBranchTagList.setAdapter(mAdapter);
-
+        mBranchTagList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setTitle(R.string.dialog_choose_branch_title);
 
         refreshList();
@@ -193,6 +194,7 @@ public class BranchChooserActivity extends Activity implements ActionMode.Callba
                         mChosenCommit = mAdapter.getItem(position);
                         BranchChooserActivity.this.startActionMode(BranchChooserActivity.this);
                         view.setSelected(true);
+                        mAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
@@ -234,6 +236,13 @@ public class BranchChooserActivity extends Activity implements ActionMode.Callba
                     break;
             }
             holder.commitTitle.setText(displayName);
+
+            // set if selected
+            if (convertView.isSelected()) {
+                convertView.setBackgroundColor(convertView.getContext().getResources().getColor(R.color.pressed_sgit));
+            } else {
+                convertView.setBackgroundColor(convertView.getContext().getResources().getColor(android.R.color.transparent));
+            }
             return convertView;
         }
 
