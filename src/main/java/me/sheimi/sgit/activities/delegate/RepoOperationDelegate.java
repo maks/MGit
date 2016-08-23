@@ -1,6 +1,7 @@
 package me.sheimi.sgit.activities.delegate;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import me.sheimi.android.utils.FsUtils;
@@ -9,6 +10,7 @@ import me.sheimi.sgit.activities.delegate.actions.AddAllAction;
 import me.sheimi.sgit.activities.delegate.actions.AddRemoteAction;
 import me.sheimi.sgit.activities.delegate.actions.CherryPickAction;
 import me.sheimi.sgit.activities.delegate.actions.CommitAction;
+import me.sheimi.sgit.activities.delegate.actions.ConfigAction;
 import me.sheimi.sgit.activities.delegate.actions.DeleteAction;
 import me.sheimi.sgit.activities.delegate.actions.DiffAction;
 import me.sheimi.sgit.activities.delegate.actions.FetchAction;
@@ -18,6 +20,7 @@ import me.sheimi.sgit.activities.delegate.actions.NewDirAction;
 import me.sheimi.sgit.activities.delegate.actions.NewFileAction;
 import me.sheimi.sgit.activities.delegate.actions.PullAction;
 import me.sheimi.sgit.activities.delegate.actions.PushAction;
+import me.sheimi.sgit.activities.delegate.actions.RawConfigAction;
 import me.sheimi.sgit.activities.delegate.actions.RebaseAction;
 import me.sheimi.sgit.activities.delegate.actions.RemoveRemoteAction;
 import me.sheimi.sgit.activities.delegate.actions.RepoAction;
@@ -32,11 +35,9 @@ import me.sheimi.sgit.repo.tasks.repo.FetchTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
 import org.eclipse.jgit.lib.Ref;
-
 import static me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask.*;
 
 public class RepoOperationDelegate {
-
     private Repo mRepo;
     private RepoDetailActivity mActivity;
     private ArrayList<RepoAction> mActions = new ArrayList<RepoAction>();
@@ -64,6 +65,8 @@ public class RepoOperationDelegate {
         mActions.add(new AddRemoteAction(mRepo, mActivity));
         mActions.add(new RemoveRemoteAction(mRepo, mActivity));
         mActions.add(new DeleteAction(mRepo, mActivity));
+        mActions.add(new RawConfigAction(mRepo, mActivity));
+        mActions.add(new ConfigAction(mRepo, mActivity));
     }
 
     public void executeAction(int key) {
@@ -75,10 +78,21 @@ public class RepoOperationDelegate {
 
     public void checkoutCommit(final String commitName) {
         CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName,
-                false,new AsyncTaskPostCallback() {
+                null, new AsyncTaskPostCallback() {
                     @Override
                     public void onPostExecute(Boolean isSuccess) {
                         mActivity.reset(commitName);
+                    }
+                });
+        checkoutTask.executeTask();
+    }
+
+    public void checkoutCommit(final String commitName, final String branch) {
+        CheckoutTask checkoutTask = new CheckoutTask(mRepo, commitName, branch,
+                new AsyncTaskPostCallback() {
+                    @Override
+                    public void onPostExecute(Boolean isSuccess) {
+                        mActivity.reset(branch);
                     }
                 });
         checkoutTask.executeTask();

@@ -1,6 +1,5 @@
 package me.sheimi.sgit.adapters;
 
-import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.adapters.RepoOperationsAdapter.DrawerItem;
@@ -10,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class RepoOperationsAdapter extends SheimiArrayAdapter<DrawerItem>
+public class RepoOperationsAdapter extends ArrayAdapter<DrawerItem>
         implements OnItemClickListener {
 
     public RepoOperationsAdapter(Context context) {

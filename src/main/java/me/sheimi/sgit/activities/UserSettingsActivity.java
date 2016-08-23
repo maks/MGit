@@ -1,14 +1,14 @@
 package me.sheimi.sgit.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.fragments.SettingsFragment;
 
 /**
  * Activity for user settings
  */
-public class UserSettingsActivity extends Activity {
+public class UserSettingsActivity extends SheimiFragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

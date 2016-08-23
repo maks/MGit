@@ -76,36 +76,10 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
             public void onItemClick(AdapterView<?> adapterView, View view,
                     int position, long id) {
                 final File file = mFilesListAdapter.getItem(position);
-                File dotGit = new File(file, Repo.DOT_GIT_DIR);
-                if (!dotGit.exists()) {
-                    setCurrentDir(file);
-                    return;
-                }
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        ImportRepositoryActivity.this);
-                builder.setTitle(R.string.dialog_comfirm_import_repo_title);
-                builder.setMessage(R.string.dialog_comfirm_import_repo_msg);
-                builder.setNegativeButton(R.string.label_cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                setCurrentDir(file);
-                            }
-                        });
-                builder.setPositiveButton(R.string.label_import,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent();
-                                intent.putExtra(RESULT_PATH,
-                                        file.getAbsolutePath());
-                                setResult(Activity.RESULT_OK, intent);
-                                finish();
-                            }
-                        });
-                builder.show();
+                Intent intent = new Intent();
+                intent.putExtra(RESULT_PATH, file.getAbsolutePath());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         };
     }

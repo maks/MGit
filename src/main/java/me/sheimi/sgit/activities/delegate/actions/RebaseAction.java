@@ -2,6 +2,7 @@ package me.sheimi.sgit.activities.delegate.actions;
 
 import java.util.List;
 
+import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -74,11 +75,10 @@ public class RebaseAction extends RepoAction {
             mBranchTagList.setAdapter(mAdapter);
             builder.setView(mBranchTagList);
 
-            List<Ref> branches = mRepo.getLocalBranches();
-            String currentBranchDisplayName = mRepo.getCurrentDisplayName();
-            for (Ref branch : branches) {
-                if (Repo.getCommitDisplayName(branch.getName()).equals(
-                        currentBranchDisplayName))
+            String[] branches = mRepo.getBranches();
+            String currentBranchName = mRepo.getBranchName();
+            for (String branch : branches) {
+                if (branch.equals(currentBranchName))
                     continue;
                 mAdapter.add(branch);
             }
@@ -89,8 +89,8 @@ public class RebaseAction extends RepoAction {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView,
                                 View view, int position, long id) {
-                            Ref commit = mAdapter.getItem(position);
-                            rebase(mRepo, commit.getName(), mActivity);
+                            String commit = mAdapter.getItem(position);
+                            rebase(mRepo, commit, mActivity);
                             getDialog().cancel();
                         }
                     });
@@ -98,7 +98,7 @@ public class RebaseAction extends RepoAction {
             return builder.create();
         }
 
-        private static class BranchTagListAdapter extends ArrayAdapter<Ref> {
+        private static class BranchTagListAdapter extends ArrayAdapter<String> {
 
             public BranchTagListAdapter(Context context) {
                 super(context, 0);
@@ -121,16 +121,16 @@ public class RebaseAction extends RepoAction {
                 } else {
                     holder = (ListItemHolder) convertView.getTag();
                 }
-                String commitName = getItem(position).getName();
+                String commitName = getItem(position);
                 String displayName = Repo.getCommitDisplayName(commitName);
                 int commitType = Repo.getCommitType(commitName);
                 switch (commitType) {
                     case Repo.COMMIT_TYPE_HEAD:
                         holder.commitIcon
-                                .setImageResource(R.drawable.ic_branch_d);
+                                .setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_branch_l));
                         break;
                     case Repo.COMMIT_TYPE_TAG:
-                        holder.commitIcon.setImageResource(R.drawable.ic_tag_d);
+                        holder.commitIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_tag_l));
                         break;
                 }
                 holder.commitTitle.setText(displayName);

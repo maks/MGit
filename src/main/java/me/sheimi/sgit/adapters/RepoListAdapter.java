@@ -7,7 +7,6 @@ import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.views.SheimiArrayAdapter;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
@@ -24,13 +23,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * Created by sheimi on 8/6/13.
  */
-public class RepoListAdapter extends SheimiArrayAdapter<Repo> implements
+public class RepoListAdapter extends ArrayAdapter<Repo> implements
         RepoDbManager.RepoDbObserver, AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
 

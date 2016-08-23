@@ -11,7 +11,6 @@
     <string name="action_git_profile">Profil Git</string>
     <string name="action_settings">Paramètres</string>
     <string name="action_manage_private_key">Clés privées</string>
-    <string name="action_add_private_key">Ajouter une clé</string>
     <string name="action_feedback">Feedback</string>
     <string name="action_choose_language">Choisir la langue</string>
     <string name="action_mode_diff">Diff</string>

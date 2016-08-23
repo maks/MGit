@@ -13,12 +13,16 @@ import me.sheimi.sgit.exception.StopTaskException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.dircache.DirCacheIterator;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.FileTreeIterator;
 
 public class CommitDiffTask extends RepoOpTask {
 
@@ -27,18 +31,23 @@ public class CommitDiffTask extends RepoOpTask {
     private List<DiffEntry> mDiffEntries;
     private List<String> mDiffStrs;
     private CommitDiffResult mCallback;
+    private boolean mShowDescription;
+    private Iterable<RevCommit> mCommits;
+    private DiffFormatter mDiffFormatter;
+    private ByteArrayOutputStream mDiffOutput;
 
     public interface CommitDiffResult {
         public void pushResult(List<DiffEntry> diffEntries,
-                List<String> diffStrs);
+                               List<String> diffStrs, RevCommit description);
     }
 
     public CommitDiffTask(Repo repo, String oldCommit, String newCommit,
-            CommitDiffResult callback) {
+                          CommitDiffResult callback, boolean showDescription) {
         super(repo);
         mOldCommit = oldCommit;
         mNewCommit = newCommit;
         mCallback = callback;
+        mShowDescription = showDescription;
     }
 
     @Override
@@ -61,27 +70,55 @@ public class CommitDiffTask extends RepoOpTask {
 
     protected void onPostExecute(Boolean isSuccess) {
         super.onPostExecute(isSuccess);
+        RevCommit retCommit = null;
         if (isSuccess && mCallback != null && mDiffEntries != null) {
-            mCallback.pushResult(mDiffEntries, mDiffStrs);
+            if (mCommits != null) {
+                for (RevCommit commit : mCommits) {
+                    retCommit = commit;
+                    break;
+                }
+            }
+            mCallback.pushResult(mDiffEntries, mDiffStrs, retCommit);
         }
+    }
+
+    private AbstractTreeIterator getTreeIterator(Repository repo, String commit) throws IOException {
+        if (commit.equals("dircache")) {
+            return new DirCacheIterator(repo.readDirCache());
+        }
+        if (commit.equals("filetree")) {
+            return new FileTreeIterator(repo);
+        }
+        ObjectId treeId = repo.resolve(commit + "^{tree}");
+
+        if (treeId == null) {
+            throw new NullPointerException();
+        }
+
+        CanonicalTreeParser treeIter = new CanonicalTreeParser();
+        ObjectReader reader = repo.newObjectReader();
+
+        treeIter.reset(reader, treeId);
+        return treeIter;
     }
 
     public boolean getCommitDiff() {
         try {
             Repository repo = mRepo.getGit().getRepository();
-            ObjectId oldId = repo.resolve(mOldCommit + "^{tree}");
-            ObjectId newId = repo.resolve(mNewCommit + "^{tree}");
 
-            CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+            mDiffOutput = new ByteArrayOutputStream();
+            mDiffFormatter = new DiffFormatter(mDiffOutput);
+            mDiffFormatter.setRepository(repo);
 
-            ObjectReader reader = repo.newObjectReader();
+            mDiffEntries = mDiffFormatter.scan(getTreeIterator(repo, mOldCommit),
+                    getTreeIterator(repo, mNewCommit));
 
-            oldTreeIter.reset(reader, oldId);
-            newTreeIter.reset(reader, newId);
-
-            mDiffEntries = mRepo.getGit().diff().setOldTree(oldTreeIter)
-                    .setNewTree(newTreeIter).call();
+            if (mShowDescription) {
+                ObjectId newCommitId = repo.resolve(mNewCommit);
+                mCommits = mRepo.getGit().log().add(newCommitId).setMaxCount(1).call();
+            } else {
+                mCommits = new ArrayList<RevCommit>();
+            }
 
             return true;
         } catch (GitAPIException e) {
@@ -94,18 +131,19 @@ public class CommitDiffTask extends RepoOpTask {
             setException(e, R.string.error_diff_failed);
         } catch (IllegalStateException e) {
             setException(e, R.string.error_diff_failed);
+        } catch (NullPointerException e) {
+            setException(e, R.string.error_diff_failed);
         } catch (StopTaskException e) {
         }
         return false;
     }
 
     private String parseDiffEntry(DiffEntry diffEntry) throws StopTaskException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        DiffFormatter df = new DiffFormatter(out);
         try {
-            df.setRepository(mRepo.getGit().getRepository());
-            df.format(diffEntry);
-            String diffText = out.toString("UTF-8");
+            mDiffOutput.reset();
+            mDiffFormatter.format(diffEntry);
+            mDiffFormatter.flush();
+            String diffText = mDiffOutput.toString("UTF-8");
             return diffText;
         } catch (UnsupportedEncodingException e) {
             setException(e, R.string.error_diff_failed);

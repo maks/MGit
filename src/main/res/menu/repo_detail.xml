@@ -1,5 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search"
+        android:showAsAction="always|collapseActionView"
+        android:visible="false"
+        android:title="@string/action_search"/>
+    <item
             android:id="@+id/action_toggle_drawer"
             android:title="@string/action_toggle_drawer"
             android:icon="@drawable/ic_drawer"

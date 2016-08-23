@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_mode_rename_key"
+	android:icon="@drawable/ic_tag_w"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_mode_rename_key"/>
+    <item
+        android:id="@+id/action_mode_show_private_key"
+        android:showAsAction="never"
+        android:title="@string/action_mode_show_private_key"/>
+    <item
+        android:id="@+id/action_mode_show_public_key"
+        android:showAsAction="never"
+        android:title="@string/action_mode_show_public_key"/>
+
+    <item
+        android:id="@+id/action_mode_delete"
+	android:icon="@drawable/ic_trash"
+        android:showAsAction="ifRoom"
+        android:title="@string/label_delete"/>
+
+</menu>

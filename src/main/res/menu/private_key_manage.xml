@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/action_new"
+            android:id="@+id/action_generate"
             android:icon="@drawable/ic_content_new"
-            android:title="@string/action_add_private_key"
+            android:title="@string/action_generate_private_key"
+            android:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/action_import"
+            android:icon="@drawable/ic_download"
+            android:title="@string/action_import_private_key"
             android:showAsAction="ifRoom"/>
 </menu>

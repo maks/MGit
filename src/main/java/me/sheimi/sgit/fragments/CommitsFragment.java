@@ -8,8 +8,10 @@ import java.util.Set;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.CommitDiffActivity;
+import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.adapters.CommitsListAdapter;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CheckoutDialog;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -28,11 +30,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 /**
  * Created by sheimi on 8/5/13.
  */
-public class CommitsFragment extends RepoDetailFragment implements
+public class CommitsFragment extends BaseFragment implements
         ActionMode.Callback {
 
     private final static String IS_ACTION_MODE = "is action mode";
@@ -44,33 +47,45 @@ public class CommitsFragment extends RepoDetailFragment implements
     private ActionMode mActionMode;
     private Set<Integer> mChosenItem = new HashSet<Integer>();
     private Repo mRepo;
+    private String mFile;
+    private static final String FILE = "commit_file";
 
     private ClipboardManager mClipboard;
 
-    public static CommitsFragment newInstance(Repo mRepo) {
+    public static CommitsFragment newInstance(Repo mRepo, String file) {
         CommitsFragment fragment = new CommitsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(Repo.TAG, mRepo);
+        if (file != null) {
+            bundle.putString(FILE, file);
+        }
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    public void setFilter(String query){
+        mCommitsListAdapter.setFilter(query);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_commits, container, false);
-        getRawActivity().setCommitsFragment(this);
+        if (getRawActivity() instanceof RepoDetailActivity) {
+            ((RepoDetailActivity) getRawActivity()).setCommitsFragment(this);
+        }
 
         Bundle bundle = getArguments();
         mRepo = (Repo) bundle.getSerializable(Repo.TAG);
         if (mRepo == null) {
             return v;
         }
+        mFile = bundle.getString(FILE);
         mClipboard = (ClipboardManager) getRawActivity().getSystemService(
                 Activity.CLIPBOARD_SERVICE);
         mCommitsList = (ListView) v.findViewById(R.id.commitsList);
         mCommitsListAdapter = new CommitsListAdapter(getRawActivity(),
-                mChosenItem, mRepo);
+                mChosenItem, mRepo, mFile);
         mCommitsListAdapter.resetCommit();
         mCommitsList.setAdapter(mCommitsListAdapter);
 
@@ -80,8 +95,10 @@ public class CommitsFragment extends RepoDetailFragment implements
                     public void onItemClick(AdapterView<?> adapterView,
                             View view, int position, long id) {
                         if (mActionMode == null) {
-                            enterDiffActionMode();
-                        }   
+                            RevCommit newCommit = mCommitsListAdapter.getItem(position);
+                            showDiff(null, null, newCommit.getName(), true);
+                            return;
+                        }
                         chooseItem(position);
                     }
                 });
@@ -90,27 +107,10 @@ public class CommitsFragment extends RepoDetailFragment implements
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView,
                             View view, int position, long l) {
-                        if (mActionMode != null) {
-                            return false;
+			if (mActionMode == null) {
+                            enterDiffActionMode();
                         }
-                        RevCommit commit = mCommitsListAdapter
-                                .getItem(position);
-                        final String fullCommitName = commit.getName();
-                        String message = getString(R.string.dialog_comfirm_checkout_commit_msg)
-                                + " "
-                                + Repo.getCommitDisplayName(fullCommitName);
-                        showMessageDialog(
-                                R.string.dialog_comfirm_checkout_commit_title,
-                                message, R.string.label_checkout,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(
-                                            DialogInterface dialogInterface,
-                                            int i) {
-                                        getRawActivity().getRepoDelegate()
-                                                .checkoutCommit(fullCommitName);
-                                    }
-                                });
+			chooseItem(position);
                         return true;
                     }
                 });
@@ -171,6 +171,22 @@ public class CommitsFragment extends RepoDetailFragment implements
         return true;
     }
 
+    private void showDiff(ActionMode actionMode, String oldCommit, String newCommit,
+                          boolean showDescription) {
+        Intent intent = new Intent(getRawActivity(),
+                CommitDiffActivity.class);
+        if (oldCommit != null) {
+            intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
+        }
+        intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
+        intent.putExtra(CommitDiffActivity.SHOW_DESCRIPTION, showDescription);
+        intent.putExtra(Repo.TAG, mRepo);
+        if (actionMode != null) {
+            actionMode.finish();
+        }
+        getRawActivity().startActivity(intent);
+    }
+
     @Override
     public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -181,7 +197,7 @@ public class CommitsFragment extends RepoDetailFragment implements
                     return true;
                 }
                 int item1,
-                item2;
+                        item2;
                 item1 = items[0];
                 if (items.length == 1) {
                     item2 = item1 + 1;
@@ -192,21 +208,16 @@ public class CommitsFragment extends RepoDetailFragment implements
                 } else {
                     item2 = items[1];
                 }
-                Intent intent = new Intent(getRawActivity(),
-                        CommitDiffActivity.class);
+
                 int smaller = Math.min(item1, item2);
                 int larger = Math.max(item1, item2);
                 String oldCommit = mCommitsListAdapter.getItem(larger)
                         .getName();
                 String newCommit = mCommitsListAdapter.getItem(smaller)
                         .getName();
-                intent.putExtra(CommitDiffActivity.OLD_COMMIT, oldCommit);
-                intent.putExtra(CommitDiffActivity.NEW_COMMIT, newCommit);
-                intent.putExtra(Repo.TAG, mRepo);
-                actionMode.finish();
-                getRawActivity().startActivity(intent);
+                showDiff(actionMode, oldCommit, newCommit, false);
                 return true;
-            case R.id.action_mode_copy_commit:
+            case R.id.action_mode_copy_commit: {
                 if (mChosenItem.size() != 1) {
                     showToastMessage(R.string.alert_you_must_choose_one_commit_to_copy);
                     return true;
@@ -218,6 +229,21 @@ public class CommitsFragment extends RepoDetailFragment implements
                 showToastMessage(R.string.msg_commit_str_has_copied);
                 actionMode.finish();
                 return true;
+            }
+            case R.id.action_mode_checkout: {
+                int item = mChosenItem.iterator().next();
+                String commit = mCommitsListAdapter.getItem(item).getName();
+                Bundle pathArg = new Bundle();
+                pathArg.putString(CheckoutDialog.BASE_COMMIT, commit);
+                pathArg.putSerializable(Repo.TAG, mRepo);
+                actionMode.finish();
+                CheckoutDialog ckd = new CheckoutDialog();
+                ckd.setArguments(pathArg);
+                ckd.show(getFragmentManager(), "rename-dialog");
+
+                break;
+            }
+
         }
         return false;
     }
@@ -230,6 +256,8 @@ public class CommitsFragment extends RepoDetailFragment implements
     }
 
     private void chooseItem(int position) {
+        if (mCommitsListAdapter.isProgressBar(position))
+            return;
         if (mChosenItem.contains(position)) {
             mChosenItem.remove(position);
             mCommitsListAdapter.notifyDataSetChanged();

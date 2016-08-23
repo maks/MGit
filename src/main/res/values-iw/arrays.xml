@@ -28,6 +28,8 @@
     <item>הוסף שרת</item>
     <item>Remove Remote</item>
     <item>מחק</item>
+    <item>Raw config</item>
+    <item>Config</item>
   </string-array>
   <string-array name="dialog_choose_repo_action_items">
     <item>Rename</item>

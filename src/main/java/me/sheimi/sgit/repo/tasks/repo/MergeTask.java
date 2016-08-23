@@ -74,7 +74,7 @@ public class MergeTask extends RepoOpTask {
                         Repo.getCommitDisplayName(b1));
             }
             try {
-                CommitChangesTask.commit(mRepo, false, false, msg);
+                CommitChangesTask.commit(mRepo, false, false, msg, null, null);
             } catch (GitAPIException e) {
                 setException(e);
                 return false;

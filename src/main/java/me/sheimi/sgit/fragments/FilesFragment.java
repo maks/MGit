@@ -89,6 +89,7 @@ public class FilesFragment extends RepoDetailFragment {
                                     ViewFileActivity.class);
                             intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
                                     file.getAbsolutePath());
+                            intent.putExtra(Repo.TAG, mRepo);
                             getRawActivity().startActivity(intent);
                             return;
                         }

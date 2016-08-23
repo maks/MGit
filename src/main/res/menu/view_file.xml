@@ -1,15 +1,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/action_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search"
+        android:showAsAction="always|collapseActionView"
+        android:visible="false"
+        android:title="@string/action_search"/>
 
     <item
-        android:id="@+id/action_open_in_other_app"
+        android:id="@+id/action_edit_in_other_app"
         android:icon="@drawable/ic_file"
         android:showAsAction="ifRoom"
-        android:title="@string/action_open_in_other_app"/>
+        android:title="@string/action_edit_in_other_app"/>
     <item
-        android:id="@+id/action_edit_in_other_app"
+        android:id="@+id/action_edit"
         android:icon="@drawable/ic_action_edit"
         android:showAsAction="ifRoom"
-        android:title="@string/action_edit_in_other_app"/>
+        android:title="@string/action_edit"/>
+    <item
+        android:id="@+id/action_copy_all"
+        android:icon="@drawable/ic_action_copy"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_copy_all"/>
     <item
         android:id="@+id/action_choose_language"
         android:showAsAction="never"

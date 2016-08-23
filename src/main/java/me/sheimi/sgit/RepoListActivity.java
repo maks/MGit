@@ -1,22 +1,26 @@
 package me.sheimi.sgit;
 
-import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.utils.Constants;
-import me.sheimi.sgit.activities.UserSettingsActivity;
-import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
-import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
-import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.adapters.RepoListAdapter;
-import me.sheimi.sgit.dialogs.CloneDialog;
-import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.io.File;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.activities.UserSettingsActivity;
+import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
+import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
+import me.sheimi.sgit.adapters.RepoListAdapter;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.CloneDialog;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
+import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class RepoListActivity extends SheimiFragmentActivity {
@@ -25,7 +29,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
     private RepoListAdapter mRepoListAdapter;
 
     private static final int REQUEST_IMPORT_REPO = 0;
-    private Intent mImportRepoIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,27 +84,38 @@ public class RepoListActivity extends SheimiFragmentActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mImportRepoIntent != null) {
-            String path = mImportRepoIntent.getExtras().getString(
-                    ExploreFileActivity.RESULT_PATH);
-            Bundle args = new Bundle();
-            args.putString(ImportLocalRepoDialog.FROM_PATH, path);
-            ImportLocalRepoDialog rld = new ImportLocalRepoDialog();
-            rld.setArguments(args);
-            rld.show(getFragmentManager(), "import-local-dialog");
-            mImportRepoIntent = null;
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)
             return;
         switch (requestCode) {
             case REQUEST_IMPORT_REPO:
-                mImportRepoIntent = data;
+                final String path = data.getExtras().getString(
+                        ExploreFileActivity.RESULT_PATH);
+                File file = new File(path);
+                File dotGit = new File(file, Repo.DOT_GIT_DIR);
+                if (!dotGit.exists()) {
+                    showToastMessage(getString(R.string.error_no_repository));
+                    return;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(
+                        this);
+                builder.setTitle(R.string.dialog_comfirm_import_repo_title);
+                builder.setMessage(R.string.dialog_comfirm_import_repo_msg);
+                builder.setNegativeButton(R.string.label_cancel,
+                        new DummyDialogListener());
+                builder.setPositiveButton(R.string.label_import,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialogInterface, int i) {
+                                Bundle args = new Bundle();
+                                args.putString(ImportLocalRepoDialog.FROM_PATH, path);
+                                ImportLocalRepoDialog rld = new ImportLocalRepoDialog();
+                                rld.setArguments(args);
+                                rld.show(getFragmentManager(), "import-local-dialog");
+                            }
+                        });
+                builder.show();
                 break;
         }
     }
