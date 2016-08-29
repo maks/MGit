@@ -414,6 +414,11 @@ public class Repo implements Comparable<Repo>, Serializable {
         return COMMIT_TYPE_HEAD;
     }
 
+    /**
+     * Returns the type of ref based on the refs full path within .git/
+     * @param fullRefName
+     * @return
+     */
     public static int getCommitType(String fullRefName) {
         if (fullRefName != null && fullRefName.startsWith(Constants.R_REFS)) {
             if (fullRefName.startsWith(Constants.R_HEADS)) {
@@ -427,6 +432,11 @@ public class Repo implements Comparable<Repo>, Serializable {
         return COMMIT_TYPE_UNKNOWN;
     }
 
+    /**
+     * Return just the name of the ref, with any prefixes like "heads", "remotes", "tags" etc.
+     * @param name
+     * @return
+     */
     public static String getCommitName(String name) {
         String[] splits = name.split("/");
         int type = getCommitType(splits);
@@ -447,20 +457,24 @@ public class Repo implements Comparable<Repo>, Serializable {
      * @return  Shortened version of full ref path, suitable for display in UI
      */
     public static String getCommitDisplayName(String ref) {
-        int type = getCommitType(ref);
-        switch (type) {
-            case COMMIT_TYPE_REMOTE:
-            case COMMIT_TYPE_UNKNOWN:
+        if (getCommitType(ref) == COMMIT_TYPE_REMOTE) {
             return (ref != null && ref.length() > Constants.R_REFS.length()) ? ref.substring(Constants.R_REFS.length()) : "";
         }
         return Repository.shortenRefName(ref);
     }
 
+    /**
+     *
+     * @param remote
+     * @return null if remote is not found to be a remote ref in this repo
+     */
     public static String convertRemoteName(String remote) {
-        String[] splits = remote.split("/");
-        if (getCommitType(splits) != COMMIT_TYPE_REMOTE)
+        if (getCommitType(remote) != COMMIT_TYPE_REMOTE) {
             return null;
-        return String.format("refs/heads/%s", splits[3]);
+        } else {
+            String[] splits = remote.split("/");
+            return String.format("refs/heads/%s", splits[3]);
+        }
     }
 
     public static File getDir(Context context, String localpath) {
