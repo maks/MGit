@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 

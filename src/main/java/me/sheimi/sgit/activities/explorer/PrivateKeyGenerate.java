@@ -1,22 +1,23 @@
 package me.sheimi.sgit.activities.explorer;
 
-import android.app.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import me.sheimi.sgit.R;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.KeyPair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.KeyPair;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import me.sheimi.sgit.ssh.PrivateKeyUtils;
+
 import me.sheimi.android.views.SheimiDialogFragment;
-import android.widget.EditText;
-import android.widget.RadioButton;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class PrivateKeyGenerate extends SheimiDialogFragment {
 
