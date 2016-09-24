@@ -4,8 +4,52 @@
                 android:layout_height="match_parent"
                 tools:context=".activities.explorer.PrivateKeyManageActivity">
 
+    <TextView
+        android:id="@+id/currentPath"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        tools:text="/foo/bar"
+        android:gravity="center_vertical"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="10dp" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="0.2dp"
+        android:visibility="visible"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/currentPath"/>
+
+    <ImageView
+        android:id="@+id/upDirIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:layout_margin="@dimen/commit_list_item_icon_padding"
+        android:src="@drawable/ic_folder_d"/>
+
+    <TextView
+        android:id="@+id/upDir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/upDirIcon"
+        android:layout_alignBaseline="@id/upDirIcon"
+        android:layout_below="@+id/separator"
+        android:layout_margin="@dimen/commit_list_item_icon_padding"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=".."
+
+        />
+
     <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fileList"/>
+        android:id="@+id/fileList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/upDir" />
 </RelativeLayout>
