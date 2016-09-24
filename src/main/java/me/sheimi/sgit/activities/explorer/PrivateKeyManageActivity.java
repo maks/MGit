@@ -170,19 +170,19 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-	case R.id.action_import:
-	    {
+        case R.id.action_import:
+            {
                 Intent intent = new Intent(this, ExploreFileActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_KEY);
                 forwardTransition();
                 return true;
-	    }
-	case R.id.action_generate:
-	    {
-		(new PrivateKeyGenerate(this)).show(getFragmentManager(), "generate-key");
-		refreshList();
+            }
+        case R.id.action_generate:
+            {
+                (new PrivateKeyGenerate()).show(getFragmentManager(), "generate-key");
+                refreshList();
                 return true;
-	    }
+            }
         }
         return super.onOptionsItemSelected(item);
     }
