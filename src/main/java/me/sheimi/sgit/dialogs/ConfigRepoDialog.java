@@ -23,14 +23,15 @@ import me.sheimi.sgit.exception.StopTaskException;
  */
 public class ConfigRepoDialog extends SheimiDialogFragment implements
         DialogInterface.OnClickListener {
-    private Repo mRepo;
+
+    public static final String REPO_ARG_KEY = "repo";
+
     private Activity mActivity;
     private EditText mGitName;
     private EditText mGitEmail;
 
-    public ConfigRepoDialog(Repo repo) {
-        mRepo = repo;
-    }
+    public ConfigRepoDialog() {}
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class ConfigRepoDialog extends SheimiDialogFragment implements
         String stored_email = "";
 
         try {
-            config = mRepo.getGit().getRepository().getConfig();
+            config = ((Repo)getArguments().getSerializable(REPO_ARG_KEY)).getGit().getRepository().getConfig();
             stored_name = config.getString("user", null, "name");
             stored_email = config.getString("user", null, "email");
         } catch (StopTaskException e) {
@@ -73,7 +74,7 @@ public class ConfigRepoDialog extends SheimiDialogFragment implements
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         try {
-            StoredConfig config = mRepo.getGit().getRepository().getConfig();
+            StoredConfig config = ((Repo)getArguments().getSerializable(REPO_ARG_KEY)).getGit().getRepository().getConfig();
             String email = mGitEmail.getText().toString();
             String name = mGitName.getText().toString();
 

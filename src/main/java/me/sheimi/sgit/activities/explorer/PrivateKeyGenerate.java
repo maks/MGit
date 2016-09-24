@@ -21,15 +21,11 @@ import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class PrivateKeyGenerate extends SheimiDialogFragment {
 
-    private PrivateKeyManageActivity mParent;
     private EditText mNewFilename;
     private EditText mKeyLength;
     private RadioButton mDSAButton;
     private RadioButton mRSAButton;
 
-    PrivateKeyGenerate(PrivateKeyManageActivity parent) {
-	mParent = parent;
-    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -101,6 +97,6 @@ public class PrivateKeyGenerate extends SheimiDialogFragment {
 	    e.printStackTrace();
 	}
 
-	mParent.refreshList();
+		((PrivateKeyManageActivity)getActivity()).refreshList();
     }
 }
