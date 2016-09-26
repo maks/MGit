@@ -65,6 +65,12 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
                             }
                         });
                 return true;
+            case R.id.action_import_external:
+                Intent intent = new Intent();
+                intent.putExtra(RESULT_PATH, getCurrentDir().getAbsolutePath());
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -75,11 +81,11 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view,
                     int position, long id) {
-                final File file = mFilesListAdapter.getItem(position);
-                Intent intent = new Intent();
-                intent.putExtra(RESULT_PATH, file.getAbsolutePath());
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                File file = mFilesListAdapter.getItem(position);
+                if (file.isDirectory()) {
+                    setCurrentDir(file);
+                    return;
+                }
             }
         };
     }
