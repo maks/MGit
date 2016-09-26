@@ -6,4 +6,10 @@
         android:showAsAction="ifRoom"
         android:title="@string/action_create_external_repo"/>
 
+    <item
+        android:id="@+id/action_import_external"
+        android:icon="@drawable/ic_action_save"
+        android:showAsAction="always"
+        android:title="@string/label_import"/>
+
 </menu>
