@@ -484,10 +484,8 @@ public class Repo implements Comparable<Repo>, Serializable {
         File repoDir = FsUtils.getRepoDir(context, localpath);
         if (repoDir == null) {
             repoDir = FsUtils.getExternalDir(REPO_DIR, true);
-            Log.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
             return new File(repoDir, localpath);
         } else {
-            Log.d("maks", "CUSTOM repo path:"+repoDir);
             return repoDir;
         }
     }
