@@ -7,6 +7,8 @@ android:
     - android-22
     - extra-android-support
     - extra-android-m2repository
+jdk:
+  - oraclejdk8
 env:
   global:
     - TERM=dumb
