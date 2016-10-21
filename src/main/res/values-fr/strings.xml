@@ -125,7 +125,6 @@
     <string name="dialog_file_remove_cached_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire de l\'index?</string>
     <string name="dialog_file_remove_force">Supprimer le fichier de travail</string>
     <string name="dialog_file_remove_force_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire à partir du répertoire et de l\'indice de travail?</string>
-    <string name="preference_donate">Donner</string>
     <string name="action_copy_all">Copy whole file</string>
     <string name="action_create_new_dir">Create new folder</string>
     <string name="action_edit_save">Save</string>
@@ -177,7 +176,6 @@
     <string name="pref_category_title_general">General</string>
     <string name="pref_category_title_about">About</string>
     <string name="preference_app_version">Version</string>
-    <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
     <string name="preference_git_user_email">User Email</string>
     <string name="preference_git_user_name">User Name</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>

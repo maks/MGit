@@ -29,7 +29,6 @@
     <string name="alert_choose_two_items">Vous pouvez sélectionner seulement 2 éléments</string>
     <string name="alert_no_items_selected">Aucun élément sélectionné</string>
     <!--<string name="alert_no_older_commits">No Older Commits to Compare With</string>-->
-    <string name="alert_have_paid">Les pubs ont été désactivées.</string>
     <string name="alert_please_wait_previous_op">L\'opération précédente est encore en cours</string>
     <string name="alert_you_must_choose_one_commit_to_copy">Vous devez choisir un commit à copier</string>
     <string name="alert_you_should_input_something">Vous devez saisir quelque chose</string>

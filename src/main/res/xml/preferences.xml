@@ -76,14 +76,6 @@
         </me.sheimi.sgit.preference.Preference>
 
         <me.sheimi.sgit.preference.Preference
-            android:title="@string/preference_donate"
-            android:summary="@string/preference_donate_summary"
-            >
-            <intent android:action="android.intent.action.VIEW"
-                android:data="@string/donate_url" />
-        </me.sheimi.sgit.preference.Preference>
-
-        <me.sheimi.sgit.preference.Preference
             android:key="@string/preference_key_app_version"
             android:title="@string/preference_app_version"
             android:selectable="false"
