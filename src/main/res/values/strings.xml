@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">SGit</string>
+    <string name="app_name" translatable="false">MGit</string>
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
-    <string name="preference_file_key" translatable="false">me.sheimi.sgit</string>
+    <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
@@ -130,11 +130,10 @@
     <string name="title_activity_explore_file">Explore Files</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_config_repo">Repository config</string>
-    <string name="feedback_url" translatable="false">https://github.com/sheimi/SGit/issues/new</string>
+    <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
-    <string name="alert_have_paid">Ads have been removed</string>
     <string name="cannot_delete_branch">cannot delete %s</string>
     <string name="cannot_delete_current_branch">cannot delete currently checked out branch %s</string>
 
@@ -155,10 +154,6 @@
     <string name="preference_send_feedback_summary">Submit feedback by creating a new issue on GitHub</string>
     <string name="preference_key_app_version" translatable="false">app_version</string>
     <string name="preference_app_version">Version</string>
-    <string name="preference_donate">Donate</string>
-    <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
-    <string name="donate_url" formatted="false" translatable="false">https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=KWFGX7RNJ6LM8&amp;lc=US&amp;item_name=Donate%20SGit&amp;item_number=sgit&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
-    </string>
     <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
     <string name="pref_category_title_security">Security</string>

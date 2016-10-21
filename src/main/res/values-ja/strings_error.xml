@@ -28,7 +28,6 @@
     <string name="alert_choose_two_items">2つまでアイテムを選択できます。</string>
     <string name="alert_no_items_selected">アイテムが選択されていません。</string>
     <string name="alert_no_older_commits">古いコミットと比較されています。</string>
-    <string name="alert_have_paid">広告は無効化されました。</string>
     <string name="alert_please_wait_previous_op">前回のオペレーションがまだ実行されています。</string>
     <string name="alert_you_must_choose_one_commit_to_copy">コピーするコミットを1つ選んでください。</string>
     <string name="alert_you_should_input_something">何か入力する必要がります。</string>

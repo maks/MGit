@@ -25,7 +25,6 @@
   <string name="alert_choose_two_items">אתה יכול לבחור רק שני פריטים</string>
   <string name="alert_no_items_selected">לא נבחרו פריטים</string>
   <string name="alert_no_older_commits">אין Commit ישן שניתן להשוות איתו</string>
-  <string name="alert_have_paid">מודעות בוטלו.</string>
   <string name="alert_please_wait_previous_op">פעולה קודמת עדיין רצה</string>
   <string name="alert_you_must_choose_one_commit_to_copy">אנה בחר ב-commit מסוים כדי להעתיקו</string>
   <string name="alert_you_should_input_something">עליך להזין משהו</string>

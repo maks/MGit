@@ -94,7 +94,6 @@
   <string name="hello_world">שלום עולם!</string>
   <string name="progress_left_init">0%</string>
   <string name="progress_right_init">0/0</string>
-  <string name="preference_donate">תרומה</string>
   <string name="action_copy_all">Copy whole file</string>
   <string name="action_create_new_dir">Create new folder</string>
   <string name="action_edit_save">Save</string>
@@ -145,7 +144,6 @@
   <string name="pref_category_title_general">General</string>
   <string name="pref_category_title_about">About</string>
   <string name="preference_app_version">Version</string>
-  <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
   <string name="preference_git_user_email">User Email</string>
   <string name="preference_git_user_name">User Name</string>
   <string name="preference_manage_ssh_keys">SSH Keys</string>

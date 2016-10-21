@@ -84,7 +84,6 @@
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
     <string name="action_open_in_other_app">Mit anderer Anwendung öffnen</string>
-    <string name="alert_have_paid">Anzeigen wurden entfernt</string>
     <string name="default_text">Standardtext</string>
     <string name="dialog_choose_option">Wählen Sie die Option ...</string>
     <string name="dialog_clone_recursive">Clone rekursiv</string>
@@ -107,7 +106,6 @@
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
 
-    <string name="preference_donate">Spenden</string>
     <string name="action_copy_all">Copy whole file</string>
     <string name="action_create_new_dir">Create new folder</string>
     <string name="action_edit_save">Save</string>
@@ -159,7 +157,6 @@
     <string name="pref_category_title_general">General</string>
     <string name="pref_category_title_about">About</string>
     <string name="preference_app_version">Version</string>
-    <string name="preference_donate_summary">Make a donation via Paypal to the author of SGit</string>
     <string name="preference_git_user_email">User Email</string>
     <string name="preference_git_user_name">User Name</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
