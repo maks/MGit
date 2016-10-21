@@ -14,7 +14,7 @@
             >
             <intent
                 android:targetClass="me.sheimi.sgit.activities.explorer.ExploreRootDirActivity"
-                android:targetPackage="me.sheimi.sgit"
+                android:targetPackage="com.manichord.mgit"
                 />
         </me.sheimi.sgit.preference.Preference>
         <ListPreference
@@ -59,7 +59,7 @@
             >
             <intent
                 android:targetClass="me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity"
-                android:targetPackage="me.sheimi.sgit"
+                android:targetPackage="com.manichord.mgit"
                 />
         </Preference>
     </PreferenceCategory>
