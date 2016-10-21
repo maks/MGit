@@ -19,11 +19,11 @@ android {
 
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion 14
-        targetSdkVersion 21
+        minSdkVersion 18
+        targetSdkVersion 22
 
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 200
+        versionName "1.4.0"
     }
 
     lintOptions {
