@@ -41,7 +41,7 @@ This is a continuation of the SGit project (https://github.com/sheimi/SGit)
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
 
-<a href="https://play.google.com/store/apps/details?id=com.manichord.sgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
+<a href="https://play.google.com/store/apps/details?id=com.manichord.mgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
 
 ## Quick start
 
