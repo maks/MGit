@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion 18
+        minSdkVersion 16
         targetSdkVersion 22
 
         versionCode 200
