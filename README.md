@@ -1,12 +1,16 @@
 
 A Git client for Android.
 
+This is a continuation of the SGit project (https://github.com/sheimi/SGit)
+
 ## Notes
 
- * All repositories are stored in `[sdcard dir]/Android/data/me.sheimi.sgit/files/[repo name]`. If you want to delete this app, you can manually backup repositories from this location.
- * The GitHub repo of this project is: [sheimi/SGit](https://github.com/sheimi/SGit).
- * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/sheimi/SGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
- * This app is for Android v4.x. It **might** work on Android v2.x, but will not be supported officially due to lack of resources for testing.
+[![Join the chat at https://gitter.im/MGit-Android/Lobby](https://badges.gitter.im/MGit-Android/Lobby.svg)](https://gitter.im/MGit-Android/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Build Status](https://travis-ci.org/maks/MGit.svg?branch=master)](https://travis-ci.org/maks/MGit)
+
+ * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/maks/MGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
+ * This app requires minimum of for Android v4.x. 
 
 ## Supported Features
 
@@ -17,7 +21,7 @@ A Git client for Android.
 * Browse files
 * Browse commit messages (short)
 * Checkout branches and tags
-* HTTP/HTTPS/SSH are supported (without private key passphrase)
+* HTTP/HTTPS/SSH are supported (SSH without private key passphrase)
 * Username/Password authentication is supported
 * Search local repositories
 * Private keys management
@@ -39,8 +43,7 @@ A Git client for Android.
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
 
-<a href="https://play.google.com/store/apps/details?id=me.sheimi.sgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
-<a href="https://f-droid.org/repository/browse/?fdfilter=sgit&fdid=me.sheimi.sgit"><img alt="Android app on F-Droid" src="https://fsfe.org/campaigns/android/f-droid.png" width="45" /></a>
+<a href="https://play.google.com/store/apps/details?id=com.manichord.mgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
 
 ## Quick start
 
@@ -48,7 +51,7 @@ A Git client for Android.
 
 1. Click on the *+* icon to add a new repository.
 2. Enter remote URL (see URL format below).
-3. Enter local repository name - note that this is not a path since SGit stores all repositories in the same directory on the mobile device.
+3. Enter local repository name - note that this is not a full path since SGit stores all repositories in the same directory on the mobile device.
 4. Username - username to use to clone the remote repo.
 5. Password - password to use to clone the remote repo.
 6. Click the *Clone* button.
@@ -74,11 +77,7 @@ A Git client for Android.
 
 ## To Do List
 
- * Private key passphrase
- * Submodule support
- * Dark theme
- * Commits related to a file
- * Commit graph (low priority)
+[Future enhancements are tracked on Github](https://github.com/maks/MGit/issues)
 
 ## License
 
@@ -86,6 +85,6 @@ A Git client for Android.
 
 ## Help
 
-If you want to help improve this project, contributions are very welcome.
+If you want to help improve this project, contributions, especially translations are very welcome.
 
-Fork from this repo: [sheimi/SGit](https://github.com/sheimi/SGit), create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
+Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
