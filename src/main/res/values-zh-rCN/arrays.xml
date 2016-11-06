@@ -21,6 +21,7 @@
         <item>提交</item>
         <item>重置</item>
         <item>合并</item>
+        <item>Fetch</item>
         <item>改变基点</item>
         <item>择取</item>
         <item>比较</item>
@@ -29,7 +30,6 @@
         <item>远程</item>
         <item>Remove Remote</item>
         <item>删除</item>
-        <item>Raw config</item>
         <item>Config</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
