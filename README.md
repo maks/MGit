@@ -1,7 +1,9 @@
+# MGit
 
-A Git client for Android.
+It is a Git client for Android.
+It is [free/libre software](https://www.gnu.org/philosophy/free-sw.html).
 
-This is a continuation of the SGit project (https://github.com/sheimi/SGit)
+This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 ## Notes
 
@@ -9,8 +11,8 @@ This is a continuation of the SGit project (https://github.com/sheimi/SGit)
 
 [![Join the chat at https://gitter.im/MGit-Android/Lobby](https://badges.gitter.im/MGit-Android/Lobby.svg)](https://gitter.im/MGit-Android/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
- * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/maks/MGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
- * This app requires minimum of for Android v4.x. 
+* If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/maks/MGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
+* This app requires minimum of for Android v4.x.
 
 ## Supported Features
 
@@ -43,7 +45,8 @@ This is a continuation of the SGit project (https://github.com/sheimi/SGit)
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
 
-<a href="https://play.google.com/store/apps/details?id=com.manichord.mgit"><img alt="Android app on Google Play" src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" /></a>
+[![Android app on Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.manichord.mgit)
+[![Android app on F-Droid](https://f-droid.org/wiki/images/c/c4/F-Droid-button_available-on.png)](https://f-droid.org/repository/browse/?fdid=com.manichord.mgit)
 
 ## Quick start
 
@@ -67,7 +70,7 @@ This is a continuation of the SGit project (https://github.com/sheimi/SGit)
 
 #### SSH URLs
 
- * SSH running on standard port (22): `ssh://username@server_name/path/to/repo`
+* SSH running on standard port (22): `ssh://username@server_name/path/to/repo`
 * SSH running on non-standard port: `ssh://username@server_name:port/path/to/repo`
 * `username` is needed - by default, SGit tries to connect as root.
 
@@ -77,11 +80,11 @@ This is a continuation of the SGit project (https://github.com/sheimi/SGit)
 
 ## To Do List
 
-[Future enhancements are tracked on Github](https://github.com/maks/MGit/issues)
+[Future enhancements are tracked on Github](https://github.com/maks/MGit/issues).
 
 ## License
 
-[GPLv3](./LICENSE)
+See [GPLv3](./LICENSE)
 
 ## Help
 
