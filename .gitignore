@@ -1,5 +1,18 @@
-.DS_Store
+# Temp files
+*~
+*.bak
+*.backup
+\#*
+.\#*
+*\#
 *.swp
+*.swap
+*.sav
+*.save
+*.autosav
+*.autosave
+
+.DS_Store
 build
 # built application files
 *.apk
@@ -32,5 +45,3 @@ local.properties
 *.iml
 *.iws
 *.ipr
-*~
-*.swp
