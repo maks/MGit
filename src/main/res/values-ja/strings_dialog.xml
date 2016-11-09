@@ -21,7 +21,7 @@
 
     <!-- Clone Repo -->
     <string name="dialog_clone_local_path_hint">ローカルパス</string>
-    <string name="dialog_clone_neutral_label">Init Local</string>
+    <string name="dialog_clone_neutral_label">ローカルを初期化</string>
 
     <!-- Init Repo -->
     <string name="dialog_init_local_path_hint">ローカルパス</string>
