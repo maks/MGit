@@ -5,7 +5,7 @@
 	 id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" inkscape:export-ydpi="401.17999" inkscape:export-xdpi="401.17999" inkscape:export-filename="/home/maks/work/MGit/docs/icon.png" sodipodi:docname="icon.svg" inkscape:version="0.91 r13725"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="114.863px"
 	 height="114.862px" viewBox="0 0 114.863 114.862" enable-background="new 0 0 114.863 114.862" xml:space="preserve">
-<path id="path14" inkscape:connector-curvature="0" fill="#3366CC" d="M112.693,52.319L62.544,2.172
+<path id="path14_1_" inkscape:connector-curvature="0" fill="#3366CC" d="M112.693,52.319L62.544,2.172
 	c-2.887-2.889-7.571-2.889-10.462,0L41.67,12.586l13.209,13.21c3.07-1.037,6.591-0.341,9.037,2.106
 	c2.461,2.462,3.15,6.013,2.087,9.094l12.732,12.73c3.081-1.062,6.633-0.376,9.094,2.089c3.438,3.437,3.438,9.007,0,12.447
 	c-3.44,3.439-9.01,3.439-12.451,0c-2.585-2.588-3.225-6.387-1.914-9.573L61.589,42.815v31.246c0.837,0.415,1.628,0.968,2.327,1.664
@@ -13,4 +13,17 @@
 	c0.85-0.849,1.833-1.491,2.883-1.92V42.269c-1.05-0.43-2.031-1.066-2.883-1.921c-2.604-2.603-3.23-6.424-1.895-9.622L36.553,17.702
 	L2.166,52.086c-2.888,2.891-2.888,7.575,0,10.464l50.151,50.147c2.887,2.888,7.57,2.888,10.461,0l49.915-49.915
 	C115.582,59.893,115.582,55.207,112.693,52.319"/>
+<circle id="circle_2_" fill="#3366CC" cx="81.597" cy="58.015" r="3.948"/>
+<circle id="circle_1_" fill="#3366CC" cx="57.723" cy="34.182" r="3.948"/>
+<circle id="circle" fill="#3366CC" cx="57.649" cy="81.973" r="3.948"/>
+<g id="tap_x5F_group">
+	<circle opacity="0.2" fill="#010101" stroke="#010101" cx="30.816" cy="66.208" r="11.765"/>
+	<path opacity="0.2" fill="#010101" stroke="#010101" stroke-width="0.5" d="M30.816,51.959c7.869,0,14.249,6.379,14.249,14.249
+		c0,0.856-0.089,1.689-0.233,2.503c0.812-1.712,1.279-3.62,1.279-5.641c0-7.292-5.911-13.203-13.203-13.203
+		c-3.884,0-7.365,1.687-9.781,4.356C25.346,52.797,27.981,51.959,30.816,51.959z"/>
+	<circle fill="#FFFFFF" cx="29.816" cy="64.208" r="11.765"/>
+	<path fill="#FFFFFF" d="M29.816,49.959c7.869,0,14.249,6.379,14.249,14.249c0,0.856-0.089,1.689-0.233,2.503
+		c0.812-1.712,1.279-3.62,1.279-5.641c0-7.292-5.911-13.203-13.203-13.203c-3.884,0-7.365,1.687-9.781,4.356
+		C24.346,50.797,26.981,49.959,29.816,49.959z"/>
+</g>
 </svg>
