@@ -2,49 +2,49 @@
 <resources>
 
     <string-array name="merge_ff_type">
-        <item>Fast Forward</item>
-        <item>Fast Forward Only</item>
-        <item>No Fast Forward</item>
+        <item>ファストフォワード</item>
+        <item>ファストフォワードのみ</item>
+        <item>ファストフォワードしない</item>
     </string-array>
     <string-array name="repo_file_operations">
-        <item>Add to stage</item>
-        <item>Checkout (Reset Changes)</item>
-        <item>Delete</item>
-        <item>Remove cached from repository</item>
-        <item>Remove force from repository</item>
+        <item>ステージに追加</item>
+        <item>チェックアウト (変更をリセット)</item>
+        <item>削除</item>
+        <item>リポジトリからキャッシュ済を削除</item>
+        <item>リポジトリから強制的に削除</item>
     </string-array>
     <string-array name="repo_operation_names">
-        <item>New Branch</item>
-        <item>Pull</item>
-        <item>Push</item>
-        <item>Add all to stage</item>
-        <item>Commit</item>
-        <item>Reset</item>
-        <item>Merge</item>
-        <item>Rebase</item>
-        <item>Cherry Pick</item>
+        <item>新しいブランチ</item>
+        <item>プル</item>
+        <item>プッシュ</item>
+        <item>すべてステージに追加</item>
+        <item>コミット</item>
+        <item>リセット</item>
+        <item>マージ</item>
+        <item>リベース</item>
+        <item>チェリーピック</item>
         <item>Diff</item>
-        <item>New File</item>
-        <item>New Directory</item>
-        <item>Add Remote</item>
-        <item>Remove Remote</item>
-        <item>Delete</item>
-        <item>Raw config</item>
-        <item>Config</item>
+        <item>新しいファイル</item>
+        <item>新しいディレクトリ</item>
+        <item>リモートを追加</item>
+        <item>リモートを削除</item>
+        <item>削除</item>
+        <item>Raw 構成</item>
+        <item>構成</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
-        <item>Rename</item>
-        <item>Delete</item>
+        <item>名前を変更</item>
+        <item>削除</item>
     </string-array>
 
     <!-- MUST KEY theme_names and theme_ids in SYNC -->
     <string-array name="theme_names">
-        <item>light</item>
-        <item>dark</item>
+        <item>ライト</item>
+        <item>ダーク</item>
     </string-array>
     <string-array name="codemirror_theme_names">
-        <item>default</item>
-        <item>midnight</item>
+        <item>デフォルト</item>
+        <item>ミッドナイト</item>
     </string-array>
     <string-array name="theme_ids">
         <item>0</item>
