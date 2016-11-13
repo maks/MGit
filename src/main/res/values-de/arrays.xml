@@ -21,6 +21,7 @@
         <item>Commit</item>
         <item>Reset</item>
         <item>Merge</item>
+        <item>Fetch</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>
         <item>Unterschiede anzeigen (Diff)</item>
