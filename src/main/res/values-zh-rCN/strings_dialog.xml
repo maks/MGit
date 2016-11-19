@@ -10,6 +10,7 @@
     <!-- Commit -->
     <string name="dialog_commit_title">提交更改</string>
     <string name="dialog_commit_msg_hint">提交信息</string>
+    <string name="dialog_commit_author_hint">提交作者 (可选)</string>
     <string name="dialog_commit_is_amend">修改之前的提交</string>
     <string name="dialog_commit_auto_stage">自动添加已修改的文件到暂存区</string>
     <string name="dialog_commit_positive_label">提交</string>
@@ -34,16 +35,29 @@
     <string name="dialog_add_remote_hint_url">远程地址</string>
     <string name="dialog_add_remote_positive_label">完成</string>
 
+    <!-- Remove Remote -->
+    <string name="dialog_remove_remote_title">删除远程</string>
+    <string name="dialog_remove_remote_positive_label">完成</string>
+
     <!-- Push -->
-    <string name="dialog_push_repo_title">推送到 ...</string>
+    <string name="dialog_push_repo_title">推送到 …</string>
     <string name="dialog_push_repo_msg">你确定推送本地的修改？</string>
     <string name="dialog_push_is_push_all">全部推送？</string>
     <string name="dialog_push_is_force_push">强制推送？</string>
     <string name="dialog_push_result">推送结果</string>
 
+    <!-- Pull -->
+    <string name="dialog_pull_repo_title">拉取分支 …</string>
+    <string name="dialog_pull_is_force_pull">强制拉取并重置？</string>
+
     <!-- Create External -->
     <string name="dialog_create_external_title">创建仓库</string>
     <string name="dialog_create_external_msg">你想在该目录中创建一个Git仓库？</string>
     <string name="dialog_create_external_positive_label">创建</string>
+
+    <!-- Fetch Remote -->
+    <string name="dialog_fetch_title">获取</string>
+    <string name="dialog_fetch_positive_button">获取</string>
+    <string name="dialog_fetch_all_button">获取所有</string>
 
 </resources>
