@@ -170,8 +170,8 @@
     <string name="pref_category_title_general">Général</string>
     <string name="pref_category_title_about">À propos</string>
     <string name="preference_app_version">Version</string>
-    <string name="preference_git_user_email">Adresse email de l'utilisateur</string>
-    <string name="preference_git_user_name">Nom de l'utilisateur</string>
+    <string name="preference_git_user_email">Adresse email de l\'utilisateur</string>
+    <string name="preference_git_user_name">Nom de l\'utilisateur</string>
     <string name="preference_manage_ssh_keys">Clés SSH</string>
     <string name="preference_repo_location">Root storage location for repos</string>
     <string name="preference_send_feedback">Feedback</string>
@@ -184,5 +184,11 @@
     <string name="title_config_repo">Repository config</string>
     <string name="action_import_private_key">Importer une clé privée</string>
     <string name="action_add_private_key">Ajouter une clé privée</string>
+    <string name="alert_no_older_commits">"No older commits to compare "</string>
+    <string name="dialog_push_is_force_push">Force push?</string>
+    <string name="dialog_push_is_push_all">Push all?</string>
+    <string name="error_rename_repo_fail">Renaming repository failed</string>
+    <string name="success_remove_file">File has been removed</string>
+    <string name="success_remote_added">Remote added</string>
 
 </resources>
