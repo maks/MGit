@@ -76,7 +76,7 @@
     <string name="tab_status_label">Status</string>
 
     <!-- Dialog Msg -->
-    <string name="dialog_choose_branch_title">Choose Branch</string>
+    <string name="dialog_choose_branch_title">브런치 선택</string>
     <string name="dialog_choose_option">Choose option...</string>
     <string name="dialog_rename_repo_title">Rename Repository</string>
     <string name="dialog_rename_repo_hint">Repository Name</string>
