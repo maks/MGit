@@ -18,14 +18,14 @@
     <string name="action_import_private_key">Import Key</string>
     <string name="action_mode_show_private_key">Show private key</string>
     <string name="action_mode_show_public_key">Show public key</string>
-    <string name="action_feedback">Feedback</string>
-    <string name="action_choose_language">Choose Language</string>
+    <string name="action_feedback">피드백</string>
+    <string name="action_choose_language">언어 선택</string>
     <string name="action_mode_diff">Diff</string>
     <string name="action_edit">편집</string>
     <string name="action_edit_save">저장</string>
     <string name="action_copy_all">모든파일 복사</string>
     <string name="action_edit_in_other_app">Edit in other apps</string>
-    <string name="action_reset">Reset</string>
+    <string name="action_reset">초기화</string>
     <string name="action_toggle_drawer">Toggle Drawer</string>
     <string name="action_copy_commit_str">Copy Commit Hash</string>
     <string name="action_create_external_repo">Create External Repo</string>
@@ -34,12 +34,12 @@
 
     <!-- label msg -->
     <string name="label_ok">확인</string>
-    <string name="label_remote_url">Remote URL</string>
+    <string name="label_remote_url">원격 URL</string>
     <string name="label_cancel">취소</string>
     <string name="label_clone">Clone</string>
     <string name="label_delete">Delete</string>
-    <string name="label_generate_key">Generate key</string>
-    <string name="label_dialog_generate_key">Generate key</string>
+    <string name="label_generate_key">키 생성</string>
+    <string name="label_dialog_generate_key">키 생성</string>
     <string name="label_username">사용자이름</string>
     <string name="label_password">패스워드</string>
     <string name="label_new_file_name">새로운 파일이름</string>
@@ -77,19 +77,19 @@
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">브런치 선택</string>
-    <string name="dialog_choose_option">Choose option...</string>
-    <string name="dialog_rename_repo_title">Rename Repository</string>
-    <string name="dialog_rename_repo_hint">Repository Name</string>
+    <string name="dialog_choose_option">옵션을 선택하세요</string>
+    <string name="dialog_rename_repo_title">Repository 이름 수정</string>
+    <string name="dialog_rename_repo_hint">Repository 이름</string>
     <string name="dialog_delete_repo_title">Delete Confirmation</string>
     <string name="dialog_delete_repo_msg">Are you sure you want to delete this repository?</string>
     <string name="dialog_rename_key_title">Rename</string>
     <string name="dialog_rename_branch_title">Rename</string>
-    <string name="dialog_choose_language_title">Choose Language</string>
+    <string name="dialog_choose_language_title">언어 선택</string>
     <string name="dialog_comfirm_import_repo_title">Import Repository</string>
     <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
-    <string name="dialog_file_delete">Delete File</string>
+    <string name="dialog_file_delete">파일 제거</string>
     <string name="dialog_file_delete_msg">Are you sure you want to delete this file or directory from working directory?</string>
     <string name="dialog_file_remove_cached">Remove Cached File</string>
     <string name="dialog_file_remove_cached_msg">Are you sure you want to delete this file or directory from index?</string>
@@ -97,14 +97,14 @@
     <string name="dialog_file_remove_force_msg">Are you sure you want to delete this file or directory from working directory and index?</string>
     <string name="dialog_key_delete">Delete Key</string>
     <string name="dialog_key_delete_msg">Are you sure you want to delete this key?</string>
-    <string name="dialog_branch_delete">Delete Branch</string>
+    <string name="dialog_branch_delete">Branch 삭제</string>
     <string name="dialog_branch_delete_msg">Are you sure you want to delete this branch?</string>
-    <string name="dialog_reset_commit_title">Reset Changes</string>
+    <string name="dialog_reset_commit_title">변경점 초기화</string>
     <string name="dialog_reset_commit_msg">Are you sure you want to discard all the changes?</string>
-    <string name="dialog_create_dir_title">New Directory</string>
-    <string name="dialog_create_dir_hint">Directory Name</string>
-    <string name="dialog_create_file_title">New File</string>
-    <string name="dialog_create_file_hint">File Name</string>
+    <string name="dialog_create_dir_title">새 디렉토리</string>
+    <string name="dialog_create_dir_hint">디렉토리 이름</string>
+    <string name="dialog_create_file_title">새 파일</string>
+    <string name="dialog_create_file_hint">파일 이름</string>
     <string name="dialog_comfirm_checkout_commit_title">Confirm Checkout</string>
     <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
     <string name="dialog_profile_preferences_title">Preferences</string>
@@ -125,21 +125,21 @@
     <string name="progress_right_init">0/0</string>
     <string name="push_msg_init">Pushing ??</string>
     <string name="fetch_msg_init">Fetching ??</string>
-    <string name="title_activity_private_key_manage">Manage Private Keys</string>
+    <string name="title_activity_private_key_manage">Private Key 관리</string>
     <string name="hello_world">Hello, World!</string>
-    <string name="title_activity_explore_file">Explore Files</string>
+    <string name="title_activity_explore_file">파일 탐색하기</string>
     <string name="title_activity_settings">설정</string>
-    <string name="title_config_repo">Repository config</string>
+    <string name="title_config_repo">Repository 설정</string>
     <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
 
     <!-- toast msg -->
-    <string name="feedback_subject">Feedback</string>
-    <string name="cannot_delete_branch">cannot delete %s</string>
+    <string name="feedback_subject">피드백</string>
+    <string name="cannot_delete_branch">%s을 지울 수 없습니다</string>
     <string name="cannot_delete_current_branch">cannot delete currently checked out branch %s</string>
 
     <!-- Preferences -->
 
-    <string name="preference_repo_location">Root storage location for repos</string>
+    <string name="preference_repo_location">저장소들을 위한 최상위 디렉토리</string>
     <string name="pref_category_title_general">General</string>
     <string name="pref_key_repo_root_location" translatable="false">repo_root_path</string>
     <string name="action_select_root_dir">Root 폴더로 선택</string>
@@ -148,10 +148,10 @@
     <string name="pref_key_git_user_name" translatable="false">user.name</string>
     <string name="preference_git_user_name">사용자 이름</string>
     <string name="pref_key_git_user_email" translatable="false">user.email</string>
-    <string name="preference_git_user_email">사용자 메일주소</string>
-    <string name="pref_category_title_about">About</string>
+    <string name="preference_git_user_email">사용자 이메일</string>
+    <string name="pref_category_title_about">정보</string>
     <string name="preference_send_feedback">피드백</string>
-    <string name="preference_send_feedback_summary">GitHub에 대한 새로운 내용를 제시하여 피드백을 제출한다.</string>
+    <string name="preference_send_feedback_summary">GitHub에 issue를 등록하고 의견 제시하기</string>
     <string name="preference_key_app_version" translatable="false">app_version</string>
     <string name="preference_app_version">버전</string>
     <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
@@ -161,5 +161,5 @@
     <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>
     <string name="action_git_profile">Git 프로필</string>
     <string name="action_open_in_other_app">다른 앱에서 열기</string>
-    <string name="action_add_private_key">Add Private Key</string>
+    <string name="action_add_private_key">Private Key 추가</string>
 </resources>
