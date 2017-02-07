@@ -67,9 +67,9 @@
     <string name="title_activity_import_repository">저장 </string>
     <string name="title_activity_view_file">File: </string>
     <string name="title_activity_commit_diff">Diff:   </string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">세션 1</string>
+    <string name="title_section2">세션 2</string>
+    <string name="title_section3">세션 3</string>
     <string name="tab_files_label">Files</string>
     <string name="tab_file_label">파일</string>
     <string name="tab_commits_label">Commits</string>
