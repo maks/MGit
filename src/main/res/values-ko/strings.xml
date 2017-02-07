@@ -86,13 +86,16 @@
     <string name="dialog_rename_branch_title">이름 바꾸기</string>
     <string name="dialog_choose_language_title">언어 선택</string>
     <string name="dialog_comfirm_import_repo_title">저장소 불러오기</string>
-    <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
+    <string name="dialog_comfirm_import_repo_msg">이 저장소를 가져오시겠습니까?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_file_delete">파일 제거</string>
     <string name="dialog_file_delete_msg">Are you sure you want to delete this file or directory from working directory?</string>
     <string name="dialog_file_remove_cached">캐시 파일 제거</string>
     <string name="dialog_file_remove_cached_msg">Are you sure you want to delete this file or directory from index?</string>
+    <string name="dialog_file_delete_msg">작업 디렉터리에서 이 파일이나 디렉터리를 삭제하시겠습니까?</string>
+    <string name="dialog_file_remove_cached">Remove Cached File</string>
+    <string name="dialog_file_remove_cached_msg">index에서 이 파일이나 디렉터리를 삭제하시겠습니까?</string>
     <string name="dialog_file_remove_force">Remove Force File</string>
     <string name="dialog_file_remove_force_msg">Are you sure you want to delete this file or directory from working directory and index?</string>
     <string name="dialog_key_delete">Key 제거</string>
