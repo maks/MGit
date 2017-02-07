@@ -85,10 +85,6 @@
     <string name="dialog_rename_key_title">수정</string>
     <string name="dialog_rename_branch_title">이름 바꾸기</string>
     <string name="dialog_choose_language_title">언어 선택</string>
-    <string name="dialog_comfirm_import_repo_title">Repository 불러오기</string>
-    <string name="dialog_comfirm_import_repo_msg">이 Repository를 불러올까요?</string>
-    <string name="dialog_merge_title">Merge할 Branch 선택</string>
-    <string name="dialog_merge_checkbox">Merge 후 Commit하기</string>
     <string name="dialog_comfirm_import_repo_title">저장소 불러오기</string>
     <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
