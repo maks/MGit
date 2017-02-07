@@ -3,7 +3,7 @@
 
     <string name="app_name" translatable="false">MGit</string>
     <string name="default_text">Default Text</string>
-    <string name="title_clone_repo">Clone Repository</string>
+    <string name="title_clone_repo">클론 저장소</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
     <!-- action -->
@@ -85,7 +85,7 @@
     <string name="dialog_rename_key_title">Rename</string>
     <string name="dialog_rename_branch_title">이름바꾸기</string>
     <string name="dialog_choose_language_title">언어 선택</string>
-    <string name="dialog_comfirm_import_repo_title">Import Repository</string>
+    <string name="dialog_comfirm_import_repo_title">저장소 불러오기</string>
     <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
     <string name="dialog_merge_title">Choose Branch To Merge</string>
     <string name="dialog_merge_checkbox">Commit after merge</string>
