@@ -26,7 +26,7 @@
     <string name="action_copy_all">모든파일 복사</string>
     <string name="action_edit_in_other_app">다른 앱에서 편집</string>
     <string name="action_reset">초기화</string>
-    <string name="action_toggle_drawer">Drawer 토글</string>
+    <string name="action_toggle_drawer">드로어 토글</string>
     <string name="action_copy_commit_str">Commit Hash 복사</string>
     <string name="action_create_external_repo">외부 스타일링 생성</string>
     <string name="action_share_diff">Diff 공유</string>
@@ -89,6 +89,10 @@
     <string name="dialog_comfirm_import_repo_msg">이 Repository를 불러올까요?</string>
     <string name="dialog_merge_title">Merge할 Branch 선택</string>
     <string name="dialog_merge_checkbox">Merge 후 Commit하기</string>
+    <string name="dialog_comfirm_import_repo_title">저장소 불러오기</string>
+    <string name="dialog_comfirm_import_repo_msg">Are you sure you want to import this repository?</string>
+    <string name="dialog_merge_title">Choose Branch To Merge</string>
+    <string name="dialog_merge_checkbox">Commit after merge</string>
     <string name="dialog_file_delete">파일 제거</string>
     <string name="dialog_file_delete_msg">Are you sure you want to delete this file or directory from working directory?</string>
     <string name="dialog_file_remove_cached">캐시 파일 제거</string>
