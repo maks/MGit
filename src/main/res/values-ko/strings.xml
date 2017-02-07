@@ -15,7 +15,7 @@
     <string name="action_mode_rename_branch">브런치 이름변경</string>
     <string name="action_manage_private_key">Private Keys</string>
     <string name="action_generate_private_key">Key 생성</string>
-    <string name="action_import_private_key">Keyz 불러오기</string>
+    <string name="action_import_private_key">Key 불러오기</string>
     <string name="action_mode_show_private_key">Show private key</string>
     <string name="action_mode_show_public_key">Show public key</string>
     <string name="action_feedback">피드백</string>
