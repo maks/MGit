@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.2.2'
     }
 }
 
@@ -32,12 +32,13 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:22.+'
+    compile 'com.android.support:support-v13:21.0.3'
     compile 'com.jcraft:jsch:0.1.53'
     compile 'commons-io:commons-io:2.4'
     compile 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+
     testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.1.2'
-    testCompile 'org.robolectric:shadows-support-v4:3.0'
+    testCompile "org.robolectric:robolectric:3.1.2"
+    testCompile "org.robolectric:shadows-support-v4:3.0"
 }
