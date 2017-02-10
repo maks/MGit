@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">MGit</string>
+    <string name="default_text">Default Text</string>
+    <string name="title_clone_repo">Clone Repository</string>
+    <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
+
+    <!-- action -->
+    <string name="action_search">찾기</string>
+    <string name="action_clone">Clone</string>
+    <string name="action_import_repo">저장소 불러오기</string>
+    <string name="action_settings">설정</string>
+    <string name="action_mode_rename_key">Key 이름변경</string>
+    <string name="action_mode_rename_branch">브런치 이름변경</string>
+    <string name="action_manage_private_key">Private Keys</string>
+    <string name="action_generate_private_key">Key 생성</string>
+    <string name="action_import_private_key">Key 불러오기</string>
+    <string name="action_mode_show_private_key">Private key 보이기</string>
+    <string name="action_mode_show_public_key">Public key보이기</string>
+    <string name="action_feedback">피드백</string>
+    <string name="action_choose_language">언어 선택</string>
+    <string name="action_mode_diff">Diff</string>
+    <string name="action_edit">편집</string>
+    <string name="action_edit_save">저장</string>
+    <string name="action_copy_all">모든파일 복사</string>
+    <string name="action_edit_in_other_app">다른 앱에서 편집</string>
+    <string name="action_reset">초기화</string>
+    <string name="action_toggle_drawer">드로어 토글</string>
+    <string name="action_copy_commit_str">Commit Hash 복사</string>
+    <string name="action_create_external_repo">외부 스타일링 생성</string>
+    <string name="action_share_diff">Diff 공유</string>
+    <string name="action_save_diff">Diff 저장</string>
+
+    <!-- label msg -->
+    <string name="label_ok">확인</string>
+    <string name="label_remote_url">원격 URL</string>
+    <string name="label_cancel">취소</string>
+    <string name="label_clone">Clone</string>
+    <string name="label_delete">지우기</string>
+    <string name="label_generate_key">Key 생성</string>
+    <string name="label_dialog_generate_key">Key 생성</string>
+    <string name="label_username">사용자이름</string>
+    <string name="label_password">패스워드</string>
+    <string name="label_new_file_name">새로운 파일이름</string>
+    <string name="label_key_size">Key 길이</string>
+    <string name="label_rename">수정</string>
+    <string name="label_send_feedback">피드백 전송</string>
+    <string name="label_import">불러오기</string>
+    <string name="label_push">선택</string>
+    <string name="label_push_all">모두 선택</string>
+    <string name="label_create">생성</string>
+    <string name="label_checkout">Checkout</string>
+    <string name="label_git_name">이름</string>
+    <string name="label_git_email">이메일</string>
+    <string name="label_git_name_per_repo">Committer 이름 덮어쓰기</string>
+    <string name="label_git_email_per_repo">Committer 이메일 덮어쓰기</string>
+    <string name="label_done">완료</string>
+    <string name="label_save">저장</string>
+    <string name="label_choose_app_to_open">Open With ??</string>
+    <string name="label_choose_app_to_edit">Edit With ??</string>
+    <string name="label_new_branch_name">새로운 지점</string>
+    <string name="label_anonymous_checkout">익명 Checkout</string>
+
+    <!-- for title -->
+    <string name="title_activity_repo_detail">저장소</string>
+    <string name="title_activity_import_repository">저장 </string>
+    <string name="title_activity_view_file">File: </string>
+    <string name="title_activity_commit_diff">Diff:   </string>
+    <string name="title_section1">세션 1</string>
+    <string name="title_section2">세션 2</string>
+    <string name="title_section3">세션 3</string>
+    <string name="tab_files_label">Files</string>
+    <string name="tab_file_label">파일</string>
+    <string name="tab_commits_label">Commits</string>
+    <string name="tab_status_label">Status</string>
+
+    <!-- Dialog Msg -->
+    <string name="dialog_choose_branch_title">브런치 선택</string>
+    <string name="dialog_choose_option">옵션을 선택하세요</string>
+    <string name="dialog_rename_repo_title">Repository 이름 수정</string>
+    <string name="dialog_rename_repo_hint">Repository 이름</string>
+    <string name="dialog_delete_repo_title">Confirmation 제거</string>
+    <string name="dialog_delete_repo_msg">이 Repository를 제거할까요?</string>
+    <string name="dialog_rename_key_title">수정</string>
+    <string name="dialog_rename_branch_title">이름 바꾸기</string>
+    <string name="dialog_choose_language_title">언어 선택</string>
+    <string name="dialog_comfirm_import_repo_title">저장소 불러오기</string>
+    <string name="dialog_comfirm_import_repo_msg">이 저장소를 가져오시겠습니까?</string>
+    <string name="dialog_merge_title">Choose Branch To Merge</string>
+    <string name="dialog_merge_checkbox">Commit after merge</string>
+    <string name="dialog_file_delete">파일 제거</string>
+    <string name="dialog_file_delete_msg">작업 디렉터리에서 이 파일이나 디렉터리를 삭제하시겠습니까?</string>
+    <string name="dialog_file_remove_cached">Remove Cached File</string>
+    <string name="dialog_file_remove_cached_msg">index에서 이 파일이나 디렉터리를 삭제하시겠습니까?</string>
+    <string name="dialog_file_remove_force">Remove Force File</string>
+    <string name="dialog_file_remove_force_msg">Are you sure you want to delete this file or directory from working directory and index?</string>
+    <string name="dialog_key_delete">Key 제거</string>
+    <string name="dialog_key_delete_msg">이 Key를 제거할까요?</string>
+    <string name="dialog_branch_delete">Branch 삭제</string>
+    <string name="dialog_branch_delete_msg">이 Branch를 제거할까요?</string>
+    <string name="dialog_reset_commit_title">변경점 초기화</string>
+    <string name="dialog_reset_commit_msg">모든 변경점들을 버립니다.</string>
+    <string name="dialog_create_dir_title">새 디렉토리</string>
+    <string name="dialog_create_dir_hint">디렉토리 이름</string>
+    <string name="dialog_create_file_title">새 파일</string>
+    <string name="dialog_create_file_hint">파일 이름</string>
+    <string name="dialog_comfirm_checkout_commit_title">Checkout 확인</string>
+    <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
+    <string name="dialog_profile_preferences_title">속성</string>
+    <string name="dialog_prompt_for_password_title">인증 필요</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">인증 실패</string>
+    <string name="dialog_prompt_for_password_checkbox">사용자 이름과 패스워드 저장</string>
+    <string name="dialog_title_you_want_to">You want to ??</string>
+    <string name="dialog_create_branch_title">새 Branch 만들기</string>
+    <string name="dialog_create_branch_hint">Branch 이름</string>
+    <string name="dialog_clone_recursive">Clone recursively</string>
+    <string name="dialog_show_unstaged_diff">Unstaged diff</string>
+    <string name="dialog_show_staged_diff">Staged diff</string>
+
+
+    <!-- Others -->
+    <string name="pull_msg_init">Pulling ??</string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
+    <string name="push_msg_init">Pushing ??</string>
+    <string name="fetch_msg_init">Fetching ??</string>
+    <string name="title_activity_private_key_manage">Private Key 관리</string>
+    <string name="hello_world">Hello, World!</string>
+    <string name="title_activity_explore_file">파일 탐색하기</string>
+    <string name="title_activity_settings">설정</string>
+    <string name="title_config_repo">Repository 설정</string>
+    <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
+
+    <!-- toast msg -->
+    <string name="feedback_subject">피드백</string>
+    <string name="cannot_delete_branch">%s을 지울 수 없습니다</string>
+    <string name="cannot_delete_current_branch">cannot delete currently checked out branch %s</string>
+
+    <!-- Preferences -->
+
+    <string name="preference_repo_location">저장소들을 위한 최상위 디렉토리</string>
+    <string name="pref_category_title_general">General</string>
+    <string name="pref_key_repo_root_location" translatable="false">repo_root_path</string>
+    <string name="action_select_root_dir">Root 폴더로 선택</string>
+    <string name="action_create_new_dir">새로운 풀더 생성</string>
+    <string name="pref_category_title_git_profile">Git 프로필</string>
+    <string name="pref_key_git_user_name" translatable="false">user.name</string>
+    <string name="preference_git_user_name">사용자 이름</string>
+    <string name="pref_key_git_user_email" translatable="false">user.email</string>
+    <string name="preference_git_user_email">사용자 이메일</string>
+    <string name="pref_category_title_about">정보</string>
+    <string name="preference_send_feedback">피드백</string>
+    <string name="preference_send_feedback_summary">GitHub에 issue를 등록하고 의견 제시하기</string>
+    <string name="preference_key_app_version" translatable="false">app_version</string>
+    <string name="preference_app_version">버전</string>
+    <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
+    <string name="preference_manage_ssh_keys">SSH Keys</string>
+    <string name="pref_category_title_security">Security</string>
+    <string name="preference_use_theme">테마선택</string>
+    <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>
+    <string name="action_git_profile">Git 프로필</string>
+    <string name="action_open_in_other_app">다른 앱에서 열기</string>
+    <string name="action_add_private_key">Private Key 추가</string>
+</resources>
