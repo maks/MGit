@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="error_invalid_remote">Ungültige Remote Repository</string>
+    <string name="error_invalid_remote">Ungültiges Remote Repository</string>
     <string name="error_transport">Übertragungsfehler</string>
     <string name="error_clone_failed">Klonen fehlgeschlagen</string>
     <string name="error_pull_failed">Herunterladen der Änderungen fehlgeschlagen</string>
