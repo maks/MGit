@@ -164,7 +164,7 @@
     <string name="preference_send_feedback">Feedback</string>
     <string name="preference_send_feedback_summary">Feedback im GitHub Issue Tracker geben</string>
     <string name="preference_use_theme">Farbschema ändern</string>
-    <string name="success_remote_removed">Remote gelöscht</string>
+    <string name="success_remote_removed">Remote Repository gelöscht</string>
     <string name="preference_manage_ssh_keys_summary">SSH Schlüssel verwalten</string>
     <string name="tab_file_label">Datei</string>
     <string name="title_activity_settings">Einstellungen</string>
