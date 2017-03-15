@@ -10,7 +10,7 @@
     <!-- Commit -->
     <string name="dialog_commit_title">Änderungen freigeben</string>
     <string name="dialog_commit_msg_hint">Commit-Beschreibung</string>
-    <string name="dialog_commit_is_amend">vorherigen Commit abändern</string>
+    <string name="dialog_commit_is_amend">Vorherigen Commit abändern</string>
     <string name="dialog_commit_auto_stage">Geänderte Dateien automatisch stagen</string>
     <string name="dialog_commit_positive_label">Freigeben</string>
 
