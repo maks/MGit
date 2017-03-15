@@ -17,23 +17,24 @@
         <item>新的分支</item>
         <item>拉取</item>
         <item>推送</item>
-        <item>添加到暂存区</item>
+        <item>暂存所有</item>
         <item>提交</item>
         <item>重置</item>
         <item>合并</item>
-        <item>Fetch</item>
-        <item>改变基点</item>
+        <item>获取</item>
+        <item>衍合</item>
         <item>择取</item>
         <item>比较</item>
         <item>新建文件</item>
         <item>新建文件夹</item>
-        <item>远程</item>
-        <item>Remove Remote</item>
+        <item>添加远程</item>
+        <item>删除远程</item>
         <item>删除</item>
-        <item>Config</item>
+        <item>Raw 配置</item>
+        <item>配置</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
-        <item>Rename</item>
+        <item>重命名</item>
         <item>删除</item>
     </string-array>
 
