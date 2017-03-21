@@ -24,11 +24,13 @@ import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -370,6 +372,22 @@ public class Repo implements Comparable<Repo>, Serializable {
         } catch (StopTaskException e) {
         }
         return null;
+    }
+
+    private RevCommit getCommitByRevStr(String commitRevStr) {
+        try {
+            Repository repository = getGit().getRepository();
+            ObjectId id = repository.resolve(commitRevStr);
+            RevWalk revWalk = new RevWalk(getGit().getRepository());
+            return revWalk.parseCommit(id);
+        } catch (StopTaskException | IOException e) {
+            return null;
+        }
+    }
+
+    public boolean isInitialCommit(String commit) {
+        RevCommit revCommit = getCommitByRevStr(commit);
+        return revCommit != null && revCommit.getParentCount() == 0;
     }
 
     public List<Ref> getLocalBranches() {

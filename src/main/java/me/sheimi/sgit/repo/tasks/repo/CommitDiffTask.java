@@ -22,6 +22,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.EmptyTreeIterator;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 
 public class CommitDiffTask extends RepoOpTask {
@@ -110,8 +111,11 @@ public class CommitDiffTask extends RepoOpTask {
             mDiffFormatter = new DiffFormatter(mDiffOutput);
             mDiffFormatter.setRepository(repo);
 
-            mDiffEntries = mDiffFormatter.scan(getTreeIterator(repo, mOldCommit),
-                    getTreeIterator(repo, mNewCommit));
+            AbstractTreeIterator mOldCommitTreeIterator = mRepo.isInitialCommit(mNewCommit) ?
+                    new EmptyTreeIterator() : getTreeIterator(repo, mOldCommit);
+
+            AbstractTreeIterator mNewCommitTreeIterator = getTreeIterator(repo, mNewCommit);
+            mDiffEntries = mDiffFormatter.scan(mOldCommitTreeIterator, mNewCommitTreeIterator);
 
             if (mShowDescription) {
                 ObjectId newCommitId = repo.resolve(mNewCommit);
