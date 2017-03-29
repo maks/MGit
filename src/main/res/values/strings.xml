@@ -5,7 +5,7 @@
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
-    <string name="report_mail">maks@manichord.com</string>
+    <string name="report_mail">mgit@manichord.com</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
