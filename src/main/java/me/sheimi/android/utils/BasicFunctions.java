@@ -13,7 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class BasicFunctions {
 
-    private static final String IMAGE_REQUEST_HASH = "http://www.gravatar.com/avatar/%s?s=40";
+    private static final String IMAGE_REQUEST_HASH = "http://www.gravatar.com/avatar/%s?s=40&d=wavatar";
 
     public static String md5(final String s) {
         try {
