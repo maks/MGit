@@ -1,10 +1,16 @@
 package me.sheimi.android.utils;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -68,8 +74,27 @@ public class BasicFunctions {
 
     public static void showException(Throwable t, int res) {
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
-        activity.showToastMessage(res);
-        t.printStackTrace();
+        StackTraceElement[] ste = t.getStackTrace();
+        String str = t.getCause().getMessage()+"\n";
+        for (int i=0; i < ste.length; i++){
+            str += ste[i].toString()+"\n";
+        }
+        final String str2 = str;
+        activity.showMessageDialog(R.string.dialog_show_invalid_remote, str2, R.string.action_send_report, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{getActiveActivity().getString(R.string.report_mail)});
+                intent.putExtra(Intent.EXTRA_SUBJECT, getActiveActivity().getString(R.string.dialog_show_invalid_remote));
+                intent.putExtra(Intent.EXTRA_TEXT, str2);
+                try {
+                    getActiveActivity().startActivity(Intent.createChooser(intent, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getActiveActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 }

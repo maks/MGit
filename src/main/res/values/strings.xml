@@ -5,6 +5,7 @@
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
+    <string name="report_mail">mgit@manichord.com</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
@@ -31,6 +32,7 @@
     <string name="action_create_external_repo">Create External Repo</string>
     <string name="action_share_diff">Share diff</string>
     <string name="action_save_diff">Save diff</string>
+    <string name="action_send_report">Send report</string>
 
     <!-- label msg -->
     <string name="label_ok">OK</string>
@@ -117,6 +119,7 @@
     <string name="dialog_clone_recursive">Clone recursively</string>
     <string name="dialog_show_unstaged_diff">Unstaged diff</string>
     <string name="dialog_show_staged_diff">Staged diff</string>
+    <string name="dialog_show_invalid_remote">Invalid remote report</string>
 
 
     <!-- Others -->
