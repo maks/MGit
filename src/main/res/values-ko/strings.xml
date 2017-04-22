@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">MGit</string>
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
-    <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
     <!-- action -->
     <string name="action_search">찾기</string>
@@ -130,7 +128,6 @@
     <string name="title_activity_explore_file">파일 탐색하기</string>
     <string name="title_activity_settings">설정</string>
     <string name="title_config_repo">Repository 설정</string>
-    <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">피드백</string>
@@ -141,24 +138,19 @@
 
     <string name="preference_repo_location">저장소들을 위한 최상위 디렉토리</string>
     <string name="pref_category_title_general">General</string>
-    <string name="pref_key_repo_root_location" translatable="false">repo_root_path</string>
     <string name="action_select_root_dir">Root 폴더로 선택</string>
     <string name="action_create_new_dir">새로운 풀더 생성</string>
     <string name="pref_category_title_git_profile">Git 프로필</string>
-    <string name="pref_key_git_user_name" translatable="false">user.name</string>
     <string name="preference_git_user_name">사용자 이름</string>
-    <string name="pref_key_git_user_email" translatable="false">user.email</string>
     <string name="preference_git_user_email">사용자 이메일</string>
     <string name="pref_category_title_about">정보</string>
     <string name="preference_send_feedback">피드백</string>
     <string name="preference_send_feedback_summary">GitHub에 issue를 등록하고 의견 제시하기</string>
-    <string name="preference_key_app_version" translatable="false">app_version</string>
     <string name="preference_app_version">버전</string>
     <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
     <string name="pref_category_title_security">Security</string>
     <string name="preference_use_theme">테마선택</string>
-    <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>
     <string name="action_git_profile">Git 프로필</string>
     <string name="action_open_in_other_app">다른 앱에서 열기</string>
     <string name="action_add_private_key">Private Key 추가</string>
