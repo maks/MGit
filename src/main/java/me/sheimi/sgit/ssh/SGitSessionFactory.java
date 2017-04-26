@@ -20,6 +20,7 @@ public class SGitSessionFactory extends JschConfigSessionFactory {
     @Override
     protected void configure(Host arg0, Session session) {
         session.setConfig("StrictHostKeyChecking", "no");
+        session.setConfig("PreferredAuthentications", "publickey,password");
     }
 
     @Override
