@@ -133,6 +133,10 @@ public class FilesFragment extends RepoDetailFragment {
         }
     }
 
+    /**
+     * Set the directory listing currently being displayed
+     * @param dir
+     */
     public void setCurrentDir(File dir) {
         mCurrentDir = dir;
         if (mFilesListAdapter != null) {
@@ -140,6 +144,10 @@ public class FilesFragment extends RepoDetailFragment {
         }
     }
 
+    /**
+     * If the root dir has previously been set, set the root dir to be the currently displayed
+     * directory listing.
+     */
     public void resetCurrentDir() {
         if (mRootDir == null)
             return;
@@ -161,6 +169,11 @@ public class FilesFragment extends RepoDetailFragment {
         setCurrentDir(mCurrentDir);
     }
 
+    /**
+     * Create a new file within the currently displayed directory
+     *
+     * @param name
+     */
     public void newFile(String name) {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {

@@ -19,7 +19,7 @@
         <item>Push</item>
         <item>Alles zum Staging-Bereich hinzufügen</item>
         <item>Commit</item>
-        <item>Reset</item>
+        <item>Reset (HARD)</item>
         <item>Merge</item>
         <item>Fetch</item>
         <item>Rebase</item>

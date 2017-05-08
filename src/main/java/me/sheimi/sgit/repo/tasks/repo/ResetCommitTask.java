@@ -1,5 +1,6 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
@@ -34,8 +35,11 @@ public class ResetCommitTask extends RepoOpTask {
             mRepo.getGit().getRepository().writeMergeCommitMsg(null);
             mRepo.getGit().getRepository().writeMergeHeads(null);
             try {
+                // if a rebase is in-progress, need to abort it
                 mRepo.getGit().rebase().setOperation(RebaseCommand.Operation.ABORT).call();
             } catch (Exception e) {
+                setException(e, R.string.error_rebase_abort_failed_in_reset);
+                return false;
             }
             mRepo.getGit().reset().setMode(ResetCommand.ResetType.HARD).call();
         } catch (StopTaskException e) {
