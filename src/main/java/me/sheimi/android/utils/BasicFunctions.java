@@ -75,7 +75,7 @@ public class BasicFunctions {
     public static void showException(Throwable t, int res) {
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
         StackTraceElement[] ste = t.getStackTrace();
-        String str = t.getCause().getMessage()+"\n";
+        String str = (t.getCause() != null) ? t.getCause().getMessage()+"\n" : "\n";
         for (int i=0; i < ste.length; i++){
             str += ste[i].toString()+"\n";
         }
