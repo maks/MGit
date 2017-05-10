@@ -380,7 +380,7 @@ public class Repo implements Comparable<Repo>, Serializable {
             Repository repository = getGit().getRepository();
             ObjectId id = repository.resolve(commitRevStr);
             RevWalk revWalk = new RevWalk(getGit().getRepository());
-            return revWalk.parseCommit(id);
+            return (id != null) ? revWalk.parseCommit(id) : null;
         } catch (StopTaskException | IOException e) {
             Timber.e(e, "error parsing commit id: %s", commitRevStr);
             return null;
