@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
+import timber.log.Timber;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -67,12 +68,14 @@ public class BasicFunctions {
     }
 
     public static void showException(Throwable t) {
+        Timber.e(t, "showing exception");
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
         activity.showToastMessage(t.getMessage());
         t.printStackTrace();
     }
 
     public static void showException(Throwable t, int res) {
+        Timber.e(t, "showing exception");
         SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
         StackTraceElement[] ste = t.getStackTrace();
         String str = (t.getCause() != null) ? t.getCause().getMessage()+"\n" : "\n";
