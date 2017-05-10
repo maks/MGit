@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import timber.log.Timber;
+
 /**
  *
  */
@@ -15,6 +17,14 @@ public class SGitApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //TODO: add production crash reporting
+            //Timber.plant(new CrashReportingTree());
+        }
+
         mContext = getApplicationContext();
         setAppVersionPref();
     }

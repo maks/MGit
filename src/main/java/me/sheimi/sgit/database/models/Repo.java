@@ -18,6 +18,7 @@ import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.exception.StopTaskException;
 import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
+import timber.log.Timber;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
@@ -381,6 +382,7 @@ public class Repo implements Comparable<Repo>, Serializable {
             RevWalk revWalk = new RevWalk(getGit().getRepository());
             return revWalk.parseCommit(id);
         } catch (StopTaskException | IOException e) {
+            Timber.e(e, "error parsing commit id: %s", commitRevStr);
             return null;
         }
     }
