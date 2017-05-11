@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
+import android.widget.EditText;
 
 import com.securepreferences.SecurePreferences;
 
@@ -105,5 +106,14 @@ public class SecurePrefsHelper {
      */
     public String get(String pref) {
         return mSecurePrefs.getString(pref, null);
+    }
+
+    /**
+     * Store a String value into secured preferences.
+     * @param name
+     * @param value
+     */
+    public void set(String name, String value) {
+        mSecurePrefs.edit().putString(name, value).commit();
     }
 }

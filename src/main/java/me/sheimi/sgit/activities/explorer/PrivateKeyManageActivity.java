@@ -7,6 +7,7 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
+import me.sheimi.sgit.dialogs.EditKeyPasswordDialog;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
 import android.content.Intent;
@@ -45,9 +46,9 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-	MenuInflater inflater = mode.getMenuInflater();
-	inflater.inflate(R.menu.action_mode_ssh_key, menu);
-	return true;
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.action_mode_ssh_key, menu);
+        return true;
     }
 
     @Override
@@ -67,8 +68,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 	    rkd.setArguments(pathArg);
 	    rkd.show(getFragmentManager(), "rename-dialog");
 	    return true;
-	case R.id.action_mode_show_private_key:
-	    {
+	case R.id.action_mode_show_private_key: {
 		Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
 		intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
 				mChosenFile.getAbsolutePath());
@@ -76,9 +76,8 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 		mode.finish();
 		startActivity(intent);
 		return true;
-	    }
+	}
 	case R.id.action_mode_show_public_key:
-	    {
 		Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
 		intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
 				PrivateKeyUtils.getPublicKeyEnsure(mChosenFile).getAbsolutePath());
@@ -86,7 +85,14 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 		mode.finish();
 		startActivity(intent);
 		return true;
-	    }
+	case R.id.action_mode_edit_key_password:
+	    pathArg = new Bundle();
+        pathArg.putString(EditKeyPasswordDialog.KEY_FILE_EXTRA, mChosenFile.getAbsolutePath());
+        mode.finish();
+        EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
+        editDialog.setArguments(pathArg);
+        editDialog.show(getFragmentManager(), "rename-dialog");
+        return true;
 	case R.id.action_mode_delete:
 	    mode.finish();
 	    new AlertDialog.Builder(this)
@@ -101,7 +107,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 			    refreshList();
 			}
 
-		    })
+        		    })
 		.setNegativeButton(R.string.label_cancel, null)
 		.show();
 	    return true;

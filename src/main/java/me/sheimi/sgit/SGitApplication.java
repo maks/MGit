@@ -19,6 +19,8 @@ public class SGitApplication extends Application {
     private static Context mContext;
     private static CredentialsProvider mCredentialsProvider;
 
+    private SecurePrefsHelper mSecPrefs;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -32,13 +34,16 @@ public class SGitApplication extends Application {
 
         mContext = getApplicationContext();
         setAppVersionPref();
-        SecurePrefsHelper secPrefs = null;
         try {
-            secPrefs = new SecurePrefsHelper(this);
-            mCredentialsProvider = new AndroidJschCredentialsProvider(secPrefs);
+            mSecPrefs = new SecurePrefsHelper(this);
+            mCredentialsProvider = new AndroidJschCredentialsProvider(mSecPrefs);
         } catch (SecurePrefsException e) {
             Timber.e(e);
         }
+    }
+
+    public SecurePrefsHelper getSecurePrefsHelper() {
+        return mSecPrefs;
     }
 
     public static Context getContext() {

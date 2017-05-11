@@ -39,9 +39,8 @@ public class AndroidJschCredentialsProvider extends org.eclipse.jgit.transport.C
                 Timber.w("need credential for: %s ", item.getPromptText());
                 // the getPromptText() will be "Passphrase for /.../files/ssh/key_file_name_rsa"
                 String prompt = item.getPromptText();
-                String keyfileName = prompt.substring(prompt.lastIndexOf("/"), prompt.length());
+                String keyfileName = prompt.substring(prompt.lastIndexOf("/")+1, prompt.length());
                 String password = mSecPrefsHelper.get(keyfileName);
-                Timber.d("got key password: %s", password);
                 if (password != null) {
                     ((CredentialItem.StringType) item).setValue(password);
                     return true;
