@@ -26,6 +26,7 @@ import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
+import timber.log.Timber;
 
 /**
  * Created by phcoder on 09.12.15.
@@ -158,11 +159,9 @@ public class ViewFileFragment extends BaseFragment {
                     try {
                         FileUtils.writeStringToFile(mFile, content);
                     } catch (IOException e) {
-                        BasicFunctions.showException(e,
-                                R.string.alert_save_failed);
+                        showUserError(e, R.string.alert_save_failed);
                     }
                     getActivity().runOnUiThread(new Runnable() {
-
                         @Override
                         public void run() {
                             loadFileContent();
@@ -182,7 +181,7 @@ public class ViewFileFragment extends BaseFragment {
                     try {
                         mCode = FileUtils.readFileToString(mFile);
                     } catch (IOException e) {
-                        BasicFunctions.showException(e);
+                        showUserError(e, R.string.error_can_not_open_file);
                     }
                     display();
                 }
@@ -247,4 +246,15 @@ public class ViewFileFragment extends BaseFragment {
         };
     }
 
+
+    private void showUserError(Throwable e, final int errorMessageId) {
+        Timber.e(e);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((SheimiFragmentActivity)getActivity()).
+                    showMessageDialog(R.string.dialog_error_title, getString(errorMessageId));
+            }
+        });
+    }
 }

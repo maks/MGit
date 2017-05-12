@@ -3,8 +3,10 @@ package me.sheimi.sgit;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 import org.eclipse.jgit.transport.CredentialsProvider;
 
 import me.sheimi.android.utils.SecurePrefsException;
@@ -12,8 +14,13 @@ import me.sheimi.android.utils.SecurePrefsHelper;
 import timber.log.Timber;
 
 /**
- *
+ * Custom Application Singleton
  */
+@ReportsCrashes(
+    mailTo = "mgit@manichord.com",
+    mode = ReportingInteractionMode.TOAST,
+    resToastText = R.string.crash_toast_text // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
+)
 public class SGitApplication extends Application {
 
     private static Context mContext;
@@ -27,9 +34,6 @@ public class SGitApplication extends Application {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
-        } else {
-            //TODO: add production crash reporting
-            //Timber.plant(new CrashReportingTree());
         }
 
         mContext = getApplicationContext();
@@ -41,6 +45,16 @@ public class SGitApplication extends Application {
             Timber.e(e);
         }
     }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+
+        // The following line triggers the initialization of ACRA
+        ACRA.init(this);
+    }
+
 
     public SecurePrefsHelper getSecurePrefsHelper() {
         return mSecPrefs;

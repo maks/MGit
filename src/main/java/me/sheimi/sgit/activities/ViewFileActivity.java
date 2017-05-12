@@ -248,9 +248,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     startActivity(chooserIntent);
                     forwardTransition();
                 } catch (ActivityNotFoundException e) {
-                    BasicFunctions.showException(e, R.string.error_no_edit_app);
-                } catch (Throwable e) {
-                    BasicFunctions.showException(e);
+                    showMessageDialog(R.string.dialog_error_title, getString(R.string.error_no_edit_app));
                 }
                 break;
             case R.id.action_edit:

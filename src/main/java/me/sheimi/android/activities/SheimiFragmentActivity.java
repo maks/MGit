@@ -210,7 +210,7 @@ public class SheimiFragmentActivity extends Activity {
 
     /* View Utils End */
 
-    /* Switch Actvity Animation Start */
+    /* Switch Activity Animation Start */
     public void startActivity(Intent intent) {
         super.startActivity(intent);
         forwardTransition();
@@ -233,7 +233,7 @@ public class SheimiFragmentActivity extends Activity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
-    /* Switch Actvity Animation End */
+    /* Switch Activity Animation End */
 
     /* ImageCache Start */
 

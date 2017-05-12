@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
@@ -12,6 +13,9 @@ import me.sheimi.sgit.activities.ViewFileActivity;
 import me.sheimi.sgit.adapters.FilesListAdapter;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.RepoFileOperationDialog;
+import timber.log.Timber;
+
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -93,7 +97,13 @@ public class FilesFragment extends RepoDetailFragment {
                             getRawActivity().startActivity(intent);
                             return;
                         }
-                        FsUtils.openFile(file);
+                        try {
+                            FsUtils.openFile(file);
+                        } catch (ActivityNotFoundException e) {
+                            Timber.e(e);
+                            ((SheimiFragmentActivity)getActivity()).showMessageDialog(R.string.dialog_error_title,
+                                getString(R.string.error_can_not_open_file));
+                        }
                     }
                 });
 
@@ -174,18 +184,14 @@ public class FilesFragment extends RepoDetailFragment {
      *
      * @param name
      */
-    public void newFile(String name) {
+    public void newFile(String name) throws IOException {
         File file = new File(mCurrentDir, name);
         if (file.exists()) {
             showToastMessage(R.string.alert_file_exists);
             return;
         }
-        try {
-            file.createNewFile();
-            setCurrentDir(mCurrentDir);
-        } catch (IOException e) {
-            BasicFunctions.showException(e);
-        }
+        file.createNewFile();
+        setCurrentDir(mCurrentDir);
     }
 
     @Override
