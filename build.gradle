@@ -22,8 +22,8 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
 
-        versionCode 202
-        versionName "1.5.1"
+        versionCode 203
+        versionName "1.5.2"
     }
 
     lintOptions {
