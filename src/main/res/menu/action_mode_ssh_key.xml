@@ -13,7 +13,10 @@
         android:id="@+id/action_mode_show_public_key"
         android:showAsAction="never"
         android:title="@string/action_mode_show_public_key"/>
-
+    <item
+        android:id="@+id/action_mode_edit_key_password"
+        android:showAsAction="never"
+        android:title="@string/action_mode_edit_key_password"/>
     <item
         android:id="@+id/action_mode_delete"
 	android:icon="@drawable/ic_trash"

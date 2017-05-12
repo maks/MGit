@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import org.eclipse.jgit.transport.CredentialsProvider;
+
+import me.sheimi.android.utils.SecurePrefsException;
+import me.sheimi.android.utils.SecurePrefsHelper;
 import timber.log.Timber;
 
 /**
@@ -13,6 +17,9 @@ import timber.log.Timber;
 public class SGitApplication extends Application {
 
     private static Context mContext;
+    private static CredentialsProvider mCredentialsProvider;
+
+    private SecurePrefsHelper mSecPrefs;
 
     @Override
     public void onCreate() {
@@ -27,6 +34,16 @@ public class SGitApplication extends Application {
 
         mContext = getApplicationContext();
         setAppVersionPref();
+        try {
+            mSecPrefs = new SecurePrefsHelper(this);
+            mCredentialsProvider = new AndroidJschCredentialsProvider(mSecPrefs);
+        } catch (SecurePrefsException e) {
+            Timber.e(e);
+        }
+    }
+
+    public SecurePrefsHelper getSecurePrefsHelper() {
+        return mSecPrefs;
     }
 
     public static Context getContext() {
@@ -43,4 +60,7 @@ public class SGitApplication extends Application {
         editor.commit();
     }
 
+    public static CredentialsProvider getJschCredentialsProvider() {
+        return mCredentialsProvider;
+    }
 }
