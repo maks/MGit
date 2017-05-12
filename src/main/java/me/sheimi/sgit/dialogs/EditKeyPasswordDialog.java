@@ -49,7 +49,7 @@ public class EditKeyPasswordDialog extends SheimiDialogFragment implements
         // set button listener
         builder.setNegativeButton(R.string.label_cancel,
                 new DummyDialogListener());
-        builder.setPositiveButton(R.string.label_rename,
+        builder.setPositiveButton(R.string.label_save,
                 new DummyDialogListener());
 
         return builder.create();
