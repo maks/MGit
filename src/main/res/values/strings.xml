@@ -122,6 +122,8 @@
     <string name="dialog_show_unstaged_diff">Unstaged diff</string>
     <string name="dialog_show_staged_diff">Staged diff</string>
     <string name="dialog_show_invalid_remote">Invalid remote report</string>
+    <string name="dialog_not_supported">Not Supported</string>
+    <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
 
 
     <!-- Others -->

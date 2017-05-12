@@ -11,6 +11,7 @@ import me.sheimi.sgit.dialogs.EditKeyPasswordDialog;
 import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -86,12 +87,21 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 		startActivity(intent);
 		return true;
 	case R.id.action_mode_edit_key_password:
-	    pathArg = new Bundle();
-        pathArg.putString(EditKeyPasswordDialog.KEY_FILE_EXTRA, mChosenFile.getAbsolutePath());
-        mode.finish();
-        EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
-        editDialog.setArguments(pathArg);
-        editDialog.show(getFragmentManager(), "rename-dialog");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.dialog_not_supported)
+                .setMessage(R.string.dialog_not_supported_msg)
+                .setPositiveButton(R.string.label_ok, null)
+                .show();
+        } else {
+            pathArg = new Bundle();
+            pathArg.putString(EditKeyPasswordDialog.KEY_FILE_EXTRA, mChosenFile.getAbsolutePath());
+            mode.finish();
+            EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
+            editDialog.setArguments(pathArg);
+            editDialog.show(getFragmentManager(), "rename-dialog");
+        }
         return true;
 	case R.id.action_mode_delete:
 	    mode.finish();
