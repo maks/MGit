@@ -3,6 +3,7 @@ package me.sheimi.sgit.database.models;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -328,9 +329,8 @@ public class Repo implements Comparable<Repo>, Serializable {
     public String getBranchName() {
         try {
             return getGit().getRepository().getFullBranch();
-        } catch (IOException e) {
-            BasicFunctions.showException(e);
-        } catch (StopTaskException e) {
+        } catch (IOException|StopTaskException e) {
+            Timber.e(e, "error getting branch name");
         }
         return "";
     }
@@ -354,9 +354,8 @@ public class Repo implements Comparable<Repo>, Serializable {
                 branchList.add(name);
             }
             return branchList.toArray(new String[0]);
-        } catch (GitAPIException e) {
-            BasicFunctions.showException(e);
-        } catch (StopTaskException e) {
+        } catch (GitAPIException|StopTaskException e) {
+            Timber.e(e);
         }
         return new String[0];
     }
@@ -368,9 +367,8 @@ public class Repo implements Comparable<Repo>, Serializable {
             if (!it.hasNext())
                 return null;
             return it.next();
-        } catch (GitAPIException e) {
-            BasicFunctions.showException(e);
-        } catch (StopTaskException e) {
+        } catch (GitAPIException|StopTaskException e) {
+            Timber.e(e);
         }
         return null;
     }
@@ -396,9 +394,8 @@ public class Repo implements Comparable<Repo>, Serializable {
         try {
             List<Ref> localRefs = getGit().branchList().call();
             return localRefs;
-        } catch (GitAPIException e) {
-            BasicFunctions.showException(e);
-        } catch (StopTaskException e) {
+        } catch (GitAPIException|StopTaskException e) {
+            Timber.e(e);
         }
         return new ArrayList<Ref>();
     }
@@ -412,9 +409,8 @@ public class Repo implements Comparable<Repo>, Serializable {
                 tags[i] = refs.get(i).getName();
             }
             return tags;
-        } catch (GitAPIException e) {
-            BasicFunctions.showException(e);
-        } catch (StopTaskException e) {
+        } catch (GitAPIException|StopTaskException e) {
+            Timber.e(e);
         }
         return new String[0];
     }
@@ -523,12 +519,8 @@ public class Repo implements Comparable<Repo>, Serializable {
             File repoFile = getDir();
             mGit = Git.open(repoFile);
             return mGit;
-        } catch (RepositoryNotFoundException e) {
-            BasicFunctions
-                    .showException(e, R.string.error_repository_not_found);
-            throw new StopTaskException();
         } catch (IOException e) {
-            BasicFunctions.showException(e);
+            Timber.e(e);
             throw new StopTaskException();
         }
     }

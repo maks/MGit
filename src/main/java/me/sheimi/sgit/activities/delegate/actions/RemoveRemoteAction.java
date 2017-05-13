@@ -18,6 +18,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
+import timber.log.Timber;
 
 public class RemoveRemoteAction extends RepoAction {
 
@@ -39,13 +40,9 @@ public class RemoveRemoteAction extends RepoAction {
         mActivity.closeOperationDrawer();
     }
 
-    public static void removeRemote(Repo repo, RepoDetailActivity activity, String remote) {
-        try {
-            repo.removeRemote(remote);
-            activity.showToastMessage(R.string.success_remote_removed);
-        } catch (IOException e) {
-            BasicFunctions.showException(e);
-        }
+    public static void removeRemote(Repo repo, RepoDetailActivity activity, String remote) throws IOException {
+        repo.removeRemote(remote);
+        activity.showToastMessage(R.string.success_remote_removed);
     }
 
     public static class RemoveRemoteDialog extends SheimiDialogFragment {
@@ -80,7 +77,12 @@ public class RemoveRemoteAction extends RepoAction {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     String remote = mAdapter.getItem(position);
-                    removeRemote(mRepo, mActivity, remote);
+                    try {
+                        removeRemote(mRepo, mActivity, remote);
+                    } catch (IOException e) {
+                        Timber.e(e);
+                        mActivity.showMessageDialog(R.string.dialog_error_title, getString(R.string.error_something_wrong));
+                    }
                     dismiss();
                 }
             });

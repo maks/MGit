@@ -1,19 +1,13 @@
 package me.sheimi.android.utils;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.sgit.R;
 import timber.log.Timber;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by sheimi on 8/19/13.
@@ -41,7 +35,7 @@ public class BasicFunctions {
             return hexString.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            BasicFunctions.showException(e);
+            Timber.e(e);
         }
         return "";
     }
@@ -66,38 +60,4 @@ public class BasicFunctions {
     public static ImageLoader getImageLoader() {
         return getActiveActivity().getImageLoader();
     }
-
-    public static void showException(Throwable t) {
-        Timber.e(t, "showing exception");
-        SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
-        activity.showToastMessage(t.getMessage());
-        t.printStackTrace();
-    }
-
-    public static void showException(Throwable t, int res) {
-        Timber.e(t, "showing exception");
-        SheimiFragmentActivity activity = BasicFunctions.getActiveActivity();
-        StackTraceElement[] ste = t.getStackTrace();
-        String str = (t.getCause() != null) ? t.getCause().getMessage()+"\n" : "\n";
-        for (int i=0; i < ste.length; i++){
-            str += ste[i].toString()+"\n";
-        }
-        final String str2 = str;
-        activity.showMessageDialog(R.string.dialog_show_invalid_remote, str2, R.string.action_send_report, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("message/rfc822");
-                intent.putExtra(Intent.EXTRA_EMAIL  , new String[]{getActiveActivity().getString(R.string.report_mail)});
-                intent.putExtra(Intent.EXTRA_SUBJECT, getActiveActivity().getString(R.string.dialog_show_invalid_remote));
-                intent.putExtra(Intent.EXTRA_TEXT, str2);
-                try {
-                    getActiveActivity().startActivity(Intent.createChooser(intent, "Send mail..."));
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(getActiveActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
 }

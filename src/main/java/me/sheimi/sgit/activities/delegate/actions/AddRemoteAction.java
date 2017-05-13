@@ -7,6 +7,8 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
+import timber.log.Timber;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -25,14 +27,11 @@ public class AddRemoteAction extends RepoAction {
         mActivity.closeOperationDrawer();
     }
 
-    public void addToRemote(String name, String url) {
-        try {
-            mRepo.setRemote(name, url);
-            mRepo.updateRemote();
-            mActivity.showToastMessage(R.string.success_remote_added);
-        } catch (IOException e) {
-            BasicFunctions.showException(e);
-        }
+    public void addToRemote(String name, String url) throws IOException {
+        mRepo.setRemote(name, url);
+        mRepo.updateRemote();
+        mActivity.showToastMessage(R.string.success_remote_added);
+
     }
 
     public void showAddRemoteDialog() {
@@ -53,7 +52,13 @@ public class AddRemoteAction extends RepoAction {
                                     DialogInterface dialogInterface, int i) {
                                 String name = remoteName.getText().toString();
                                 String url = remoteUrl.getText().toString();
-                                addToRemote(name, url);
+                                try {
+                                    addToRemote(name, url);
+                                } catch (IOException e) {
+                                    Timber.e(e);
+                                    mActivity.showMessageDialog(R.string.dialog_error_title,
+                                        mActivity.getString(R.string.error_something_wrong));
+                                }
                             }
                         })
                 .setNegativeButton(R.string.label_cancel,

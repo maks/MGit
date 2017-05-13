@@ -5,7 +5,6 @@
     <string name="default_text">Default Text</string>
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
-    <string name="report_mail">mgit@manichord.com</string>
 
     <!-- action -->
     <string name="action_search">Search</string>
@@ -124,6 +123,7 @@
     <string name="dialog_show_invalid_remote">Invalid remote report</string>
     <string name="dialog_not_supported">Not Supported</string>
     <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
+    <string name="dialog_error_title">Error occurred</string>
 
 
     <!-- Others -->
@@ -169,4 +169,7 @@
     <string name="action_git_profile">Git Profile</string>
     <string name="action_open_in_other_app">Open in other apps</string>
     <string name="action_add_private_key">Add Private Key</string>
+
+    <!-- Crash reporting via ACRA -->
+    <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
 </resources>

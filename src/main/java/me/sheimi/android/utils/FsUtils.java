@@ -147,17 +147,11 @@ public class FsUtils {
             mimeType = getMimeType(uri.toString());
         }
         intent.setDataAndType(uri, mimeType);
-        try {
-            BasicFunctions.getActiveActivity().startActivity(
-                    Intent.createChooser(
-                            intent,
-                            BasicFunctions.getActiveActivity().getString(
-                                    R.string.label_choose_app_to_open)));
-        } catch (ActivityNotFoundException e) {
-            BasicFunctions.showException(e, R.string.error_no_open_app);
-        } catch (Throwable e) {
-            BasicFunctions.showException(e, R.string.error_can_not_open_file);
-        }
+        BasicFunctions.getActiveActivity().startActivity(
+                Intent.createChooser(
+                        intent,
+                        BasicFunctions.getActiveActivity().getString(
+                                R.string.label_choose_app_to_open)));
     }
 
     public static void deleteFile(File file) {
