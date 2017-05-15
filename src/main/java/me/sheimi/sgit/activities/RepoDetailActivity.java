@@ -228,18 +228,39 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            int position = mViewPager.getCurrentItem();
-            OnBackClickListener onBackClickListener = mTabItemPagerAdapter
-                    .getItem(position).getOnBackClickListener();
-            if (onBackClickListener != null) {
-                if (onBackClickListener.onClick())
-                    return true;
-            }
-            finish();
-            return true;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_DEL:
+                int position = mViewPager.getCurrentItem();
+                OnBackClickListener onBackClickListener = mTabItemPagerAdapter
+                        .getItem(position).getOnBackClickListener();
+                if (onBackClickListener != null) {
+                    if (onBackClickListener.onClick())
+                        return true;
+                }
+                finish();
+                return true;
+            case KeyEvent.KEYCODE_F:
+                mViewPager.setCurrentItem(FILES_FRAGMENT_INDEX);
+                return true;
+            case KeyEvent.KEYCODE_C:
+                mViewPager.setCurrentItem(COMMITS_FRAGMENT_INDEX);
+                return true;
+            case KeyEvent.KEYCODE_S:
+                mViewPager.setCurrentItem(STATUS_FRAGMENT_INDEX);
+                return true;
+            case KeyEvent.KEYCODE_SLASH:
+                if (event.isShiftPressed()) {
+                    showKeyboardShortcutsHelpOverlay();
+                }
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
         }
-        return false;
+    }
+
+    private void showKeyboardShortcutsHelpOverlay() {
+        showMessageDialog(R.string.dialog_keymap_title, getString(R.string.dialog_keymap_mesg));
     }
 
     public void error() {
