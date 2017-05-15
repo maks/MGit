@@ -1,18 +1,10 @@
 package me.sheimi.android.activities;
 
-import java.io.File;
-
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.Profile;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
-import me.sheimi.sgit.dialogs.DummyDialogListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +17,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+
+import java.io.File;
+
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.utils.Profile;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
 
 public class SheimiFragmentActivity extends Activity {
 

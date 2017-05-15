@@ -124,7 +124,8 @@
     <string name="dialog_not_supported">Not Supported</string>
     <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
     <string name="dialog_error_title">Error occurred</string>
-
+    <string name="dialog_keymap_title">Shortcut Keys</string>
+    <string name="dialog_keymap_mesg"> C - Commits\n F- Files\n S- Status\n ? - Help\n</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>

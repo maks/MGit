@@ -249,9 +249,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             case KeyEvent.KEYCODE_S:
                 mViewPager.setCurrentItem(STATUS_FRAGMENT_INDEX);
                 return true;
-
-            case KeyEvent.KEYCODE_H:
-                showKeyboardShortcutsHelpOverlay();
+            case KeyEvent.KEYCODE_SLASH:
+                if (event.isShiftPressed()) {
+                    showKeyboardShortcutsHelpOverlay();
+                }
                 return true;
             default:
                 return super.onKeyUp(keyCode, event);
@@ -259,7 +260,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     }
 
     private void showKeyboardShortcutsHelpOverlay() {
-        //TODO
+        showMessageDialog(R.string.dialog_keymap_title, getString(R.string.dialog_keymap_mesg));
     }
 
     public void error() {
