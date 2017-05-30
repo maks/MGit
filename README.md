@@ -29,7 +29,7 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 * Private keys management
 * Manually choose code language
 * `git diff` between commits (to be enhanced)
-* Import copied repositories (that is, you can copy a repository from computer and import to SGit)
+* Import copied repositories (that is, you can copy a repository from computer and import to MGit)
 * Checkout remote branches
 * Merge branches
 * Push merged content
@@ -54,11 +54,11 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 1. Click on the *+* icon to add a new repository.
 2. Enter remote URL (see URL format below).
-3. Enter local repository name - note that this is not a full path since SGit stores all repositories in the same directory on the mobile device.
+3. Enter local repository name - note that this is not a full path since MGit stores all repositories in the same directory on the mobile device.
 4. Username - username to use to clone the remote repo.
 5. Password - password to use to clone the remote repo.
 6. Click the *Clone* button.
-7. If all the credentials are correct, SGit will download the repository (all branches) to your device.
+7. If all the credentials are correct, MGit will download the repository (all branches) to your device.
 
 ### Create a local repository
 1. Click on the *+* icon to add a new repository.
@@ -72,7 +72,7 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 * SSH running on standard port (22): `ssh://username@server_name/path/to/repo`
 * SSH running on non-standard port: `ssh://username@server_name:port/path/to/repo`
-* `username` is needed - by default, SGit tries to connect as root.
+* `username` is needed - by default, MGit tries to connect as root.
 
 #### HTTP(S) URLs
 
