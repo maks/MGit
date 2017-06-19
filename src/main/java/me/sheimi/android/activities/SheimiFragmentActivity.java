@@ -23,7 +23,6 @@ import java.io.File;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 
 public class SheimiFragmentActivity extends Activity {
@@ -177,17 +176,6 @@ public class SheimiFragmentActivity extends Activity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-
-                                // TODO: save password, but to do that need to have an API on the repo object
-                                // instead of exposing direct access to sqlite db
-//                                if (savePassword) {
-//                                    values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-//                                    values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-//                                } else {
-//                                    values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
-//                                    values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
-//                                }
-
                                 onPasswordEntered.onClicked(username.getText()
                                         .toString(), password.getText()
                                         .toString(), checkBox.isChecked());

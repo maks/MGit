@@ -601,4 +601,8 @@ public class Repo implements Comparable<Repo>, Serializable {
         } catch (StopTaskException e) {
         }
     }
+
+    public void saveCredentials() {
+        RepoDbManager.persistCredentials(getID(), getUsername(), getPassword());
+    }
 }

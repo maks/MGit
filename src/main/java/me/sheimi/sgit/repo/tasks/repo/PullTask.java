@@ -1,24 +1,18 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
-import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.exception.StopTaskException;
-import me.sheimi.sgit.ssh.SgitTransportCallback;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.RebaseCommand;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import android.content.ContentValues;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
+import me.sheimi.sgit.ssh.SgitTransportCallback;
 
-public class PullTask extends RepoOpTask implements OnPasswordEntered {
+public class PullTask extends RepoRemoteOpTask {
 
     private AsyncTaskCallback mCallback;
     private String mRemote;
@@ -130,21 +124,11 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
 
     @Override
     public void onClicked(String username, String password, boolean savePassword) {
-        mRepo.setUsername(username);
-        mRepo.setPassword(password);
-        if (savePassword) {
-            ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-            RepoDbManager.updateRepo(mRepo.getID(), values);
-        }
+        super.onClicked(username, password, savePassword);
 
         mRepo.removeTask(this);
         PullTask pullTask = new PullTask(mRepo, mRemote, mForcePull, mCallback);
         pullTask.executeTask();
     }
 
-    @Override
-    public void onCanceled() {
-    }
 }

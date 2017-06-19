@@ -63,6 +63,18 @@ public class RepoDbManager {
         }
     }
 
+    public static void persistCredentials(long repoId,String username, String password) {
+        ContentValues values = new ContentValues();
+        if (username != null && password != null) {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+        } else {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
+        }
+        updateRepo(repoId, values);
+    }
+
     public static interface RepoDbObserver {
         public void nofityChanged();
     }

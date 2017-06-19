@@ -166,6 +166,9 @@ public class CloneDialog extends SheimiDialogFragment implements
 
         mRepo.setUsername(username);
         mRepo.setPassword(password);
+        if (savePassword) {
+            mRepo.saveCredentials();
+        }
 
         Timber.d("clone with u:%s p:%s", username, password);
         CloneTask task = new CloneTask(mRepo, this, mBinding.cloneRecursive.isChecked());

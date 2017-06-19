@@ -11,7 +11,7 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
-public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPasswordEntered {
+public class FetchTask extends RepoRemoteOpTask {
 
     private final AsyncTaskCallback mCallback;
     private final String[] mRemotes;
@@ -55,15 +55,6 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
         if (mCallback != null) {
             mCallback.onPostExecute(isSuccess);
         }
-    }
-
-    @Override
-    public void onClicked(String username, String password, boolean savePassword) {
-
-    }
-
-    @Override
-    public void onCanceled() {
     }
 
     private boolean fetchRepo(String remote) {
