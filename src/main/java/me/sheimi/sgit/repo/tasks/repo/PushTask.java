@@ -1,27 +1,21 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
-import java.util.Collection;
-
-import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.exception.StopTaskException;
-import me.sheimi.sgit.ssh.SgitTransportCallback;
-
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
-import android.content.ContentValues;
+import java.util.Collection;
 
-public class PushTask extends RepoOpTask implements OnPasswordEntered {
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.exception.StopTaskException;
+import me.sheimi.sgit.ssh.SgitTransportCallback;
+
+public class PushTask extends RepoRemoteOpTask {
 
     private AsyncTaskCallback mCallback;
     private boolean mPushAll;
@@ -183,14 +177,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
 
     @Override
     public void onClicked(String username, String password, boolean savePassword) {
-        mRepo.setUsername(username);
-        mRepo.setPassword(password);
-        if (savePassword) {
-            ContentValues values = new ContentValues();
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-            RepoDbManager.updateRepo(mRepo.getID(), values);
-        }
+        super.onClicked(username, password, savePassword);
 
         mRepo.removeTask(this);
         PushTask pushTask = new PushTask(mRepo, mRemote, mPushAll, mForcePush, mCallback);
