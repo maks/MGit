@@ -176,16 +176,8 @@ public class PushTask extends RepoRemoteOpTask {
     }
 
     @Override
-    public void onClicked(String username, String password, boolean savePassword) {
-        super.onClicked(username, password, savePassword);
-
-        mRepo.removeTask(this);
-        PushTask pushTask = new PushTask(mRepo, mRemote, mPushAll, mForcePush, mCallback);
-        pushTask.executeTask();
-    }
-
-    @Override
-    public void onCanceled() {
+    public RepoRemoteOpTask getNewTask() {
+        return new PushTask(mRepo, mRemote, mPushAll, mForcePush, mCallback);
     }
 
 }

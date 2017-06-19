@@ -22,10 +22,15 @@ public abstract class RepoRemoteOpTask extends RepoOpTask implements SheimiFragm
         if (savePassword) {
             mRepo.saveCredentials();
         }
+
+        mRepo.removeTask(this);
+        getNewTask().executeTask();
     }
 
     @Override
     public void onCanceled() {
 
     }
+
+    public abstract RepoRemoteOpTask getNewTask();
 }

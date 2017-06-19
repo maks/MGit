@@ -123,12 +123,8 @@ public class PullTask extends RepoRemoteOpTask {
     }
 
     @Override
-    public void onClicked(String username, String password, boolean savePassword) {
-        super.onClicked(username, password, savePassword);
-
-        mRepo.removeTask(this);
-        PullTask pullTask = new PullTask(mRepo, mRemote, mForcePull, mCallback);
-        pullTask.executeTask();
+    public RepoRemoteOpTask getNewTask() {
+        return new PullTask(mRepo, mRemote, mForcePull, mCallback);
     }
 
 }
