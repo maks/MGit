@@ -91,4 +91,13 @@ public class FetchTask extends RepoRemoteOpTask {
         mRepo.updateLatestCommitInfo();
         return true;
     }
+
+    @Override
+    public void onClicked(String username, String password, boolean savePassword) {
+        super.onClicked(username, password, savePassword);
+
+        mRepo.removeTask(this);
+        FetchTask fetchTask = new FetchTask(mRemotes, mRepo, mCallback);
+        fetchTask.executeTask();
+    }
 }
