@@ -96,14 +96,7 @@ public class PushTask extends RepoOpTask implements OnPasswordEntered {
           pushCommand.setForce(true);
         }
 
-        String username = mRepo.getUsername();
-        String password = mRepo.getPassword();
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            pushCommand.setCredentialsProvider(auth);
-        }
+        setCredentials(pushCommand);
 
         try {
             Iterable<PushResult> result = pushCommand.call();

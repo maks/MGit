@@ -74,14 +74,9 @@ public class PullTask extends RepoOpTask implements OnPasswordEntered {
                 .setRemote(mRemote)
                 .setProgressMonitor(new BasicProgressMonitor())
                 .setTransportConfigCallback(new SgitTransportCallback());
-        String username = mRepo.getUsername();
-        String password = mRepo.getPassword();
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            pullCommand.setCredentialsProvider(auth);
-        }
+
+        setCredentials(pullCommand);
+
         try {
             String branch = null;
             if (mForcePull) {

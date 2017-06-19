@@ -59,6 +59,7 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
 
     @Override
     public void onClicked(String username, String password, boolean savePassword) {
+
     }
 
     @Override
@@ -78,14 +79,7 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
                 .setTransportConfigCallback(new SgitTransportCallback())
                 .setRemote(remote);
 
-        final String username = mRepo.getUsername();
-        final String password = mRepo.getPassword();
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            fetchCommand.setCredentialsProvider(auth);
-        }
+        setCredentials(fetchCommand);
 
         try {
             fetchCommand.call();

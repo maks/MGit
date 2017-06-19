@@ -25,6 +25,7 @@ import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.databinding.DialogCloneBinding;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
+import timber.log.Timber;
 
 /**
  * Dialog UI used to perform clone operation
@@ -104,13 +105,6 @@ public class CloneDialog extends SheimiDialogFragment implements
     private void fillInformationFromPreviousCloneFail(Repo lastCloneTryRepo) {
         mBinding.remoteURL.setText( lastCloneTryRepo.getRemoteURL() );
         mBinding.localPath.setText( lastCloneTryRepo.getLocalPath() );
-        mBinding.username.setText( lastCloneTryRepo.getUsername() );
-        mBinding.password.setText( lastCloneTryRepo.getPassword() );
-        if ( lastCloneTryRepo.getUsername().equals("") && lastCloneTryRepo.getPassword().equals("")) {
-            mBinding.savePassword.setChecked(false);
-        } else {
-            mBinding.savePassword.setChecked(true);
-        }
     }
 
     @Override
@@ -161,10 +155,7 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
 
-        String username = mBinding.username.getText().toString();
-        String password = mBinding.password.getText().toString();
-        boolean savePassword = mBinding.savePassword.isChecked();
-        onClicked(username, password, savePassword);
+        onClicked(null, null, false);
         dismiss();
     }
 
@@ -181,19 +172,13 @@ public class CloneDialog extends SheimiDialogFragment implements
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
                 RepoContract.REPO_STATUS_WAITING_CLONE);
-        if (savePassword) {
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
-        } else {
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
-            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
-        }
         long id = RepoDbManager.insertRepo(values);
         mRepo = Repo.getRepoById(mActivity, id);
 
         mRepo.setUsername(username);
         mRepo.setPassword(password);
 
+        Timber.d("clone with u:%s p:%s", username, password);
         CloneTask task = new CloneTask(mRepo, this, mBinding.cloneRecursive.isChecked());
         task.executeTask();
     }

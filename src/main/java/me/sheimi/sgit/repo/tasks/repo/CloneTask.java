@@ -9,6 +9,7 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
+import timber.log.Timber;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -60,15 +61,8 @@ public class CloneTask extends RepoOpTask {
                 .setDirectory(localRepo)
                 .setCloneSubmodules(mCloneRecursive);
 
-        String username = mRepo.getUsername();
-        String password = mRepo.getPassword();
+        setCredentials(cloneCommand);
 
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            cloneCommand.setCredentialsProvider(auth);
-        }
         try {
             cloneCommand.call();
             Profile.setLastCloneSuccess();
