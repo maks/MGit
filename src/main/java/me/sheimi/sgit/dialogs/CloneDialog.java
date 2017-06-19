@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,33 +23,29 @@ import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.databinding.DialogCloneBinding;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 
 /**
- * Created by sheimi on 8/24/13.
+ * Dialog UI used to perform clone operation
  */
 
 public class CloneDialog extends SheimiDialogFragment implements
         View.OnClickListener, OnPasswordEntered {
 
-    private EditText mRemoteURL;
-    private EditText mLocalPath;
-    private EditText mUsername;
-    private EditText mPassword;
-    private CheckBox mIsSavePassword;
-    private CheckBox mCloneRecursive;
     private RepoListActivity mActivity;
     private Repo mRepo;
+    private DialogCloneBinding mBinding;
 
     private class RemoteUrlFocusListener implements View.OnFocusChangeListener {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (!hasFocus) {
-                final String remoteUrl = mRemoteURL.getText().toString();
+                final String remoteUrl = mBinding.remoteURL.getText().toString();
                 String localDefault = stripUrlFromRepo(remoteUrl);
                 localDefault = stripGitExtension(localDefault);
                 if (!localDefault.equals("")) {
-                    mLocalPath.setText(localDefault);
+                    mBinding.localPath.setText(localDefault);
                 }
             }
         }
@@ -77,20 +74,14 @@ public class CloneDialog extends SheimiDialogFragment implements
         mActivity = (RepoListActivity) getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
-        View layout = inflater.inflate(R.layout.dialog_clone, null);
-        builder.setView(layout);
 
-        mRemoteURL = (EditText) layout.findViewById(R.id.remoteURL);
-        mLocalPath = (EditText) layout.findViewById(R.id.localPath);
-        mUsername = (EditText) layout.findViewById(R.id.username);
-        mPassword = (EditText) layout.findViewById(R.id.password);
-        mIsSavePassword = (CheckBox) layout.findViewById(R.id.savePassword);
-        mCloneRecursive = (CheckBox) layout.findViewById(R.id.cloneRecursive);
+        mBinding = DialogCloneBinding.inflate(inflater);
+        builder.setView(mBinding.getRoot());
 
         if ( Profile.hasLastCloneFailed() )
             fillInformationFromPreviousCloneFail( Profile.getLastCloneTryRepo() );
 
-        mRemoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
+        mBinding.remoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
 
         // set button listener
         builder.setTitle(R.string.title_clone_repo);
@@ -111,14 +102,15 @@ public class CloneDialog extends SheimiDialogFragment implements
     }
 
     private void fillInformationFromPreviousCloneFail(Repo lastCloneTryRepo) {
-        mRemoteURL.setText( lastCloneTryRepo.getRemoteURL() );
-        mLocalPath.setText( lastCloneTryRepo.getLocalPath() );
-        mUsername.setText( lastCloneTryRepo.getUsername() );
-        mPassword.setText( lastCloneTryRepo.getPassword() );
-        if ( lastCloneTryRepo.getUsername().equals("") && lastCloneTryRepo.getPassword().equals(""))
-            mIsSavePassword.setChecked(false);
-        else
-            mIsSavePassword.setChecked(true);
+        mBinding.remoteURL.setText( lastCloneTryRepo.getRemoteURL() );
+        mBinding.localPath.setText( lastCloneTryRepo.getLocalPath() );
+        mBinding.username.setText( lastCloneTryRepo.getUsername() );
+        mBinding.password.setText( lastCloneTryRepo.getPassword() );
+        if ( lastCloneTryRepo.getUsername().equals("") && lastCloneTryRepo.getPassword().equals("")) {
+            mBinding.savePassword.setChecked(false);
+        } else {
+            mBinding.savePassword.setChecked(true);
+        }
     }
 
     @Override
@@ -134,45 +126,44 @@ public class CloneDialog extends SheimiDialogFragment implements
 
     @Override
     public void onClick(View view) {
-        String remoteURL = mRemoteURL.getText().toString().trim();
-        String localPath = mLocalPath.getText().toString().trim();
+        String remoteURL = mBinding.remoteURL.getText().toString().trim();
+        String localPath = mBinding.localPath.getText().toString().trim();
 
         if (remoteURL.equals("")) {
             showToastMessage(R.string.alert_remoteurl_required);
-            mRemoteURL.setError(getString(R.string.alert_remoteurl_required));
-            mRemoteURL.requestFocus();
+            mBinding.remoteURL.setError(getString(R.string.alert_remoteurl_required));
+            mBinding.remoteURL.requestFocus();
             return;
         }
         if (localPath.isEmpty()) {
             showToastMessage(R.string.alert_localpath_required);
-            mLocalPath.setError(getString(R.string.alert_localpath_required));
-            mLocalPath.requestFocus();
+            mBinding.localPath.setError(getString(R.string.alert_localpath_required));
+            mBinding.localPath.requestFocus();
             return;
         }
         if (localPath.contains("/")) {
             showToastMessage(R.string.alert_localpath_format);
-            mLocalPath.setError(getString(R.string.alert_localpath_format));
-            mLocalPath.requestFocus();
+            mBinding.localPath.setError(getString(R.string.alert_localpath_format));
+            mBinding.localPath.requestFocus();
             return;
         }
 
         // If user is accepting the default path in the hint, we need to set localPath to
         // the string in the hint, so that the following checks don't fail.
-        if (mLocalPath.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
-            localPath = mLocalPath.getHint().toString();
+        if (mBinding.localPath.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
+            localPath = mBinding.localPath.getHint().toString();
         }
         File file = Repo.getDir(getActivity(), localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
-            mLocalPath
-                    .setError(getString(R.string.alert_localpath_repo_exists));
-            mLocalPath.requestFocus();
+            mBinding.localPath.setError(getString(R.string.alert_localpath_repo_exists));
+            mBinding.localPath.requestFocus();
             return;
         }
 
-        String username = mUsername.getText().toString();
-        String password = mPassword.getText().toString();
-        boolean savePassword = mIsSavePassword.isChecked();
+        String username = mBinding.username.getText().toString();
+        String password = mBinding.password.getText().toString();
+        boolean savePassword = mBinding.savePassword.isChecked();
         onClicked(username, password, savePassword);
         dismiss();
     }
@@ -183,8 +174,8 @@ public class CloneDialog extends SheimiDialogFragment implements
 
     @Override
     public void onClicked(String username, String password, boolean savePassword) {
-        String remoteURL = mRemoteURL.getText().toString().trim();
-        String localPath = mLocalPath.getText().toString().trim();
+        String remoteURL = mBinding.remoteURL.getText().toString().trim();
+        String localPath = mBinding.localPath.getText().toString().trim();
         ContentValues values = new ContentValues();
         values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
@@ -203,9 +194,8 @@ public class CloneDialog extends SheimiDialogFragment implements
         mRepo.setUsername(username);
         mRepo.setPassword(password);
 
-        CloneTask task = new CloneTask(mRepo, this, mCloneRecursive.isChecked());
+        CloneTask task = new CloneTask(mRepo, this, mBinding.cloneRecursive.isChecked());
         task.executeTask();
-
     }
 
     @Override
