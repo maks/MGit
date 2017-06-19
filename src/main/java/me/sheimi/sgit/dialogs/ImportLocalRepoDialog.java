@@ -1,17 +1,8 @@
 package me.sheimi.sgit.dialogs;
 
-import java.io.File;
-
-import me.sheimi.android.utils.FsUtils;
-import me.sheimi.android.views.SheimiDialogFragment;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +10,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+
+import java.io.File;
+
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.models.Repo;
 
 /**
  * Created by sheimi on 8/24/13.
@@ -114,17 +113,10 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
             }
         }
 
-        ContentValues values = new ContentValues();
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, "");
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                RepoContract.REPO_STATUS_IMPORTING);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
+        final Repo repo = Repo.importRepo(localPath);
 
-        final long id = RepoDbManager.insertRepo(values);
         if (mImportAsExternal.isChecked()) {
-            updateRepoInformation(id);
+            updateRepoInformation(repo);
             dismiss();
             return;
         }
@@ -136,7 +128,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        updateRepoInformation(id);
+                        updateRepoInformation(repo);
                     }
                 });
             }
@@ -145,8 +137,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         dismiss();
     }
 
-    private void updateRepoInformation(long repoId) {
-        Repo repo = Repo.getRepoById(repoId);
+    private void updateRepoInformation(Repo repo) {
         repo.updateLatestCommitInfo();
         repo.updateRemote();
         repo.updateStatus(RepoContract.REPO_STATUS_NULL);

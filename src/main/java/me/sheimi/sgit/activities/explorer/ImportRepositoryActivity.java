@@ -97,17 +97,9 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
 
     private void createExternalGitRepo() {
         File current = getCurrentDir();
-        String local = Repo.EXTERNAL_PREFIX + current;
-        ContentValues values = new ContentValues();
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, local);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL,
-                "local repository");
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                RepoContract.REPO_STATUS_NULL);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
-        long id = RepoDbManager.insertRepo(values);
-        Repo repo = Repo.getRepoById(id);
+        String localPath = Repo.EXTERNAL_PREFIX + current;
+
+        Repo repo = Repo.createRepo(localPath, "local repository");
 
         InitLocalTask task = new InitLocalTask(repo);
         task.executeTask();

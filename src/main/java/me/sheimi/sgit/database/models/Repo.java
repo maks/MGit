@@ -105,6 +105,10 @@ public class Repo implements Comparable<Repo>, Serializable {
         return getRepoById(RepoDbManager.createRepo(localPath, remoteURL));
     }
 
+    public static Repo importRepo(String localPath) {
+        return getRepoById(RepoDbManager.importRepo(localPath));
+    }
+
     public static Repo getRepoById(long id) {
         Cursor c = RepoDbManager.getRepoById(id);
         c.moveToFirst();
@@ -597,5 +601,4 @@ public class Repo implements Comparable<Repo>, Serializable {
         } catch (StopTaskException e) {
         }
     }
-
 }
