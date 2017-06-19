@@ -97,7 +97,7 @@ public class InitDialog extends SheimiDialogFragment implements
         values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
         values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
         long id = RepoDbManager.insertRepo(values);
-        mRepo = Repo.getRepoById(mActivity, id);
+        mRepo = Repo.getRepoById(id);
 
         InitLocalTask task = new InitLocalTask(mRepo);
         task.executeTask();

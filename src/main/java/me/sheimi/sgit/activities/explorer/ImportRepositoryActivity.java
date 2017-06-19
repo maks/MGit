@@ -107,7 +107,7 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
         values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
         values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
         long id = RepoDbManager.insertRepo(values);
-        Repo repo = Repo.getRepoById(this, id);
+        Repo repo = Repo.getRepoById(id);
 
         InitLocalTask task = new InitLocalTask(repo);
         task.executeTask();

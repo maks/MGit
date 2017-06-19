@@ -101,7 +101,11 @@ public class Repo implements Comparable<Repo>, Serializable {
         return bundle;
     }
 
-    public static Repo getRepoById(Context context, long id) {
+    public static Repo createRepo(String localPath, String remoteURL) {
+        return getRepoById(RepoDbManager.createRepo(localPath, remoteURL));
+    }
+
+    public static Repo getRepoById(long id) {
         Cursor c = RepoDbManager.getRepoById(id);
         c.moveToFirst();
         Repo repo = new Repo(c);

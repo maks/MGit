@@ -167,13 +167,8 @@ public class CloneDialog extends SheimiDialogFragment implements
     public void onClicked(String username, String password, boolean savePassword) {
         String remoteURL = mBinding.remoteURL.getText().toString().trim();
         String localPath = mBinding.localPath.getText().toString().trim();
-        ContentValues values = new ContentValues();
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
-        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
-                RepoContract.REPO_STATUS_WAITING_CLONE);
-        long id = RepoDbManager.insertRepo(values);
-        mRepo = Repo.getRepoById(mActivity, id);
+
+        mRepo = Repo.createRepo(localPath, remoteURL);
 
         mRepo.setUsername(username);
         mRepo.setPassword(password);

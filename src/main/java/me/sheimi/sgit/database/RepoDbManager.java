@@ -117,6 +117,15 @@ public class RepoDbManager {
         return cursor;
     }
 
+    public static long createRepo(String localPath, String remoteURL) {
+        ContentValues values = new ContentValues();
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS,
+            RepoContract.REPO_STATUS_WAITING_CLONE);
+        return getInstance()._insertRepo(values);
+    }
+
     public static long insertRepo(ContentValues values) {
         return getInstance()._insertRepo(values);
     }
