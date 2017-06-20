@@ -24,6 +24,7 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
+import me.sheimi.sgit.repo.tasks.repo.RepoRemoteOpTask;
 
 public class SheimiFragmentActivity extends Activity {
 
@@ -175,8 +176,7 @@ public class SheimiFragmentActivity extends Activity {
                 .setPositiveButton(R.string.label_done,
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 onPasswordEntered.onClicked(username.getText()
                                         .toString(), password.getText()
                                         .toString(), checkBox.isChecked());
@@ -201,7 +201,19 @@ public class SheimiFragmentActivity extends Activity {
         void onClicked(String text);
     }
 
+    /**
+     * Callback interface to receive credentials entered via UI by the user after being prompted
+     * in the UI in order to connect to a remote repo
+     */
     public static interface OnPasswordEntered {
+
+        /**
+         * Handle retrying a Remote Repo task after user supplies requested credentials
+         *
+         * @param username
+         * @param password
+         * @param savePassword
+         */
         void onClicked(String username, String password, boolean savePassword);
 
         void onCanceled();

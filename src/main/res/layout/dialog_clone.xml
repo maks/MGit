@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+<LinearLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
@@ -27,35 +29,6 @@
             android:imeOptions="actionNext"
             android:hint="@string/dialog_clone_local_path_hint"/>
 
-    <EditText
-            android:id="@+id/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/general_dialog_text_size"
-            android:layout_margin="@dimen/general_vertial_margin"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:hint="@string/label_username"/>
-
-    <EditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/general_dialog_text_size"
-            android:layout_margin="@dimen/general_vertial_margin"
-            android:singleLine="true"
-            android:inputType="textPassword"
-            android:imeOptions="actionDone"
-            android:hint="@string/label_password"/>
-
-    <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_prompt_for_password_checkbox"
-            android:id="@+id/savePassword"
-            android:layout_gravity="left|center_vertical"
-            android:checked="true"/>
-
     <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,3 +37,4 @@
             android:layout_gravity="left|center_vertical"
             android:checked="false"/>
 </LinearLayout>
+</layout>

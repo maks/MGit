@@ -11,7 +11,7 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
 
-public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPasswordEntered {
+public class FetchTask extends RepoRemoteOpTask {
 
     private final AsyncTaskCallback mCallback;
     private final String[] mRemotes;
@@ -57,14 +57,6 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
         }
     }
 
-    @Override
-    public void onClicked(String username, String password, boolean savePassword) {
-    }
-
-    @Override
-    public void onCanceled() {
-    }
-
     private boolean fetchRepo(String remote) {
         Git git;
         try {
@@ -78,14 +70,7 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
                 .setTransportConfigCallback(new SgitTransportCallback())
                 .setRemote(remote);
 
-        final String username = mRepo.getUsername();
-        final String password = mRepo.getPassword();
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            fetchCommand.setCredentialsProvider(auth);
-        }
+        setCredentials(fetchCommand);
 
         try {
             fetchCommand.call();
@@ -105,5 +90,10 @@ public class FetchTask extends RepoOpTask implements SheimiFragmentActivity.OnPa
         }
         mRepo.updateLatestCommitInfo();
         return true;
+    }
+
+    @Override
+    public RepoRemoteOpTask getNewTask() {
+        return new FetchTask(mRemotes, mRepo, mCallback);
     }
 }

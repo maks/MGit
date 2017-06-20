@@ -1,5 +1,13 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import org.eclipse.jgit.api.CloneCommand;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.api.errors.JGitInternalException;
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.lib.ProgressMonitor;
+
 import java.io.File;
 import java.util.Locale;
 
@@ -9,35 +17,29 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.ssh.SgitTransportCallback;
+import timber.log.Timber;
 
-import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.jgit.api.errors.TransportException;
-import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+public class CloneTask extends RepoRemoteOpTask {
 
-public class CloneTask extends RepoOpTask {
-
-    private OnPasswordEntered mOnPasswordEnter;
+    private AsyncTaskCallback mCallback;
     private boolean mCloneRecursive;
 
-    public CloneTask(Repo repo, OnPasswordEntered onPasswordEnter, boolean cloneRecursive) {
+    public CloneTask(Repo repo, boolean cloneRecursive, AsyncTaskCallback callback) {
         super(repo);
         mCloneRecursive = cloneRecursive;
-        mOnPasswordEnter = onPasswordEnter;
+        mCallback = callback;
     }
 
     @Override
     protected Boolean doInBackground(Void... v) {
         boolean result = cloneRepo();
         if (!result) {
+            Timber.e("del repo. clone failed");
             mRepo.deleteRepoSync();
-            return false;
+        } else if (mCallback != null) {
+            result = mCallback.doInBackground(v) & result;
         }
-        return true;
+        return result;
     }
 
     protected void onPostExecute(Boolean isSuccess) {
@@ -60,15 +62,8 @@ public class CloneTask extends RepoOpTask {
                 .setDirectory(localRepo)
                 .setCloneSubmodules(mCloneRecursive);
 
-        String username = mRepo.getUsername();
-        String password = mRepo.getPassword();
+        setCredentials(cloneCommand);
 
-        if (username != null && password != null && !username.equals("")
-                && !password.equals("")) {
-            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
-                    username, password);
-            cloneCommand.setCredentialsProvider(auth);
-        }
         try {
             cloneCommand.call();
             Profile.setLastCloneSuccess();
@@ -79,7 +74,7 @@ public class CloneTask extends RepoOpTask {
         } catch (TransportException e) {
             setException(e);
             Profile.setLastCloneFailed(mRepo);
-            handleAuthError(mOnPasswordEnter);
+            handleAuthError(this);
             return false;
         } catch (GitAPIException e) {
             setException(e, R.string.error_clone_failed);
@@ -101,6 +96,17 @@ public class CloneTask extends RepoOpTask {
     public void cancelTask() {
         super.cancelTask();
         mRepo.deleteRepo();
+    }
+
+    @Override
+    public RepoRemoteOpTask getNewTask() {
+        // need to call create repo again as when clone fails due auth error, the repo initially created gets deleted
+        String userName = mRepo.getUsername();
+        String password = mRepo.getPassword();
+        mRepo = Repo.createRepo(mRepo.getLocalPath(), mRepo.getRemoteURL());
+        mRepo.setUsername(userName);
+        mRepo.setPassword(password);
+        return new CloneTask(mRepo, mCloneRecursive, mCallback);
     }
 
     public class RepoCloneMonitor implements ProgressMonitor {

@@ -1,30 +1,14 @@
 package me.sheimi.sgit.database.models;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Serializable;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import me.sheimi.sgit.SGitApplication;
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.FsUtils;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.exception.StopTaskException;
-import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
-import timber.log.Timber;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.util.SparseArray;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -34,15 +18,26 @@ import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseArray;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.SGitApplication;
+import me.sheimi.sgit.database.RepoContract;
+import me.sheimi.sgit.database.RepoDbManager;
+import me.sheimi.sgit.exception.StopTaskException;
+import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
+import timber.log.Timber;
 
 /**
- * Created by sheimi on 8/20/13.
+ * Model for a local repo
  */
 public class Repo implements Comparable<Repo>, Serializable {
 
@@ -101,7 +96,15 @@ public class Repo implements Comparable<Repo>, Serializable {
         return bundle;
     }
 
-    public static Repo getRepoById(Context context, long id) {
+    public static Repo createRepo(String localPath, String remoteURL) {
+        return getRepoById(RepoDbManager.createRepo(localPath, remoteURL));
+    }
+
+    public static Repo importRepo(String localPath) {
+        return getRepoById(RepoDbManager.importRepo(localPath));
+    }
+
+    public static Repo getRepoById(long id) {
         Cursor c = RepoDbManager.getRepoById(id);
         c.moveToFirst();
         Repo repo = new Repo(c);
@@ -500,10 +503,10 @@ public class Repo implements Comparable<Repo>, Serializable {
         File repoDir = FsUtils.getRepoDir(context, localpath);
         if (repoDir == null) {
             repoDir = FsUtils.getExternalDir(REPO_DIR, true);
-            Log.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
+            Timber.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
             return new File(repoDir, localpath);
         } else {
-            Log.d("maks", "CUSTOM repo path:"+repoDir);
+            Timber.d("maks", "CUSTOM repo path:"+repoDir);
             return repoDir;
         }
     }
@@ -594,4 +597,7 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
     }
 
+    public void saveCredentials() {
+        RepoDbManager.persistCredentials(getID(), getUsername(), getPassword());
+    }
 }

@@ -26,6 +26,10 @@ android {
         versionName "1.5.2"
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     lintOptions {
         abortOnError false
     }

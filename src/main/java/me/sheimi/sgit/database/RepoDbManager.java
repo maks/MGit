@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Created by sheimi on 8/7/13.
+ * Manage entries in the persisted database tracking local repo metadata.
  */
 public class RepoDbManager {
 
@@ -61,6 +61,18 @@ public class RepoDbManager {
         for (RepoDbObserver observer : set) {
             observer.nofityChanged();
         }
+    }
+
+    public static void persistCredentials(long repoId,String username, String password) {
+        ContentValues values = new ContentValues();
+        if (username != null && password != null) {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, username);
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, password);
+        } else {
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_USERNAME, "");
+            values.put(RepoContract.RepoEntry.COLUMN_NAME_PASSWORD, "");
+        }
+        updateRepo(repoId, values);
     }
 
     public static interface RepoDbObserver {
@@ -117,26 +129,31 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public static long insertRepo(ContentValues values) {
-        return getInstance()._insertRepo(values);
+    public static long createRepo(String localPath, String remoteURL) {
+        return createRepo(localPath, remoteURL, RepoContract.REPO_STATUS_WAITING_CLONE);
     }
 
-    private long _insertRepo(ContentValues values) {
-        long id = mWritableDatabase.insert(RepoContract.RepoEntry.TABLE_NAME,
-                null, values);
+    public static long importRepo(String localPath) {
+        return createRepo(localPath, "", RepoContract.REPO_STATUS_IMPORTING);
+    }
+
+    private static long createRepo(String localPath, String remoteURL, String status) {
+        ContentValues values = new ContentValues();
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_REPO_STATUS, status);
+
+        long id = getInstance().mWritableDatabase.insert(RepoContract.RepoEntry.TABLE_NAME,
+            null, values);
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
         return id;
     }
 
     public static void updateRepo(long id, ContentValues values) {
-        getInstance()._updateRepo(id, values);
-    }
-
-    private void _updateRepo(long id, ContentValues values) {
         String selection = RepoContract.RepoEntry._ID + " = ?";
         String[] selectionArgs = { String.valueOf(id) };
-        mWritableDatabase.update(RepoContract.RepoEntry.TABLE_NAME, values,
-                selection, selectionArgs);
+        getInstance().mWritableDatabase.update(RepoContract.RepoEntry.TABLE_NAME, values,
+            selection, selectionArgs);
         notifyObservers(RepoContract.RepoEntry.TABLE_NAME);
     }
 

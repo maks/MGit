@@ -5,8 +5,11 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask;
+import timber.log.Timber;
 
+import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> {
 
@@ -43,15 +46,29 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
                 R.string.error_task_running);
     }
 
+    protected void setCredentials(TransportCommand command) {
+        String username = mRepo.getUsername();
+        String password = mRepo.getPassword();
+
+        if (username != null && password != null && !username.trim().isEmpty()
+            && !password.trim().isEmpty()) {
+            UsernamePasswordCredentialsProvider auth = new UsernamePasswordCredentialsProvider(
+                username, password);
+            command.setCredentialsProvider(auth);
+        } else {
+            Timber.d("no CredentialsProvider when no username/password provided");
+        }
+
+    }
+
     protected void handleAuthError(OnPasswordEntered onPassEntered) {
         String msg = mException.getMessage();
+        Timber.w("clone Auth error: %s", msg);
 
-        if (msg == null)
+        if (msg == null || ((!msg.contains("Auth fail"))
+                && (!msg.toLowerCase().contains("auth")))) {
             return;
-
-        if ((!msg.contains("Auth fail"))
-                && (!msg.toLowerCase().contains("auth")))
-            return;
+        }
 
         String errorInfo = null;
         if (msg.contains("Auth fail")) {
