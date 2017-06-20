@@ -1,7 +1,6 @@
 # MGit
 
-It is a Git client for Android.
-It is [free/libre software](https://www.gnu.org/philosophy/free-sw.html).
+MGit is a Git client Android App.
 
 This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
@@ -23,24 +22,25 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 * Browse files
 * Browse commit messages (short)
 * Checkout branches and tags
-* HTTP/HTTPS/SSH are supported (SSH without private key passphrase)
+* HTTP/HTTPS/SSH are supported (including SSH with private key passphrase)
 * Username/Password authentication is supported
 * Search local repositories
-* Private keys management
+* Private key management
 * Manually choose code language
-* `git diff` between commits (to be enhanced)
-* Import copied repositories (that is, you can copy a repository from computer and import to MGit)
+* `git diff` between commits
+* Import existing repositories (that is, you can copy a repository from computer and import to MGit)
 * Checkout remote branches
 * Merge branches
 * Push merged content
-* Edit file (you must have some app that can edit file)
-* Commit and push changed files (commit all changes)
+* Edit file (built-in editor or external app that can edit the given file type)
+* Commit and push changed files
 * Committer information
 * Prompt for password
-* Choose not to save password and username (will not be saved in disk but may be temporarily saved in memory)
+* *Option* to save username/password
 * `git status`
 * Cancel when cloning
 * Add modified file to stage
+* View state of staged files (aka index)
 * `git rebase`
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
@@ -52,19 +52,18 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 ### Clone a remote repository
 
-1. Click on the *+* icon to add a new repository.
-2. Enter remote URL (see URL format below).
-3. Enter local repository name - note that this is not a full path since MGit stores all repositories in the same directory on the mobile device.
-4. Username - username to use to clone the remote repo.
-5. Password - password to use to clone the remote repo.
-6. Click the *Clone* button.
-7. If all the credentials are correct, MGit will download the repository (all branches) to your device.
+1. Click on the `+` icon to add a new repository
+2. Enter remote URL (see URL format below)
+3. Enter local repository name - note that this is **not** the full path, as MGit stores all  
+repositories in the same local directory (can be changed in MGit settings)
+4. Click the `Clone` button
+5. If required, you will be prompted for credentials to connect to the remote repo. MGit will download the repository (all branches) to your device
 
 ### Create a local repository
-1. Click on the *+* icon to add a new repository.
-2. Click on *Init Local* to create a local repository.
-3. Enter the name for this repository when prompted.
-4. A local repo will be created.
+1. Click on the `+` icon to add a new repository
+2. Click on `Init Local` to create a local repository
+3. Enter the name for this repository when prompted
+4. A local empty repo will be created
 
 ### URL format
 
@@ -78,16 +77,19 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 * HTTP(S) URL: `https://server_name/path/to/repo`
 
-## To Do List
+## ToDo List
 
-[Future enhancements are tracked on Github](https://github.com/maks/MGit/issues).
+[Future enhancements and bugs are tracked here on Github](https://github.com/maks/MGit/issues).
 
 ## License
 
 See [GPLv3](./LICENSE)
 
+All code written by `maks@manichord.com` can at your option also be used under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+
 ## Help
 
 If you want to help improve this project, contributions, especially translations are very welcome.
 
-Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
+Fork from this repo, create a new branch, commit your changes and then send a pull request against 
+the **master** branch of this repo.
