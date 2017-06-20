@@ -11,7 +11,6 @@ import android.widget.Button;
 
 import java.io.File;
 
-import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
@@ -19,14 +18,12 @@ import me.sheimi.sgit.RepoListActivity;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.databinding.DialogCloneBinding;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
-import timber.log.Timber;
 
 /**
  * Dialog UI used to perform clone operation
  */
 
-public class CloneDialog extends SheimiDialogFragment implements
-        View.OnClickListener, OnPasswordEntered {
+public class CloneDialog extends SheimiDialogFragment implements View.OnClickListener {
 
     private RepoListActivity mActivity;
     private Repo mRepo;
@@ -149,34 +146,17 @@ public class CloneDialog extends SheimiDialogFragment implements
             return;
         }
 
-        onClicked(null, null, false);
+        cloneRepo();
         dismiss();
     }
 
     public void cloneRepo() {
-        onClicked(null, null, false);
-    }
-
-    @Override
-    public void onClicked(String username, String password, boolean savePassword) {
         String remoteURL = mBinding.remoteURL.getText().toString().trim();
         String localPath = mBinding.localPath.getText().toString().trim();
 
         mRepo = Repo.createRepo(localPath, remoteURL);
 
-        mRepo.setUsername(username);
-        mRepo.setPassword(password);
-        if (savePassword) {
-            mRepo.saveCredentials();
-        }
-
-        Timber.d("clone with u:%s p:%s", username, password);
-        CloneTask task = new CloneTask(mRepo, this, mBinding.cloneRecursive.isChecked());
+        CloneTask task = new CloneTask(mRepo, mBinding.cloneRecursive.isChecked(), null);
         task.executeTask();
-    }
-
-    @Override
-    public void onCanceled() {
-        mRepo.deleteRepo();
     }
 }
