@@ -164,6 +164,9 @@
     <string name="preference_app_version">Version</string>
     <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
+    <string name="preference_use_gravatar">Use gravatar images</string>
+    <string name="preference_use_gravatar_summary">Load avatar images from gravatar.com</string>
+    <string name="pref_key_use_gravatar" translatable="false">use.gravatar</string>
     <string name="pref_category_title_security">Security</string>
     <string name="preference_use_theme">Select Colour Theme</string>
     <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>

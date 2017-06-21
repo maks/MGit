@@ -247,11 +247,8 @@ public class CommitsListAdapter extends BaseAdapter {
         holder.commitAuthor.setText(person.getName());
         holder.commitsMsg.setText(commit.getShortMessage());
         holder.commitTime.setText(COMMITTIME_FORMATTER.format(date));
-        holder.commitsIcon.setImageResource(R.drawable.ic_default_author);
 
-        ImageLoader im = BasicFunctions.getImageLoader();
-        im.displayImage(BasicFunctions.buildGravatarURL(email),
-                holder.commitsIcon);
+        BasicFunctions.setAvatarImage(holder.commitsIcon, email);
 
         int color, colorResId;
         if (mChosenItems.contains(position)) {

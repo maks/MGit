@@ -136,11 +136,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
             holder.commitMsg.setText(repo.getLastCommitMsg());
             holder.commitAuthor.setText(repo.getLastCommitter());
             holder.authorIcon.setVisibility(View.VISIBLE);
-            holder.authorIcon.setImageResource(R.drawable.ic_default_author);
-            String authorIconURL = BasicFunctions.buildGravatarURL(repo
-                    .getLastCommitterEmail());
-            BasicFunctions.getImageLoader().displayImage(authorIconURL,
-                    holder.authorIcon);
+            BasicFunctions.setAvatarImage(holder.authorIcon, repo.getLastCommitterEmail());
         }
     }
 
