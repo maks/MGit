@@ -63,6 +63,15 @@
                 android:targetPackage="com.manichord.mgit"
                 />
         </Preference>
+
+        <SwitchPreference
+            android:title="@string/preference_use_gravatar"
+            android:summary="@string/preference_use_gravatar_summary"
+            android:key="@string/pref_key_use_gravatar"
+            android:defaultValue="true"
+            android:persistent="true"
+            >
+        </SwitchPreference>
     </PreferenceCategory>
 
     <PreferenceCategory

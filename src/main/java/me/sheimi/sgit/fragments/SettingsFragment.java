@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
+import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
 
@@ -28,6 +29,7 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
 
         final String themePrefKey = getString(R.string.pref_key_use_theme_id);
+        final String gravatarPrefKey = getString(R.string.pref_key_use_gravatar);
 
         mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -39,6 +41,10 @@ public class SettingsFragment extends PreferenceFragment {
                             .addNextIntent(new Intent(getActivity(), RepoListActivity.class))
                             .addNextIntent(getActivity().getIntent())
                             .startActivities();
+                }
+                else if (gravatarPrefKey.equals(key)) {
+                    BasicFunctions.getImageLoader().clearMemoryCache();
+                    BasicFunctions.getImageLoader().clearDiskCache();
                 }
             }
         };

@@ -166,6 +166,8 @@
     <string name="preference_use_theme">Farbschema ändern</string>
     <string name="success_remote_removed">Remote Repository gelöscht</string>
     <string name="preference_manage_ssh_keys_summary">SSH Schlüssel verwalten</string>
+    <string name="preference_use_gravatar">Verwenden Sie gravatar Bilder</string>
+    <string name="preference_use_gravatar_summary">Laden Sie avatar Bilder von gravatar.com</string>
     <string name="tab_file_label">Datei</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_config_repo">Repository-Konfiguration</string>

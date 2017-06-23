@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
 
+import me.sheimi.android.avatar.AvatarDownloader;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
@@ -252,14 +253,20 @@ public class SheimiFragmentActivity extends Activity {
     private ImageLoader mImageLoader;
 
     private void setupImageLoader() {
-        DisplayImageOptions mDiskCacheOption = new DisplayImageOptions.Builder()
-                .cacheOnDisc(true).cacheInMemory(true).build();
-        File cacheDir = StorageUtils.getCacheDirectory(this);
-        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
-                this).defaultDisplayImageOptions(mDiskCacheOption)
-                .discCache(new UnlimitedDiscCache(cacheDir))
-                .diskCacheSize(SIZE)
+        DisplayImageOptions mDisplayOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .showImageForEmptyUri(R.drawable.ic_default_author)
+                .showImageOnFail(R.drawable.ic_default_author)
                 .build();
+        File cacheDir = StorageUtils.getCacheDirectory(this);
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
+                .defaultDisplayImageOptions(mDisplayOptions)
+                .diskCache(new UnlimitedDiscCache(cacheDir))
+                .diskCacheSize(SIZE)
+                .imageDownloader(new AvatarDownloader(this))
+                .build();
+
         mImageLoader = ImageLoader.getInstance();
         mImageLoader.init(configuration);
     }

@@ -1,5 +1,7 @@
 package me.sheimi.android.utils;
 
+import android.widget.ImageView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.security.MessageDigest;
@@ -13,8 +15,6 @@ import timber.log.Timber;
  * Created by sheimi on 8/19/13.
  */
 public class BasicFunctions {
-
-    private static final String IMAGE_REQUEST_HASH = "http://www.gravatar.com/avatar/%s?s=40&d=identicon";
 
     public static String md5(final String s) {
         try {
@@ -40,11 +40,13 @@ public class BasicFunctions {
         return "";
     }
 
-    public static String buildGravatarURL(String email) {
-        String hash = md5(email);
-        String url = String.format(Locale.getDefault(), IMAGE_REQUEST_HASH,
-                hash);
-        return url;
+    public static void setAvatarImage(ImageView imageView, String email) {
+        String avatarUri = "";
+        if (!email.isEmpty())
+            avatarUri = "avatar://" + md5(email);
+
+        ImageLoader im = BasicFunctions.getImageLoader();
+        im.displayImage(avatarUri, imageView);
     }
 
     private static SheimiFragmentActivity mActiveActivity;

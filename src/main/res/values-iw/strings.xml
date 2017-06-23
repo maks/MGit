@@ -153,6 +153,8 @@
   <string name="preference_use_theme">Select Colour Theme</string>
   <string name="success_remote_removed">Remote removed</string>
   <string name="preference_manage_ssh_keys_summary">Manage SSH Keys</string>
+  <string name="preference_use_gravatar">Use gravatar images</string>
+  <string name="preference_use_gravatar_summary">Load avatar images from gravatar.com</string>
   <string name="tab_file_label">File</string>
   <string name="title_activity_settings">Settings</string>
   <string name="title_config_repo">Repository config</string>

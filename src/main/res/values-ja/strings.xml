@@ -165,6 +165,8 @@
     <string name="preference_use_theme">色のテーマを選択</string>
     <string name="success_remote_removed">リモートを削除しました</string>
     <string name="preference_manage_ssh_keys_summary">SSH キーを管理</string>
+    <string name="preference_use_gravatar">グラビア画像を使用する</string>
+    <string name="preference_use_gravatar_summary">gravatar.comからアバター画像を読み込む</string>
     <string name="tab_file_label">ファイル</string>
     <string name="title_activity_settings">設定</string>
     <string name="title_config_repo">リポジトリ構成</string>

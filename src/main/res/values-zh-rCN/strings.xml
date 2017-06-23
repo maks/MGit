@@ -149,6 +149,8 @@
     <string name="preference_app_version">版本</string>
     <string name="preference_manage_ssh_keys_summary">管理 SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
+    <string name="preference_use_gravatar">使用重力图像</string>
+    <string name="preference_use_gravatar_summary">从gravatar.com加载头像图片</string>
     <string name="pref_category_title_security">安全</string>
     <string name="preference_use_theme">选择颜色主题</string>
     <string name="action_git_profile">Git配置</string>
