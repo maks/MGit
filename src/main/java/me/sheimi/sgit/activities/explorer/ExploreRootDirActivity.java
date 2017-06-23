@@ -1,9 +1,6 @@
 package me.sheimi.sgit.activities.explorer;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +10,13 @@ import java.io.File;
 import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.preference.PreferenceHelper;
 
 public class ExploreRootDirActivity extends FileExplorerActivity {
 
-    private static final String LOGTAG = ExploreRootDirActivity.class.getSimpleName();
+
 
     @Override
     protected File getRootFolder() {
@@ -65,14 +65,7 @@ public class ExploreRootDirActivity extends FileExplorerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_select_root:
-                SharedPreferences sharedPreference = getSharedPreferences(
-                        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-                SharedPreferences.Editor editor = sharedPreference.edit();
-                editor.putString(getString(R.string.pref_key_repo_root_location),
-                        getCurrentDir().getAbsolutePath());
-                Log.d(LOGTAG, "set root:"+getCurrentDir().getAbsolutePath());
-                editor.commit();
+                Repo.setLocalRepoRoot(this, getCurrentDir());
                 finish();
                 return true;
         }

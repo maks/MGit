@@ -98,25 +98,6 @@ public class FsUtils {
         }
     }
 
-    /**
-     * Returns the root directory on device storage in which local repos ar to be stored
-     *
-     * @param context
-     * @param name
-     * @return null if the custom repo location user preference is *not* set
-     */
-    public static File getRepoDir(Context context, String repoName) {
-        SharedPreferences sharedPreference = context.getSharedPreferences(
-                context.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        String repoRootDir = sharedPreference.getString(context.getString(R.string.pref_key_repo_root_location), "");
-        if (repoRootDir != null && !repoRootDir.isEmpty()) {
-           return new File(repoRootDir, repoName);
-        } else {
-            return null;
-        }
-    }
-
     public static String getMimeType(String url) {
         String type = null;
         String extension = MimeTypeMap.getFileExtensionFromUrl(url

@@ -33,6 +33,7 @@ import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.exception.StopTaskException;
+import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.RepoOpTask;
 import timber.log.Timber;
 
@@ -496,11 +497,11 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
     }
 
-    public static File getDir(Context context, String localpath) {
+    public static File getDir(PreferenceHelper preferenceHelper, String localpath) {
         if (Repo.isExternal(localpath)) {
             return new File(localpath.substring(Repo.EXTERNAL_PREFIX.length()));
         }
-        File repoDir = FsUtils.getRepoDir(context, localpath);
+        File repoDir = new File(preferenceHelper.getRepoRoot(), localpath);
         if (repoDir == null) {
             repoDir = FsUtils.getExternalDir(REPO_DIR, true);
             Timber.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
@@ -511,8 +512,24 @@ public class Repo implements Comparable<Repo>, Serializable {
         }
     }
 
+    public static void setLocalRepoRoot(Context context, File repoRoot) {
+        PreferenceHelper prefs = ((SGitApplication) context.getApplicationContext()).getPrefenceHelper();
+        File oldRoot = prefs.getRepoRoot();
+        prefs.setRepoRoot(repoRoot.getAbsolutePath());
+
+        // need to make any existing "internal" repos "external" so that their paths are still correct
+        List<Repo> allRepos = Repo.getRepoList(context,  RepoDbManager.queryAllRepo());
+        for (Repo repo:allRepos) {
+            if (!repo.isExternal()) {
+                repo.mLocalPath = EXTERNAL_PREFIX + oldRoot.getAbsolutePath() + "/" + repo.mLocalPath;
+                RepoDbManager.setLocalPath(repo.getID(), repo.mLocalPath);
+            }
+        }
+    }
+
     public File getDir() {
-        return Repo.getDir(SGitApplication.getContext(), getLocalPath());
+        PreferenceHelper prefHelper = ((SGitApplication) SGitApplication.getContext()).getPrefenceHelper();
+        return Repo.getDir(prefHelper, getLocalPath());
     }
 
     public Git getGit() throws StopTaskException {

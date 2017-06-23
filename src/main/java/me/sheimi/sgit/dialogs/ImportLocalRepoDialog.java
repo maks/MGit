@@ -16,8 +16,10 @@ import java.io.File;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.preference.PreferenceHelper;
 
 /**
  * Created by sheimi on 8/24/13.
@@ -31,6 +33,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
     private Activity mActivity;
     private EditText mLocalPath;
     private CheckBox mImportAsExternal;
+    private PreferenceHelper mPrefsHelper;
     public static final String FROM_PATH = "from path";
 
     @Override
@@ -38,6 +41,9 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
         super.onCreateDialog(savedInstanceState);
 
         mActivity = getActivity();
+
+        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+
         Bundle args = getArguments();
         if (args != null && args.containsKey(FROM_PATH)) {
             mFromPath = args.getString(FROM_PATH);
@@ -104,8 +110,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
                 return;
             }
 
-            File file = Repo.getDir(getActivity(), localPath);
-
+            File file = Repo.getDir(mPrefsHelper, localPath);
             if (file.exists()) {
                 showToastMessage(R.string.alert_file_exists);
                 mLocalPath.setError(getString(R.string.alert_file_exists));
@@ -120,7 +125,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
             dismiss();
             return;
         }
-        final File repoFile = Repo.getDir(getActivity(), localPath);
+        final File repoFile = Repo.getDir(mPrefsHelper, localPath);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

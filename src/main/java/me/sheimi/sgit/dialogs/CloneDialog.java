@@ -15,8 +15,10 @@ import me.sheimi.android.utils.Profile;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.databinding.DialogCloneBinding;
+import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 
 /**
@@ -28,6 +30,7 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
     private RepoListActivity mActivity;
     private Repo mRepo;
     private DialogCloneBinding mBinding;
+    private PreferenceHelper mPrefsHelper;
 
     private class RemoteUrlFocusListener implements View.OnFocusChangeListener {
         @Override
@@ -64,6 +67,9 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
+
+        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
 
@@ -138,7 +144,7 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         if (mBinding.localPath.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
             localPath = mBinding.localPath.getHint().toString();
         }
-        File file = Repo.getDir(getActivity(), localPath);
+        File file = Repo.getDir(mPrefsHelper, localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mBinding.localPath.setError(getString(R.string.alert_localpath_repo_exists));
