@@ -13,7 +13,9 @@ import java.io.File;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.RepoListActivity;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.InitLocalTask;
 
 /**
@@ -26,11 +28,15 @@ public class InitDialog extends SheimiDialogFragment implements
     private EditText mLocalPath;
     private RepoListActivity mActivity;
     private Repo mRepo;
+    private PreferenceHelper mPrefsHelper;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
+
+        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_init_repo, null);
@@ -77,7 +83,7 @@ public class InitDialog extends SheimiDialogFragment implements
             return;
         }
 
-        File file = Repo.getDir(getActivity(), localPath);
+        File file = Repo.getDir(mPrefsHelper, localPath);
         if (file.exists()) {
             showToastMessage(R.string.alert_localpath_repo_exists);
             mLocalPath

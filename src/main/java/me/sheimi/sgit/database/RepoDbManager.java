@@ -137,6 +137,12 @@ public class RepoDbManager {
         return createRepo(localPath, "", RepoContract.REPO_STATUS_IMPORTING);
     }
 
+    public static void setLocalPath(long repoId, String path) {
+        ContentValues values = new ContentValues();
+        values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, path);
+        updateRepo(repoId, values);
+    }
+
     private static long createRepo(String localPath, String remoteURL, String status) {
         ContentValues values = new ContentValues();
         values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);

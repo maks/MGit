@@ -11,6 +11,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 
 import me.sheimi.android.utils.SecurePrefsException;
 import me.sheimi.android.utils.SecurePrefsHelper;
+import me.sheimi.sgit.preference.PreferenceHelper;
 import timber.log.Timber;
 
 /**
@@ -27,6 +28,7 @@ public class SGitApplication extends Application {
     private static CredentialsProvider mCredentialsProvider;
 
     private SecurePrefsHelper mSecPrefs;
+    private PreferenceHelper mPrefsHelper;
 
     @Override
     public void onCreate() {
@@ -38,6 +40,7 @@ public class SGitApplication extends Application {
 
         mContext = getApplicationContext();
         setAppVersionPref();
+        mPrefsHelper = new PreferenceHelper(this);
         try {
             mSecPrefs = new SecurePrefsHelper(this);
             mCredentialsProvider = new AndroidJschCredentialsProvider(mSecPrefs);
@@ -58,6 +61,10 @@ public class SGitApplication extends Application {
 
     public SecurePrefsHelper getSecurePrefsHelper() {
         return mSecPrefs;
+    }
+
+    public PreferenceHelper getPrefenceHelper() {
+        return mPrefsHelper;
     }
 
     public static Context getContext() {
