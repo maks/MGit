@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import de.luhmer.git.MarkdownViewerActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
-import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.ViewFileActivity;
@@ -88,7 +88,14 @@ public class FilesFragment extends RepoDetailFragment {
                             return;
                         }
                         String mime = FsUtils.getMimeType(file);
-                        if (mime.startsWith("text")) {
+
+
+                        if (file.getAbsolutePath().toLowerCase().endsWith(".md")) {
+                            Intent intent = new Intent(getActivity(), MarkdownViewerActivity.class);
+                            intent.putExtra(MarkdownViewerActivity.FILE_NAME, file.getAbsolutePath());
+                            getRawActivity().startActivity(intent);
+                            return;
+                        } else if (mime.startsWith("text")) {
                             Intent intent = new Intent(getActivity(),
                                     ViewFileActivity.class);
                             intent.putExtra(ViewFileActivity.TAG_FILE_NAME,

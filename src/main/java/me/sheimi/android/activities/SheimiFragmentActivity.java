@@ -25,12 +25,11 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
-import me.sheimi.sgit.repo.tasks.repo.RepoRemoteOpTask;
 
 public class SheimiFragmentActivity extends Activity {
 
-    public static interface OnBackClickListener {
-        public boolean onClick();
+    public interface OnBackClickListener {
+        boolean onClick();
     }
 
     @Override
