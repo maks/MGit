@@ -504,10 +504,10 @@ public class Repo implements Comparable<Repo>, Serializable {
         File repoDir = new File(preferenceHelper.getRepoRoot(), localpath);
         if (repoDir == null) {
             repoDir = FsUtils.getExternalDir(REPO_DIR, true);
-            Timber.d("maks", "PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
+            Timber.d("PRESET repo path:"+new File(repoDir, localpath).getAbsolutePath());
             return new File(repoDir, localpath);
         } else {
-            Timber.d("maks", "CUSTOM repo path:"+repoDir);
+            Timber.d("CUSTOM repo path:"+repoDir);
             return repoDir;
         }
     }
