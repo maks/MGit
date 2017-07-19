@@ -34,10 +34,6 @@ public class SGitApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
-
         mContext = getApplicationContext();
         setAppVersionPref();
         mPrefsHelper = new PreferenceHelper(this);
