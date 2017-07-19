@@ -54,6 +54,7 @@ public class ConfigurableStethoTree extends Timber.DebugTree {
 
         ConsolePeerManager peerManager = ConsolePeerManager.getInstanceOrNull();
         if (peerManager == null) {
+            Log.println(priority, tag, message);
             return;
         }
 
@@ -94,6 +95,7 @@ public class ConfigurableStethoTree extends Timber.DebugTree {
             Console.MessageSource.OTHER,
             messageBuilder.toString()
         );
+
     }
 
     public static class Configuration {
