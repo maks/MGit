@@ -2,16 +2,20 @@ package me.sheimi.sgit.repo.tasks;
 
 import android.os.AsyncTask;
 
+import timber.log.Timber;
+
 public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
 
     protected Throwable mException;
     protected int mErrorRes = 0;
 
     protected void setException(Throwable e) {
+        Timber.e(e, "set exception");
         mException = e;
     }
 
     protected void setException(Throwable e, int errorRes) {
+        Timber.e(e, "set error [%d] exception", errorRes);
         mException = e;
         mErrorRes = errorRes;
     }
