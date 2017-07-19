@@ -14,8 +14,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         applicationId "com.manichord.mgit"
@@ -36,6 +36,9 @@ android {
 }
 
 dependencies {
+    debugCompile 'com.facebook.stetho:stetho:1.5.0'
+    debugCompile 'com.facebook.stetho:stetho-timber:1.5.0'
+
     compile 'com.android.support:support-v13:21.0.3'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.jcraft:jsch:0.1.53'
