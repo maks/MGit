@@ -22,7 +22,11 @@ public class MGitDebugApplication extends SGitApplication {
 
         Stetho.initializeWithDefaults(this);
 
-        Timber.plant(new StethoTree());
+        Timber.plant(new ConfigurableStethoTree(new ConfigurableStethoTree.Configuration.Builder()
+            .showTags(true)
+            .minimumPriority(Log.DEBUG)
+            .build()));
+
         Log.i(LOGTAG, "Using Stetho console logging");
 
         Timber.i("Initialised Stetho debugging");
