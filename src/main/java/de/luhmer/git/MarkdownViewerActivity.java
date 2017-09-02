@@ -1,38 +1,30 @@
 package de.luhmer.git;
 
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextMenu;
+import android.support.constraint.ConstraintLayout;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.Toast;
-
-import org.markdownj.MarkdownProcessor;
-import org.w3c.dom.Document;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Stack;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
-import us.feras.mdv.MarkdownView;
+
+import static android.text.Html.escapeHtml;
 
 public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
@@ -89,27 +81,43 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     }
 
     private void loadMarkdownToView(String txt, String cssFileUrl) {
-        MarkdownProcessor m = new MarkdownProcessor();
-        String content = m.markdown(txt);
+        String html = null;
+        try {
+            html = getMarkDownMathJaxTemplate();
 
-        String html = "<!DOCTYPE html>\n<html>\n<head>";
+            if (cssFileUrl != null) {
+                html = html.replace("STYLESHEET_GOES_HERE", cssFileUrl);
+                html = html.replace("MARKDOWN_GOES_HERE", escapeHtml(txt.replace("\r\n", "<br>")));
 
-        if (cssFileUrl != null) {
-            html += "<link rel='stylesheet' type='text/css' href='"+ cssFileUrl +"' />";
+
+                html = html.replace("src=\"marked.js\"", "src=\"file:///android_asset/js/marked.js\"");
+
+                html = html.replace("FILE_BASE_PATH", fileBasePath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        html += "</head>\n<body>\n";
-        html += content;
-        html += "\n</body>\n</html>";
-
-        // Images
-        html = html.replaceAll("src=\"(.*?)\"", "src=\"file://" + fileBasePath + "/$1\"");
-
-        // href's
-        //html = html.replaceAll("href=\"(.*?)\"", "href=\"file://" + fileBasePath + "/$1\"");
-        html = html.replaceAll("href=\"(.*?)\"", "onclick=\"android.openLink('$1')\" href=\"$1\"");
-
         mMarkdownView.loadDataWithBaseURL("fake://", html, "text/html", "UTF-8", null);
+    }
+
+
+    private String getMarkDownMathJaxTemplate() throws IOException {
+        AssetManager am = getAssets();
+        InputStream is = am.open("markdown_template.html");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+        StringBuilder sb = new StringBuilder();
+        String mLine = reader.readLine();
+        while (mLine != null) {
+            sb.append(mLine + "\n");
+            mLine = reader.readLine();
+        }
+        reader.close();
+        is.close();
+
+        return sb.toString();
     }
 
     private void init() {

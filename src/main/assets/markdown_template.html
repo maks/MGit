@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Markdown Viewer</title>
+
+    <style>
+        @font-face {
+            font-family: FiraCodeRegular;
+            src: url(https://cdn.rawgit.com/tonsky/FiraCode/master/distr/ttf/FiraCode-Regular.ttf);
+        }
+
+        code {
+            font-family: FiraCodeRegular !important;
+        }
+    </style>
+    <link rel='stylesheet' type='text/css' href='STYLESHEET_GOES_HERE' />
+
+    <!-- include highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <!-- include mathjax -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML" async></script> -->
+
+
+    <script type="text/javascript" src="marked.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                gfm: true,
+                tables: true,
+                breaks: false,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: false
+            });
+
+            var fileBasePath = "FILE_BASE_PATH";
+
+            var content = document.getElementById('content');
+            var text = content.innerHTML;
+            text = text.replace(/&nbsp;/g, " ");
+            text = text.replace(/&lt;/g, "<");
+            text = text.replace(/&gt;/g, ">");
+            text = text.trim();
+            //console.log(text);
+            var markedText = marked(text);
+
+            const regexImages = /(<img .*?)src="((?!http.?).*?)"/g;
+            const regexLinks = /(<a .*?)href="((?!http.?).*?)"/g;
+            markedText = markedText.replace(regexImages, "$1 src=\"file://" + fileBasePath + "/$2\""); // replace images
+            markedText = markedText.replace(regexLinks, "$1 onclick=\"android.openLink('$2')\" href=\"$2\""); // href's
+            content.innerHTML = markedText;
+
+            var imported = document.createElement('script');
+            imported.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML';
+            document.head.appendChild(imported);
+
+            hljs.initHighlightingOnLoad();
+
+        }, false);
+    </script>
+</head>
+<body>
+    <div id="content">
+        MARKDOWN_GOES_HERE
+    </div>
+</body>
+</html>
