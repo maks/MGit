@@ -52,10 +52,18 @@
             //console.log(text);
             var markedText = marked(text);
 
+            // TypeScript Support
+            const regexTypeScript1 = /<code class="lang-ts/g;
+            const regexTypeScript2 = /<code class="lang-typescript"/g;
+            markedText = markedText.replace(regexTypeScript1, "<code class=\"typescript\"");
+            markedText = markedText.replace(regexTypeScript2, "<code class=\"typescript\"");
+
+            // Local links and images support
             const regexImages = /(<img .*?)src="((?!http.?).*?)"/g;
             const regexLinks = /(<a .*?)href="((?!http.?).*?)"/g;
             markedText = markedText.replace(regexImages, "$1 src=\"file://" + fileBasePath + "/$2\""); // replace images
             markedText = markedText.replace(regexLinks, "$1 onclick=\"android.openLink('$2')\" href=\"$2\""); // href's
+
             content.innerHTML = markedText;
 
             var imported = document.createElement('script');
