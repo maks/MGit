@@ -1,9 +1,14 @@
 language: android
+dist: trusty
+sudo: required
+
+group: edge
+
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-23.0.3
+    - build-tools-25.0.0
     - android-22
     - extra-android-support
     - extra-android-m2repository
