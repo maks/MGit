@@ -90,7 +90,7 @@ public class FilesFragment extends RepoDetailFragment {
                         String mime = FsUtils.getMimeType(file);
 
 
-                        if (file.getAbsolutePath().toLowerCase().endsWith(".md")) {
+                        if (file.getAbsolutePath().toLowerCase().endsWith(".md") || file.getAbsolutePath().toLowerCase().endsWith(".markdown")) {
                             Intent intent = new Intent(getActivity(), MarkdownViewerActivity.class);
                             intent.putExtra(MarkdownViewerActivity.FILE_NAME, file.getAbsolutePath());
                             getRawActivity().startActivity(intent);
