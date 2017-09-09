@@ -88,7 +88,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         mFileFragment = new ViewFileFragment();
         mFileFragment.setArguments(b);
         mActivityMode = extras.getShort(TAG_MODE, TAG_MODE_NORMAL);
-        b.putInt(TAG_MODE, mActivityMode);
+        b.putShort(TAG_MODE, mActivityMode);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(new File(fileName).getName());
     }
