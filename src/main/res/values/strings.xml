@@ -55,8 +55,8 @@
     <string name="label_checkout">Checkout</string>
     <string name="label_git_name">Name</string>
     <string name="label_git_email">Email</string>
-    <string name="label_git_name_per_repo">Committer name override</string>
-    <string name="label_git_email_per_repo">Committer email override</string>
+    <string name="label_git_name_per_repo">Committer name (this repo)</string>
+    <string name="label_git_email_per_repo">Committer email (this repo)</string>
     <string name="label_done">Done</string>
     <string name="label_save">Save</string>
     <string name="label_choose_app_to_open">Open With …</string>
