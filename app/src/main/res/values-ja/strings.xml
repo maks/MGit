@@ -172,5 +172,8 @@
     <string name="title_config_repo">リポジトリ構成</string>
     <string name="action_import_private_key">キーをインポート</string>
     <string name="action_add_private_key">プライベートキーを追加</string>
+    <string name="cloning" />
+    <string name="importing" />
+    <string name="initialising" />
 
 </resources>

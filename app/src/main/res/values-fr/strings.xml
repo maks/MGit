@@ -192,5 +192,8 @@
     <string name="error_rename_repo_fail">Renaming repository failed</string>
     <string name="success_remove_file">File has been removed</string>
     <string name="success_remote_added">Remote added</string>
+    <string name="cloning" />
+    <string name="importing" />
+    <string name="initialising" />
 
 </resources>

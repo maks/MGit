@@ -11,7 +11,6 @@ import org.eclipse.jgit.lib.ProgressMonitor;
 import java.io.File;
 import java.util.Locale;
 
-import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.RepoContract;
@@ -21,12 +20,14 @@ import timber.log.Timber;
 
 public class CloneTask extends RepoRemoteOpTask {
 
-    private AsyncTaskCallback mCallback;
-    private boolean mCloneRecursive;
+    private final AsyncTaskCallback mCallback;
+    private final boolean mCloneRecursive;
+    private final String mCloneStatusName;
 
-    public CloneTask(Repo repo, boolean cloneRecursive, AsyncTaskCallback callback) {
+    public CloneTask(Repo repo, boolean cloneRecursive, String statusName, AsyncTaskCallback callback) {
         super(repo);
         mCloneRecursive = cloneRecursive;
+        mCloneStatusName = statusName;
         mCallback = callback;
     }
 
@@ -103,10 +104,10 @@ public class CloneTask extends RepoRemoteOpTask {
         // need to call create repo again as when clone fails due auth error, the repo initially created gets deleted
         String userName = mRepo.getUsername();
         String password = mRepo.getPassword();
-        mRepo = Repo.createRepo(mRepo.getLocalPath(), mRepo.getRemoteURL());
+        mRepo = Repo.createRepo(mRepo.getLocalPath(), mRepo.getRemoteURL(), mCloneStatusName);
         mRepo.setUsername(userName);
         mRepo.setPassword(password);
-        return new CloneTask(mRepo, mCloneRecursive, mCallback);
+        return new CloneTask(mRepo, mCloneRecursive, mCloneStatusName, mCallback);
     }
 
     public class RepoCloneMonitor implements ProgressMonitor {
