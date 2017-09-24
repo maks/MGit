@@ -95,7 +95,7 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
         return null;
     }
 
-    private void createExternalGitRepo() {
+    void createExternalGitRepo() {
         File current = getCurrentDir();
         String localPath = Repo.EXTERNAL_PREFIX + current;
 
