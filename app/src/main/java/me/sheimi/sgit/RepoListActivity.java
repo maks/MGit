@@ -77,7 +77,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     {
                         repoName = repoName.substring(0, repoName.lastIndexOf('.'));
                     }
-
                 //Check if there are others repositories with same remote
                 List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext,  RepoDbManager.searchRepo(remoteUrl));
 
@@ -89,9 +88,10 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     startActivity(intent);
                 }
                 else{
-                    Repo mRepo = Repo.createRepo(repoName , repoUrlBuilder.toString() );
+					final String cloningStatus = getString(R.string.cloning);
+	                Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus );
                     Boolean isRecursive = true;
-                    CloneTask task = new CloneTask(mRepo, isRecursive, null);
+    	            CloneTask task = new CloneTask(mRepo, true, cloningStatus, null);
                     task.executeTask();
                 }
             }

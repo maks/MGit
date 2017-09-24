@@ -1,15 +1,16 @@
 package me.sheimi.sgit.database;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import me.sheimi.android.utils.BasicFunctions;
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Manage entries in the persisted database tracking local repo metadata.
@@ -129,12 +130,8 @@ public class RepoDbManager {
         return cursor;
     }
 
-    public static long createRepo(String localPath, String remoteURL) {
-        return createRepo(localPath, remoteURL, RepoContract.REPO_STATUS_WAITING_CLONE);
-    }
-
-    public static long importRepo(String localPath) {
-        return createRepo(localPath, "", RepoContract.REPO_STATUS_IMPORTING);
+    public static long importRepo(String localPath, String status) {
+        return createRepo(localPath, "", status);
     }
 
     public static void setLocalPath(long repoId, String path) {
@@ -143,7 +140,7 @@ public class RepoDbManager {
         updateRepo(repoId, values);
     }
 
-    private static long createRepo(String localPath, String remoteURL, String status) {
+    public static long createRepo(String localPath, String remoteURL, String status) {
         ContentValues values = new ContentValues();
         values.put(RepoContract.RepoEntry.COLUMN_NAME_LOCAL_PATH, localPath);
         values.put(RepoContract.RepoEntry.COLUMN_NAME_REMOTE_URL, remoteURL);

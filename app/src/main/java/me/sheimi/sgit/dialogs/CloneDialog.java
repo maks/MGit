@@ -68,7 +68,7 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
 
-        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+        mPrefsHelper = ((SGitApplication) mActivity.getApplicationContext()).getPrefenceHelper();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();
@@ -76,32 +76,32 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         mBinding = DialogCloneBinding.inflate(inflater);
         builder.setView(mBinding.getRoot());
 
-        if ( Profile.hasLastCloneFailed() )
-            fillInformationFromPreviousCloneFail( Profile.getLastCloneTryRepo() );
+        if (Profile.hasLastCloneFailed())
+            fillInformationFromPreviousCloneFail(Profile.getLastCloneTryRepo());
 
         mBinding.remoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
 
         // set button listener
         builder.setTitle(R.string.title_clone_repo);
         builder.setNegativeButton(R.string.label_cancel,
-                new DummyDialogListener());
+            new DummyDialogListener());
         builder.setNeutralButton(R.string.dialog_clone_neutral_label,
-                new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        InitDialog id = new InitDialog();
-                        id.show(getFragmentManager(), "init-dialog");
-                    }
-                });
+            new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    InitDialog id = new InitDialog();
+                    id.show(getFragmentManager(), "init-dialog");
+                }
+            });
         builder.setPositiveButton(R.string.label_clone,
-                new DummyDialogListener());
+            new DummyDialogListener());
 
         return builder.create();
     }
 
     private void fillInformationFromPreviousCloneFail(Repo lastCloneTryRepo) {
-        mBinding.remoteURL.setText( lastCloneTryRepo.getRemoteURL() );
-        mBinding.localPath.setText( lastCloneTryRepo.getLocalPath() );
+        mBinding.remoteURL.setText(lastCloneTryRepo.getRemoteURL());
+        mBinding.localPath.setText(lastCloneTryRepo.getLocalPath());
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         if (dialog == null)
             return;
         Button positiveButton = (Button) dialog
-                .getButton(Dialog.BUTTON_POSITIVE);
+            .getButton(Dialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(this);
     }
 
@@ -160,9 +160,9 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         String remoteURL = mBinding.remoteURL.getText().toString().trim();
         String localPath = mBinding.localPath.getText().toString().trim();
 
-        mRepo = Repo.createRepo(localPath, remoteURL);
+        mRepo = Repo.createRepo(localPath, remoteURL, getString(R.string.cloning));
 
-        CloneTask task = new CloneTask(mRepo, mBinding.cloneRecursive.isChecked(), null);
+        CloneTask task = new CloneTask(mRepo, mBinding.cloneRecursive.isChecked(), getString(R.string.cloning), null);
         task.executeTask();
     }
 }
