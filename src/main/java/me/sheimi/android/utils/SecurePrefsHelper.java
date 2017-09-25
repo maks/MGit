@@ -1,11 +1,11 @@
 package me.sheimi.android.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.security.KeyPairGeneratorSpec;
-import android.widget.EditText;
 
 import com.securepreferences.SecurePreferences;
 
@@ -113,6 +113,7 @@ public class SecurePrefsHelper {
      * @param name
      * @param value
      */
+    @SuppressLint("ApplySharedPref")
     public void set(String name, String value) {
         mSecurePrefs.edit().putString(name, value).commit();
     }

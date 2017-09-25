@@ -1,3 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="CommitPrefEdits">
+        <ignore path="src/main/java/me/sheimi/sgit/SGitApplication.java" />
+        <ignore path="src/main/java/me/sheimi/android/utils/SecurePrefsHelper" />
+    </issue>
 </lint>
