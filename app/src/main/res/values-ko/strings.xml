@@ -156,7 +156,4 @@
     <string name="action_git_profile">Git 프로필</string>
     <string name="action_open_in_other_app">다른 앱에서 열기</string>
     <string name="action_add_private_key">Private Key 추가</string>
-    <string name="cloning" />
-    <string name="importing" />
-    <string name="initialising" />
 </resources>

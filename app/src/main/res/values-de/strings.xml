@@ -172,7 +172,4 @@
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_config_repo">Repository-Konfiguration</string>
     <string name="action_import_private_key">Schlüssel importieren</string>
-    <string name="cloning" />
-    <string name="importing" />
-    <string name="initialising" />
 </resources>
