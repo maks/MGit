@@ -1,11 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
+
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
     }
 }
 
@@ -15,7 +18,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "com.manichord.mgit"
@@ -39,14 +42,15 @@ dependencies {
     debugCompile 'com.facebook.stetho:stetho:1.5.0'
     debugCompile 'com.facebook.stetho:stetho-timber:1.5.0'
 
-    compile 'com.android.support:support-v13:21.0.3'
+    compile 'com.android.support:support-v13:25.3.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
-    compile 'com.jcraft:jsch:0.1.53'
-    compile 'commons-io:commons-io:2.4'
+    compile 'com.jcraft:jsch:0.1.54'
+    compile 'commons-io:commons-io:2.5'
     compile 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.scottyab:secure-preferences-lib:0.1.4'
     compile 'ch.acra:acra:4.9.2'
+
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.1.2'
     testCompile 'org.robolectric:shadows-support-v4:3.0'

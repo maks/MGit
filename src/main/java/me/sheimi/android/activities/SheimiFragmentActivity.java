@@ -12,7 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -25,7 +25,6 @@ import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
-import me.sheimi.sgit.repo.tasks.repo.RepoRemoteOpTask;
 
 public class SheimiFragmentActivity extends Activity {
 
@@ -262,7 +261,7 @@ public class SheimiFragmentActivity extends Activity {
         File cacheDir = StorageUtils.getCacheDirectory(this);
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
                 .defaultDisplayImageOptions(mDisplayOptions)
-                .diskCache(new UnlimitedDiscCache(cacheDir))
+                .diskCache(new UnlimitedDiskCache(cacheDir))
                 .diskCacheSize(SIZE)
                 .imageDownloader(new AvatarDownloader(this))
                 .build();
