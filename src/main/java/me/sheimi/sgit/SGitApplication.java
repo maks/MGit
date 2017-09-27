@@ -72,9 +72,10 @@ public class SGitApplication extends Application {
                 getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE);
         String version = BuildConfig.VERSION_NAME;
-        SharedPreferences.Editor editor = sharedPreference.edit();
-        editor.putString(getString(R.string.preference_key_app_version), version);
-        editor.commit();
+        sharedPreference
+            .edit()
+            .putString(getString(R.string.preference_key_app_version), version)
+            .apply();
     }
 
     public static CredentialsProvider getJschCredentialsProvider() {
