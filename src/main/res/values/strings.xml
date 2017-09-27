@@ -178,7 +178,7 @@
     <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
 
     <!-- Intent filters -->
-    <string name="clone_with_mgit">Clone with mGit</string>
+    <string name="clone_with_mgit">Clone with MGit</string>
     <string name="https">https</string>
     <string name="http">http</string>
     <string name="git">git</string>
