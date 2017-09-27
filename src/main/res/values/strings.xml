@@ -176,4 +176,18 @@
 
     <!-- Crash reporting via ACRA -->
     <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
+
+    <!-- Intent filters -->
+    <string name="clone_with_mgit">Clone with mGit</string>
+    <string name="https">https</string>
+    <string name="http">http</string>
+    <string name="git">git</string>
+    <string name="git_extension">.git</string>
+    <string name="ending_with_git">.*\\.git</string>
+    <string name="ssh">ssh</string>
+    <string name="github.com">github.com</string>
+    <string name="gitlab.com">gitlab.com</string>
+    <string name="bitbucket.com">bitbucket.com</string>
+    <string name="notabug.org">notabug.org</string>
+    <string name="invalid_url">Invalid URL!</string>
 </resources>

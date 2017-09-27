@@ -23,6 +23,27 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            android:label="@string/app_name">
+            <intent-filter android:label="@string/clone_with_mgit">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="*" />
+                <data android:pathPattern="@string/ending_with_git" />
+            </intent-filter>
+            <intent-filter android:label="@string/clone_with_mgit">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/https" />
+                <data android:scheme="@string/http" />
+                <data android:scheme="@string/git" />
+                <data android:scheme="@string/ssh" />
+                <data android:host="@string/github.com" />
+                <data android:host="@string/gitlab.com" />
+                <data android:host="@string/bitbucket.com" />
+                <data android:host="@string/notabug.org" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.RepoDetailActivity"
