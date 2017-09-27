@@ -64,9 +64,13 @@ public class RepoListActivity extends SheimiFragmentActivity {
 
                 //need git extension to clone some repos
                 if(!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension)))
+                {
                     repoUrlBuilder.append(getString(R.string.git_extension));
+                }
                 else//if has git extension remove it from repository name
-                    repoName = repoName.substring(0, repoName.lastIndexOf('.'));
+                    {
+                        repoName = repoName.substring(0, repoName.lastIndexOf('.'));
+                    }
 
                 Repo mRepo = Repo.createRepo(repoName , repoUrlBuilder.toString() );
                 CloneTask task = new CloneTask(mRepo, true, null);
