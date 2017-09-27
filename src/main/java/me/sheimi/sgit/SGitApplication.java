@@ -1,6 +1,5 @@
 package me.sheimi.sgit;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -68,7 +67,6 @@ public class SGitApplication extends Application {
         return mContext;
     }
 
-    @SuppressLint("ApplySharedPref")
     private void setAppVersionPref() {
         SharedPreferences sharedPreference = getSharedPreferences(
                 getString(R.string.preference_file_key),
@@ -77,7 +75,7 @@ public class SGitApplication extends Application {
         sharedPreference
             .edit()
             .putString(getString(R.string.preference_key_app_version), version)
-            .commit();
+            .apply();
     }
 
     public static CredentialsProvider getJschCredentialsProvider() {
