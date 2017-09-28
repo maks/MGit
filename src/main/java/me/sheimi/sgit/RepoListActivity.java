@@ -83,7 +83,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
 
                 //if so, just open it
                 if(repositoriesWithSameRemote.size() > 0){
-                    Toast.makeText(getApplication(), R.string.repository_already_present, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.repository_already_present, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, RepoDetailActivity.class);
                     intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
                     startActivity(intent);
