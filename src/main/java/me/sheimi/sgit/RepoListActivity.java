@@ -2,6 +2,7 @@ package me.sheimi.sgit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +16,15 @@ import android.widget.Toast;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.UserSettingsActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
 import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
+import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
@@ -31,6 +35,7 @@ import me.sheimi.sgit.ssh.PrivateKeyUtils;
 public class RepoListActivity extends SheimiFragmentActivity {
 
     private ListView mRepoList;
+    private Context mContext;
     private RepoListAdapter mRepoListAdapter;
 
     private static final int REQUEST_IMPORT_REPO = 0;
@@ -46,6 +51,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         mRepoListAdapter.queryAllRepo();
         mRepoList.setOnItemClickListener(mRepoListAdapter);
         mRepoList.setOnItemLongClickListener(mRepoListAdapter);
+        mContext = getApplicationContext();
 
         Uri uri = this.getIntent().getData();
         if(uri != null){
@@ -53,7 +59,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
             try {
                 mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
             } catch (MalformedURLException e) {
-                Toast.makeText(getApplicationContext(), R.string.invalid_url, Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
 
@@ -72,9 +78,22 @@ public class RepoListActivity extends SheimiFragmentActivity {
                         repoName = repoName.substring(0, repoName.lastIndexOf('.'));
                     }
 
-                Repo mRepo = Repo.createRepo(repoName , repoUrlBuilder.toString() );
-                CloneTask task = new CloneTask(mRepo, true, null);
-                task.executeTask();
+                //Check if there are others repositories with same remote
+                List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext,  RepoDbManager.searchRepo(remoteUrl));
+
+                //if so, just open it
+                if(repositoriesWithSameRemote.size() > 0){
+                    Toast.makeText(getApplication(), "Repository already present!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, RepoDetailActivity.class);
+                    intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
+                    startActivity(intent);
+                }
+                else{
+                    Repo mRepo = Repo.createRepo(repoName , repoUrlBuilder.toString() );
+                    Boolean isRecursive = true;
+                    CloneTask task = new CloneTask(mRepo, isRecursive, null);
+                    task.executeTask();
+                }
             }
         }
     }
