@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.activities.UserSettingsActivity;
@@ -21,6 +25,7 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
+import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 
 public class RepoListActivity extends SheimiFragmentActivity {
@@ -41,6 +46,37 @@ public class RepoListActivity extends SheimiFragmentActivity {
         mRepoListAdapter.queryAllRepo();
         mRepoList.setOnItemClickListener(mRepoListAdapter);
         mRepoList.setOnItemLongClickListener(mRepoListAdapter);
+
+        Uri uri = this.getIntent().getData();
+        if(uri != null){
+            URL mRemoteRepoUrl = null;
+            try {
+                mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+            } catch (MalformedURLException e) {
+                Toast.makeText(getApplicationContext(), R.string.invalid_url, Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+
+            if(mRemoteRepoUrl != null){
+                String remoteUrl = mRemoteRepoUrl.toString();
+                String repoName = remoteUrl.substring(remoteUrl.lastIndexOf("/")+1);
+                StringBuilder repoUrlBuilder = new StringBuilder(remoteUrl);
+
+                //need git extension to clone some repos
+                if(!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension)))
+                {
+                    repoUrlBuilder.append(getString(R.string.git_extension));
+                }
+                else//if has git extension remove it from repository name
+                    {
+                        repoName = repoName.substring(0, repoName.lastIndexOf('.'));
+                    }
+
+                Repo mRepo = Repo.createRepo(repoName , repoUrlBuilder.toString() );
+                CloneTask task = new CloneTask(mRepo, true, null);
+                task.executeTask();
+            }
+        }
     }
 
     @Override
