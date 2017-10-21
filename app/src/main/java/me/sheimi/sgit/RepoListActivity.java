@@ -113,7 +113,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         switch (item.getItemId()) {
             case R.id.action_new:
                 CloneDialog cloneDialog = new CloneDialog();
-                cloneDialog.show(getFragmentManager(), "clone-dialog");
+                cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -167,7 +167,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                                 args.putString(ImportLocalRepoDialog.FROM_PATH, path);
                                 ImportLocalRepoDialog rld = new ImportLocalRepoDialog();
                                 rld.setArguments(args);
-                                rld.show(getFragmentManager(), "import-local-dialog");
+                                rld.show(getSupportFragmentManager(), "import-local-dialog");
                             }
                         });
                 builder.show();

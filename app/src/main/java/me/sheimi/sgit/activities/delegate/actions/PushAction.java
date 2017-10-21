@@ -1,13 +1,5 @@
 package me.sheimi.sgit.activities.delegate.actions;
 
-import java.util.Set;
-
-import me.sheimi.android.views.SheimiDialogFragment;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.DummyDialogListener;
-import me.sheimi.sgit.repo.tasks.repo.PushTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,6 +10,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
+
+import java.util.Set;
+
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.DummyDialogListener;
+import me.sheimi.sgit.repo.tasks.repo.PushTask;
 
 public class PushAction extends RepoAction {
 
@@ -34,7 +35,7 @@ public class PushAction extends RepoAction {
         }
         PushDialog pd = new PushDialog();
         pd.setArguments(mRepo.getBundle());
-        pd.show(mActivity.getFragmentManager(), "push-repo-dialog");
+        pd.show(mActivity.getSupportFragmentManager(), "push-repo-dialog");
         mActivity.closeOperationDrawer();
     }
 

@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.manichord.mgit"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        versionCode 204
+        versionName "1.5.3"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    debugCompile libraries.stetho
+    debugCompile libraries.stethoTimber
+
+    compile libraries.supportFragment
+    compile libraries.supportAnnotations
+    compile libraries.supportAppCompat
+    compile libraries.supportDesign
+    compile libraries.supportRecyclerView
+
+    compile libraries.timber
+
+    compile libraries.jcraft
+    compile libraries.commonsIo
+    compile libraries.jgit
+    compile libraries.universalImageLoader
+    compile libraries.securePreferences
+    compile libraries.acra
+
+    testCompile libraries.junit
+    testCompile libraries.robolectric
+    testCompile libraries.robolectricShadowSupport
+}
