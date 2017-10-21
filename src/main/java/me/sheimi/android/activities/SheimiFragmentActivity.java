@@ -107,9 +107,15 @@ public class SheimiFragmentActivity extends Activity {
 
     public void showOptionsDialog(int title,final int option_names,
                                   final onOptionDialogClicked[] option_listeners) {
+        CharSequence[] options_values = getResources().getStringArray(option_names);
+        showOptionsDialog(title, options_values, option_listeners);
+    }
+
+    public void showOptionsDialog(int title, CharSequence[] option_values,
+                                  final onOptionDialogClicked[] option_listeners) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
-        builder.setItems(option_names,new DialogInterface.OnClickListener() {
+        builder.setItems(option_values,new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 option_listeners[which].onClicked();
