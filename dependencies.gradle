@@ -27,8 +27,8 @@ ext.versions = [
         leakCanary              : '1.5.4',
 
         junit                   : '4.12',
-        robolectric             : '3.1.2',
-        robolectricShadowSupport: '3.0',
+        robolectric             : '3.5',
+        robolectricShadowSupport: '3.4-rc2',
 ]
 
 ext.gradlePlugins = [
