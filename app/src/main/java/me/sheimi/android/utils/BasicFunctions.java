@@ -6,7 +6,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import timber.log.Timber;

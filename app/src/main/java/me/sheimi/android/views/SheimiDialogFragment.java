@@ -1,25 +1,20 @@
-package me.sheimi.sgit.fragments;
+package me.sheimi.android.views;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v4.app.DialogFragment;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.DialogInterface;
+import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 
-/**
- * Created by sheimi on 8/7/13.
- */
-public abstract class BaseFragment extends Fragment {
-
-    public abstract OnBackClickListener getOnBackClickListener();
+public class SheimiDialogFragment extends DialogFragment {
 
     private SheimiFragmentActivity mActivity;
 
-    public abstract void reset();
-
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = (SheimiFragmentActivity) activity;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (SheimiFragmentActivity) context;
     }
 
     public SheimiFragmentActivity getRawActivity() {
@@ -46,5 +41,12 @@ public abstract class BaseFragment extends Fragment {
         getRawActivity().showToastMessage(msg);
     }
 
-    // public abstract void search(String query);
+    public void promptForPassword(OnPasswordEntered onPasswordEntered,
+            int errorId) {
+        getRawActivity().promptForPassword(onPasswordEntered, errorId);
+    }
+
+    public void promptForPassword(OnPasswordEntered onPasswordEntered) {
+        getRawActivity().promptForPassword(onPasswordEntered, null);
+    }
 }

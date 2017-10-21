@@ -1,20 +1,5 @@
 package me.sheimi.sgit.fragments;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
-
-import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.FsUtils;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.ViewFileActivity;
-import me.sheimi.sgit.adapters.FilesListAdapter;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.RepoFileOperationDialog;
-import timber.log.Timber;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.ViewFileActivity;
+import me.sheimi.sgit.adapters.FilesListAdapter;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.dialogs.RepoFileOperationDialog;
+import timber.log.Timber;
 
 /**
  * Created by sheimi on 8/5/13.

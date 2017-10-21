@@ -7,47 +7,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
-import java.io.IOException;
 import java.util.Set;
 
-import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
-import timber.log.Timber;
+import me.sheimi.sgit.repo.tasks.repo.PullTask;
 
-public class RemoveRemoteAction extends RepoAction {
+public class PullAction extends RepoAction {
 
-    public RemoveRemoteAction(Repo repo, RepoDetailActivity activity) {
+    public PullAction(Repo repo, RepoDetailActivity activity) {
         super(repo, activity);
     }
 
     @Override
     public void execute() {
-        Set<String> remotes = mRepo.getRemotes();
+	Set<String> remotes = mRepo.getRemotes();
         if (remotes == null || remotes.isEmpty()) {
             mActivity.showToastMessage(R.string.alert_please_add_a_remote);
             return;
         }
-
-        RemoveRemoteDialog dialog = new RemoveRemoteDialog();
-        dialog.setArguments(mRepo.getBundle());
-        dialog.show(mActivity.getFragmentManager(), "remove-remote-dialog");
+        PullDialog pd = new PullDialog();
+        pd.setArguments(mRepo.getBundle());
+        pd.show(mActivity.getSupportFragmentManager(), "pull-repo-dialog");
         mActivity.closeOperationDrawer();
     }
 
-    public static void removeRemote(Repo repo, RepoDetailActivity activity, String remote) throws IOException {
-        repo.removeRemote(remote);
-        activity.showToastMessage(R.string.success_remote_removed);
+    private static void pull(Repo repo, RepoDetailActivity activity,
+			     String remote, boolean forcePull) {
+        PullTask pullTask = new PullTask(repo, remote, forcePull, activity.new ProgressCallback(
+                R.string.pull_msg_init));
+        pullTask.executeTask();
+        activity.closeOperationDrawer();
     }
 
-    public static class RemoveRemoteDialog extends SheimiDialogFragment {
+    public static class PullDialog extends SheimiDialogFragment {
+
         private Repo mRepo;
         private RepoDetailActivity mActivity;
+        private CheckBox mForcePull;
         private ListView mRemoteList;
         private ArrayAdapter<String> mAdapter;
 
@@ -63,7 +66,8 @@ public class RemoveRemoteAction extends RepoAction {
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             LayoutInflater inflater = mActivity.getLayoutInflater();
 
-            View layout = inflater.inflate(R.layout.dialog_remove_remote, null);
+            View layout = inflater.inflate(R.layout.dialog_pull, null);
+            mForcePull = (CheckBox) layout.findViewById(R.id.forcePull);
             mRemoteList = (ListView) layout.findViewById(R.id.remoteList);
 
             mAdapter = new ArrayAdapter<String>(mActivity,
@@ -73,23 +77,21 @@ public class RemoveRemoteAction extends RepoAction {
             mRemoteList.setAdapter(mAdapter);
 
             mRemoteList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
+                        int position, long id) {
                     String remote = mAdapter.getItem(position);
-                    try {
-                        removeRemote(mRepo, mActivity, remote);
-                    } catch (IOException e) {
-                        Timber.e(e);
-                        mActivity.showMessageDialog(R.string.dialog_error_title, getString(R.string.error_something_wrong));
-                    }
+                    boolean isForcePull = mForcePull.isChecked();
+                    pull(mRepo, mActivity, remote, isForcePull);
                     dismiss();
                 }
             });
 
-            builder.setTitle(R.string.dialog_remove_remote_title)
+            builder.setTitle(R.string.dialog_pull_repo_title)
                     .setView(layout)
-                    .setNegativeButton(R.string.label_cancel, new DummyDialogListener());
+                    .setNegativeButton(R.string.label_cancel,
+                            new DummyDialogListener());
             return builder.create();
         }
     }

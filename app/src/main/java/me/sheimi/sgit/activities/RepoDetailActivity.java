@@ -1,10 +1,10 @@
 package me.sheimi.sgit.activities;
 
 import android.app.ActionBar;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
@@ -125,7 +125,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private void setupViewPager() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mTabItemPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
+        mTabItemPagerAdapter = new TabItemPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mTabItemPagerAdapter);
         mViewPager.setOnPageChangeListener(mTabItemPagerAdapter);
     }

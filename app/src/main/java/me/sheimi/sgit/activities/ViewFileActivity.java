@@ -1,51 +1,28 @@
 package me.sheimi.sgit.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTitleStrip;
+import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
+
 import java.io.File;
-import java.io.IOException;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.android.utils.FsUtils;
-import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.dialogs.ChooseLanguageDialog;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
 import me.sheimi.sgit.fragments.ViewFileFragment;
-
-import org.apache.commons.io.FileUtils;
-
-import android.app.FragmentManager;
-import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Message;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerTitleStrip;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.SearchView;
-import android.widget.Toast;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.ProgressBar;
-import android.content.ClipboardManager;
-import android.content.ClipData;
-import android.content.Context;
 
 public class ViewFileActivity extends SheimiFragmentActivity {
 
@@ -69,7 +46,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         setContentView(R.layout.activity_view_file);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mTabItemPagerAdapter = new TabItemPagerAdapter(getFragmentManager());
+        mTabItemPagerAdapter = new TabItemPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mTabItemPagerAdapter);
         mViewPager.setOnPageChangeListener(mTabItemPagerAdapter);
         Bundle b = new Bundle();
@@ -263,7 +240,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                     return true;
                 }
                 ChooseLanguageDialog cld = new ChooseLanguageDialog();
-                cld.show(getFragmentManager(), "choose language");
+                cld.show(getSupportFragmentManager(), "choose language");
                 return true;
             case R.id.action_copy_all:
                 mFileFragment.copyAll();

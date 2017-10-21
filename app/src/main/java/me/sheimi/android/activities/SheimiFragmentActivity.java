@@ -1,10 +1,10 @@
 package me.sheimi.android.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +26,7 @@ import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 
-public class SheimiFragmentActivity extends Activity {
+public class SheimiFragmentActivity extends AppCompatActivity {
 
     public static interface OnBackClickListener {
         public boolean onClick();

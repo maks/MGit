@@ -1,17 +1,5 @@
 package me.sheimi.sgit.activities.delegate.actions;
 
-import java.util.List;
-
-import me.sheimi.android.utils.Profile;
-import me.sheimi.android.views.SheimiDialogFragment;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.RepoDetailActivity;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
-import me.sheimi.sgit.repo.tasks.repo.RebaseTask;
-
-import org.eclipse.jgit.lib.Ref;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -21,42 +9,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-public class RebaseAction extends RepoAction {
+import org.eclipse.jgit.lib.Ref;
 
-    public RebaseAction(Repo repo, RepoDetailActivity activity) {
+import java.util.List;
+
+import me.sheimi.android.utils.Profile;
+import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.RepoDetailActivity;
+import me.sheimi.sgit.database.models.Repo;
+
+public class MergeAction extends RepoAction {
+
+    public MergeAction(Repo repo, RepoDetailActivity activity) {
         super(repo, activity);
     }
 
     @Override
     public void execute() {
-        RebaseDialog rd = new RebaseDialog();
-        rd.setArguments(mRepo.getBundle());
-        rd.show(mActivity.getFragmentManager(), "rebase-dialog");
+        MergeDialog md = new MergeDialog();
+        md.setArguments(mRepo.getBundle());
+        md.show(mActivity.getSupportFragmentManager(), "merge-repo-dialog");
         mActivity.closeOperationDrawer();
     }
 
-    private static void rebase(Repo repo, String branch,
-            final RepoDetailActivity activity) {
-        RebaseTask rebaseTask = new RebaseTask(repo, branch,
-                new AsyncTaskPostCallback() {
-                    @Override
-                    public void onPostExecute(Boolean isSuccess) {
-                        activity.reset();
-                    }
-                });
-        rebaseTask.executeTask();
-    }
-
-    public static class RebaseDialog extends SheimiDialogFragment {
+    public static class MergeDialog extends SheimiDialogFragment {
 
         private Repo mRepo;
         private RepoDetailActivity mActivity;
         private ListView mBranchTagList;
+        private Spinner mSpinner;
         private BranchTagListAdapter mAdapter;
+        private CheckBox mCheckbox;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,30 +57,37 @@ public class RebaseAction extends RepoAction {
             }
 
             mActivity = (RepoDetailActivity) getActivity();
+            LayoutInflater inflater = mActivity.getLayoutInflater();
+            View layout = inflater.inflate(R.layout.dialog_merge, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
 
-            mBranchTagList = new ListView(mActivity);
-
+            mBranchTagList = (ListView) layout.findViewById(R.id.branchList);
+            mSpinner = (Spinner) layout.findViewById(R.id.ffSpinner);
+            mCheckbox = (CheckBox) layout.findViewById(R.id.autoCommit);
             mAdapter = new BranchTagListAdapter(mActivity);
             mBranchTagList.setAdapter(mAdapter);
-            builder.setView(mBranchTagList);
+            builder.setView(layout);
 
-            String[] branches = mRepo.getBranches();
-            String currentBranchName = mRepo.getBranchName();
-            for (String branch : branches) {
-                if (branch.equals(currentBranchName))
+            List<Ref> branches = mRepo.getLocalBranches();
+            String currentBranchDisplayName = mRepo.getCurrentDisplayName();
+            for (Ref branch : branches) {
+                if (Repo.getCommitDisplayName(branch.getName()).equals(
+                        currentBranchDisplayName))
                     continue;
                 mAdapter.add(branch);
             }
 
-            builder.setTitle(R.string.dialog_rebase_title);
+            builder.setTitle(R.string.dialog_merge_title);
             mBranchTagList
                     .setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView,
                                 View view, int position, long id) {
-                            String commit = mAdapter.getItem(position);
-                            rebase(mRepo, commit, mActivity);
+                            Ref commit = mAdapter.getItem(position);
+                            String mFFString = mSpinner.getSelectedItem()
+                                    .toString();
+                            mActivity.getRepoDelegate().mergeBranch(commit,
+                                    mFFString, mCheckbox.isChecked());
                             getDialog().cancel();
                         }
                     });
@@ -98,7 +95,7 @@ public class RebaseAction extends RepoAction {
             return builder.create();
         }
 
-        private static class BranchTagListAdapter extends ArrayAdapter<String> {
+        private static class BranchTagListAdapter extends ArrayAdapter<Ref> {
 
             public BranchTagListAdapter(Context context) {
                 super(context, 0);
@@ -121,7 +118,7 @@ public class RebaseAction extends RepoAction {
                 } else {
                     holder = (ListItemHolder) convertView.getTag();
                 }
-                String commitName = getItem(position);
+                String commitName = getItem(position).getName();
                 String displayName = Repo.getCommitDisplayName(commitName);
                 int commitType = Repo.getCommitType(commitName);
                 switch (commitType) {

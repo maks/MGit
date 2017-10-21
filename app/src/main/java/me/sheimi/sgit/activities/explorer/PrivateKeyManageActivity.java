@@ -1,15 +1,8 @@
 package me.sheimi.sgit.activities.explorer;
 
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.android.utils.BasicFunctions;
-import me.sheimi.android.utils.FsUtils;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.activities.ViewFileActivity;
-import me.sheimi.sgit.dialogs.EditKeyPasswordDialog;
-import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,9 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.android.utils.BasicFunctions;
+import me.sheimi.android.utils.FsUtils;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.activities.ViewFileActivity;
+import me.sheimi.sgit.dialogs.EditKeyPasswordDialog;
+import me.sheimi.sgit.dialogs.RenameKeyDialog;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
-import android.content.DialogInterface;
-import android.app.AlertDialog;
 
 public class PrivateKeyManageActivity extends FileExplorerActivity implements ActionMode.Callback {
 
@@ -67,7 +68,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 	    mode.finish();
 	    RenameKeyDialog rkd = new RenameKeyDialog();
 	    rkd.setArguments(pathArg);
-	    rkd.show(getFragmentManager(), "rename-dialog");
+	    rkd.show(getSupportFragmentManager(), "rename-dialog");
 	    return true;
 	case R.id.action_mode_show_private_key: {
 		Intent intent = new Intent(PrivateKeyManageActivity.this, ViewFileActivity.class);
@@ -100,7 +101,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
             mode.finish();
             EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
             editDialog.setArguments(pathArg);
-            editDialog.show(getFragmentManager(), "rename-dialog");
+            editDialog.show(getSupportFragmentManager(), "rename-dialog");
         }
         return true;
 	case R.id.action_mode_delete:
@@ -195,7 +196,7 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
             }
         case R.id.action_generate:
             {
-                (new PrivateKeyGenerate()).show(getFragmentManager(), "generate-key");
+                (new PrivateKeyGenerate()).show(getSupportFragmentManager(), "generate-key");
                 refreshList();
                 return true;
             }
