@@ -93,7 +93,7 @@ public class InitDialog extends SheimiDialogFragment implements
         }
 
         localPath = mLocalPath.getText().toString().trim();
-        mRepo = Repo.createRepo(localPath, "local repository");
+        mRepo = Repo.createRepo(localPath, "local repository", getString(R.string.initialising));
 
         InitLocalTask task = new InitLocalTask(mRepo);
         task.executeTask();

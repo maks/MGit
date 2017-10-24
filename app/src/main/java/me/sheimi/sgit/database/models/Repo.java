@@ -97,12 +97,12 @@ public class Repo implements Comparable<Repo>, Serializable {
         return bundle;
     }
 
-    public static Repo createRepo(String localPath, String remoteURL) {
-        return getRepoById(RepoDbManager.createRepo(localPath, remoteURL));
+    public static Repo createRepo(String localPath, String remoteURL, String status) {
+        return getRepoById(RepoDbManager.createRepo(localPath, remoteURL, status));
     }
 
-    public static Repo importRepo(String localPath) {
-        return getRepoById(RepoDbManager.importRepo(localPath));
+    public static Repo importRepo(String localPath, String status) {
+        return getRepoById(RepoDbManager.importRepo(localPath, status));
     }
 
     public static Repo getRepoById(long id) {
