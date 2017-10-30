@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/general_padding_larger"
-        android:paddingRight="@dimen/general_padding_larger"
-        android:paddingTop="@dimen/general_padding"
-        android:paddingBottom="@dimen/general_padding"
-        android:dividerPadding="@dimen/general_padding">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/general_padding_larger"
+    android:paddingRight="@dimen/general_padding_larger"
+    android:paddingTop="@dimen/general_padding"
+    android:paddingBottom="@dimen/general_padding"
+    android:dividerPadding="@dimen/general_padding">
 
     <TextView
             android:layout_width="match_parent"
@@ -38,7 +39,7 @@
                 android:id="@+id/authorIcon"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:src="@drawable/ic_default_author"/>
+                app:srcCompat="@drawable/ic_default_author"/>
 
         <LinearLayout
                 android:orientation="vertical"
@@ -115,7 +116,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:padding="@dimen/general_padding"
-                android:src="@drawable/ic_action_cancel"
+                app:srcCompat="@drawable/ic_action_cancel"
                 android:background="@android:color/transparent"/>
     </RelativeLayout>
 
