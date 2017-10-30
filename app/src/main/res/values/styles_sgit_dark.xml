@@ -20,7 +20,7 @@
 
 <resources>
 
-    <style name="Theme.SgitDark" parent="@android:style/Theme.Holo">
+    <style name="Theme.SgitDark" parent="Theme.AppCompat">
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="drawable/bt_branch_name_bg">@android:color/black</item>

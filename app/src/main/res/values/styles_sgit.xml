@@ -20,7 +20,7 @@
 
 <resources>
 
-    <style name="Theme.Sgit" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="Theme.Sgit" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:actionBarItemBackground">@drawable/selectable_background_sgit</item>
         <item name="android:popupMenuStyle">@style/PopupMenu.Sgit</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Sgit</item>
