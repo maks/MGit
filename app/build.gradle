@@ -10,6 +10,8 @@ android {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
 
+        vectorDrawables.useSupportLibrary = true
+
         versionCode 204
         versionName "1.5.3"
     }
