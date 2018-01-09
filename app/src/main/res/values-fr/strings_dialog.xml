@@ -29,10 +29,10 @@
     <string name="dialog_init_repo_positive_label">Initialiser</string>
 
     <!-- Add Remote -->
-    <!--<string name="dialog_add_remote_title">Add Remote</string>
-    <string name="dialog_add_remote_hint_name">Remote name</string>
-    <string name="dialog_add_remote_hint_url">Remote url</string>-->
-    <string name="dialog_add_remote_positive_label">Fait</string>
+    <string name="dialog_add_remote_title">Ajouter distante</string>
+    <string name="dialog_add_remote_hint_name">Nom de distante</string>
+    <string name="dialog_add_remote_hint_url">URL distante</string>
+    <string name="dialog_add_remote_positive_label">Fini</string>
 
     <!-- Push -->
     <!--<string name="dialog_push_repo_title">Push to &#8230;</string>
