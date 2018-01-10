@@ -31,15 +31,15 @@
     <string name="label_password">Mot de passe</string>
     <string name="label_new_file_name">Nouveau nom de fichier</string>
     <string name="label_rename">Renommer</string>
-    <string name="label_send_feedback">Envoyer un retour</string>
+    <string name="label_send_feedback">Envoyer un retour</string>
     <string name="label_import">Importer</string>
-    <string name="label_push">Push</string>
-    <string name="label_push_all">Push tout</string>
+    <string name="label_push">Pousser</string>
+    <string name="label_push_all">Pousser tout</string>
     <string name="label_create">Créer</string>
     <string name="label_checkout">Checkout</string>
     <string name="label_git_name">Nom</string>
     <string name="label_git_email">Email</string>
-    <string name="label_done">Fait</string>
+    <string name="label_done">Fini</string>
     <string name="label_choose_app_to_open">Sélectionner l\'app pour ouvrir</string>
     <string name="label_choose_app_to_edit">Sélectionner l\'app pour éditer</string>
 
@@ -57,13 +57,13 @@
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Choisir la branche</string>
-    <string name="dialog_delete_repo_title">Delete Conformation</string>
-    <string name="dialog_delete_repo_msg">Êtes vous de vouloir supprimer ce dépôt ?</string>
+    <string name="dialog_delete_repo_title">Supprimer Confirmation</string>
+    <string name="dialog_delete_repo_msg">Êtes-vous sûr de  vouloir supprimer ce dépôt ?</string>
     <string name="dialog_rename_key_title">Renommer</string>
     <string name="dialog_choose_language_title">Choisir la langue</string>
     <string name="dialog_comfirm_import_repo_title">Importer le dépôt</string>
     <string name="dialog_comfirm_import_repo_msg">Êtes-vous sûr de vouloir importer ce dépôt ?</string>
-    <string name="dialog_merge_title">Choose Branch To Merge</string>
+    <string name="dialog_merge_title">Choose Branch ToPour Merge</string>
     <string name="dialog_merge_checkbox">Commit après merge</string>
     <string name="dialog_file_delete">Supprimer le fichier</string>
     <string name="dialog_file_delete_msg">Êtes-vous sûr de vouloir supprimmer ce fichier ou dossier ?</string>
