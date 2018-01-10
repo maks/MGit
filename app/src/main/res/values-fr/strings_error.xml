@@ -12,8 +12,8 @@
     <string name="error_can_not_edit_file">Opps, ne peur pas ouvrier ce fichier dans ce engin.</string>
     <string name="error_unknown">Quelque chose ne marche pas!</string>
     <string name="error_task_running">Une tâche pour ce dépôt est en cours d\'exécution</string>
-    <string name="error_something_wrong">Quelque chose mal s'est passé mal</string>
-    <string name="error_repository_not_found">Dépôt introuvable (il y a peut être un problème avec ce dépôt).</string>
+    <string name="error_something_wrong">Quelque chose mal s'est passé</string>
+    <string name="error_repository_not_found">Dépôt introuvable (il y a peut-être un problème avec ce dépôt).</string>
 
     <!-- alerts -->
     <string name="alert_field_not_empty">Le champ ne doit pas être vide</string>
