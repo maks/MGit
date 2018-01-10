@@ -15,7 +15,7 @@
     <string name="error_task_running">Une tâche pour ce dépôt est en cours d\'exécution</string>
     <string name="error_something_wrong">Quelque chose mal s\'est passé</string>
     <string name="error_repository_not_found">Dépôt introuvable (il y a peut-être un problème avec ce dépôt).</string>
-
+ 
     <!-- alerts -->
     <string name="alert_field_not_empty">Le champ ne doit pas être vide</string>
     <string name="alert_remoteurl_required">URL distante requis</string>
