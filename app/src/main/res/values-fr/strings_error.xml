@@ -20,7 +20,7 @@
     <string name="alert_field_not_empty">Le champ ne doit pas être vide</string>
     <string name="alert_remoteurl_required">URL distante requis</string>
     <string name="alert_localpath_required">Nom du dépôt requis</string>
-    <string name="alert_localpath_format">Repository Nom Format Erreur. Repo ne peut pas contenir un slash.</string>
+    <string name="alert_localpath_format">Repository erreur de format de nom. Repo ne peut pas contenir un slash.</string>
     <string name="alert_localpath_repo_exists">Le dépôt existe déjà</string>
     <string name="alert_new_filename_required">Le nom du fichier est requis</string>
     <string name="alert_file_exists">Nom de fichier existe déjà</string>
