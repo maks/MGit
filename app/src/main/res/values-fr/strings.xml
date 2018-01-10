@@ -92,11 +92,6 @@
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
     <string name="action_open_in_other_app">Ouvrir dans d\'autres apps</string>
-    <string name="alert_file_exists">Le fichier existe déjà</string>
-    <string name="alert_filename_format">Fichier erreur de format de nom</string>
-    <string name="dialog_add_remote_hint_name">Nom à distance</string>
-    <string name="dialog_add_remote_hint_url">URL à distance</string>
-    <string name="dialog_add_remote_title"> Ajouter à distance</string>
     <string name="dialog_choose_option"> Choisissez l\'option ...</string>
     <string name="dialog_clone_recursive">Clonage récursif</string>
     <string name="dialog_commit_auto_stage">Etape automatique des fichiers modifiés</string>
@@ -107,10 +102,6 @@
     <string name="dialog_create_branch_hint">Nom de la branche</string>
     <string name="dialog_create_branch_title">Créer nouvelle branche</string>
     <string name="dialog_create_external_msg">Voulez-vous créer un dépôt Git dans ce répertoire ?</string>
-    <string name="error_no_edit_app">Aucune application peut modifier le fichier source</string>
-    <string name="error_no_open_app">Aucune application peut ouvrir le fichier source</string>
-    <string name="error_can_not_open_file">Vous ne pouvez pas ouvrir ce fichier dans ce dispositif.</string>
-    <string name="error_can_not_edit_file">Vous ne pouvez pas éditer ce fichier dans ce dispositif.</string>
     <string name="dialog_push_repo_msg">Etes-vous sûr de vouloir pousser les changements locaux ?</string>
     <string name="dialog_push_repo_title">Pousser à ...</string>
     <string name="dialog_rename_repo_hint">Nom du dépôt</string>
@@ -186,11 +177,9 @@
     <string name="title_config_repo">Repository configuration</string>
     <string name="action_import_private_key">Importer une clé privée</string>
     <string name="action_add_private_key">Ajouter une clé privée</string>
-    <string name="alert_no_older_commits">"Pas de commits antérieurs pour comparer "</string>
     <string name="dialog_push_is_force_push">Forcer pousser?</string>
     <string name="dialog_push_is_push_all">Pousser tout?</string>
     <string name="error_rename_repo_fail">Renommer repository échoué</string>
     <string name="success_remove_file">Fichier a été supprimé</string>
-    <string name="success_remote_added">Distante ajouté</string>
 
 </resources>

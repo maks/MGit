@@ -9,6 +9,7 @@
     <string name="error_out_of_memory">Opps, mémoire saturée</string>
     <string name="error_no_edit_app">Opps, aucuns apps peuvent éditer fichier de source.</string>
     <string name="error_no_open_app">Opps, ne peut pas èditer ce fichier dans ce engin.</string>
+    <string name="error_can_not_open_file">Opps, ne peut pas ouvrir ce fichier dans ce engin.</string>
     <string name="error_can_not_edit_file">Opps, ne peur pas ouvrier ce fichier dans ce engin.</string>
     <string name="error_unknown">Quelque chose ne marche pas!</string>
     <string name="error_task_running">Une tâche pour ce dépôt est en cours d\'exécution</string>
@@ -20,10 +21,10 @@
     <string name="alert_remoteurl_required">URL distante requis</string>
     <string name="alert_localpath_required">Nom du dépôt requis</string>
     <string name="alert_localpath_format">Repository Nom Format Erreur. Repo ne peut pas contenir un slash.</string>
-    <string name="alert_localpath_repo_exists">Le dépôt existe</string>
+    <string name="alert_localpath_repo_exists">Le dépôt existe déjà</string>
     <string name="alert_new_filename_required">Le nom du fichier est requis</string>
-    <string name="alert_file_exists">Nom de Fichier Existe</string>
-    <string name="alert_filename_format">Erreur Fichier Nom Format</string>
+    <string name="alert_file_exists">Nom de fichier existe déjà</string>
+    <string name="alert_filename_format">Fichier erreur de format de nom</string>
     <string name="alert_choose_two_items">Vous pouvez sélectionner seulement 2 éléments</string>
     <string name="alert_no_items_selected">Aucun élément sélectionné</string>
     <string name="alert_no_older_commits">Pas de commits antérieurs à comparer</string>

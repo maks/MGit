@@ -105,7 +105,6 @@
     <string name="dialog_file_remove_force_msg">Sind Sie sicher, dass Sie diese Datei oder ein Verzeichnis aus dem Arbeitsverzeichnis und dem Index löschen wollen?</string>
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
-
     <string name="action_copy_all">Gesamte Datei kopieren</string>
     <string name="action_create_new_dir">Neuen Ordner erstellen</string>
     <string name="action_edit_save">Speichern</string>
