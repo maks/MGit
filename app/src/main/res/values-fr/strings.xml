@@ -119,7 +119,7 @@
     <string name="alert_too_long_key_size">La clé est trop grande</string>
     <string name="alert_too_short_key_size">La clé est trop petite (au moins 1024 bits pour RSA et DSA)</string>
     <string name="cannot_delete_branch">Impossible de créer %s</string>
-    <string name="cannot_delete_current_branch">Impossible de supprimer branche %s checked out pour l'instant</string>
+    <string name="cannot_delete_current_branch">Impossible de supprimer branche %s checked out pour l\'instant</string>
     <string name="dialog_branch_delete">Supprimer branche</string>
     <string name="dialog_branch_delete_msg">Etes-vous sûr de vouloir supprimer cette branche?</string>
     <string name="dialog_commit_author_hint">Auteur de commit (optional)</string>
@@ -129,14 +129,14 @@
     <string name="dialog_key_delete">Supprimer clé</string>
     <string name="dialog_key_delete_msg">Êtes vous sûr de vouloir supprimer cette clé ?</string>
     <string name="dialog_profile_preferences_title">Préférences</string>
-    <string name="dialog_pull_is_force_pull">Forcer tirer et remettre à ce qui avait tiré?</string>
+    <string name="dialog_pull_is_force_pull">Forcer tirer et remettre ce qui avait tiré?</string>
     <string name="dialog_pull_repo_title">Tirer depuis…</string>
     <string name="dialog_remove_remote_positive_label">Fini</string>
     <string name="dialog_remove_remote_title">Supprimer Distante</string>
     <string name="dialog_rename_branch_title">Renommer</string>
     <string name="dialog_show_staged_diff">Diff stagé</string>
     <string name="dialog_show_unstaged_diff">Diff pas stagé</string>
-    <string name="error_invalid_author"><![CDATA[Auteur n'est pas de format Nom <Email>Auteur n'est pas de format Nom <Email>Auteur n'est pas de format Nom <Email>]]></string>
+    <string name="error_invalid_author"><![CDATA[Auteur n\'est pas de format Nom <Email>Auteur n\'est pas de format Nom <Email>Auteur n\'est pas de format Nom <Email>]]></string>
     <string name="error_no_commit_msg">Message pour commit manque</string>
     <string name="error_no_repository">Aucune dépôt trouvé</string>
     <string name="error_pull_failed_not_on_branch">Tirer a échoué : pas sur une branche</string>
