@@ -8,11 +8,11 @@
     <string name="dialog_rebase_title">Choisir la branche upstream</string>
 
     <!-- Commit -->
-    <string name="dialog_commit_title">Commit Changements</string>
-    <string name="dialog_commit_msg_hint">Commit message</string>
-    <string name="dialog_commit_is_amend">Est corrigé</string>
-    <string name="dialog_commit_auto_stage">Fichiers modifiés par stage automatique</string>
-    <string name="dialog_commit_positive_label">Commit</string>
+    <string name="dialog_commit_title">Soumettre Changements</string>
+    <string name="dialog_commit_msg_hint">Engagez un message</string>
+    <string name="dialog_commit_is_amend">Modifier engagement précédent</string>
+    <string name="dialog_commit_auto_stage">Etape automatique des fichiers modifiés</string>
+    <string name="dialog_commit_positive_label">Soumettre</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Chemin local</string>
@@ -35,7 +35,7 @@
     <string name="dialog_add_remote_positive_label">Fini</string>
 
     <!-- Push -->
-    <string name="dialog_push_repo_title">Pousser à &#8230;</string>
+    <string name="dialog_push_repo_title">Pousser à ...</string>
     <string name="dialog_push_repo_msg">Etes-vous sûr de pousser les changements locaux?</string>
     <string name="dialog_push_is_push_all">Pousser tout?</string>
     <string name="dialog_push_result">Résultat du push</string>

@@ -94,16 +94,9 @@
     <string name="action_open_in_other_app">Ouvrir dans d\'autres apps</string>
     <string name="dialog_choose_option"> Choisissez l\'option ...</string>
     <string name="dialog_clone_recursive">Clonage récursif</string>
-    <string name="dialog_commit_auto_stage">Etape automatique des fichiers modifiés</string>
-    <string name="dialog_commit_is_amend">Modifier engagement précédent</string>
-    <string name="dialog_commit_msg_hint">Engagez un message</string>
-    <string name="dialog_commit_positive_label">Consigner </string>
-    <string name="dialog_commit_title">Soumettre les changements</string>
     <string name="dialog_create_branch_hint">Nom de la branche</string>
     <string name="dialog_create_branch_title">Créer nouvelle branche</string>
     <string name="dialog_create_external_msg">Voulez-vous créer un dépôt Git dans ce répertoire ?</string>
-    <string name="dialog_push_repo_msg">Etes-vous sûr de vouloir pousser les changements locaux ?</string>
-    <string name="dialog_push_repo_title">Pousser à ...</string>
     <string name="dialog_rename_repo_hint">Nom du dépôt</string>
     <string name="dialog_rename_repo_title">Renommer le dépôt</string>
     <string name="dialog_file_remove_cached">Supprimer le fichier cache</string>
@@ -178,7 +171,6 @@
     <string name="action_import_private_key">Importer une clé privée</string>
     <string name="action_add_private_key">Ajouter une clé privée</string>
     <string name="dialog_push_is_force_push">Forcer pousser?</string>
-    <string name="dialog_push_is_push_all">Pousser tout?</string>
     <string name="error_rename_repo_fail">Renommer repository échoué</string>
     <string name="success_remove_file">Fichier a été supprimé</string>
 
