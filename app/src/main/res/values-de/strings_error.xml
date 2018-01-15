@@ -13,7 +13,7 @@
     <string name="error_can_not_open_file">Fehler: Die Datei kann auf diesem Gerät nicht geöffnet werden.</string>
     <string name="error_unknown">Unbekannter Fehler!</string>
     <string name="error_task_running">Es läuft grade ein Prozess für dieses Repository</string>
-    <string name="error_something_wrong">Etwas Merkwürdiges ist passiert</string>
+    <string name="error_something_wrong">Etwas Unerwartetes ist passiert</string>
     <string name="error_repository_not_found">Repository nicht gefunden (möglicherweise besteht ein Problem mit diesem Repository).</string>
 
     <!-- alerts -->

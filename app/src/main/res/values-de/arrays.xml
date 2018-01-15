@@ -7,7 +7,7 @@
         <item>Kein Fast Forward</item>
     </string-array>
     <string-array name="repo_file_operations">
-        <item>Zum Staging Bereich hinzufügen</item>
+        <item>Zum Staging-Bereich hinzufügen</item>
         <item>Auschecken (Änderungen zurücksetzen)</item>
         <item>Löschen</item>
         <item>Löschen (cached, nur Repository)</item>

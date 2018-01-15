@@ -7,17 +7,17 @@
         <item>Pas de Fast Forward</item>
     </string-array>
     <string-array name="repo_file_operations">
-        <item>Add to stage</item>
-        <item>Checkout (Reset Changes)</item>
+        <item>Ajouter à stage</item>
+        <item>Checkout (Reset Changements)</item>
         <item>Supprimer</item>
-        <item>Remove cached from repository</item>
-        <item>Remove force from repository</item>
+        <item>Enlever caché de repository</item>
+        <item>Enlever force de repository</item>
     </string-array>
     <string-array name="repo_operation_names">
-        <item>New Branch</item>
-        <item>Pull</item>
-        <item>Push</item>
-        <item>Add all to stage</item>
+        <item>Nouveau Branche</item>
+        <item>Tirer</item>
+        <item>Pousser</item>
+        <item>Ajouter tout au stage</item>
         <item>Commit</item>
         <item>Reset (HARD)</item>
         <item>Merge</item>
@@ -27,14 +27,14 @@
         <item>Différentiel</item>
         <item>Nouveau fichier</item>
         <item>Nouveau dépôt</item>
-        <item>Add remote</item>
-        <item>Remove Remote</item>
+        <item>Ajouter remote</item>
+        <item>Enlever Remote</item>
         <item>Supprimer</item>
-        <item>Raw config</item>
-        <item>Config</item>
+        <item>Configuration brute</item>
+        <item>Configuration</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
-        <item>Rename</item>
+        <item>Renommer</item>
         <item>Supprimer</item>
     </string-array>
 

@@ -75,7 +75,7 @@
     <string name="dialog_prompt_for_password_title">Passwort benötigt</string>
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
     <string name="dialog_prompt_for_password_checkbox">Benutzername and Passwort speichern</string>
-    <string name="dialog_title_you_want_to">Diese Datei …</string>
+    <string name="dialog_title_you_want_to">Diese Datei ...</string>
 
     <!-- Others -->
     <string name="title_activity_private_key_manage">Private Schlüssel verwalten</string>
@@ -105,17 +105,16 @@
     <string name="dialog_file_remove_force_msg">Sind Sie sicher, dass Sie diese Datei oder ein Verzeichnis aus dem Arbeitsverzeichnis und dem Index löschen wollen?</string>
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
-
     <string name="action_copy_all">Gesamte Datei kopieren</string>
     <string name="action_create_new_dir">Neuen Ordner erstellen</string>
     <string name="action_edit_save">Speichern</string>
-    <string name="action_generate_private_key">Schlüssel genereieren</string>
+    <string name="action_generate_private_key">Schlüssel generieren</string>
     <string name="action_mode_rename_branch">Branch umbenennen</string>
     <string name="action_mode_rename_key">Schlüssel umbenennen</string>
     <string name="action_mode_show_private_key">Privaten Schlüssel anzeigen</string>
-    <string name="action_mode_show_public_key">Öffentluchen Schlüssel anzeigen</string>
+    <string name="action_mode_show_public_key">Öffentlichen Schlüssel anzeigen</string>
     <string name="action_save_diff">Diff speichern</string>
-    <string name="action_select_root_dir">Als Wurzelordner wählen</string>
+    <string name="action_select_root_dir">Als Wurzelverzeichnis wählen</string>
     <string name="action_share_diff">Diff teilen</string>
     <string name="alert_file_creation_failure">Konnte Datei nicht erstellen</string>
     <string name="alert_new_branchname_required">Ein Branch Name wird benötigt</string>
@@ -133,7 +132,7 @@
     <string name="dialog_key_delete_msg">Wollen Sie diesen Schlüssel sicher löschen?</string>
     <string name="dialog_profile_preferences_title">Einstellungen</string>
     <string name="dialog_pull_is_force_pull">Force pull und auf heruntergeladene Änderungen zurücksetzen?</string>
-    <string name="dialog_pull_repo_title">Pull von …</string>
+    <string name="dialog_pull_repo_title">Pull von ...</string>
     <string name="dialog_remove_remote_positive_label">Fertig</string>
     <string name="dialog_remove_remote_title">Remote löschen</string>
     <string name="dialog_rename_branch_title">Umbenennen</string>
@@ -143,7 +142,7 @@
     <string name="error_no_commit_msg">Keine Commit Nachricht angegeben</string>
     <string name="error_no_repository">Keine Repositories gefunden</string>
     <string name="error_pull_failed_not_on_branch">Aktualisieren fehlgeschlagen: Nicht auf einem Branch</string>
-    <string name="fetch_msg_init">Herunterladen …</string>
+    <string name="fetch_msg_init">Herunterladen ...</string>
     <string name="label_anonymous_checkout">Anonymes auschecken</string>
     <string name="label_dialog_generate_key">Schlüssel generieren</string>
     <string name="label_generate_key">Schlüssel generieren</string>
