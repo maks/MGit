@@ -1,16 +1,6 @@
 package me.sheimi.sgit.activities.explorer;
 
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.database.RepoContract;
-import me.sheimi.sgit.database.RepoDbManager;
-import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.repo.tasks.repo.InitLocalTask;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -19,6 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.repo.InitLocalTask;
 
 public class ImportRepositoryActivity extends FileExplorerActivity {
 
@@ -95,11 +92,11 @@ public class ImportRepositoryActivity extends FileExplorerActivity {
         return null;
     }
 
-    private void createExternalGitRepo() {
+    void createExternalGitRepo() {
         File current = getCurrentDir();
         String localPath = Repo.EXTERNAL_PREFIX + current;
 
-        Repo repo = Repo.createRepo(localPath, "local repository");
+        Repo repo = Repo.createRepo(localPath, "local repository", getString(R.string.importing));
 
         InitLocalTask task = new InitLocalTask(repo);
         task.executeTask();

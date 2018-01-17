@@ -118,7 +118,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
             }
         }
 
-        final Repo repo = Repo.importRepo(localPath);
+        final Repo repo = Repo.importRepo(localPath, getString(R.string.importing));
 
         if (mImportAsExternal.isChecked()) {
             updateRepoInformation(repo);
