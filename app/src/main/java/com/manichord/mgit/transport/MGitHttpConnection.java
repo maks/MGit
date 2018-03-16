@@ -63,6 +63,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 
 import org.eclipse.jgit.transport.http.HttpConnection;
@@ -193,7 +194,11 @@ public class MGitHttpConnection implements HttpConnection {
             KeyManagementException {
         SSLContext ctx = SSLContext.getInstance("TLS"); //$NON-NLS-1$
         ctx.init(km, tm, random);
-        ((HttpsURLConnection) wrappedUrlConnection).setSSLSocketFactory(ctx
-                .getSocketFactory());
+        SSLSocketFactory factory = ctx.getSocketFactory();
+        if(! (factory instanceof MGitSSLSocketFactory))
+        {
+            factory = new MGitSSLSocketFactory(factory);
+        }
+        ((HttpsURLConnection) wrappedUrlConnection).setSSLSocketFactory(factory);
     }
 }
