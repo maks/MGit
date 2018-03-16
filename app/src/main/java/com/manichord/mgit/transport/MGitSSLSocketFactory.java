@@ -13,6 +13,7 @@ import javax.net.ssl.SSLSocketFactory;
 public class MGitSSLSocketFactory extends SSLSocketFactory {
 
     private SSLSocketFactory wrappedSSLSocketFactory;
+    public static String[] enabledProtocols = new String[] {"TLSv1", "TLSv1.1", "TLSv1.2"};
 
     public MGitSSLSocketFactory(SSLSocketFactory wrapped) {
         wrappedSSLSocketFactory = wrapped;
@@ -30,31 +31,40 @@ public class MGitSSLSocketFactory extends SSLSocketFactory {
 
     @Override
     public Socket createSocket() throws IOException {
-        return wrappedSSLSocketFactory.createSocket();
+        return modifySocket(wrappedSSLSocketFactory.createSocket());
     }
 
     @Override
     public Socket createSocket(Socket s, String host, int port, boolean autoClose) throws IOException {
-        return wrappedSSLSocketFactory.createSocket(s, host, port, autoClose);
+        return modifySocket(wrappedSSLSocketFactory.createSocket(s, host, port, autoClose));
     }
 
     @Override
     public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
-        return wrappedSSLSocketFactory.createSocket(host, port);
+        return modifySocket(wrappedSSLSocketFactory.createSocket(host, port));
     }
 
     @Override
     public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException, UnknownHostException {
-        return wrappedSSLSocketFactory.createSocket(host, port, localHost, localPort);
+        return modifySocket(wrappedSSLSocketFactory.createSocket(host, port, localHost, localPort));
     }
 
     @Override
     public Socket createSocket(InetAddress host, int port) throws IOException {
-        return wrappedSSLSocketFactory.createSocket(host, port);
+        return modifySocket(wrappedSSLSocketFactory.createSocket(host, port));
     }
 
     @Override
     public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
-        return wrappedSSLSocketFactory.createSocket(address, port, localAddress, localPort);
+        return modifySocket(wrappedSSLSocketFactory.createSocket(address, port, localAddress, localPort));
+    }
+
+
+    private Socket modifySocket(Socket socket) {
+        if(null != socket && (socket instanceof SSLSocket)) {
+            SSLSocket sslSocket = (SSLSocket)socket;
+            sslSocket.setEnabledProtocols(enabledProtocols);
+        }
+        return socket;
     }
 }
