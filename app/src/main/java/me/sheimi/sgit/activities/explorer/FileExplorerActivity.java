@@ -41,7 +41,9 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         mRootFolder = getRootFolder();
         mCurrentDir = mRootFolder;
 
