@@ -44,6 +44,8 @@ dependencies {
     compile libraries.securePreferences
     compile libraries.acra
 
+    compile "com.google.android.gms:play-services-base:11.8.0"
+
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.robolectricShadowSupport

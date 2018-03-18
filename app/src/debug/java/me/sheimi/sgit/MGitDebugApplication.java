@@ -3,7 +3,6 @@ package me.sheimi.sgit;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.timber.StethoTree;
 
 import timber.log.Timber;
 

@@ -3,7 +3,7 @@ apply from: 'dependencies.gradle'
 buildscript {
     apply from: 'dependencies.gradle'
     repositories {
-//        google()
+        google()
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }
     }
@@ -16,7 +16,7 @@ buildscript {
 
 allprojects {
     repositories {
-//        google()
+        google()
         jcenter()
     }
 }
