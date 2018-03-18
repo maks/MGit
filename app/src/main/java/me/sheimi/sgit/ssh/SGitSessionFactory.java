@@ -40,7 +40,6 @@ public class SGitSessionFactory extends JschConfigSessionFactory {
         File sshDir = PrivateKeyUtils.getPrivateKeyFolder();
         for (File file : sshDir.listFiles()) {
             KeyPair kpair = KeyPair.load(jsch, file.getAbsolutePath());
-            Timber.d("PRIV KEY: %s has PASSWD: %b", file.getAbsolutePath(), kpair.isEncrypted());
             jsch.addIdentity(file.getAbsolutePath());
         }
         return jsch;
