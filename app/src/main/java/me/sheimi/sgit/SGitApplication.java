@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.manichord.mgit.transport.MGitHttpConnectionFactory;
+
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -29,6 +31,10 @@ public class SGitApplication extends Application {
 
     private SecurePrefsHelper mSecPrefs;
     private PreferenceHelper mPrefsHelper;
+
+    static {
+        MGitHttpConnectionFactory.install();
+    }
 
     @Override
     public void onCreate() {

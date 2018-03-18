@@ -63,4 +63,3 @@ public class SettingsFragment extends PreferenceFragment {
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(mListener);
     }
 }
-
