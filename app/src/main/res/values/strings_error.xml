@@ -23,6 +23,10 @@
 
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
 
+    <string name="error_need_play_services_title">Google Play Services Missing</string>
+    <string name="error_need_play_services_message">On Android versions lower than 5.0, Google Play Services are required but not available on this device. MGit will not work with TLSv1.2 Only services such as Gituhub because of this.
+    </string>
+
     <!-- alerts -->
     <string name="alert_too_short_key_size">Keylength is too small (at least 1024 bits for RSA and DSA)</string>
     <string name="alert_too_long_key_size">Keylength is too large</string>
