@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -144,7 +145,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         if (searchView == null)
             return;
         SearchListener searchListener = new SearchListener();
-        searchItem.setOnActionExpandListener(searchListener);
+        MenuItemCompat.setOnActionExpandListener(searchItem, searchListener);
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(searchListener);
     }
@@ -187,7 +188,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
     }
 
     public class SearchListener implements SearchView.OnQueryTextListener,
-            MenuItem.OnActionExpandListener {
+            MenuItemCompat.OnActionExpandListener {
 
         @Override
         public boolean onQueryTextSubmit(String s) {

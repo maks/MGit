@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -66,12 +67,12 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         mFileFragment.setArguments(b);
         mActivityMode = extras.getShort(TAG_MODE, TAG_MODE_NORMAL);
         b.putShort(TAG_MODE, mActivityMode);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(new File(fileName).getName());
     }
 
 
-    class TabItemPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+    class TabItemPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener, SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
         private final int[] PAGE_TITLE = { R.string.tab_file_label, R.string.tab_commits_label };
 
@@ -188,7 +189,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
         }
         if (mRepo != null) {
             MenuItem searchItem = menu.findItem(R.id.action_search);
-            searchItem.setOnActionExpandListener(mTabItemPagerAdapter);
+            MenuItemCompat.setOnActionExpandListener(searchItem, mTabItemPagerAdapter);
             SearchView searchView = (SearchView) searchItem.getActionView();
             if (searchView != null) {
                 searchView.setIconifiedByDefault(true);
