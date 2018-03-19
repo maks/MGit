@@ -1,5 +1,29 @@
 package me.sheimi.sgit.activities;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ProgressBar;
+
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.revwalk.RevCommit;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
@@ -10,31 +34,6 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.repo.CommitDiffTask;
 import me.sheimi.sgit.repo.tasks.repo.CommitDiffTask.CommitDiffResult;
-
-import org.eclipse.jgit.diff.DiffEntry;
-
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.ProgressBar;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.lib.PersonIdent;
-import android.widget.ShareActionProvider;
-import android.content.Intent;
-import android.net.Uri;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class CommitDiffActivity extends SheimiFragmentActivity {
 
@@ -104,7 +103,7 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.diff_commits, menu);
         MenuItem item = menu.findItem(R.id.action_share_diff);
-        ShareActionProvider shareActionProvider = (ShareActionProvider) item.getActionProvider();
+        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         final Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri futurePathName = Uri.fromFile(sharedDiffPathName());
