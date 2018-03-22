@@ -3,15 +3,19 @@ apply from: 'dependencies.gradle'
 buildscript {
     apply from: 'dependencies.gradle'
     repositories {
-        google()
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }
+        google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
 
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
     }
+}
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
 }
 
 allprojects {
