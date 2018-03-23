@@ -1,6 +1,7 @@
 package me.sheimi.android.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,10 +27,10 @@ import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 
-public class SheimiFragmentActivity extends AppCompatActivity {
+public abstract class SheimiFragmentActivity extends AppCompatActivity {
 
-    public static interface OnBackClickListener {
-        public boolean onClick();
+    public interface OnBackClickListener {
+        boolean onClick();
     }
 
     @Override
@@ -63,12 +64,14 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     /* View Utils Start */
+    // TODO: Move them to Kotlin extension methods for Context
+
     public void showToastMessage(final String msg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Toast.makeText(SheimiFragmentActivity.this, msg,
-                        Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -78,34 +81,40 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+                                  DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, getString(msg), positiveBtn,
-                R.string.label_cancel, positiveListenerr,
-                new DummyDialogListener());
+            R.string.label_cancel, positiveListener,
+            new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+                                  DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
-                positiveListenerr, new DummyDialogListener());
+            positiveListener, new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
-            int negativeBtn, DialogInterface.OnClickListener positiveListener,
-            DialogInterface.OnClickListener negativeListener) {
+                                  @SuppressWarnings("SameParameterValue") int negativeBtn, DialogInterface.OnClickListener positiveListener,
+                                  DialogInterface.OnClickListener negativeListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title).setMessage(msg)
-                .setPositiveButton(positiveBtn, positiveListener)
-                .setNegativeButton(negativeBtn, negativeListener).show();
-    }
-    
-    public void showMessageDialog(int title, String msg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title).setMessage(msg)
-                .setPositiveButton(R.string.label_ok, new DummyDialogListener()).show();
+            .setPositiveButton(positiveBtn, positiveListener)
+            .setNegativeButton(negativeBtn, negativeListener).show();
     }
 
-    public void showOptionsDialog(int title,final int option_names,
+    public void showMessageDialog(int title, String msg) {
+        showMessageDialog(this, title, msg);
+    }
+
+    // TODO: Replace with Kotlin's extension methods
+    public static void showMessageDialog(Context ctx, int title, String msg) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+        builder.setTitle(title).setMessage(msg)
+            .setPositiveButton(R.string.label_ok, new DummyDialogListener()).show();
+    }
+
+    public void showOptionsDialog(int title, final int option_names,
                                   final onOptionDialogClicked[] option_listeners) {
         CharSequence[] options_values = getResources().getStringArray(option_names);
         showOptionsDialog(title, options_values, option_listeners);
@@ -115,7 +124,7 @@ public class SheimiFragmentActivity extends AppCompatActivity {
                                   final onOptionDialogClicked[] option_listeners) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
-        builder.setItems(option_values,new DialogInterface.OnClickListener() {
+        builder.setItems(option_values, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 option_listeners[which].onClicked();
@@ -124,38 +133,39 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     public void showEditTextDialog(int title, int hint, int positiveBtn,
-            final OnEditTextDialogClicked positiveListener) {
+                                   final OnEditTextDialogClicked positiveListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_edit_text, null);
-        final EditText editText = (EditText) layout.findViewById(R.id.editText);
+        final EditText editText = layout.findViewById(R.id.editText);
         editText.setHint(hint);
         builder.setTitle(title)
-                .setView(layout)
-                .setPositiveButton(positiveBtn,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                String text = editText.getText().toString();
-                                if (text == null || text.trim().isEmpty()) {
-                                    showToastMessage(R.string.alert_you_should_input_something);
-                                    return;
-                                }
-                                positiveListener.onClicked(text);
-                            }
-                        })
-                .setNegativeButton(R.string.label_cancel,
-                        new DummyDialogListener()).show();
+            .setView(layout)
+            .setPositiveButton(positiveBtn,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(
+                        DialogInterface dialogInterface, int i) {
+                        String text = editText.getText().toString();
+                        if (text.trim().isEmpty()) {
+                            showToastMessage(R.string.alert_you_should_input_something);
+                            return;
+                        }
+                        positiveListener.onClicked(text);
+                    }
+                })
+            .setNegativeButton(R.string.label_cancel,
+                new DummyDialogListener()).show();
     }
 
+    // Why this infinite recursion?
     public void promptForPassword(OnPasswordEntered onPasswordEntered,
-            int errorId) {
+                                  int errorId) {
         promptForPassword(onPasswordEntered, errorId);
     }
 
     public void promptForPassword(final OnPasswordEntered onPasswordEntered,
-            final String errorInfo) {
+                                  final String errorInfo) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -165,45 +175,45 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     private void promptForPasswordInner(
-            final OnPasswordEntered onPasswordEntered, String errorInfo) {
+        final OnPasswordEntered onPasswordEntered, String errorInfo) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.dialog_prompt_for_password,
-                null);
-        final EditText username = (EditText) layout.findViewById(R.id.username);
-        final EditText password = (EditText) layout.findViewById(R.id.password);
-        final CheckBox checkBox = (CheckBox) layout
-                .findViewById(R.id.savePassword);
+            null);
+        final EditText username = layout.findViewById(R.id.username);
+        final EditText password = layout.findViewById(R.id.password);
+        final CheckBox checkBox = layout
+            .findViewById(R.id.savePassword);
         if (errorInfo == null) {
             errorInfo = getString(R.string.dialog_prompt_for_password_title);
         }
         builder.setTitle(errorInfo)
-                .setView(layout)
-                .setPositiveButton(R.string.label_done,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                onPasswordEntered.onClicked(username.getText()
-                                        .toString(), password.getText()
-                                        .toString(), checkBox.isChecked());
+            .setView(layout)
+            .setPositiveButton(R.string.label_done,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onPasswordEntered.onClicked(username.getText()
+                            .toString(), password.getText()
+                            .toString(), checkBox.isChecked());
 
-                            }
-                        })
-                .setNegativeButton(R.string.label_cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialogInterface, int i) {
-                                onPasswordEntered.onCanceled();
-                            }
-                        }).show();
+                    }
+                })
+            .setNegativeButton(R.string.label_cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(
+                        DialogInterface dialogInterface, int i) {
+                        onPasswordEntered.onCanceled();
+                    }
+                }).show();
     }
 
-    public static interface onOptionDialogClicked {
+    public interface onOptionDialogClicked {
         void onClicked();
     }
 
-    public static interface OnEditTextDialogClicked {
+    public interface OnEditTextDialogClicked {
         void onClicked(String text);
     }
 
@@ -211,7 +221,7 @@ public class SheimiFragmentActivity extends AppCompatActivity {
      * Callback interface to receive credentials entered via UI by the user after being prompted
      * in the UI in order to connect to a remote repo
      */
-    public static interface OnPasswordEntered {
+    public interface OnPasswordEntered {
 
         /**
          * Handle retrying a Remote Repo task after user supplies requested credentials
@@ -259,18 +269,18 @@ public class SheimiFragmentActivity extends AppCompatActivity {
 
     private void setupImageLoader() {
         DisplayImageOptions mDisplayOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .showImageForEmptyUri(R.drawable.ic_default_author)
-                .showImageOnFail(R.drawable.ic_default_author)
-                .build();
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .showImageForEmptyUri(R.drawable.ic_default_author)
+            .showImageOnFail(R.drawable.ic_default_author)
+            .build();
         File cacheDir = StorageUtils.getCacheDirectory(this);
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
-                .defaultDisplayImageOptions(mDisplayOptions)
-                .diskCache(new UnlimitedDiskCache(cacheDir))
-                .diskCacheSize(SIZE)
-                .imageDownloader(new AvatarDownloader(this))
-                .build();
+            .defaultDisplayImageOptions(mDisplayOptions)
+            .diskCache(new UnlimitedDiskCache(cacheDir))
+            .diskCacheSize(SIZE)
+            .imageDownloader(new AvatarDownloader(this))
+            .build();
 
         mImageLoader = ImageLoader.getInstance();
         mImageLoader.init(configuration);
