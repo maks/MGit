@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="error_need_play_services_title">Google Play-Dienste fehlen</string>
-    <string name="error_need_play_services_message">On Android versions lower than 5.0, Google Play Services are required but not available on this device. MGit will not work with TLSv1.2 Only services such as GitHub because of this.
-    </string>
+    <string name="error_need_play_services_message">In Android-Versionen älter als 5.0 werden die Google Play-Dienste benötigt, da die \"Play\"-Variante von MGit sonst nicht mit Diensten arbeiten kann, die nur TLSv1.2 unterstützen, so wie GitHub.</string>
 </resources>
