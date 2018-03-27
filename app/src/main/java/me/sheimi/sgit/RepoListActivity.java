@@ -15,10 +15,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.security.ProviderInstaller;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
+import com.manichord.mgit.transport.SSLProviderInstaller;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -219,23 +217,10 @@ public class RepoListActivity extends SheimiFragmentActivity {
     }
 
     private void initUpdatedSSL() {
-        try {
-            if (Build.VERSION.SDK_INT < 21) {
-                ProviderInstaller.installIfNeeded(this);
-            }
-        } catch (GooglePlayServicesRepairableException e) {
-            showGooglePlayError(e);
-        } catch (GooglePlayServicesNotAvailableException e) {
-            showGooglePlayError(e);
+        if (Build.VERSION.SDK_INT < 21) {
+            SSLProviderInstaller.install(this);
         }
         MGitHttpConnectionFactory.install();
         Timber.i("Installed custom HTTPS factory");
     }
-
-    private void showGooglePlayError(Exception e) {
-        Timber.e(e);
-        showMessageDialog(R.string.error_need_play_services_title,
-            getString(R.string.error_need_play_services_message));
-    }
-
 }
