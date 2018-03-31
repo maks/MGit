@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -49,4 +50,5 @@ dependencies {
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.robolectricShadowSupport
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
 }
