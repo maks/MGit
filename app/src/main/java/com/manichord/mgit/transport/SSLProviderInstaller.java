@@ -35,9 +35,11 @@ public class SSLProviderInstaller {
             switch (pos) {
                 case 1:
                     SSLContext sslContext = SSLContext.getInstance("Default");
+                    //noinspection JavaReflectionMemberAccess
                     Field field = SSLSocketFactory.class.getDeclaredField("defaultSocketFactory");
                     field.setAccessible(true);
                     field.set(null, sslContext.getSocketFactory());
+                    //noinspection JavaReflectionMemberAccess
                     field = SSLServerSocketFactory.class.getDeclaredField("defaultServerSocketFactory");
                     field.setAccessible(true);
                     field.set(null, sslContext.getServerSocketFactory());
