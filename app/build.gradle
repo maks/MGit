@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -51,4 +52,6 @@ dependencies {
     testCompile libraries.robolectric
     testCompile libraries.robolectricShadowSupport
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+
+    kapt "com.android.databinding:compiler:$versions.androidGradlePlugin"
 }
