@@ -5,7 +5,6 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://plugins.gradle.org/m2/' }
-        //google()
     }
     dependencies {
         classpath gradlePlugins.android
@@ -22,7 +21,6 @@ wrapper {
 allprojects {
     repositories {
         jcenter()
-        //google()
     }
 }
 

@@ -13,8 +13,6 @@ ext.versions = [
         dexcountPlugin          : '0.6.1',
         versionsGradlePlugin    : '0.13.0',
 
-        dagger                  : '2.12',
-
         supportLibs             : '25.1.0',
         timber                  : '4.5.1',
 
@@ -41,12 +39,6 @@ ext.gradlePlugins = [
 ]
 
 ext.libraries = [
-        dagger                      : "com.google.dagger:dagger:$versions.dagger",
-        daggerAndroid               : "com.google.dagger:dagger-android:$versions.dagger",
-        daggerAndroidSupport        : "com.google.dagger:dagger-android-support:$versions.dagger",
-        daggerCompiler              : "com.google.dagger:dagger-compiler:$versions.dagger",
-        daggerAndroidSupportCompiler: "com.google.dagger:dagger-android-processor:$versions.dagger",
-
         supportFragment             : "com.android.support:support-fragment:$versions.supportLibs",
         supportAnnotations          : "com.android.support:support-annotations:$versions.supportLibs",
         supportAppCompat            : "com.android.support:appcompat-v7:$versions.supportLibs",
@@ -74,7 +66,6 @@ ext.libraries = [
 ]
 
 def addRepos(RepositoryHandler handler) {
-//    handler.google()
     handler.jcenter()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
