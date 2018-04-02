@@ -44,7 +44,7 @@ dependencies {
     compile libraries.securePreferences
     compile libraries.acra
 
-    compile "com.google.android.gms:play-services-base:11.8.0"
+    compile "org.conscrypt:conscrypt-android:1.0.1"
 
     testCompile libraries.junit
     testCompile libraries.robolectric
