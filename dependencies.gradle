@@ -3,17 +3,17 @@ ext.versions = [
         name                    : '1.0',
 
         minSdk                  : 16,
-        targetSdk               : 26,
-        compileSdk              : 26,
-        buildTools              : '26.0.2',
+        targetSdk               : 27,
+        compileSdk              : 27,
+        buildTools              : '27.0.3',
 
         kotlin                  : '1.2.31',
 
-        androidGradlePlugin     : '2.3.3',
+        androidGradlePlugin     : '3.1.0',
         dexcountPlugin          : '0.6.1',
         versionsGradlePlugin    : '0.13.0',
 
-        supportLibs             : '25.1.0',
+        supportLibs             : '27.1.1',
         timber                  : '4.5.1',
 
         jcraft                  : '0.1.5.4',
@@ -68,6 +68,7 @@ ext.libraries = [
 def addRepos(RepositoryHandler handler) {
     handler.jcenter()
     handler.maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    handler.google()
 }
 
 ext.addRepos = this.&addRepos
