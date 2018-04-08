@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -261,8 +262,8 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         DisplayImageOptions mDisplayOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageForEmptyUri(R.drawable.ic_default_author)
-                .showImageOnFail(R.drawable.ic_default_author)
+                .showImageForEmptyUri(VectorDrawableCompat.create(getResources(), R.drawable.ic_default_author, getTheme()))
+                .showImageOnFail(VectorDrawableCompat.create(getResources(), R.drawable.ic_default_author, getTheme()))
                 .build();
         File cacheDir = StorageUtils.getCacheDirectory(this);
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
