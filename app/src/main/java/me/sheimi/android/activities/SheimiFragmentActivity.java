@@ -29,8 +29,8 @@ import me.sheimi.sgit.dialogs.DummyDialogListener;
 
 public class SheimiFragmentActivity extends AppCompatActivity {
 
-    public static interface OnBackClickListener {
-        public boolean onClick();
+    public interface OnBackClickListener {
+        boolean onClick();
     }
 
     @Override
