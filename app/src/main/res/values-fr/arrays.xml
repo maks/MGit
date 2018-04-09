@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="merge_ff_type"> <!-- traduire Fast Forward ? -->
+        <item>Fast Forward</item>
+        <item>Seulement Fast Forward</item>
+        <item>Pas de Fast Forward</item>
+    </string-array>
+    <string-array name="repo_file_operations">
+        <item>Ajouter à stage</item>
+        <item>Checkout (Reset Changements)</item>
+        <item>Supprimer</item>
+        <item>Enlever caché de repository</item>
+        <item>Enlever force de repository</item>
+    </string-array>
+    <string-array name="repo_operation_names">
+        <item>Nouveau Branche</item>
+        <item>Tirer</item>
+        <item>Pousser</item>
+        <item>Ajouter tout au stage</item>
+        <item>Commit</item>
+        <item>Reset (HARD)</item>
+        <item>Merge</item>
+        <item>Fetch</item>
+        <item>Rebase</item>
+        <item>Cherry Pick</item>
+        <item>Différentiel</item>
+        <item>Nouveau fichier</item>
+        <item>Nouveau dépôt</item>
+        <item>Ajouter remote</item>
+        <item>Enlever Remote</item>
+        <item>Supprimer</item>
+        <item>Configuration brute</item>
+        <item>Configuration</item>
+    </string-array>
+    <string-array name="dialog_choose_repo_action_items">
+        <item>Renommer</item>
+        <item>Supprimer</item>
+    </string-array>
+
+    <!-- MUST KEY theme_names and theme_ids in SYNC -->
+    <string-array name="theme_names">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <string-array name="codemirror_theme_names">
+        <item>default</item>
+        <item>midnight</item>
+    </string-array>
+    <string-array name="theme_ids">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+</resources>

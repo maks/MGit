@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.sheimi.sgit"
+    android:versionCode="1"
+    android:versionName="1" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".SGitApplication"
+        android:allowBackup="true"
+        android:largeHeap="true"
+        android:icon="@mipmap/ic_launcher"
+        android:logo="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".RepoListActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:label="@string/clone_with_mgit">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="*" />
+                <data android:pathPattern="@string/ending_with_git" />
+            </intent-filter>
+            <intent-filter android:label="@string/clone_with_mgit">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/https" />
+                <data android:scheme="@string/http" />
+                <data android:scheme="@string/git" />
+                <data android:scheme="@string/ssh" />
+                <data android:host="@string/github.com" />
+                <data android:host="@string/gitlab.com" />
+                <data android:host="@string/bitbucket.com" />
+                <data android:host="@string/notabug.org" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RepoDetailActivity"
+            android:label="@string/title_activity_repo_detail"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ViewFileActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:parentActivityName=".activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RepoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activities.BranchChooserActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:parentActivityName=".activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RepoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activities.CommitDiffActivity"
+            android:parentActivityName=".activities.RepoDetailActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.RepoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ImportRepositoryActivity"
+            android:label="@string/title_activity_import_repository"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.PrivateKeyManageActivity"
+            android:label="@string/title_activity_private_key_manage"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ExploreFileActivity"
+            android:label="@string/title_activity_explore_file"
+            android:parentActivityName=".activities.explorer.PrivateKeyManageActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.explorer.PrivateKeyManageActivity" />
+        </activity>
+        <activity
+            android:name=".activities.UserSettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".RepoListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RepoListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.explorer.ExploreRootDirActivity"
+            android:label="@string/title_activity_explore_file"
+            android:parentActivityName=".activities.UserSettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.UserSettingsActivity" />
+        </activity>
+
+    </application>
+
+</manifest>

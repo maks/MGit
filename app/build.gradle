@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
+
+    defaultConfig {
+        applicationId "com.manichord.mgit"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        vectorDrawables.useSupportLibrary = true
+
+        versionCode 208
+        versionName "1.5.4.3"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    debugCompile libraries.stetho
+    debugCompile libraries.stethoTimber
+
+    compile libraries.supportFragment
+    compile libraries.supportAnnotations
+    compile libraries.supportAppCompat
+    compile libraries.supportDesign
+    compile libraries.supportRecyclerView
+
+    compile libraries.timber
+
+    compile libraries.jcraft
+    compile libraries.commonsIo
+    compile libraries.jgit
+    compile libraries.universalImageLoader
+    compile libraries.securePreferences
+    compile libraries.acra
+
+    compile "org.conscrypt:conscrypt-android:1.0.1"
+
+    testCompile libraries.junit
+    testCompile libraries.robolectric
+    testCompile libraries.robolectricShadowSupport
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+
+    kapt "com.android.databinding:compiler:$versions.androidGradlePlugin"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}

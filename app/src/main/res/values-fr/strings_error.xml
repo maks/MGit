@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">Distante périmé</string>
+    <string name="error_transport">Erreur Transport</string>
+    <string name="error_clone_failed">Échec de clone</string>
+    <string name="error_pull_failed">Échec de pull</string>
+    <string name="error_diff_failed">Échec de diff</string>
+    <string name="error_out_of_memory">Opps, mémoire saturée</string>
+    <string name="error_no_edit_app">Opps, aucuns apps peuvent éditer fichier de source.</string>
+    <string name="error_no_open_app">Opps, ne peut pas èditer ce fichier dans ce engin.</string>
+    <string name="error_can_not_open_file">Opps, ne peut pas ouvrir ce fichier dans ce engin.</string>
+    <string name="error_can_not_edit_file">Opps, ne peur pas ouvrier ce fichier dans ce engin.</string>
+    <string name="error_unknown">Quelque chose ne marche pas!</string>
+    <string name="error_task_running">Une tâche pour ce dépôt est en cours d\'exécution</string>
+    <string name="error_something_wrong">Quelque chose mal s\'est passé</string>
+    <string name="error_repository_not_found">Dépôt introuvable (il y a peut-être un problème avec ce dépôt).</string>
+ 
+    <!-- alerts -->
+    <string name="alert_field_not_empty">Le champ ne doit pas être vide</string>
+    <string name="alert_remoteurl_required">URL distante requis</string>
+    <string name="alert_localpath_required">Nom du dépôt requis</string>
+    <string name="alert_localpath_format">Repository erreur de format de nom. Repo ne peut pas contenir un slash.</string>
+    <string name="alert_localpath_repo_exists">Le dépôt existe déjà</string>
+    <string name="alert_new_filename_required">Le nom du fichier est requis</string>
+    <string name="alert_file_exists">Nom de fichier existe déjà</string>
+    <string name="alert_filename_format">Fichier erreur de format de nom</string>
+    <string name="alert_choose_two_items">Vous pouvez sélectionner seulement 2 éléments</string>
+    <string name="alert_no_items_selected">Aucun élément sélectionné</string>
+    <string name="alert_no_older_commits">Pas de commits antérieurs à comparer</string>
+    <string name="alert_please_wait_previous_op">L\'opération précédente est encore en cours</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">Vous devez choisir un commit à copier</string>
+    <string name="alert_you_should_input_something">Vous devez saisir quelque chose</string>
+    <string name="alert_please_add_a_remote">S\'il te plaît, ajoute un distante d\'abord</string>
+    <string name="alert_is_already_a_git_repo">Ce dossier est déja un dépot git.</string>
+    <string name="alert_save_failed">Échec de l\'enregistrement</string>
+
+</resources>

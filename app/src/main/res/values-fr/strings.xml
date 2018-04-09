@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="default_text">Texte par défaut</string>
+    <string name="title_clone_repo">Cloner le dépôt</string>
+
+    <!-- action -->
+    <string name="action_search">Rechercher</string>
+    <string name="action_clone">Cloner</string>
+    <string name="action_import_repo">Importer le dépôt</string>
+    <string name="action_git_profile">Profil Git</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_manage_private_key">Clés privées</string>
+    <string name="action_feedback">Feedback</string>
+    <string name="action_choose_language">Choisir la langue</string>
+    <string name="action_mode_diff">Diff</string>
+    <string name="action_edit">Éditer</string>
+    <string name="action_edit_in_other_app">Éditer dans d\'autres apps</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_toggle_drawer">Toggle Drawer</string>
+    <string name="action_copy_commit_str">Copier le hash du commit</string>
+    <string name="action_create_external_repo">Créer un dépôt externe</string>
+
+    <!-- label msg -->
+    <string name="label_ok">OK</string>
+    <string name="label_remote_url">URL distante</string>
+    <string name="label_cancel">Annuler</string>
+    <string name="label_clone">Cloner</string>
+    <string name="label_delete">Supprimer</string>
+    <string name="label_username">Nom d\'utilisateur</string>
+    <string name="label_password">Mot de passe</string>
+    <string name="label_new_file_name">Nouveau nom de fichier</string>
+    <string name="label_rename">Renommer</string>
+    <string name="label_send_feedback">Envoyer un retour</string>
+    <string name="label_import">Importer</string>
+    <string name="label_push">Pousser</string>
+    <string name="label_push_all">Pousser tout</string>
+    <string name="label_create">Créer</string>
+    <string name="label_checkout">Checkout</string>
+    <string name="label_git_name">Nom</string>
+    <string name="label_git_email">Email</string>
+    <string name="label_done">Fini</string>
+    <string name="label_choose_app_to_open">Sélectionner l\'app pour ouvrir</string>
+    <string name="label_choose_app_to_edit">Sélectionner l\'app pour éditer</string>
+
+    <!-- for title -->
+    <string name="title_activity_repo_detail">RepoDetailActivity</string>
+    <string name="title_activity_import_repository">Importer le dépôt</string>
+    <string name="title_activity_view_file">Fichier : </string>
+    <string name="title_activity_commit_diff">Diff :   </string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="tab_files_label">Fichiers</string>
+    <string name="tab_commits_label">Commits</string>
+    <string name="tab_status_label">Etat</string>
+
+    <!-- Dialog Msg -->
+    <string name="dialog_choose_branch_title">Choisir la branche</string>
+    <string name="dialog_delete_repo_title">Supprimer Confirmation</string>
+    <string name="dialog_delete_repo_msg">Êtes-vous sûr de  vouloir supprimer ce dépôt ?</string>
+    <string name="dialog_rename_key_title">Renommer</string>
+    <string name="dialog_choose_language_title">Choisir la langue</string>
+    <string name="dialog_comfirm_import_repo_title">Importer le dépôt</string>
+    <string name="dialog_comfirm_import_repo_msg">Êtes-vous sûr de vouloir importer ce dépôt ?</string>
+    <string name="dialog_merge_title">Choisir branche pour merge</string>
+    <string name="dialog_merge_checkbox">Commit après merge</string>
+    <string name="dialog_file_delete">Supprimer le fichier</string>
+    <string name="dialog_file_delete_msg">Êtes-vous sûr de vouloir supprimmer ce fichier ou dossier ?</string>
+    <string name="dialog_reset_commit_title">Reset changements</string>
+    <string name="dialog_reset_commit_msg">Êtes-vous sûr de vouloir supprimer toutes les modifications?</string>
+    <string name="dialog_create_dir_title">Nouveau dossier</string>
+    <string name="dialog_create_dir_hint">Nom du dossier</string>
+    <string name="dialog_create_file_title">Nouveau fichier</string>
+    <string name="dialog_create_file_hint">Nom du fichier</string>
+    <string name="dialog_comfirm_checkout_commit_title">Confirmer checkout</string>
+    <string name="dialog_comfirm_checkout_commit_msg">Checkout Branch</string>
+    <string name="dialog_prompt_for_password_title">Authentification nécessaire</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">Échec d\'authentification</string>
+    <string name="dialog_prompt_for_password_checkbox">Sauvegarder le nom d\'utilisateur et le mot de passe</string>
+    <string name="dialog_title_you_want_to">Vous voulez …</string>
+
+    <!-- Others -->
+    <string name="pull_msg_init">En tirant ...</string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
+    <string name="push_msg_init">En poussant ...</string>
+    <string name="title_activity_private_key_manage">Gérer ses clés privées</string>
+    <string name="hello_world">Bonjour tout le monde !</string>
+    <string name="title_activity_explore_file">Explorez les fichiers</string>
+
+    <!-- toast msg -->
+    <string name="feedback_subject">Feedback</string>
+    <string name="action_open_in_other_app">Ouvrir dans d\'autres apps</string>
+    <string name="dialog_choose_option"> Choisissez l\'option ...</string>
+    <string name="dialog_clone_recursive">Clonage récursif</string>
+    <string name="dialog_create_branch_hint">Nom de la branche</string>
+    <string name="dialog_create_branch_title">Créer nouvelle branche</string>
+    <string name="dialog_create_external_msg">Voulez-vous créer un dépôt Git dans ce répertoire ?</string>
+    <string name="dialog_rename_repo_hint">Nom du dépôt</string>
+    <string name="dialog_rename_repo_title">Renommer le dépôt</string>
+    <string name="dialog_file_remove_cached">Supprimer le fichier cache</string>
+    <string name="dialog_file_remove_cached_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire de l\'index ?</string>
+    <string name="dialog_file_remove_force">Supprimer le fichier de travail</string>
+    <string name="dialog_file_remove_force_msg">Êtes-vous sûr de vouloir supprimer ce fichier ou le répertoire à partir du répertoire et de l\'indice de travail?</string>
+    <string name="action_copy_all">Copier entièr fichier</string>
+    <string name="action_create_new_dir">Créer un nouveau dossier</string>
+    <string name="action_edit_save">Sauvegarder</string>
+    <string name="action_generate_private_key">Générer une clé privée</string>
+    <string name="action_mode_rename_branch">Renommer la branche</string>
+    <string name="action_mode_rename_key">Renommer la clé</string>
+    <string name="action_mode_show_private_key">Montrer la clé privée</string>
+    <string name="action_mode_show_public_key">Montrer la clé public</string>
+    <string name="action_save_diff">Sauvegarder le diff</string>
+    <string name="action_select_root_dir">Choisir comme dossier racine</string>
+    <string name="action_share_diff">Partager diff</string>
+    <string name="alert_file_creation_failure">Ne pouvait pas créer fichier</string>
+    <string name="alert_new_branchname_required">Nom de la branche requis</string>
+    <string name="alert_too_long_key_size">La clé est trop grande</string>
+    <string name="alert_too_short_key_size">La clé est trop petite (au moins 1024 bits pour RSA et DSA)</string>
+    <string name="cannot_delete_branch">Impossible de créer %s</string>
+    <string name="cannot_delete_current_branch">Impossible de supprimer branche %s checked out pour l\'instant</string>
+    <string name="dialog_branch_delete">Supprimer branche</string>
+    <string name="dialog_branch_delete_msg">Etes-vous sûr de vouloir supprimer cette branche?</string>
+    <string name="dialog_commit_author_hint">Auteur de commit (optional)</string>
+    <string name="dialog_fetch_all_button">Venir chercher tout</string>
+    <string name="dialog_fetch_positive_button">Venir chercher</string>
+    <string name="dialog_fetch_title">Venir chercher</string>
+    <string name="dialog_key_delete">Supprimer clé</string>
+    <string name="dialog_key_delete_msg">Êtes vous sûr de vouloir supprimer cette clé ?</string>
+    <string name="dialog_profile_preferences_title">Préférences</string>
+    <string name="dialog_pull_is_force_pull">Forcer tirer et remettre ce qui avait tiré?</string>
+    <string name="dialog_pull_repo_title">Tirer depuis…</string>
+    <string name="dialog_remove_remote_positive_label">Fini</string>
+    <string name="dialog_remove_remote_title">Supprimer Distante</string>
+    <string name="dialog_rename_branch_title">Renommer</string>
+    <string name="dialog_show_staged_diff">Diff stagé</string>
+    <string name="dialog_show_unstaged_diff">Diff pas stagé</string>
+    <string name="error_invalid_author"><![CDATA[Auteur n\'est pas de format Nom <Email>Auteur n\'est pas de format Nom <Email>Auteur n\'est pas de format Nom <Email>]]></string>
+    <string name="error_no_commit_msg">Message pour commit manque</string>
+    <string name="error_no_repository">Aucune dépôt trouvé</string>
+    <string name="error_pull_failed_not_on_branch">Tirer a échoué : pas sur une branche</string>
+    <string name="fetch_msg_init">Venir chercher ...</string>
+    <string name="label_anonymous_checkout">Checkout anonyme</string>
+    <string name="label_dialog_generate_key">Générer clé</string>
+    <string name="label_generate_key">Générer clé</string>
+    <string name="label_git_email_per_repo">Committer email override</string>
+    <string name="label_git_name_per_repo">Committer email override</string>
+    <string name="label_key_size">Taille de la clé</string>
+    <string name="label_new_branch_name">Nouvelle branche</string>
+    <string name="label_save">Sauvegarder</string>
+    <string name="pref_category_title_security">Securité</string>
+    <string name="pref_category_title_git_profile">Profil Git</string>
+    <string name="pref_category_title_general">Général</string>
+    <string name="pref_category_title_about">À propos</string>
+    <string name="preference_app_version">Version</string>
+    <string name="preference_git_user_email">Adresse email de l\'utilisateur</string>
+    <string name="preference_git_user_name">Nom de l\'utilisateur</string>
+    <string name="preference_manage_ssh_keys">Clés SSH</string>
+    <string name="preference_repo_location">Root storage location for repos</string>
+    <string name="preference_send_feedback">Feedback</string>
+    <string name="preference_send_feedback_summary">Soumettre feedback en créant un nouveau aspect chez GitHub</string>
+    <string name="preference_use_theme">Selectionner le thème de couleur</string>
+    <string name="success_remote_removed">Distante supprimé</string>
+    <string name="preference_manage_ssh_keys_summary">Gérer les clés SSH</string>
+    <string name="preference_use_gravatar">Utilisez les images gravatar</string>
+    <string name="preference_use_gravatar_summary">Charger des images d\'avatar de gravatar.com</string>
+    <string name="tab_file_label">Fichier</string>
+    <string name="title_activity_settings">Paramètres</string>
+    <string name="title_config_repo">Repository configuration</string>
+    <string name="action_import_private_key">Importer une clé privée</string>
+    <string name="action_add_private_key">Ajouter une clé privée</string>
+    <string name="dialog_push_is_force_push">Forcer pousser?</string>
+    <string name="error_rename_repo_fail">Renommer repository échoué</string>
+    <string name="success_remove_file">Fichier a été supprimé</string>
+
+</resources>

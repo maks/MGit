@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">Ungültiges Remote Repository</string>
+    <string name="error_transport">Übertragungsfehler</string>
+    <string name="error_clone_failed">Klonen fehlgeschlagen</string>
+    <string name="error_pull_failed">Herunterladen der Änderungen fehlgeschlagen</string>
+    <string name="error_diff_failed">Anzeigen der Unterschiede fehlgeschlagen</string>
+    <string name="error_out_of_memory">Fehler: Nicht genug Speicher.</string>
+    <string name="error_no_edit_app">Fehler: Es sind keine Apps installiert, die diese Datei bearbeiten können.</string>
+    <string name="error_no_open_app">Fehler: Es sind keine Apps installiert, die diese Datei öffnen können.</string>
+    <string name="error_can_not_edit_file">Fehler: Die Datei kann auf diesem Gerät nicht bearbeitet werden.</string>
+    <string name="error_can_not_open_file">Fehler: Die Datei kann auf diesem Gerät nicht geöffnet werden.</string>
+    <string name="error_unknown">Unbekannter Fehler!</string>
+    <string name="error_task_running">Es läuft grade ein Prozess für dieses Repository</string>
+    <string name="error_something_wrong">Etwas Unerwartetes ist passiert</string>
+    <string name="error_repository_not_found">Repository nicht gefunden (möglicherweise besteht ein Problem mit diesem Repository).</string>
+
+    <!-- alerts -->
+    <string name="alert_field_not_empty">Eingabefeld darf nicht leer sein</string>
+    <string name="alert_remoteurl_required">Entfernte Adresse benötigt</string>
+    <string name="alert_localpath_required">Repository-Name benötigt</string>
+    <string name="alert_localpath_format">Ungültiger Repository-Name. Name darf keinen Slash (/) enthalten.</string>
+    <string name="alert_localpath_repo_exists">Repository existiert</string>
+    <string name="alert_new_filename_required">Dateiname benötigt</string>
+    <string name="alert_file_exists">Datei existiert</string>
+    <string name="alert_filename_format">Ungültiger Dateiname</string>
+    <string name="alert_choose_two_items">Es können nur zwei Einträge ausgewählt werden</string>
+    <string name="alert_no_items_selected">Keine Einträge ausgewählt</string>
+    <string name="alert_no_older_commits">Kein älterer Beitrag zum Vergleich vorhanden</string>
+    <string name="alert_please_wait_previous_op">Vorherige Operation ist noch nicht abgeschlossen</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">Bitte genau einen Beitrag zum Kopieren auswählen</string>
+    <string name="alert_you_should_input_something">Es wurde nichts eingegeben</string>
+    <string name="alert_please_add_a_remote">Bitte zuerst eine Remote Repository hinzufügen</string>
+    <string name="alert_is_already_a_git_repo">Dieses Verzeichnis ist bereits ein Git-Repository.</string>
+    <string name="alert_save_failed">Speichern fehlgeschlagen</string>
+
+</resources>

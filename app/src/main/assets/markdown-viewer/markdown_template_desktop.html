@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Markdown Viewer</title>
+
+    <style>
+        @font-face {
+            font-family: FiraCodeRegular;
+            src: url(https://cdn.rawgit.com/tonsky/FiraCode/master/distr/ttf/FiraCode-Regular.ttf);
+        }
+
+        code {
+            font-family: FiraCodeRegular !important;
+        }
+    </style>
+    <!--<link rel='stylesheet' type='text/css' href='STYLESHEET_GOES_HERE' />-->
+    <link rel='stylesheet' type='text/css' href='markdown-css/paperwhite.css' />
+    
+
+    <!-- include highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    <!-- include mathjax -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>
+    
+
+
+    <script type="text/javascript" src="js/marked.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(){
+            marked.setOptions({
+                renderer: new marked.Renderer(),
+                gfm: true,
+                tables: true,
+                breaks: false,
+                pedantic: false,
+                sanitize: false,
+                smartLists: true,
+                smartypants: false
+            });
+
+            parseMarkdown();
+        }, false);
+
+        function parseMarkdown() {
+            var isAndroid = false;
+
+            var fileBasePath = "FILE_BASE_PATH";
+
+            if(!isAndroid) {
+                let websiteUrl = document.getElementById('markdown_url').value;
+                fileBasePath = websiteUrl.substring(0, websiteUrl.lastIndexOf("/"));
+            }
+            console.log("fileBasePath:", fileBasePath);
+
+            var content = document.getElementById('content');
+            var text = content.innerHTML;
+            text = text.replace(/&nbsp;/g, " ");
+            text = text.replace(/&lt;/g, "<");
+            text = text.replace(/&gt;/g, ">");
+            text = text.trim();
+            //console.log(text);
+            var markedText = marked(text);
+
+            // TypeScript Support
+            const regexTypeScript1 = /<code class="lang-ts/g;
+            const regexTypeScript2 = /<code class="lang-typescript"/g;
+            markedText = markedText.replace(regexTypeScript1, "<code class=\"typescript\"");
+            markedText = markedText.replace(regexTypeScript2, "<code class=\"typescript\"");
+
+            // Local links and images support
+            const regexImages = /(<img .*?)src="((?!http.?).*?)"/g;
+            const regexLinks = /(<a .*?)href="((?!http.?).*?)"/g;
+            
+            if(isAndroid) {
+                markedText = markedText.replace(regexImages, "$1 src=\"file://" + fileBasePath + "/$2\""); // replace images
+                markedText = markedText.replace(regexLinks, "$1 onclick=\"android.openLink('$2')\" href=\"$2\""); // href's
+            } else {
+                markedText = markedText.replace(regexImages, "$1 src=\"" + fileBasePath + "/$2\""); // replace images
+                //markedText = markedText.replace(regexLinks, "$1 onclick=\"android.openLink('$2')\" href=\"$2\""); // href's // TODO!!!!!!
+            }
+
+            content.innerHTML = markedText;
+
+            /*
+            var imported = document.createElement('script');
+            imported.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML';
+            document.head.appendChild(imported);
+            */
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            hljs.initHighlightingOnLoad();
+        }
+    </script>
+</head>
+<body>
+    <div id="fileopen">
+        <input id="markdown_url" type='url' />
+        <input id="markdown_load_btn" type='button' value="Load"/>
+        <script>
+            function readWebsite(url) {
+                fetch(url, { cache: "no-store" })
+                    .then(response => response.text())
+                    .then(displayContents)
+                    .catch(console.log);
+            }
+
+            function displayContents(contents) {
+                var element = document.getElementById('content');
+                element.textContent = contents;
+                parseMarkdown();
+            }
+
+            document.getElementById("markdown_load_btn").addEventListener('click', function(event) {
+                let websiteUrl = document.getElementById('markdown_url').value;
+                readWebsite(websiteUrl);
+            }, false);
+        </script>
+    </div>
+    <div id="content">
+        
+        MARKDOWN_GOES_HERE
+    </div>
+</body>
+</html>

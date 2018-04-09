@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+      <item
+        android:id="@+id/action_share_diff"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_share_diff"
+	    app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
+      <item
+        android:id="@+id/action_save_diff"
+        android:icon="@drawable/ic_download"	  
+        android:showAsAction="ifRoom"
+        android:title="@string/action_save_diff" />
+</menu>

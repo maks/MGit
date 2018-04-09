@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="merge_ff_type">
+        <item>Fast Forward</item>
+        <item>Nur Fast Forward</item>
+        <item>Kein Fast Forward</item>
+    </string-array>
+    <string-array name="repo_file_operations">
+        <item>Zum Staging-Bereich hinzufügen</item>
+        <item>Auschecken (Änderungen zurücksetzen)</item>
+        <item>Löschen</item>
+        <item>Löschen (cached, nur Repository)</item>
+        <item>Löschen (force, mit aktuellen Änderungen)</item>
+    </string-array>
+    <string-array name="repo_operation_names">
+        <item>Neuer Branch</item>
+        <item>Pull</item>
+        <item>Push</item>
+        <item>Alles zum Staging-Bereich hinzufügen</item>
+        <item>Commit</item>
+        <item>Reset (HARD)</item>
+        <item>Merge</item>
+        <item>Fetch</item>
+        <item>Rebase</item>
+        <item>Cherry Pick</item>
+        <item>Unterschiede anzeigen (Diff)</item>
+        <item>Neue Datei</item>
+        <item>Neuer Ordner</item>
+        <item>Remote Repository hinzufügen</item>
+        <item>Remote Repository löschen</item>
+        <item>Löschen</item>
+        <item>Raw config</item>
+        <item>Config</item>
+    </string-array>
+    <string-array name="dialog_choose_repo_action_items">
+        <item>Umbenennen</item>
+        <item>Löschen</item>
+    </string-array>
+
+    <!-- MUST KEY theme_names and theme_ids in SYNC -->
+    <string-array name="theme_names">
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+    <string-array name="codemirror_theme_names">
+        <item>default</item>
+        <item>midnight</item>
+    </string-array>
+    <string-array name="theme_ids">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+</resources>
