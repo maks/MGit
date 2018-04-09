@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.manichord.mgit.activities.MarkdownViewerActivity;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
-import com.manichord.mgit.activities.MarkdownViewerActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
 import me.sheimi.android.utils.FsUtils;

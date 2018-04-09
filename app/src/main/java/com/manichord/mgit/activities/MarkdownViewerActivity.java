@@ -1,8 +1,6 @@
 package com.manichord.mgit.activities;
 
-import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,26 +18,38 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.sgit.R;
 
 import static android.text.Html.escapeHtml;
 
 public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
+    public final static String FILE_NAME = "FILENAME";
+    private static final Map<String, String> cssStyles;
+    static {
+        Map<String, String> cStyles = new HashMap<>();
+        cStyles.put("alt", "file:///android_asset/markdown-viewer/markdown-css/alt.css");
+        cStyles.put("classic", "file:///android_asset/markdown-viewer/markdown-css/classic.css");
+        cStyles.put("foghorn", "file:///android_asset/markdown-viewer/markdown-css/foghorn.css");
+        cStyles.put("paperwhite", "file:///android_asset/markdown-viewer/markdown-css/paperwhite.css");
+        cssStyles = Collections.unmodifiableMap(cStyles);
+    }
+
     private WebView mMarkdownView;
 
-    public final static String FILE_NAME = "FILENAME";
     private String fileBasePath;
     private Stack<String> urlStack = new Stack<>();
+    private String selectedTheme = "paperwhite"; // TODO export theme as app setting
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mMarkdownView = new WebView(this) { };
         setContentView(mMarkdownView);
         init();
@@ -62,10 +72,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/alt.css");
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/classic.css");
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/foghorn.css");
-                    loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/paperwhite.css");
+                    loadMarkdownToView(content, cssStyles.get(selectedTheme));
                 }
             });
         } catch (Exception e) {
@@ -82,10 +89,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
             if (cssFileUrl != null) {
                 html = html.replace("STYLESHEET_GOES_HERE", cssFileUrl);
                 html = html.replace("MARKDOWN_GOES_HERE", escapeHtml(txt.replace("\r\n", "<br>")));
-
-
                 html = html.replace("src=\"marked.js\"", "src=\"file:///android_asset/markdown-viewer/js/marked.js\"");
-
                 html = html.replace("FILE_BASE_PATH", fileBasePath);
             }
         } catch (IOException e) {
@@ -119,7 +123,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowFileAccess(true);
 
-        mMarkdownView.addJavascriptInterface(new JsMarkdownInterface(this), "android");
+        mMarkdownView.addJavascriptInterface(new JsMarkdownInterface(), "android");
 
 
         WebViewClient wvc = new WebViewClient() {
@@ -178,22 +182,12 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
         return ret;
     }
 
-
-
     public class JsMarkdownInterface {
         private static final String TAG = "JsMarkdownInterface";
-
-        Context mContext;
-
-        /** Instantiate the interface and set the context */
-        JsMarkdownInterface(Context c) {
-            mContext = c;
-        }
 
         /** Show a toast from the web page */
         @JavascriptInterface
         public void openLink(String link) {
-            //Toast.makeText(mContext, link, Toast.LENGTH_SHORT).show();
             loadMarkdownToView(link);
         }
 
