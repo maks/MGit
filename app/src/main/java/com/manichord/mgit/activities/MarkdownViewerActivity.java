@@ -1,4 +1,4 @@
-package de.luhmer.git;
+package com.manichord.mgit.activities;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -34,7 +34,6 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     public final static String FILE_NAME = "FILENAME";
     private String fileBasePath;
     private Stack<String> urlStack = new Stack<>();
-    private String currentlyOpenedFile;
 
 
     @Override
@@ -54,8 +53,6 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     }
 
     private void loadMarkdownToView(String filename) {
-        currentlyOpenedFile = filename;
-
         try {
             // TODO handle filenames with # at the end.. Sample.md#test
 
@@ -132,11 +129,9 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
             }
 
             @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    urlStack.add(request.getUrl().toString());
-                }
-                return super.shouldOverrideUrlLoading(view, request);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                urlStack.add(url);
+                return super.shouldOverrideUrlLoading(view, url);
             }
         };
         mMarkdownView.setWebViewClient(wvc);

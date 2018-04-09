@@ -116,7 +116,7 @@
                 android:value=".activities.UserSettingsActivity" />
         </activity>
         <activity
-            android:name="de.luhmer.git.MarkdownViewerActivity">
+            android:name="com.manichord.mgit.activities.MarkdownViewerActivity">
         </activity>
 
     </application>

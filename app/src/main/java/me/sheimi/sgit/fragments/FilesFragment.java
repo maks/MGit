@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
-import de.luhmer.git.MarkdownViewerActivity;
+import com.manichord.mgit.activities.MarkdownViewerActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
 import me.sheimi.android.utils.FsUtils;
