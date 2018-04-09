@@ -86,7 +86,7 @@
     </style>
 
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.Sgit.Widget" parent="@android:style/Theme.Material">
+    <style name="Theme.Sgit.Widget" parent="@android:style/Theme.Holo">
         <item name="android:popupMenuStyle">@style/PopupMenu.Sgit</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Sgit</item>
     </style>
