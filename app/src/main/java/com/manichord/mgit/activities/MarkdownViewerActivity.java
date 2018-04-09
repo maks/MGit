@@ -31,6 +31,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
     public final static String FILE_NAME = "FILENAME";
     private static final Map<String, String> cssStyles;
+
     static {
         Map<String, String> cStyles = new HashMap<>();
         cStyles.put("alt", "file:///android_asset/markdown-viewer/markdown-css/alt.css");
@@ -50,12 +51,13 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mMarkdownView = new WebView(this) { };
+        mMarkdownView = new WebView(this) {
+        };
         setContentView(mMarkdownView);
         init();
 
         String fullPath = getIntent().getStringExtra(FILE_NAME);
-        int fileNameStart = fullPath.lastIndexOf("/")+1;
+        int fileNameStart = fullPath.lastIndexOf("/") + 1;
         fileBasePath = fullPath.substring(0, fileNameStart);
         String filename = fullPath.substring(fileNameStart);
 
@@ -146,10 +148,10 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if(urlStack.size() >= 2) {
+                if (urlStack.size() >= 2) {
                     urlStack.pop(); // Pop current website url
                     String url = urlStack.pop(); // get previous url
-                    if(url.startsWith("http")) {
+                    if (url.startsWith("http")) {
                         urlStack.push(url);
                         mMarkdownView.loadUrl(url);
                     } else {
@@ -174,7 +176,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
         return sb.toString();
     }
 
-    public static String getStringFromFile (String filePath) throws Exception {
+    public static String getStringFromFile(String filePath) throws Exception {
         File fl = new File(filePath);
         FileInputStream fin = new FileInputStream(fl);
         String ret = convertStreamToString(fin);
@@ -185,7 +187,9 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     public class JsMarkdownInterface {
         private static final String TAG = "JsMarkdownInterface";
 
-        /** Show a toast from the web page */
+        /**
+         * Show a toast from the web page
+         */
         @JavascriptInterface
         public void openLink(String link) {
             loadMarkdownToView(link);
