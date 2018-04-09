@@ -115,6 +115,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.UserSettingsActivity" />
         </activity>
+        <activity
+            android:name="de.luhmer.git.MarkdownViewerActivity">
+        </activity>
 
     </application>
 

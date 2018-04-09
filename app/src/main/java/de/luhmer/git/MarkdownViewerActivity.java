@@ -2,7 +2,9 @@ package de.luhmer.git;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
@@ -58,14 +60,15 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
             // TODO handle filenames with # at the end.. Sample.md#test
 
             final String content = getStringFromFile(fileBasePath + filename);
+            urlStack.push(filename);
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-css/alt.css");
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-css/classic.css");
-                    //loadMarkdownToView(content, "file:///android_asset/markdown-css/foghorn.css");
-                    loadMarkdownToView(content, "file:///android_asset/markdown-css/paperwhite.css");
+                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/alt.css");
+                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/classic.css");
+                    //loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/foghorn.css");
+                    loadMarkdownToView(content, "file:///android_asset/markdown-viewer/markdown-css/paperwhite.css");
                 }
             });
         } catch (Exception e) {
@@ -84,7 +87,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
                 html = html.replace("MARKDOWN_GOES_HERE", escapeHtml(txt.replace("\r\n", "<br>")));
 
 
-                html = html.replace("src=\"marked.js\"", "src=\"file:///android_asset/js/marked.js\"");
+                html = html.replace("src=\"marked.js\"", "src=\"file:///android_asset/markdown-viewer/js/marked.js\"");
 
                 html = html.replace("FILE_BASE_PATH", fileBasePath);
             }
@@ -98,7 +101,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
     private String getMarkDownMathJaxTemplate() throws IOException {
         AssetManager am = getAssets();
-        InputStream is = am.open("markdown_template.html");
+        InputStream is = am.open("markdown-viewer/markdown_template.html");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
@@ -130,6 +133,9 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    urlStack.add(request.getUrl().toString());
+                }
                 return super.shouldOverrideUrlLoading(view, request);
             }
         };
@@ -141,8 +147,15 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if(!urlStack.isEmpty()) {
-                    loadMarkdownToView(urlStack.pop());
+                if(urlStack.size() >= 2) {
+                    urlStack.pop(); // Pop current website url
+                    String url = urlStack.pop(); // get previous url
+                    if(url.startsWith("http")) {
+                        urlStack.push(url);
+                        mMarkdownView.loadUrl(url);
+                    } else {
+                        loadMarkdownToView(url);
+                    }
                 } else {
                     finish();
                 }
@@ -173,6 +186,7 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
 
 
     public class JsMarkdownInterface {
+        private static final String TAG = "JsMarkdownInterface";
 
         Context mContext;
 
@@ -185,10 +199,12 @@ public class MarkdownViewerActivity extends SheimiFragmentActivity {
         @JavascriptInterface
         public void openLink(String link) {
             //Toast.makeText(mContext, link, Toast.LENGTH_SHORT).show();
-
-
-            urlStack.add(currentlyOpenedFile);
             loadMarkdownToView(link);
+        }
+
+        @JavascriptInterface
+        public void log(String log) {
+            Log.d(TAG, log);
         }
     }
 }

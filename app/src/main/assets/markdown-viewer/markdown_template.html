@@ -29,6 +29,14 @@
 
     <script type="text/javascript" src="marked.js"></script>
     <script type="text/javascript">
+        function log(text) {
+            // String might be too big to pass into Android Log.. so use chunks
+            // Chunks of 1000 characters
+            text.match(/.{1,1000}/g).forEach((chunk) => {
+                android.log(chunk);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function(){
             marked.setOptions({
                 renderer: new marked.Renderer(),
@@ -51,6 +59,8 @@
             text = text.trim();
             //console.log(text);
             var markedText = marked(text);
+
+            //log(markedText);
 
             // TypeScript Support
             const regexTypeScript1 = /<code class="lang-ts/g;
