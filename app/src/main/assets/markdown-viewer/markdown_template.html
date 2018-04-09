@@ -63,8 +63,8 @@
             //log(markedText);
 
             // TypeScript Support
-            const regexTypeScript1 = /<code class="lang-ts/g;
-            const regexTypeScript2 = /<code class="lang-typescript"/g;
+            var regexTypeScript1 = /<code class="lang-ts/g;
+            var regexTypeScript2 = /<code class="lang-typescript"/g;
             markedText = markedText.replace(regexTypeScript1, "<code class=\"typescript\"");
             markedText = markedText.replace(regexTypeScript2, "<code class=\"typescript\"");
 
