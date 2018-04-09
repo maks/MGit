@@ -51,7 +51,13 @@ dependencies {
     testCompile libraries.junit
     testCompile libraries.robolectric
     testCompile libraries.robolectricShadowSupport
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
 
     kapt "com.android.databinding:compiler:$versions.androidGradlePlugin"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
