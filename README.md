@@ -94,7 +94,7 @@ If you want to help improve this project, contributions, especially translations
 ### Contributing code
 
 If you would like to contribute code, either a bugfix or a new feature, please make sure there is a open issue that addresses the new code. 
-**No Pull Requests** will be mergfed that do not reference an existing issue in the repo.
+**No Pull Requests** will be merged that do not reference an existing issue in the repo.
 
 For new features, a discussion of the new functionality may need to take place in the comments on the issue covering it, so it may be best for that to occur before you spend time on writing the new code.
 
@@ -102,4 +102,3 @@ For new features, a discussion of the new functionality may need to take place i
 Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
 
 If you are working on a branch for some time, you may find that changes to master get merged in the meantime, if that happens please do **NOT** merge master into your branch! Instead rebase your branch onto the current head of master.
-
