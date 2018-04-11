@@ -10,7 +10,7 @@ buildscript {
     dependencies {
         classpath gradlePlugins.android
 
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 
         classpath 'io.github.retropiler:retropiler-gradle-plugin:0.0.5'

@@ -9,19 +9,19 @@ ext.versions = [
 
         kotlin                  : '1.2.31',
 
-        androidGradlePlugin     : '3.1.0',
+        androidGradlePlugin     : '3.1.1',
         dexcountPlugin          : '0.6.1',
         versionsGradlePlugin    : '0.13.0',
 
         supportLibs             : '27.1.1',
-        timber                  : '4.5.1',
+        timber                  : '4.7.0',
 
         jsch                    : '0.1.54',
-        jgit                    : '3.7.1.201504261725-r',
-        commonsIo               : '2.5',
+        jgit                    : '4.11.0.201803080745-r',
+        commonsIo               : '2.6',
         universalImageLoader    : '1.9.5',
         securePreferences       : '0.1.4',
-        acra                    : '4.9.2',
+        acra                    : '4.11',
 
         stetho                  : '1.5.0',
         leakCanary              : '1.5.4',
