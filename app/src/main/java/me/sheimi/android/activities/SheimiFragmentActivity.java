@@ -79,16 +79,16 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, getString(msg), positiveBtn,
-                R.string.label_cancel, positiveListenerr,
+                R.string.label_cancel, positiveListener,
                 new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
-                positiveListenerr, new DummyDialogListener());
+                positiveListener, new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,

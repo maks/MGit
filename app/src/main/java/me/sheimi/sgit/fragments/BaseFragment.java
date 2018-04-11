@@ -29,15 +29,15 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         getRawActivity().showMessageDialog(title, msg, positiveBtn,
-                positiveListenerr);
+                positiveListener);
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         getRawActivity().showMessageDialog(title, msg, positiveBtn,
-                positiveListenerr);
+                positiveListener);
     }
 
     public void showToastMessage(int resId) {
