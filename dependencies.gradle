@@ -1,3 +1,6 @@
+// This is for my Retropiler mod to disable it
+ext.useRetrolambda = false
+
 ext.versions = [
         code                    : 1,
         name                    : '1.0',
@@ -29,13 +32,16 @@ ext.versions = [
         junit                   : '4.12',
         robolectric             : '3.5',
         robolectricShadowSupport: '3.4-rc2',
+        
+        useModdedRetropiler     : true,
+        retropiler              : '0.0.5',
 ]
 
 ext.gradlePlugins = [
-        android    : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
-        retrolambda: "me.tatarka:gradle-retrolambda:$versions.retrolambdaGradlePlugin",
-        dexcount   : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountPlugin",
-        versions   : "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradlePlugin",
+        android   : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        retropiler: versions.useModdedRetropiler ? "com.github.kaeptmblaubaer1000.retropiler:plugin:mod-SNAPSHOT" : "io.github.retropiler:retropiler-gradle-plugin:$versions.retropiler",
+        dexcount  : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountPlugin",
+        versions  : "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradlePlugin",
 ]
 
 ext.libraries = [
