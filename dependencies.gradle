@@ -16,7 +16,7 @@ ext.versions = [
         supportLibs             : '27.1.1',
         timber                  : '4.5.1',
 
-        jcraft                  : '0.1.54',
+        jsch                    : '0.1.54',
         jgit                    : '3.7.1.201504261725-r',
         commonsIo               : '2.5',
         universalImageLoader    : '1.9.5',
@@ -47,7 +47,7 @@ ext.libraries = [
 
         timber                      : "com.jakewharton.timber:timber:$versions.timber",
 
-        jcraft                      : "com.jcraft:jsch:$versions.jcraft",
+        jsch                        : "com.jcraft:jsch:$versions.jsch",
         commonsIo                   : "commons-io:commons-io:$versions.commonsIo",
         jgit                        : "org.eclipse.jgit:org.eclipse.jgit:$versions.jgit",
         universalImageLoader        : "com.nostra13.universalimageloader:universal-image-loader:$versions.universalImageLoader",
