@@ -16,7 +16,7 @@ ext.versions = [
         supportLibs             : '27.1.1',
         timber                  : '4.5.1',
 
-        jcraft                  : '0.1.5.4',
+        jcraft                  : '0.1.54',
         jgit                    : '3.7.1.201504261725-r',
         commonsIo               : '2.5',
         universalImageLoader    : '1.9.5',
