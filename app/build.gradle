@@ -39,7 +39,7 @@ dependencies {
 
     compile libraries.timber
 
-    compile libraries.jcraft
+    compile libraries.jsch
     compile libraries.commonsIo
     compile libraries.jgit
     compile libraries.universalImageLoader
