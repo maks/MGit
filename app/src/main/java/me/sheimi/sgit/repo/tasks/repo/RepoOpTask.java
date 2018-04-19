@@ -1,5 +1,6 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import org.acra.ACRA;
 import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
@@ -37,6 +38,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
             }
             BasicFunctions.getActiveActivity().showMessageDialog(
                 R.string.error_clone_failed, msg != null ? msg : "An error occured"); // TODO: localize string
+            ACRA.getErrorReporter().handleException(mException, false); //TODO: make possible to not send report
             return;
         }
         if (isSuccess && mSuccessMsg != 0) {
