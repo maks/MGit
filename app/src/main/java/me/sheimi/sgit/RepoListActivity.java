@@ -67,7 +67,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         if (uri != null) {
             URL mRemoteRepoUrl = null;
             try {
-                mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
+                mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
             } catch (MalformedURLException e) {
                 Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
                 e.printStackTrace();
