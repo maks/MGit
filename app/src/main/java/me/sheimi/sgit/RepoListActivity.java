@@ -97,6 +97,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
                     CloneDialog cloneDialog = new CloneDialog();
                     cloneDialog.setUrl(repoUrlBuilder.toString());
+                    cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
