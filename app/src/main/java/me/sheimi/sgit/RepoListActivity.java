@@ -64,7 +64,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         mContext = getApplicationContext();
 
         Uri uri = this.getIntent().getData();
-        if(uri != null){
+        if (uri != null) {
             URL mRemoteRepoUrl = null;
             try {
                 mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPath());
@@ -73,35 +73,35 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 e.printStackTrace();
             }
 
-            if(mRemoteRepoUrl != null){
+            if (mRemoteRepoUrl != null) {
                 String remoteUrl = mRemoteRepoUrl.toString();
-                String repoName = remoteUrl.substring(remoteUrl.lastIndexOf("/")+1);
+                String repoName = remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
                 StringBuilder repoUrlBuilder = new StringBuilder(remoteUrl);
 
                 //need git extension to clone some repos
-                if(!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension)))
-                {
+                if (!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension))) {
                     repoUrlBuilder.append(getString(R.string.git_extension));
+                } else { //if has git extension remove it from repository name
+                    repoName = repoName.substring(0, repoName.lastIndexOf('.'));
                 }
-                else//if has git extension remove it from repository name
-                    {
-                        repoName = repoName.substring(0, repoName.lastIndexOf('.'));
-                    }
                 //Check if there are others repositories with same remote
-                List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext,  RepoDbManager.searchRepo(remoteUrl));
+                List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext, RepoDbManager.searchRepo(remoteUrl));
 
                 //if so, just open it
-                if(repositoriesWithSameRemote.size() > 0){
+                if (repositoriesWithSameRemote.size() > 0) {
                     Toast.makeText(mContext, R.string.repository_already_present, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, RepoDetailActivity.class);
                     intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
                     startActivity(intent);
-                }
-                else{
-					final String cloningStatus = getString(R.string.cloning);
-	                Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus );
+                } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
+                    // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
+                    CloneDialog cloneDialog = new CloneDialog();
+                    cloneDialog.setUrl(repoUrlBuilder.toString());
+                } else {
+                    final String cloningStatus = getString(R.string.cloning);
+                    Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
                     Boolean isRecursive = true;
-    	            CloneTask task = new CloneTask(mRepo, true, cloningStatus, null);
+                    CloneTask task = new CloneTask(mRepo, true, cloningStatus, null);
                     task.executeTask();
                 }
             }
