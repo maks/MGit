@@ -32,8 +32,6 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
     private DialogCloneBinding mBinding;
     private PreferenceHelper mPrefsHelper;
 
-    private String mCustomRemoteUrl;
-
     private class RemoteUrlFocusListener implements View.OnFocusChangeListener {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
@@ -82,9 +80,6 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
             fillInformationFromPreviousCloneFail(Profile.getLastCloneTryRepo());
 
         mBinding.remoteURL.setOnFocusChangeListener(new RemoteUrlFocusListener());
-        if (mCustomRemoteUrl != null) {
-            mBinding.remoteURL.setText(mCustomRemoteUrl);
-        }
 
         // set button listener
         builder.setTitle(R.string.title_clone_repo);
@@ -172,10 +167,6 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
     }
 
     public void setUrl(String url) {
-        if (mBinding == null) {
-            mCustomRemoteUrl = url;
-        } else {
-            mBinding.remoteURL.setText(url);
-        }
+        mBinding.remoteURL.setText(url);
     }
 }
