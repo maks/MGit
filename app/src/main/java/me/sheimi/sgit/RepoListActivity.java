@@ -96,8 +96,8 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
                     CloneDialog cloneDialog = new CloneDialog();
-                    cloneDialog.setUrl(repoUrlBuilder.toString());
                     cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                    cloneDialog.setUrl(repoUrlBuilder.toString());
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
