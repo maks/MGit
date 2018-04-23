@@ -96,9 +96,26 @@ If you want to help improve this project, contributions, especially translations
 If you would like to contribute code, either a bugfix or a new feature, please make sure there is a open issue that addresses the new code. 
 **No Pull Requests** will be merged that do not reference an existing issue in the repo.
 
+Please use the Android Studio formatting settings set for this project in the repo.
+
+All strings visible to the user 
+
+#### Project Goals
+
+* Provide the best GUI git client available on any platform
+* Be usable on both phone, tablet and laptop form-factor devices
+
+#### Non-goals for the project
+
+* Support for proprietary vendor APIs (eg. Github)
+
+#### Major Contributions
+
 For new features, a discussion of the new functionality may need to take place in the comments on the issue covering it, so it may be best for that to occur before you spend time on writing the new code.
 
-### Submitting a Pull Request (PR)
+The app is about to have a major restructure. All new functionality in the app will be written in Kotlin/Rx per #277. Please be aware that the project is now using Data Binding Library and all future functionality should make use of it.
+
+#### Submitting a Pull Request (PR)
 Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
 
 If you are working on a branch for some time, you may find that changes to master get merged in the meantime, if that happens please do **NOT** merge master into your branch! Instead rebase your branch onto the current head of master.
