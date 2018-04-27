@@ -1,15 +1,15 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import org.eclipse.jgit.api.TransportCommand;
+import org.eclipse.jgit.lib.ProgressMonitor;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+
 import me.sheimi.android.activities.SheimiFragmentActivity.OnPasswordEntered;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask;
 import timber.log.Timber;
-
-import org.eclipse.jgit.api.TransportCommand;
-import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
 public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> {
 
@@ -26,11 +26,7 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
         super.onPostExecute(isSuccess);
         mRepo.removeTask(this);
         if (!isSuccess && !isTaskCanceled()) {
-            if (!isSuccess) {
-                BasicFunctions.getActiveActivity().showMessageDialog(
-                    R.string.error_clone_failed, mException.getLocalizedMessage());
-            }
-            return;
+            BasicFunctions.showException(BasicFunctions.getActiveActivity(), mException, mErrorRes);
         }
         if (isSuccess && mSuccessMsg != 0) {
             BasicFunctions.getActiveActivity().showToastMessage(mSuccessMsg);
