@@ -165,4 +165,8 @@ public class CloneDialog extends SheimiDialogFragment implements View.OnClickLis
         CloneTask task = new CloneTask(mRepo, mBinding.cloneRecursive.isChecked(), getString(R.string.cloning), null);
         task.executeTask();
     }
+
+    public void setUrl(String url) {
+        mBinding.remoteURL.setText(url);
+    }
 }
