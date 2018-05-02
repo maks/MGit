@@ -1,8 +1,13 @@
 package me.sheimi.android.utils;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
+import com.manichord.mgit.dialogs.ExceptionDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -60,5 +65,16 @@ public class BasicFunctions {
 
     public static ImageLoader getImageLoader() {
         return getActiveActivity().getImageLoader();
+    }
+
+    public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable, @StringRes int errorRes) {
+        ExceptionDialog exceptionDialog = new ExceptionDialog();
+        exceptionDialog.setThrowable(throwable);
+        exceptionDialog.setErrorRes(errorRes);
+        exceptionDialog.show(activity.getSupportFragmentManager(), "exception-dialog");
+    }
+
+    public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable) {
+        showException(activity, throwable, 0);
     }
 }

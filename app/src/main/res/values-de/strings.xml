@@ -76,6 +76,8 @@
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
     <string name="dialog_prompt_for_password_checkbox">Benutzername and Passwort speichern</string>
     <string name="dialog_title_you_want_to">Diese Datei ...</string>
+    <string name="dialog_error_send_report">Fehler per E-Mail melden</string>
+    <string name="dialog_error_occurred_msg">Ein unerwarteter Fehler ist aufgetreten</string>
 
     <!-- Others -->
     <string name="title_activity_private_key_manage">Private Schlüssel verwalten</string>
