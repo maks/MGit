@@ -2,19 +2,24 @@ package me.sheimi.sgit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.manichord.mgit.dialogs.CloneDialogViewModel;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
 
@@ -31,9 +36,9 @@ import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.CloneDialog;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
+import me.sheimi.sgit.dialogs.InitDialog;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 import timber.log.Timber;
@@ -95,9 +100,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     startActivity(intent);
                 } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
-                    CloneDialog cloneDialog = new CloneDialog();
-                    cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
-                    cloneDialog.setUrl(repoUrlBuilder.toString());
+                    cloneDialog(new CloneDialogViewModel(repoUrlBuilder.toString())).show();
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
@@ -123,8 +126,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_new:
-                CloneDialog cloneDialog = new CloneDialog();
-                cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                cloneDialog(new CloneDialogViewModel("")).show();
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -223,5 +225,28 @@ public class RepoListActivity extends SheimiFragmentActivity {
         }
         MGitHttpConnectionFactory.install();
         Timber.i("Installed custom HTTPS factory");
+    }
+
+    private Dialog cloneDialog(CloneDialogViewModel viewModel) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_clone, null, false);
+        binding.setVariable(BR.viewModel, viewModel);
+        binding.setLifecycleOwner(this);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(binding.getRoot());
+        builder.setTitle(R.string.title_clone_repo);
+        builder.setNegativeButton(R.string.label_cancel,
+            new DummyDialogListener());
+        builder.setNeutralButton(R.string.dialog_clone_neutral_label,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    InitDialog id = new InitDialog();
+                    id.show(getSupportFragmentManager(), "init-dialog");
+                }
+            });
+        builder.setPositiveButton(R.string.label_clone,
+            new DummyDialogListener());
+        return builder.create();
     }
 }

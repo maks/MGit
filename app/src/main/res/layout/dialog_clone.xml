@@ -2,39 +2,47 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="@dimen/general_padding">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.manichord.mgit.dialogs.CloneDialogViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/general_padding">
 
     <EditText
-            android:id="@+id/remoteURL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/general_dialog_text_size"
-            android:hint="@string/label_remote_url"
-            android:layout_margin="@dimen/general_vertial_margin"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:inputType="textUri"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/general_dialog_text_size"
+        android:hint="@string/label_remote_url"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:inputType="textUri"
+        android:text="@={viewModel.remoteUrl}" />
 
     <EditText
-            android:id="@+id/localPath"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/general_dialog_text_size"
-            android:layout_margin="@dimen/general_vertial_margin"
-            android:singleLine="true"
-            android:imeOptions="actionNext"
-            android:hint="@string/dialog_clone_local_path_hint"/>
+        android:id="@+id/localPath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/general_dialog_text_size"
+        android:layout_margin="@dimen/general_vertial_margin"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
+        android:hint="@string/dialog_clone_local_path_hint"
+        android:text="@={viewModel.localRepoName}"
+        />
 
     <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_clone_recursive"
-            android:id="@+id/cloneRecursive"
-            android:layout_gravity="left|center_vertical"
-            android:checked="false"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dialog_clone_recursive"
+        android:id="@+id/cloneRecursive"
+        android:layout_gravity="left|center_vertical"
+        android:checked="@={viewModel.cloneRecursively}"/>
 </LinearLayout>
 </layout>
