@@ -3,6 +3,9 @@ package com.manichord.mgit.dialogs
 import android.databinding.Bindable
 import com.manichord.mgit.common.BaseViewModel
 import me.sheimi.sgit.BR
+import me.sheimi.sgit.database.models.Repo
+import me.sheimi.sgit.repo.tasks.repo.CloneTask
+import timber.log.Timber
 
 class CloneDialogViewModel(url: String) : BaseViewModel() {
 
@@ -22,8 +25,20 @@ class CloneDialogViewModel(url: String) : BaseViewModel() {
 
     var cloneRecursively : Boolean = false
 
+    var remoteUrlError : String? = null
+    var localRepoNameError : String? = null
+
     init {
         remoteUrl = url
+    }
+
+    fun cloneRepo() {
+        // FIXME: createRepo should not use user visible strings, instead will need to be refactored
+        // to set an observable state
+        Timber.d("CLONE REPO %s %s", localRepoName, remoteUrl)
+        val repo = Repo.createRepo(localRepoName, remoteUrl, "")
+        val task = CloneTask(repo, cloneRecursively, "", null)
+        task.executeTask()
     }
 
     private fun stripUrlFromRepo(remoteUrl: String): String {

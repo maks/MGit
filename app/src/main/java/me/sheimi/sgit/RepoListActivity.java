@@ -15,8 +15,11 @@ import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.manichord.mgit.dialogs.CloneDialogViewModel;
@@ -36,9 +39,11 @@ import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.databinding.DialogCloneBinding;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.dialogs.InitDialog;
+import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 import timber.log.Timber;
@@ -48,6 +53,8 @@ public class RepoListActivity extends SheimiFragmentActivity {
     private ListView mRepoList;
     private Context mContext;
     private RepoListAdapter mRepoListAdapter;
+
+    private CloneDialogViewModel viewModel;
 
     private static final int REQUEST_IMPORT_REPO = 0;
 
@@ -227,16 +234,16 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Timber.i("Installed custom HTTPS factory");
     }
 
-    private Dialog cloneDialog(CloneDialogViewModel viewModel) {
-        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_clone, null, false);
+    private Dialog cloneDialog(final CloneDialogViewModel viewModel) {
+        this.viewModel = viewModel;
+        final DialogCloneBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_clone, null, false);
         binding.setVariable(BR.viewModel, viewModel);
         binding.setLifecycleOwner(this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(binding.getRoot());
         builder.setTitle(R.string.title_clone_repo);
-        builder.setNegativeButton(R.string.label_cancel,
-            new DummyDialogListener());
+        builder.setNegativeButton(R.string.label_cancel, null);
         builder.setNeutralButton(R.string.dialog_clone_neutral_label,
             new DialogInterface.OnClickListener() {
                 @Override
@@ -245,8 +252,62 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     id.show(getSupportFragmentManager(), "init-dialog");
                 }
             });
-        builder.setPositiveButton(R.string.label_clone,
-            new DummyDialogListener());
-        return builder.create();
+        builder.setPositiveButton(R.string.label_clone, null);
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (validateRemoteUrl() && validateLocalNameAndHint(binding.localPath)) {
+                            viewModel.cloneRepo();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+        return dialog;
+    }
+
+    public boolean validateRemoteUrl() {
+        if (viewModel.getRemoteUrl().equals("")) {
+            showToastMessage(R.string.alert_remoteurl_required);
+            viewModel.setRemoteUrlError(getString(R.string.alert_remoteurl_required));
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateLocalNameAndHint(TextView localPathTextView) {
+        if (viewModel.getLocalRepoName().isEmpty()) {
+            showToastMessage(R.string.alert_localpath_required);
+            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_required));
+            return false;
+        }
+        if (viewModel.getLocalRepoName().contains("/")) {
+            showToastMessage(R.string.alert_localpath_format);
+            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_format));
+            return false;
+        }
+        // If user is accepting the default path in the hint, we need to set localPath to
+        // the string in the hint, so that the following checks don't fail.
+        if (localPathTextView.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
+            viewModel.setLocalRepoName(localPathTextView.getHint().toString());
+            return false;
+        }
+
+        PreferenceHelper prefsHelper = ((SGitApplication) this.getApplicationContext()).getPrefenceHelper();
+        File file = Repo.getDir(prefsHelper, viewModel.getLocalRepoName());
+        if (file.exists()) {
+            showToastMessage(R.string.alert_localpath_repo_exists);
+            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_repo_exists));
+            return false;
+        }
+        return true;
     }
 }
