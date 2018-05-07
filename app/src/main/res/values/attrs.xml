@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="pager_title_strip_background" format="color|reference"/>
+    <attr name="drawer_text_color" format="color|reference"/>
+    <attr name="drawer_background" format="color|reference"/>
+    <attr name="bt_branch_name_bg" format="color|reference"/>
+    <attr name="ic_file_fl" format="color|reference"/>
+    <attr name="ic_folder_fl" format="color|reference"/>
+    <attr name="ic_branch_l" format="color|reference"/>
+    <attr name="ic_tag_l" format="color|reference"/>
+</resources>
