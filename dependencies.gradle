@@ -1,3 +1,6 @@
+// This is for my Retropiler mod to disable it
+ext.useRetrolambda = false
+
 ext.versions = [
         code                    : 1,
         name                    : '1.0',
@@ -9,19 +12,19 @@ ext.versions = [
 
         kotlin                  : '1.2.31',
 
-        androidGradlePlugin     : '3.1.0',
+        androidGradlePlugin     : '3.1.1',
         dexcountPlugin          : '0.6.1',
         versionsGradlePlugin    : '0.13.0',
 
         supportLibs             : '27.1.1',
-        timber                  : '4.5.1',
+        timber                  : '4.7.0',
 
         jsch                    : '0.1.54',
-        jgit                    : '3.7.1.201504261725-r',
-        commonsIo               : '2.5',
+        jgit                    : '4.11.0.201803080745-r',
+        commonsIo               : '2.6',
         universalImageLoader    : '1.9.5',
         securePreferences       : '0.1.4',
-        acra                    : '4.9.2',
+        acra                    : '4.11',
 
         stetho                  : '1.5.0',
         leakCanary              : '1.5.4',
@@ -29,13 +32,16 @@ ext.versions = [
         junit                   : '4.12',
         robolectric             : '3.5',
         robolectricShadowSupport: '3.4-rc2',
+        
+        useModdedRetropiler     : true,
+        retropiler              : '0.0.5',
 ]
 
 ext.gradlePlugins = [
-        android    : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
-        retrolambda: "me.tatarka:gradle-retrolambda:$versions.retrolambdaGradlePlugin",
-        dexcount   : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountPlugin",
-        versions   : "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradlePlugin",
+        android   : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        retropiler: versions.useModdedRetropiler ? "com.github.kaeptmblaubaer1000.retropiler:plugin:mod-SNAPSHOT" : "io.github.retropiler:retropiler-gradle-plugin:$versions.retropiler",
+        dexcount  : "com.getkeepsafe.dexcount:dexcount-gradle-plugin:$versions.dexcountPlugin",
+        versions  : "com.github.ben-manes:gradle-versions-plugin:$versions.versionsGradlePlugin",
 ]
 
 ext.libraries = [

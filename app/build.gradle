@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+ext.useRetrolambda = false
+apply plugin: 'io.github.retropiler'
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -24,6 +26,16 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
