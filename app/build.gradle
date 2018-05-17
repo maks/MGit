@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion 16
+        targetSdkVersion 27
 
         vectorDrawables.useSupportLibrary = true
 
@@ -28,32 +28,34 @@ android {
 }
 
 dependencies {
-    debugCompile libraries.stetho
-    debugCompile libraries.stethoTimber
+    def supportLib_version = "27.1.1"
 
-    compile libraries.supportFragment
-    compile libraries.supportAnnotations
-    compile libraries.supportAppCompat
-    compile libraries.supportDesign
-    compile libraries.supportRecyclerView
+    debugCompile "com.facebook.stetho:stetho:1.5.0"
+    debugCompile "com.facebook.stetho:stetho-timber:1.5.0"
 
-    compile libraries.timber
+    compile "com.android.support:support-fragment:$supportLib_version"
+    compile "com.android.support:support-annotations:$supportLib_version"
+    compile "com.android.support:appcompat-v7:$supportLib_version"
+    compile "com.android.support:design:$supportLib_version"
+    compile "com.android.support:recyclerview-v7:$supportLib_version"
 
-    compile libraries.jsch
-    compile libraries.commonsIo
-    compile libraries.jgit
-    compile libraries.universalImageLoader
-    compile libraries.securePreferences
-    compile libraries.acra
+    compile "com.jakewharton.timber:timber:4.5.1"
+
+    compile "com.jcraft:jsch:0.1.54"
+    compile "commons-io:commons-io:2.5"
+    compile "org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r"
+    compile "com.nostra13.universalimageloader:universal-image-loader:1.9.5"
+    compile "com.scottyab:secure-preferences-lib:0.1.4"
+    compile "ch.acra:acra:4.9.2"
 
     compile "org.conscrypt:conscrypt-android:1.1.0"
 
-    testCompile libraries.junit
-    testCompile libraries.robolectric
-    testCompile libraries.robolectricShadowSupport
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+    testCompile "junit:junit:4.12"
+    testCompile "org.robolectric:robolectric:3.5"
+    testCompile "org.robolectric:shadows-support-v4:3.4-rc2"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31"
 
-    kapt "com.android.databinding:compiler:$versions.androidGradlePlugin"
+    kapt "com.android.databinding:compiler:3.1.0"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
