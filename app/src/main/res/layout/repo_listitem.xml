@@ -31,7 +31,7 @@
             android:id="@+id/commitMsgContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/general_vertial_margin">
+            android:layout_marginTop="@dimen/general_vertical_margin">
 
         <ImageView
                 android:layout_width="@dimen/repo_list_item_icon_size"
@@ -90,7 +90,7 @@
             android:id="@+id/progressContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/general_vertial_margin">
+            android:layout_marginTop="@dimen/general_vertical_margin">
         <ProgressBar
                 android:layout_width="@dimen/repo_list_item_icon_size"
                 android:layout_height="@dimen/repo_list_item_icon_size"

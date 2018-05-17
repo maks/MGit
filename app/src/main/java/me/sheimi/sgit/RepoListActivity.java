@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,7 +38,7 @@ import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.databinding.DialogCloneBinding;
+import me.sheimi.sgit.databinding.CloneViewBinding;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.dialogs.InitDialog;
@@ -107,7 +106,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     startActivity(intent);
                 } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
-                    cloneDialog(new CloneDialogViewModel(repoUrlBuilder.toString())).show();
+                    showCloneView(new CloneDialogViewModel(repoUrlBuilder.toString())).show();
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
@@ -133,7 +132,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_new:
-                cloneDialog(new CloneDialogViewModel("")).show();
+                showCloneView(new CloneDialogViewModel("")).show();
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -234,9 +233,9 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Timber.i("Installed custom HTTPS factory");
     }
 
-    private Dialog cloneDialog(final CloneDialogViewModel viewModel) {
+    private Dialog showCloneView(final CloneDialogViewModel viewModel) {
         this.viewModel = viewModel;
-        final DialogCloneBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_clone, null, false);
+        final CloneViewBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.clone_view, null, false);
         binding.setVariable(BR.viewModel, viewModel);
         binding.setLifecycleOwner(this);
 
