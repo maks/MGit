@@ -1,42 +1,48 @@
 package com.manichord.mgit.dialogs
 
-import android.databinding.Bindable
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.manichord.mgit.common.BaseViewModel
-import me.sheimi.sgit.BR
 import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.repo.CloneTask
 import timber.log.Timber
 
-class CloneDialogViewModel(url: String) : BaseViewModel() {
+class CloneViewModel : BaseViewModel() {
 
-    var remoteUrl : String = ""
-        @Bindable
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.localRepoName)
-        }
+    private val _remoteUrl : MutableLiveData<String> = MutableLiveData()
+    private val _localRepoName : MutableLiveData<String> = MutableLiveData()
 
-    var localRepoName : String = ""
-        @Bindable
-        get() {
-            if (remoteUrl.isEmpty()) { return "" }
-            return stripGitExtension(stripUrlFromRepo(remoteUrl))
-        }
-
+    val remoteUrl : LiveData<String> = _remoteUrl
+    val localRepoName : LiveData<String> = _localRepoName
     var cloneRecursively : Boolean = false
 
     var remoteUrlError : String? = null
     var localRepoNameError : String? = null
 
+    val visible : MutableLiveData<Boolean> = MutableLiveData()
+
     init {
-        remoteUrl = url
+        visible.value = false
+    }
+
+    fun show(show : Boolean) {
+        visible.value = show
+    }
+
+    fun setRemoteUrl(remoteUrl: String) {
+        _remoteUrl.value = remoteUrl
+        _localRepoName.value = stripGitExtension(stripUrlFromRepo(remoteUrl))
+    }
+
+    fun setLocalRepoName(repoName: String) {
+        _localRepoName.value = repoName
     }
 
     fun cloneRepo() {
         // FIXME: createRepo should not use user visible strings, instead will need to be refactored
         // to set an observable state
-        Timber.d("CLONE REPO %s %s", localRepoName, remoteUrl)
-        val repo = Repo.createRepo(localRepoName, remoteUrl, "")
+        Timber.d("CLONE REPO %s %s", localRepoName.value, remoteUrl.value)
+        val repo = Repo.createRepo(localRepoName.value, remoteUrl.value, "")
         val task = CloneTask(repo, cloneRecursively, "", null)
         task.executeTask()
     }

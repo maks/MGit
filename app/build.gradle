@@ -29,13 +29,21 @@ android {
 
 dependencies {
     def supportLib_version = "27.1.1"
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31'
+    def lifecycle_version = "1.1.1"
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31'
     implementation "com.android.support:support-fragment:$supportLib_version"
     implementation "com.android.support:support-annotations:$supportLib_version"
     implementation "com.android.support:appcompat-v7:$supportLib_version"
     implementation "com.android.support:design:$supportLib_version"
     implementation "com.android.support:recyclerview-v7:$supportLib_version"
+    implementation "com.android.support:support-vector-drawable:$supportLib_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    kapt "android.arch.lifecycle:compiler:$lifecycle_version"
+
     implementation 'com.jakewharton.timber:timber:4.5.1'
     implementation 'com.jcraft:jsch:0.1.54'
     implementation 'commons-io:commons-io:2.5'
@@ -49,10 +57,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.5'
     testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }

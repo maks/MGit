@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
 
     <data>
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
-            type="com.manichord.mgit.dialogs.CloneDialogViewModel" />
+            type="com.manichord.mgit.dialogs.CloneViewModel" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/general_padding">
+        android:padding="@dimen/general_padding"
+        android:visibility="@{viewModel.visible ? View.VISIBLE : View.GONE}"
+        tools:visibility="visible"
+        >
 
 
     <LinearLayout
@@ -39,7 +47,7 @@
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:inputType="textUri"
-        android:text="@={viewModel.remoteUrl}" />
+        android:text="@{viewModel.remoteUrl}" />
 
     <EditText
         android:id="@+id/localPath"
@@ -50,7 +58,7 @@
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:hint="@string/dialog_clone_local_path_hint"
-        android:text="@={viewModel.localRepoName}"
+        android:text="@{viewModel.localRepoName}"
         />
 
 
@@ -68,10 +76,9 @@
         android:text="@string/dialog_clone_recursive"
         android:id="@+id/cloneRecursive"
         android:layout_gravity="left|center_vertical"
-        android:checked="@={viewModel.cloneRecursively}"/>
+        android:checked="@{viewModel.cloneRecursively}"/>
 
     </LinearLayout>
-
 
         <Button
             android:id="@+id/cloneViewCloneButton"
@@ -80,6 +87,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
             android:text="@string/label_clone"
+            android:onClick="@{() -> viewModel.cloneRepo()}"
             />
 
         <Button
@@ -88,6 +96,7 @@
             app:layout_constraintEnd_toStartOf="@id/cloneViewCloneButton"
             app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
             android:text="@string/label_cancel"
+            android:onClick="@{() -> viewModel.show(false)}"
             />
     </android.support.constraint.ConstraintLayout>
 </layout>

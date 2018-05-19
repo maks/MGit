@@ -2,7 +2,7 @@ package me.sheimi.sgit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,17 +11,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manichord.mgit.dialogs.CloneDialogViewModel;
+import com.manichord.mgit.RepoListViewModel;
+import com.manichord.mgit.dialogs.CloneViewModel;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
 
@@ -38,10 +35,9 @@ import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.databinding.CloneViewBinding;
+import me.sheimi.sgit.databinding.ActivityMainBinding;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
-import me.sheimi.sgit.dialogs.InitDialog;
 import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
@@ -49,29 +45,33 @@ import timber.log.Timber;
 
 public class RepoListActivity extends SheimiFragmentActivity {
 
-    private ListView mRepoList;
     private Context mContext;
     private RepoListAdapter mRepoListAdapter;
 
-    private CloneDialogViewModel viewModel;
-
     private static final int REQUEST_IMPORT_REPO = 0;
+
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
+        CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setLifecycleOwner(this);
+        binding.setCloneViewModel(cloneViewModel);
+        binding.setViewModel(viewModel);
 
         PrivateKeyUtils.migratePrivateKeys();
 
         initUpdatedSSL();
 
-        setContentView(R.layout.activity_main);
-        mRepoList = (ListView) findViewById(R.id.repoList);
         mRepoListAdapter = new RepoListAdapter(this);
-        mRepoList.setAdapter(mRepoListAdapter);
+        binding.repoList.setAdapter(mRepoListAdapter);
         mRepoListAdapter.queryAllRepo();
-        mRepoList.setOnItemClickListener(mRepoListAdapter);
-        mRepoList.setOnItemLongClickListener(mRepoListAdapter);
+        binding.repoList.setOnItemClickListener(mRepoListAdapter);
+        binding.repoList.setOnItemLongClickListener(mRepoListAdapter);
         mContext = getApplicationContext();
 
         Uri uri = this.getIntent().getData();
@@ -81,7 +81,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
             } catch (MalformedURLException e) {
                 Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                Timber.e(e);
             }
 
             if (mRemoteRepoUrl != null) {
@@ -106,7 +106,8 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     startActivity(intent);
                 } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
-                    showCloneView(new CloneDialogViewModel(repoUrlBuilder.toString())).show();
+                    cloneViewModel.setRemoteUrl(repoUrlBuilder.toString());
+                    showCloneView();
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
@@ -132,7 +133,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_new:
-                showCloneView(new CloneDialogViewModel("")).show();
+                showCloneView();
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -225,6 +226,43 @@ public class RepoListActivity extends SheimiFragmentActivity {
         rawfinish();
     }
 
+    public boolean validateRemoteUrl() {
+        if (binding.getCloneViewModel().getRemoteUrl().equals("")) {
+            showToastMessage(R.string.alert_remoteurl_required);
+            binding.getCloneViewModel().setRemoteUrlError(getString(R.string.alert_remoteurl_required));
+            return false;
+        }
+        return true;
+    }
+
+    public boolean validateLocalNameAndHint(TextView localPathTextView) {
+        if (binding.getCloneViewModel().getLocalRepoName().getValue().isEmpty()) {
+            showToastMessage(R.string.alert_localpath_required);
+            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_required));
+            return false;
+        }
+        if (binding.getCloneViewModel().getLocalRepoName().getValue().contains("/")) {
+            showToastMessage(R.string.alert_localpath_format);
+            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_format));
+            return false;
+        }
+        // If user is accepting the default path in the hint, we need to set localPath to
+        // the string in the hint, so that the following checks don't fail.
+        if (localPathTextView.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
+            binding.getCloneViewModel().setLocalRepoName(localPathTextView.getHint().toString());
+            return false;
+        }
+
+        PreferenceHelper prefsHelper = ((SGitApplication) this.getApplicationContext()).getPrefenceHelper();
+        File file = Repo.getDir(prefsHelper, binding.getCloneViewModel().getLocalRepoName().getValue());
+        if (file.exists()) {
+            showToastMessage(R.string.alert_localpath_repo_exists);
+            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_repo_exists));
+            return false;
+        }
+        return true;
+    }
+
     private void initUpdatedSSL() {
         if (Build.VERSION.SDK_INT < 21) {
             SSLProviderInstaller.install(this);
@@ -233,80 +271,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Timber.i("Installed custom HTTPS factory");
     }
 
-    private Dialog showCloneView(final CloneDialogViewModel viewModel) {
-        this.viewModel = viewModel;
-        final CloneViewBinding binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.clone_view, null, false);
-        binding.setVariable(BR.viewModel, viewModel);
-        binding.setLifecycleOwner(this);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(binding.getRoot());
-        builder.setTitle(R.string.title_clone_repo);
-        builder.setNegativeButton(R.string.label_cancel, null);
-        builder.setNeutralButton(R.string.dialog_clone_neutral_label,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    InitDialog id = new InitDialog();
-                    id.show(getSupportFragmentManager(), "init-dialog");
-                }
-            });
-        builder.setPositiveButton(R.string.label_clone, null);
-        final AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-
-                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (validateRemoteUrl() && validateLocalNameAndHint(binding.localPath)) {
-                            viewModel.cloneRepo();
-                            dialog.dismiss();
-                        }
-                    }
-                });
-            }
-        });
-        return dialog;
-    }
-
-    public boolean validateRemoteUrl() {
-        if (viewModel.getRemoteUrl().equals("")) {
-            showToastMessage(R.string.alert_remoteurl_required);
-            viewModel.setRemoteUrlError(getString(R.string.alert_remoteurl_required));
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateLocalNameAndHint(TextView localPathTextView) {
-        if (viewModel.getLocalRepoName().isEmpty()) {
-            showToastMessage(R.string.alert_localpath_required);
-            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_required));
-            return false;
-        }
-        if (viewModel.getLocalRepoName().contains("/")) {
-            showToastMessage(R.string.alert_localpath_format);
-            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_format));
-            return false;
-        }
-        // If user is accepting the default path in the hint, we need to set localPath to
-        // the string in the hint, so that the following checks don't fail.
-        if (localPathTextView.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
-            viewModel.setLocalRepoName(localPathTextView.getHint().toString());
-            return false;
-        }
-
-        PreferenceHelper prefsHelper = ((SGitApplication) this.getApplicationContext()).getPrefenceHelper();
-        File file = Repo.getDir(prefsHelper, viewModel.getLocalRepoName());
-        if (file.exists()) {
-            showToastMessage(R.string.alert_localpath_repo_exists);
-            viewModel.setLocalRepoNameError(getString(R.string.alert_localpath_repo_exists));
-            return false;
-        }
-        return true;
+    private void showCloneView() {
+        binding.getCloneViewModel().show(true);
     }
 }

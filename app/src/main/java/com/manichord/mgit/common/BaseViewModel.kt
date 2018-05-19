@@ -1,5 +1,5 @@
 package com.manichord.mgit.common
 
-import android.databinding.BaseObservable
+import android.arch.lifecycle.ViewModel
 
-abstract class BaseViewModel : BaseObservable()
+abstract class BaseViewModel : ViewModel()
