@@ -1,6 +1,5 @@
 package com.manichord.mgit.dialogs
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.manichord.mgit.common.BaseViewModel
 import me.sheimi.sgit.database.models.Repo
@@ -9,11 +8,13 @@ import timber.log.Timber
 
 class CloneViewModel : BaseViewModel() {
 
-    private val _remoteUrl : MutableLiveData<String> = MutableLiveData()
-    private val _localRepoName : MutableLiveData<String> = MutableLiveData()
+    var remoteUrl : String = ""
+        set(value) {
+            field = value
+            localRepoName.value = stripGitExtension(stripUrlFromRepo(remoteUrl))
+        }
 
-    val remoteUrl : LiveData<String> = _remoteUrl
-    val localRepoName : LiveData<String> = _localRepoName
+    val localRepoName : MutableLiveData<String> = MutableLiveData()
     var cloneRecursively : Boolean = false
 
     var remoteUrlError : String? = null
@@ -29,20 +30,15 @@ class CloneViewModel : BaseViewModel() {
         visible.value = show
     }
 
-    fun setRemoteUrl(remoteUrl: String) {
-        _remoteUrl.value = remoteUrl
-        _localRepoName.value = stripGitExtension(stripUrlFromRepo(remoteUrl))
-    }
-
     fun setLocalRepoName(repoName: String) {
-        _localRepoName.value = repoName
+        localRepoName.value = repoName
     }
 
     fun cloneRepo() {
         // FIXME: createRepo should not use user visible strings, instead will need to be refactored
         // to set an observable state
-        Timber.d("CLONE REPO %s %s", localRepoName.value, remoteUrl.value)
-        val repo = Repo.createRepo(localRepoName.value, remoteUrl.value, "")
+        Timber.d("CLONE REPO %s %s", localRepoName.value, remoteUrl)
+        val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
         val task = CloneTask(repo, cloneRecursively, "", null)
         task.executeTask()
     }

@@ -47,7 +47,7 @@
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:inputType="textUri"
-        android:text="@{viewModel.remoteUrl}" />
+        android:text="@={viewModel.remoteUrl}" />
 
     <EditText
         android:id="@+id/localPath"
@@ -58,7 +58,7 @@
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:hint="@string/dialog_clone_local_path_hint"
-        android:text="@{viewModel.localRepoName}"
+        android:text="@={viewModel.localRepoName}"
         />
 
 
