@@ -47,6 +47,7 @@
         android:singleLine="true"
         android:imeOptions="actionNext"
         android:inputType="textUri"
+        android:visibility="@{viewModel.initLocal ? View.GONE : View.VISIBLE}"
         android:text="@={viewModel.remoteUrl}" />
 
     <EditText
@@ -68,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
         android:text="@string/dialog_clone_neutral_label"
+        android:checked="@={viewModel.initLocal}"
         />
 
     <CheckBox
@@ -76,7 +78,8 @@
         android:text="@string/dialog_clone_recursive"
         android:id="@+id/cloneRecursive"
         android:layout_gravity="left|center_vertical"
-        android:checked="@{viewModel.cloneRecursively}"/>
+        android:visibility="@{viewModel.initLocal ? View.GONE : View.VISIBLE}"
+        android:checked="@={viewModel.cloneRecursively}"/>
 
     </LinearLayout>
 
@@ -86,7 +89,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
-            android:text="@string/label_clone"
+            android:text="@{viewModel.initLocal ? @string/label_init : @string/label_clone}"
+            tools:text="@string/label_clone"
             android:onClick="@{() -> viewModel.cloneRepo()}"
             />
 

@@ -16,6 +16,7 @@ class CloneViewModel : BaseViewModel() {
 
     val localRepoName : MutableLiveData<String> = MutableLiveData()
     var cloneRecursively : Boolean = false
+    val initLocal : MutableLiveData<Boolean> = MutableLiveData()
 
     var remoteUrlError : String? = null
     var localRepoNameError : String? = null
@@ -24,6 +25,7 @@ class CloneViewModel : BaseViewModel() {
 
     init {
         visible.value = false
+        initLocal.value = false
     }
 
     fun show(show : Boolean) {
@@ -37,10 +39,15 @@ class CloneViewModel : BaseViewModel() {
     fun cloneRepo() {
         // FIXME: createRepo should not use user visible strings, instead will need to be refactored
         // to set an observable state
-        Timber.d("CLONE REPO %s %s", localRepoName.value, remoteUrl)
-        val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
-        val task = CloneTask(repo, cloneRecursively, "", null)
-        task.executeTask()
+        if (initLocal?.value == true) {
+            Timber.d("INIT LOCAL %s", localRepoName.value)
+            //TODO:
+        } else {
+            Timber.d("CLONE REPO %s %s [%b]", localRepoName.value, remoteUrl, cloneRecursively)
+            val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
+            val task = CloneTask(repo, cloneRecursively, "", null)
+            task.executeTask()
+        }
     }
 
     private fun stripUrlFromRepo(remoteUrl: String): String {
