@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".RepoListActivity"
+            android:name="com.manichord.mgit.repolist.RepoListActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,10 +47,10 @@
         <activity
             android:name=".activities.RepoDetailActivity"
             android:label="@string/title_activity_repo_detail"
-            android:parentActivityName=".RepoListActivity" >
+            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RepoListActivity" />
+                android:value="com.manichord.mgit.repolist.RepoListActivity" />
         </activity>
         <activity
             android:name=".activities.ViewFileActivity"
@@ -78,18 +78,18 @@
         <activity
             android:name=".activities.explorer.ImportRepositoryActivity"
             android:label="@string/title_activity_import_repository"
-            android:parentActivityName=".RepoListActivity" >
+            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RepoListActivity" />
+                android:value="com.manichord.mgit.repolist.RepoListActivity" />
         </activity>
         <activity
             android:name=".activities.explorer.PrivateKeyManageActivity"
             android:label="@string/title_activity_private_key_manage"
-            android:parentActivityName=".RepoListActivity" >
+            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RepoListActivity" />
+                android:value="com.manichord.mgit.repolist.RepoListActivity" />
         </activity>
         <activity
             android:name=".activities.explorer.ExploreFileActivity"
@@ -102,10 +102,10 @@
         <activity
             android:name=".activities.UserSettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".RepoListActivity" >
+            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".RepoListActivity" />
+                android:value="com.manichord.mgit.repolist.RepoListActivity" />
         </activity>
         <activity
             android:name=".activities.explorer.ExploreRootDirActivity"

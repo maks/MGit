@@ -12,7 +12,7 @@ import java.io.File;
 
 import me.sheimi.android.views.SheimiDialogFragment;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.RepoListActivity;
+import com.manichord.mgit.repolist.RepoListActivity;
 import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.preference.PreferenceHelper;

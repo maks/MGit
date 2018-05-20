@@ -2,10 +2,10 @@
     <data>
         <variable
             name="viewModel"
-            type="com.manichord.mgit.RepoListViewModel" />
+            type="com.manichord.mgit.repolist.RepoListViewModel" />
         <variable
             name="cloneViewModel"
-            type="com.manichord.mgit.dialogs.CloneViewModel" />
+            type="com.manichord.mgit.clone.CloneViewModel" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".RepoListActivity">
+        tools:context="com.manichord.mgit.repolist.RepoListActivity">
 
         <include
             android:id="@+id/cloneViewInclude"

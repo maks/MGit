@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.manichord.mgit.dialogs.CloneViewModel" />
+            type="com.manichord.mgit.clone.CloneViewModel" />
 
     </data>
 
@@ -38,29 +38,44 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <EditText
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/general_dialog_text_size"
-        android:hint="@string/label_remote_url"
-        android:layout_margin="@dimen/general_vertical_margin"
-        android:singleLine="true"
-        android:imeOptions="actionNext"
-        android:inputType="textUri"
-        android:visibility="@{viewModel.initLocal ? View.GONE : View.VISIBLE}"
-        android:text="@={viewModel.remoteUrl}" />
+        app:errorEnabled="true"
+        app:errorText="@{viewModel.remoteUrlError}"
+        >
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/general_dialog_text_size"
+            android:hint="@string/label_remote_url"
+            android:layout_margin="@dimen/general_vertical_margin"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textUri"
+            android:visibility="@{viewModel.initLocal ? View.GONE : View.VISIBLE}"
+            android:text="@={viewModel.remoteUrl}" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/localPath"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/general_dialog_text_size"
-        android:layout_margin="@dimen/general_vertical_margin"
-        android:singleLine="true"
-        android:imeOptions="actionNext"
-        android:hint="@string/dialog_clone_local_path_hint"
-        android:text="@={viewModel.localRepoName}"
-        />
+        app:errorEnabled="true"
+        app:errorText="@{viewModel.localRepoNameError}"
+        >
+        <EditText
+            android:id="@+id/localPath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/general_dialog_text_size"
+            android:layout_margin="@dimen/general_vertical_margin"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:inputType="textNoSuggestions"
+            android:hint="@string/dialog_clone_local_path_hint"
+            android:text="@={viewModel.localRepoName}"
+            />
+    </android.support.design.widget.TextInputLayout>
 
 
     <CheckBox

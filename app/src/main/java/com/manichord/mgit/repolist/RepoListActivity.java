@@ -1,4 +1,4 @@
-package me.sheimi.sgit;
+package com.manichord.mgit.repolist;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,8 +17,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manichord.mgit.RepoListViewModel;
-import com.manichord.mgit.dialogs.CloneViewModel;
+import com.manichord.mgit.repolist.RepoListViewModel;
+import com.manichord.mgit.clone.CloneViewModel;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
 
@@ -28,6 +28,8 @@ import java.net.URL;
 import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.UserSettingsActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
@@ -224,43 +226,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
 
     public void finish() {
         rawfinish();
-    }
-
-    public boolean validateRemoteUrl() {
-        if (binding.getCloneViewModel().getRemoteUrl().equals("")) {
-            showToastMessage(R.string.alert_remoteurl_required);
-            binding.getCloneViewModel().setRemoteUrlError(getString(R.string.alert_remoteurl_required));
-            return false;
-        }
-        return true;
-    }
-
-    public boolean validateLocalNameAndHint(TextView localPathTextView) {
-        if (binding.getCloneViewModel().getLocalRepoName().getValue().isEmpty()) {
-            showToastMessage(R.string.alert_localpath_required);
-            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_required));
-            return false;
-        }
-        if (binding.getCloneViewModel().getLocalRepoName().getValue().contains("/")) {
-            showToastMessage(R.string.alert_localpath_format);
-            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_format));
-            return false;
-        }
-        // If user is accepting the default path in the hint, we need to set localPath to
-        // the string in the hint, so that the following checks don't fail.
-        if (localPathTextView.getHint().toString() != getString(R.string.dialog_clone_local_path_hint)) {
-            binding.getCloneViewModel().setLocalRepoName(localPathTextView.getHint().toString());
-            return false;
-        }
-
-        PreferenceHelper prefsHelper = ((SGitApplication) this.getApplicationContext()).getPrefenceHelper();
-        File file = Repo.getDir(prefsHelper, binding.getCloneViewModel().getLocalRepoName().getValue());
-        if (file.exists()) {
-            showToastMessage(R.string.alert_localpath_repo_exists);
-            binding.getCloneViewModel().setLocalRepoNameError(getString(R.string.alert_localpath_repo_exists));
-            return false;
-        }
-        return true;
     }
 
     private void initUpdatedSSL() {

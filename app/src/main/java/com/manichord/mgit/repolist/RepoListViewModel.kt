@@ -1,4 +1,4 @@
-package com.manichord.mgit
+package com.manichord.mgit.repolist
 
 import com.manichord.mgit.common.BaseViewModel
 
