@@ -6,6 +6,10 @@
         <variable
             name="cloneViewModel"
             type="com.manichord.mgit.clone.CloneViewModel" />
+
+        <variable
+            name="clickHandler"
+            type="com.manichord.mgit.common.OnActionClickListener" />
     </data>
 
     <LinearLayout
@@ -21,6 +25,7 @@
             android:id="@+id/cloneViewInclude"
             layout="@layout/clone_view"
             bind:viewModel="@{cloneViewModel}"
+            bind:clickHandler="@{clickHandler}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

@@ -14,10 +14,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.manichord.mgit.repolist.RepoListViewModel;
+import com.manichord.mgit.ViewHelperKt;
+import com.manichord.mgit.common.OnActionClickListener;
 import com.manichord.mgit.clone.CloneViewModel;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
@@ -40,7 +40,6 @@ import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.databinding.ActivityMainBinding;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
-import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
 import me.sheimi.sgit.ssh.PrivateKeyUtils;
 import timber.log.Timber;
@@ -54,6 +53,10 @@ public class RepoListActivity extends SheimiFragmentActivity {
 
     private ActivityMainBinding binding;
 
+    public enum ClickActions {
+        CLONE, CANCEL
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,16 @@ public class RepoListActivity extends SheimiFragmentActivity {
         binding.setLifecycleOwner(this);
         binding.setCloneViewModel(cloneViewModel);
         binding.setViewModel(viewModel);
+        binding.setClickHandler(new OnActionClickListener() {
+            @Override
+            public void onActionClick(String action) {
+                if (ClickActions.CLONE.name().equals(action)) {
+                    cloneRepo();
+                } else {
+                    hideCloneView();
+                }
+            }
+        });
 
         PrivateKeyUtils.migratePrivateKeys();
 
@@ -236,7 +249,19 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Timber.i("Installed custom HTTPS factory");
     }
 
+    private void cloneRepo() {
+        if (binding.getCloneViewModel().validate()) {
+            hideCloneView();
+            binding.getCloneViewModel().cloneRepo();
+        }
+    }
+
     private void showCloneView() {
         binding.getCloneViewModel().show(true);
+    }
+
+    private void hideCloneView() {
+        binding.getCloneViewModel().show(false);
+        ViewHelperKt.hideKeyboard(this);
     }
 }

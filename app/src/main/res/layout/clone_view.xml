@@ -4,10 +4,15 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.manichord.mgit.repolist.RepoListActivity.ClickActions"/>
 
         <variable
             name="viewModel"
             type="com.manichord.mgit.clone.CloneViewModel" />
+        
+        <variable
+            name="clickHandler"
+            type="com.manichord.mgit.common.OnActionClickListener" />
 
     </data>
 
@@ -106,7 +111,7 @@
             app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
             android:text="@{viewModel.initLocal ? @string/label_init : @string/label_clone}"
             tools:text="@string/label_clone"
-            android:onClick="@{() -> viewModel.cloneRepo()}"
+            android:onClick="@{() -> clickHandler.onActionClick(ClickActions.CLONE.name)}"
             />
 
         <Button
@@ -115,7 +120,7 @@
             app:layout_constraintEnd_toStartOf="@id/cloneViewCloneButton"
             app:layout_constraintTop_toBottomOf="@id/cloneViewForm"
             android:text="@string/label_cancel"
-            android:onClick="@{() -> viewModel.show(false)}"
+            android:onClick="@{() -> clickHandler.onActionClick(ClickActions.CANCEL.name)}"
             />
     </android.support.constraint.ConstraintLayout>
 </layout>

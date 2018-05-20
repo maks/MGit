@@ -44,13 +44,16 @@ class CloneViewModel(application: Application) : AndroidViewModel(application) {
             //TODO:
         } else {
             Timber.d("CLONE REPO %s %s [%b]", localRepoName.value, remoteUrl, cloneRecursively)
-            if (validateRemoteUrl(remoteUrl) && validateLocalName(localRepoName.value as String)) {
-                val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
-                val task = CloneTask(repo, cloneRecursively, "", null)
-                task.executeTask()
-                show(false)
-            }
+            val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
+            val task = CloneTask(repo, cloneRecursively, "", null)
+            task.executeTask()
+            remoteUrl = ""
+            show(false)
         }
+    }
+
+    fun validate() : Boolean {
+        return (validateRemoteUrl(remoteUrl) && validateLocalName(localRepoName.value as String))
     }
 
     private fun stripUrlFromRepo(remoteUrl: String): String {
