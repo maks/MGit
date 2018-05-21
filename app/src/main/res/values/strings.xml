@@ -132,6 +132,13 @@
     <string name="dialog_open_remote">Open remote url</string>
     <string name="dialog_open_remote_title">Choose app to open %s remote</string>
     <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
+    <string name="dialog_update_index_select_file_permissions">Select file permissions to use:</string>
+    <string name="dialog_update_index_read">Read</string>
+    <string name="dialog_update_index_write">Write</string>
+    <string name="dialog_update_index_execute">Execute</string>
+    <string name="dialog_update_index_group">Your group:</string>
+    <string name="dialog_update_index_user">Your user:</string>
+    <string name="dialog_update_index_all">Everybody:</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
