@@ -39,6 +39,7 @@
     <string name="label_remote_url">Remote URL</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
+    <string name="label_init">Init</string>
     <string name="label_delete">Delete</string>
     <string name="label_generate_key">Generate key</string>
     <string name="label_dialog_generate_key">Generate key</string>

@@ -7,7 +7,7 @@ import android.support.annotation.StringRes
 import android.widget.Button
 import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.R
-import me.sheimi.sgit.RepoListActivity
+import com.manichord.mgit.repolist.RepoListActivity
 import me.sheimi.sgit.dialogs.DummyDialogListener
 import org.acra.ACRA
 

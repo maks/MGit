@@ -1,20 +1,24 @@
-package me.sheimi.sgit;
+package com.manichord.mgit.repolist;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.manichord.mgit.ViewHelperKt;
+import com.manichord.mgit.common.OnActionClickListener;
+import com.manichord.mgit.clone.CloneViewModel;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
 
@@ -24,6 +28,8 @@ import java.net.URL;
 import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.UserSettingsActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
@@ -31,7 +37,7 @@ import me.sheimi.sgit.activities.explorer.ImportRepositoryActivity;
 import me.sheimi.sgit.adapters.RepoListAdapter;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.dialogs.CloneDialog;
+import me.sheimi.sgit.databinding.ActivityMainBinding;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 import me.sheimi.sgit.dialogs.ImportLocalRepoDialog;
 import me.sheimi.sgit.repo.tasks.repo.CloneTask;
@@ -40,27 +46,47 @@ import timber.log.Timber;
 
 public class RepoListActivity extends SheimiFragmentActivity {
 
-    private ListView mRepoList;
     private Context mContext;
     private RepoListAdapter mRepoListAdapter;
 
     private static final int REQUEST_IMPORT_REPO = 0;
 
+    private ActivityMainBinding binding;
+
+    public enum ClickActions {
+        CLONE, CANCEL
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
+        CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setLifecycleOwner(this);
+        binding.setCloneViewModel(cloneViewModel);
+        binding.setViewModel(viewModel);
+        binding.setClickHandler(new OnActionClickListener() {
+            @Override
+            public void onActionClick(String action) {
+                if (ClickActions.CLONE.name().equals(action)) {
+                    cloneRepo();
+                } else {
+                    hideCloneView();
+                }
+            }
+        });
 
         PrivateKeyUtils.migratePrivateKeys();
 
         initUpdatedSSL();
 
-        setContentView(R.layout.activity_main);
-        mRepoList = (ListView) findViewById(R.id.repoList);
         mRepoListAdapter = new RepoListAdapter(this);
-        mRepoList.setAdapter(mRepoListAdapter);
+        binding.repoList.setAdapter(mRepoListAdapter);
         mRepoListAdapter.queryAllRepo();
-        mRepoList.setOnItemClickListener(mRepoListAdapter);
-        mRepoList.setOnItemLongClickListener(mRepoListAdapter);
+        binding.repoList.setOnItemClickListener(mRepoListAdapter);
+        binding.repoList.setOnItemLongClickListener(mRepoListAdapter);
         mContext = getApplicationContext();
 
         Uri uri = this.getIntent().getData();
@@ -70,7 +96,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
             } catch (MalformedURLException e) {
                 Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
-                e.printStackTrace();
+                Timber.e(e);
             }
 
             if (mRemoteRepoUrl != null) {
@@ -95,9 +121,8 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     startActivity(intent);
                 } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
-                    CloneDialog cloneDialog = new CloneDialog();
-                    cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
-                    cloneDialog.setUrl(repoUrlBuilder.toString());
+                    cloneViewModel.setRemoteUrl(repoUrlBuilder.toString());
+                    showCloneView();
                 } else {
                     final String cloningStatus = getString(R.string.cloning);
                     Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
@@ -123,8 +148,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         Intent intent;
         switch (item.getItemId()) {
             case R.id.action_new:
-                CloneDialog cloneDialog = new CloneDialog();
-                cloneDialog.show(getSupportFragmentManager(), "clone-dialog");
+                showCloneView();
                 return true;
             case R.id.action_import_repo:
                 intent = new Intent(this, ImportRepositoryActivity.class);
@@ -223,5 +247,21 @@ public class RepoListActivity extends SheimiFragmentActivity {
         }
         MGitHttpConnectionFactory.install();
         Timber.i("Installed custom HTTPS factory");
+    }
+
+    private void cloneRepo() {
+        if (binding.getCloneViewModel().validate()) {
+            hideCloneView();
+            binding.getCloneViewModel().cloneRepo();
+        }
+    }
+
+    private void showCloneView() {
+        binding.getCloneViewModel().show(true);
+    }
+
+    private void hideCloneView() {
+        binding.getCloneViewModel().show(false);
+        ViewHelperKt.hideKeyboard(this);
     }
 }

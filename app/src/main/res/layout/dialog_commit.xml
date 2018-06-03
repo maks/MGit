@@ -9,7 +9,7 @@
         android:id="@+id/commitMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/general_vertial_margin"
+        android:layout_margin="@dimen/general_vertical_margin"
         android:hint="@string/dialog_commit_msg_hint"
         android:textSize="@dimen/general_dialog_text_size" />
 
@@ -17,7 +17,7 @@
         android:id="@+id/commitAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/general_vertial_margin"
+        android:layout_margin="@dimen/general_vertical_margin"
         android:hint="@string/dialog_commit_author_hint"
         android:textSize="@dimen/general_dialog_text_size" />
 

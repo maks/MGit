@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/general_dialog_text_size"
             android:hint="@string/dialog_import_local_path_hint"
-            android:layout_margin="@dimen/general_vertial_margin"
+            android:layout_margin="@dimen/general_vertical_margin"
             android:singleLine="true"
             android:imeOptions="actionDone"/>
 

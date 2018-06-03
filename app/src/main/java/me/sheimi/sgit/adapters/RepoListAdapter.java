@@ -10,7 +10,7 @@ import java.util.Locale;
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.RepoListActivity;
+import com.manichord.mgit.repolist.RepoListActivity;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
