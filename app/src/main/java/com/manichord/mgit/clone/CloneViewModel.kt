@@ -7,6 +7,7 @@ import me.sheimi.sgit.R
 import me.sheimi.sgit.SGitApplication
 import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.repo.CloneTask
+import me.sheimi.sgit.repo.tasks.repo.InitLocalTask
 import timber.log.Timber
 
 class CloneViewModel(application: Application) : AndroidViewModel(application) {
@@ -41,7 +42,7 @@ class CloneViewModel(application: Application) : AndroidViewModel(application) {
         // to set an observable state
         if (initLocal.value as Boolean) {
             Timber.d("INIT LOCAL %s", localRepoName.value)
-            //TODO:
+            initLocalRepo()
         } else {
             Timber.d("CLONE REPO %s %s [%b]", localRepoName.value, remoteUrl, cloneRecursively)
             val repo = Repo.createRepo(localRepoName.value, remoteUrl, "")
@@ -53,7 +54,15 @@ class CloneViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun validate() : Boolean {
-        return (validateRemoteUrl(remoteUrl) && validateLocalName(localRepoName.value as String))
+        return if (initLocal.value as Boolean) {
+            validateLocalName(localRepoName.value as String)
+        } else validateRemoteUrl(remoteUrl) && validateLocalName(localRepoName.value as String)
+    }
+
+    fun initLocalRepo() {
+        val repo = Repo.createRepo(localRepoName.value, "local repository", "")
+        val task = InitLocalTask(repo)
+        task.executeTask()
     }
 
     private fun stripUrlFromRepo(remoteUrl: String): String {
