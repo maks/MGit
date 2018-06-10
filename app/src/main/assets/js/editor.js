@@ -2,10 +2,6 @@
 (function() {
   var displayFileContent, editor, lang;
 
-  String.prototype.rtrim = function() {
-    return this.replace(/\s+$/, '');
-  };
-
   lang = void 0;
 
   editor = void 0;
@@ -40,10 +36,8 @@
   };
 
   window.save = function() {
-    var value;
     editor.setOption("readOnly", true);
-    value = editor.getValue().rtrim();
-    return CodeLoader.save(value);
+    return CodeLoader.save(editor.getValue());
   };
 
   window.copy_all = function() {
