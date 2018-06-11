@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:padding="@dimen/file_list_item_icon_padding"
-        android:src="?drawable/ic_branch_l" />
+        android:src="?ic_branch_l" />
 
     <TextView
         android:id="@+id/commitTitle"

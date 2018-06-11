@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:background="?drawable/pager_title_strip_background"
+            android:background="?pager_title_strip_background"
             android:paddingBottom="4dp"
             android:paddingTop="4dp"
             android:textColor="#fff" />
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?drawable/bt_branch_name_bg"
+        android:background="?bt_branch_name_bg"
         android:gravity="center"
         android:padding="@dimen/branch_label_padding"
         android:text="@string/default_text"

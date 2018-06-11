@@ -1,12 +1,14 @@
 <resources>
 
-    <drawable name="pager_title_strip_background">@color/branch_name_bg</drawable>
-    <drawable name="drawer_text_color">#333</drawable>
-    <drawable name="drawer_background">@color/branch_name_bg</drawable>
-    <drawable name="ic_file_fl">@drawable/ic_file_d</drawable>
-    <drawable name="ic_folder_fl">@drawable/ic_folder_d</drawable>
-    <drawable name="ic_branch_l">@drawable/ic_branch_d</drawable>
-    <drawable name="ic_tag_l">@drawable/ic_tag_d</drawable>
+    <attr name="pager_title_strip_background" format="reference"/>
+    <attr name="bt_branch_name_bg" format="reference"/>
+    <attr name="mgit_drawer_text_color"  format="reference" />
+    <attr name="mgit_drawer_background" format="reference" />
+    <attr name="ic_file_fl" format="reference" />
+    <attr name="ic_folder_fl" format="reference" />
+    <attr name="ic_branch_l" format="reference" />
+    <attr name="ic_tag_l" format="reference" />
+
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.Sgit">
