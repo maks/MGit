@@ -51,7 +51,7 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
         mCurrentPathView.setText(mCurrentDir.getPath());
 
         mUpDirIcon = (ImageView) findViewById(R.id.upDirIcon);
-        mUpDirIcon.setImageResource(Profile.getStyledResource(this, R.drawable.ic_folder_fl));
+        mUpDirIcon.setImageResource(Profile.getStyledResource(this, R.attr.ic_folder_fl));
 
         mUpDir = (TextView) findViewById(R.id.upDir);
         mUpDir.setOnClickListener(new View.OnClickListener() {

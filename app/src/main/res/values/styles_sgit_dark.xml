@@ -23,14 +23,14 @@
     <style name="Theme.SgitDark" parent="Theme.AppCompat">
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="drawable/bt_branch_name_bg">@android:color/black</item>
-        <item name="drawable/pager_title_strip_background">@android:color/black</item>
-        <item name="drawable/drawer_text_color">@android:color/white</item>
-        <item name="drawable/drawer_background">#333</item>
-        <item name="drawable/ic_file_fl">@drawable/ic_file</item>
-        <item name="drawable/ic_folder_fl">@drawable/ic_folder_w</item>
-        <item name="drawable/ic_branch_l">@drawable/ic_branch_w</item>
-        <item name="drawable/ic_tag_l">@drawable/ic_tag_w</item>
+        <item type="color" name="bt_branch_name_bg">@android:color/black</item>
+        <item type="color" name="pager_title_strip_background">@android:color/black</item>
+        <item type="color" name="mgit_drawer_text_color">@android:color/white</item>
+        <item type="color" name="mgit_drawer_background">@android:color/background_dark</item>
+        <item type="drawable" name="ic_file_fl">@drawable/ic_file</item>
+        <item type="drawable" name="ic_folder_fl">@drawable/ic_folder_w</item>
+        <item type="drawable" name="ic_branch_l">@drawable/ic_branch_w</item>
+        <item type="drawable" name="ic_tag_l">@drawable/ic_tag_w</item>
     </style>
 
 </resources>

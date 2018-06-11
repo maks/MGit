@@ -11,7 +11,7 @@
             android:id="@+id/fileIcon"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:src="?drawable/ic_file_fl"
+            android:src="?ic_file_fl"
             android:padding="@dimen/file_list_item_icon_padding"/>
 
     <TextView

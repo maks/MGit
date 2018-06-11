@@ -48,9 +48,9 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         File item = getItem(position);
         holder.fileTitle.setText(item.getName());
         if (item.isDirectory()) {
-            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_folder_fl));
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.attr.ic_folder_fl));
         } else {
-            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_file_fl));
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.attr.ic_file_fl));
         }
         // set if selected
         if (convertView.isSelected()) {

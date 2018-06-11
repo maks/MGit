@@ -33,14 +33,14 @@
         <item name="android:actionMenuTextColor">@android:color/black</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:actionBarWidgetTheme">@style/Theme.Sgit.Widget</item>
-        <item name="drawable/bt_branch_name_bg">@drawable/bt_branch_name_bg</item>
-        <item name="drawable/pager_title_strip_background">@color/branch_name_bg</item>
-        <item name="drawable/drawer_text_color">#333</item>
-        <item name="drawable/drawer_background">#eee</item>
-        <item name="drawable/ic_file_fl">@drawable/ic_file_d</item>
-        <item name="drawable/ic_folder_fl">@drawable/ic_folder_d</item>
-        <item name="drawable/ic_branch_l">@drawable/ic_branch_d</item>
-        <item name="drawable/ic_tag_l">@drawable/ic_tag_d</item>
+        <item type="color" name="bt_branch_name_bg">@android:color/white</item>
+        <item type="color" name="pager_title_strip_background">@color/branch_name_bg</item>
+        <item type="color" name="mgit_drawer_text_color">@android:color/background_dark</item>
+        <item type="color" name="mgit_drawer_background">@android:color/background_light</item>
+        <item type="drawable" name="ic_file_fl">@drawable/ic_file_d</item>
+        <item type="drawable" name="ic_folder_fl">@drawable/ic_folder_d</item>
+        <item type="drawable" name="ic_branch_l">@drawable/ic_branch_d</item>
+        <item type="drawable" name="ic_tag_l">@drawable/ic_tag_d</item>
 
         <!-- this strangely fixes the "flash" of the default light theme on app startup when the
           dark theme is selected, from: http://stackoverflow.com/a/29202453/85472 -->
