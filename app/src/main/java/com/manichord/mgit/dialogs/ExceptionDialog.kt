@@ -11,13 +11,10 @@ import android.widget.Button
 import kotlinx.android.synthetic.main.dialog_exception.view.*
 import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.R
-import com.manichord.mgit.repolist.RepoListActivity
 import me.sheimi.sgit.dialogs.DummyDialogListener
 import org.acra.ACRA
 
 class ExceptionDialog : SheimiDialogFragment() {
-
-    private lateinit var mActivity: RepoListActivity
     private lateinit var mThrowable: Throwable
     @StringRes
     private var mErrorRes: Int = 0
@@ -26,10 +23,9 @@ class ExceptionDialog : SheimiDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
-        mActivity = activity as RepoListActivity
 
-        val builder = AlertDialog.Builder(mActivity)
-        val inflater = mActivity.layoutInflater
+        val builder = AlertDialog.Builder(rawActivity)
+        val inflater = rawActivity.layoutInflater
         val layout = inflater.inflate(R.layout.dialog_exception, null)
         layout.error_message.setText(mErrorRes)
         layout.show_stacktrace.setOnClickListener {
