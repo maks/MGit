@@ -127,7 +127,6 @@
     <string name="dialog_error_title">Error occurred</string>
     <string name="dialog_error_send_report">Send error report</string>
     <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
-    <string name="dialog_error_show_stacktrace">Show stacktrace</string>
     <string name="dialog_keymap_title">Shortcut Keys</string>
     <string name="dialog_keymap_mesg"> C - Commits\n F- Files\n S- Status\n ? - Help\n</string>
     <string name="dialog_open_remote">Open remote url</string>

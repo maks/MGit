@@ -46,6 +46,4 @@
     <string name="dialog_create_external_msg">Wirklich ein externes Repository in diesem Ordner erzeugen?</string>
     <string name="dialog_create_external_positive_label">Erzeugen</string>
 
-    <!-- Exception -->
-    <string name="show_stacktrace">Stacktrace anzeigen</string>
 </resources>
