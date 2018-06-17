@@ -45,6 +45,7 @@ class ExceptionDialog : SheimiDialogFragment() {
         val positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE) as Button
         positiveButton.setOnClickListener({
             ACRA.getErrorReporter().handleException(mThrowable, false)
+            dismiss()
         })
         val negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE)
         negativeButton.setOnClickListener({
