@@ -67,11 +67,18 @@ public class BasicFunctions {
         return getActiveActivity().getImageLoader();
     }
 
-    public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable, @StringRes int errorRes) {
+
+    public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable, @StringRes final int errorTitleRes, @StringRes final int errorRes) {
         ExceptionDialog exceptionDialog = new ExceptionDialog();
         exceptionDialog.setThrowable(throwable);
         exceptionDialog.setErrorRes(errorRes);
+        exceptionDialog.setErrorTitleRes(errorTitleRes);
         exceptionDialog.show(activity.getSupportFragmentManager(), "exception-dialog");
+    }
+
+
+    public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable, @StringRes final int errorRes) {
+        showException(activity, throwable, 0, errorRes);
     }
 
     public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, @NonNull Throwable throwable) {
