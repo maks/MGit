@@ -138,7 +138,7 @@ public class ViewFileFragment extends BaseFragment {
         @JavascriptInterface
         public void copy_all(final String content) {
             ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("forker", content);
+            ClipData clip = ClipData.newPlainText("mgit", content);
             clipboard.setPrimaryClip(clip);
         }
 
