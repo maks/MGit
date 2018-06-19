@@ -1,13 +1,16 @@
 buildscript {
-    ext.kotlin_version = "1.2.41"
-    ext.android_plugin_version = "3.0.1"
+    rootProject.extra["kotlin_version"] = "1.2.50"
+    rootProject.extra["android_plugin_version"] = "3.1.3"
+
+    val kotlin_version: String by rootProject.extra
+    val android_plugin_version: String by rootProject.extra
 
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.1.2")
+        classpath("com.android.tools.build:gradle:${android_plugin_version}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}")
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -23,6 +26,6 @@ allprojects {
 }
 
 
-task clean(type: Delete) {
+task<Delete>("clean") {
     delete(rootProject.buildDir)
 }

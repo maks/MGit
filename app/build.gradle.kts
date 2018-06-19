@@ -21,17 +21,18 @@ android {
     }
 
     dataBinding {
-        enabled = true
+        isEnabled = true
     }
 
     lintOptions {
-        abortOnError = false
+        isAbortOnError = false
     }
 }
 
 dependencies {
-    def supportLib_version = "27.1.1"
-    def lifecycle_version = "1.1.1"
+    val supportLib_version = "27.1.1"
+    val lifecycle_version = "1.1.1"
+    val kotlin_version: String by rootProject.extra
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}")
     implementation("com.android.support:support-fragment:${supportLib_version}")
