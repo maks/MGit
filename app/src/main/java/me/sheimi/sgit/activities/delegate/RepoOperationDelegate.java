@@ -1,7 +1,10 @@
 package me.sheimi.sgit.activities.delegate;
 
+import com.manichord.mgit.tasks.repo.UpdateIndexTask;
+
+import org.eclipse.jgit.lib.Ref;
+
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import me.sheimi.android.utils.FsUtils;
@@ -31,16 +34,14 @@ import me.sheimi.sgit.repo.tasks.repo.AddToStageTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutFileTask;
 import me.sheimi.sgit.repo.tasks.repo.CheckoutTask;
 import me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask;
-import me.sheimi.sgit.repo.tasks.repo.FetchTask;
 import me.sheimi.sgit.repo.tasks.repo.MergeTask;
 
-import org.eclipse.jgit.lib.Ref;
-import static me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask.*;
+import static me.sheimi.sgit.repo.tasks.repo.DeleteFileFromRepoTask.DeleteOperationType;
 
 public class RepoOperationDelegate {
     private Repo mRepo;
     private RepoDetailActivity mActivity;
-    private ArrayList<RepoAction> mActions = new ArrayList<RepoAction>();
+    private ArrayList<RepoAction> mActions = new ArrayList<>();
 
     public RepoOperationDelegate(Repo repo, RepoDetailActivity activity) {
         mRepo = repo;
@@ -137,9 +138,13 @@ public class RepoOperationDelegate {
 
     private String getRelativePath(String filepath) {
         File base = mRepo.getDir();
-        String relative = FsUtils.getRelativePath(new File(filepath), base);
-        return relative;
+        return FsUtils.getRelativePath(new File(filepath), base);
     }
 
 
+    public void updateIndex(final String mFilePath, final int newMode) {
+        String relative = getRelativePath(mFilePath);
+        UpdateIndexTask task = new UpdateIndexTask(mRepo, relative, newMode);
+        task.executeTask();
+    }
 }

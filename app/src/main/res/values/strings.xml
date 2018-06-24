@@ -202,4 +202,5 @@
     <string name="repository_already_present">Repository already present!</string>
     <string name="error_no_worktree">This is a bare repository!</string>
     <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>

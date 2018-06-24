@@ -12,6 +12,8 @@
         <item>Delete</item>
         <item>Remove cached from repository</item>
         <item>Remove force from repository</item>
+        <item>Make executable</item>
+        <item>Make not executable</item>
     </string-array>
     <string-array name="repo_operation_names">
         <item>New Branch</item>

@@ -1,5 +1,7 @@
 package com.manichord.mgit.tasks.repo
 
+import com.manichord.mgit.common.get
+import com.manichord.mgit.exceptions.NoSuchIndexPathException
 import me.sheimi.sgit.R
 import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.repo.RepoOpTask
@@ -8,7 +10,13 @@ import org.eclipse.jgit.errors.CorruptObjectException
 import org.eclipse.jgit.errors.NoWorkTreeException
 import org.eclipse.jgit.lib.FileMode
 
-class UpdateIndexTask(repo: Repo, val path: String, val newMode: Int) : RepoOpTask(repo) {
+class UpdateIndexTask(repo: Repo, private val path: String, private val newMode: Int) : RepoOpTask(repo) {
+    companion object {
+        fun calculateNewMode(executable: Boolean): Int =
+                if(executable) 0b111101101 else 0b110100100 // no octal literals in Kotlin, 0o755 and 0o644
+    }
+
+
     override fun doInBackground(vararg params: Void?) = updateIndex()
 
     private fun updateIndex(): Boolean {
@@ -23,7 +31,13 @@ class UpdateIndexTask(repo: Repo, val path: String, val newMode: Int) : RepoOpTa
             return false
         }
 
-        dircache[path].fileMode = FileMode.fromBits(newMode)
+        val dirCacheEntry = dircache[path]
+        val entry = if (dirCacheEntry != null) dirCacheEntry else {
+            setException(NoSuchIndexPathException(path), R.string.error_file_not_found)
+            return false
+        }
+        val oldMode = entry.fileMode
+        entry.fileMode = FileMode.fromBits(newMode or (oldMode.bits or 0b111111111 xor 0b111111111))
 
         try {
         } finally {
