@@ -75,6 +75,7 @@ public class CodeGuesser {
                     "bbl" },
             { "VBScript", "text/vbscript", "vbs", "vbe", "wsc" },
             { "XML", "application/xml", "xml" },
+            { "Kotlin", "text/x-kotlin", "kt", "kts" },
             { "YAML", "text/x-yaml", "yml", "yaml" }, };
 
     private static Map<String, String> mFilenameExtensionMap = new HashMap<String, String>();
