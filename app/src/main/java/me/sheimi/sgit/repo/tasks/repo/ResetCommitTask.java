@@ -1,12 +1,13 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
-import me.sheimi.android.utils.BasicFunctions;
+import org.eclipse.jgit.api.RebaseCommand;
+import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
+
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
-
-import org.eclipse.jgit.api.RebaseCommand;
-import org.eclipse.jgit.api.ResetCommand;
+import timber.log.Timber;
 
 public class ResetCommitTask extends RepoOpTask {
 
@@ -37,6 +38,9 @@ public class ResetCommitTask extends RepoOpTask {
             try {
                 // if a rebase is in-progress, need to abort it
                 mRepo.getGit().rebase().setOperation(RebaseCommand.Operation.ABORT).call();
+            } catch (WrongRepositoryStateException e) {
+                // Ignore this, it happens if rebase --abort is called without a rebase in progress.
+                Timber.i(e, "Couldn't abort rebase while reset.");
             } catch (Exception e) {
                 setException(e, R.string.error_rebase_abort_failed_in_reset);
                 return false;
