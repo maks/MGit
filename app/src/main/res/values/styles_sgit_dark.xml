@@ -24,6 +24,7 @@
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item type="color" name="bt_branch_name_bg">@android:color/black</item>
+        <item type="color" name="bt_branch_name_text_color">@android:color/white</item>
         <item type="color" name="pager_title_strip_background">@android:color/black</item>
         <item type="color" name="mgit_drawer_text_color">@android:color/white</item>
         <item type="color" name="mgit_drawer_background">@android:color/background_dark</item>

@@ -34,6 +34,7 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:actionBarWidgetTheme">@style/Theme.Sgit.Widget</item>
         <item type="color" name="bt_branch_name_bg">@android:color/white</item>
+        <item type="color" name="bt_branch_name_text_color">@color/branch_name_bg</item>
         <item type="color" name="pager_title_strip_background">@color/branch_name_bg</item>
         <item type="color" name="mgit_drawer_text_color">@android:color/background_dark</item>
         <item type="color" name="mgit_drawer_background">@android:color/background_light</item>
