@@ -29,7 +29,7 @@
         android:padding="@dimen/branch_label_padding"
         android:text="@string/default_text"
         android:textAlignment="center"
-        android:textColor="@color/branch_name_text"
+        android:textColor="?bt_branch_name_text_color"
         android:textSize="@dimen/branch_label_text_size" />
     <ImageView
             android:layout_width="wrap_content"
