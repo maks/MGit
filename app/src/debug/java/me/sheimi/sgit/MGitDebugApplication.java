@@ -21,14 +21,15 @@ public class MGitDebugApplication extends SGitApplication {
 
         Stetho.initializeWithDefaults(this);
 
-        Timber.plant(new ConfigurableStethoTree(new ConfigurableStethoTree.Configuration.Builder()
-            .showTags(true)
-            .minimumPriority(Log.DEBUG)
-            .build()));
-
-        Log.i(LOGTAG, "Using Stetho console logging");
-
-        Timber.i("Initialised Stetho debugging");
+        if (true == getResources().getBoolean(R.bool.enable_stetho_timber_logging)) {
+            Timber.plant(new ConfigurableStethoTree(new ConfigurableStethoTree.Configuration.Builder()
+                .showTags(true)
+                .minimumPriority(Log.DEBUG)
+                .build()));
+            Log.i(LOGTAG, "Using Stetho console logging");
+        } else {
+            Timber.plant(new Timber.DebugTree());
+        }
+        Timber.i("Initialised Stetho");
     }
-
 }
