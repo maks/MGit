@@ -12,7 +12,7 @@ import me.sheimi.sgit.dialogs.DummyDialogListener
 import org.acra.ACRA
 
 class ExceptionDialog : SheimiDialogFragment() {
-    private lateinit var mThrowable: Throwable
+    private var mThrowable: Throwable? = null
     @StringRes
     private var mErrorRes: Int = 0
     @StringRes
@@ -53,7 +53,7 @@ class ExceptionDialog : SheimiDialogFragment() {
         })
     }
 
-    fun setThrowable(throwable: Throwable) {
+    fun setThrowable(throwable: Throwable?) {
         mThrowable = throwable
     }
 
