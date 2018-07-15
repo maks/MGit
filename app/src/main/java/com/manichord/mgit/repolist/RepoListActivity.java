@@ -1,5 +1,6 @@
 package com.manichord.mgit.repolist;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
@@ -17,8 +18,8 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.manichord.mgit.ViewHelperKt;
-import com.manichord.mgit.common.OnActionClickListener;
 import com.manichord.mgit.clone.CloneViewModel;
+import com.manichord.mgit.common.OnActionClickListener;
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 import com.manichord.mgit.transport.SSLProviderInstaller;
 
@@ -60,6 +61,9 @@ public class RepoListActivity extends SheimiFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkAndRequestRequiredPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
         RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
         CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);
 
