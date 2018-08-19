@@ -14,8 +14,8 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 211
-        versionName "1.5.4.6"
+        versionCode 212
+        versionName "1.5.4.7"
     }
 
     dataBinding {
