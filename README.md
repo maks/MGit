@@ -45,8 +45,15 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
 
-[![Android app on Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.manichord.mgit)
-[![Android app on F-Droid](https://f-droid.org/wiki/images/c/c4/F-Droid-button_available-on.png)](https://f-droid.org/repository/browse/?fdid=com.manichord.mgit)
+<a href="https://play.google.com/store/apps/details?id=com.manichord.mgit">
+    <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+         alt="Get it on Google Play" height="80">
+</a>
+
+<a href="https://f-droid.org/packages/com.manichord.mgit">
+    <img src="https://f-droid.org/badge/get-it-on.png"
+         alt="Get it on F-Droid" height="80">
+</a>
 
 ## Quick start
 
@@ -98,7 +105,7 @@ If you would like to contribute code, either a bugfix or a new feature, please m
 
 Please use the Android Studio formatting settings set for this project in the repo.
 
-All strings visible to the user 
+All strings visible to the user.
 
 #### Project Goals
 
