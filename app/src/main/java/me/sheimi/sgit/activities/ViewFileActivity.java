@@ -3,9 +3,11 @@ package me.sheimi.sgit.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
@@ -29,6 +31,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     public static String TAG_MODE = "mode";
+    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
     public static short TAG_MODE_NORMAL = 0;
     public static short TAG_MODE_SSH_KEY = 1;
     private CommitsFragment mCommitsFragment;
@@ -213,20 +216,11 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 if (mActivityMode == TAG_MODE_SSH_KEY) {
                     return true;
                 }
-                Uri uri = Uri.fromFile(mFileFragment.getFile());
-                String mimeType = FsUtils.getMimeType(uri.toString());
-                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-                Intent editIntent = new Intent(Intent.ACTION_EDIT);
-                viewIntent.setDataAndType(uri, mimeType);
-                editIntent.setDataAndType(uri, mimeType);
-                try {
-                    Intent chooserIntent = Intent.createChooser(viewIntent,
-                            getString(R.string.label_choose_app_to_edit));
-                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { editIntent });
-                    startActivity(chooserIntent);
-                    forwardTransition();
-                } catch (ActivityNotFoundException e) {
-                    showMessageDialog(R.string.dialog_error_title, getString(R.string.error_no_edit_app));
+                if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT) {
+                    chooseEditorAndOpenFileForNAndAbove();
+                }
+                else {
+                    chooseEditorAndOpenFileForMAndBelow();
                 }
                 break;
             case R.id.action_edit:
@@ -248,6 +242,38 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void chooseEditorAndOpenFileForMAndBelow() {
+        Uri uri = Uri.fromFile(mFileFragment.getFile());
+        String mimeType = FsUtils.getMimeType(uri.toString());
+        Intent viewIntent = new Intent(Intent.ACTION_VIEW);
+        Intent editIntent = new Intent(Intent.ACTION_EDIT);
+        viewIntent.setDataAndType(uri, mimeType);
+        editIntent.setDataAndType(uri, mimeType);
+        try {
+            Intent chooserIntent = Intent.createChooser(viewIntent,
+                    getString(R.string.label_choose_app_to_edit));
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { editIntent });
+            startActivity(chooserIntent);
+            forwardTransition();
+        } catch (ActivityNotFoundException e) {
+            showMessageDialog(R.string.dialog_error_title, getString(R.string.error_no_edit_app));
+        }
+    }
+
+    private void chooseEditorAndOpenFileForNAndAbove() {
+        Uri uri = FileProvider.getUriForFile(this, PROVIDER_AUTHORITY, mFileFragment.getFile());
+        String mimeType = FsUtils.getMimeType(uri.toString());
+        Intent editIntent = new Intent(Intent.ACTION_EDIT);
+        editIntent.setDataAndType(uri, mimeType);
+        editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        try {
+            startActivity(editIntent);
+            forwardTransition();
+        } catch (ActivityNotFoundException e) {
+            showMessageDialog(R.string.dialog_error_title, getString(R.string.error_no_edit_app));
+        }
     }
 
     public void setLanguage(String lang) {
