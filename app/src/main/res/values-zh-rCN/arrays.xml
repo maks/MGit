@@ -19,7 +19,7 @@
         <item>推送</item>
         <item>暂存所有</item>
         <item>提交</item>
-        <item>Reset (HARD)</item>
+        <item>重置（强制）</item>
         <item>合并</item>
         <item>获取</item>
         <item>衍合</item>
@@ -40,12 +40,12 @@
 
     <!-- MUST KEY theme_names and theme_ids in SYNC -->
     <string-array name="theme_names">
-        <item>light</item>
-        <item>dark</item>
+        <item>亮色</item>
+        <item>暗色</item>
     </string-array>
     <string-array name="codemirror_theme_names">
-        <item>default</item>
-        <item>midnight</item>
+        <item>默认</item>
+        <item>午夜</item>
     </string-array>
     <string-array name="theme_ids">
         <item>0</item>

@@ -16,6 +16,7 @@
     <string name="action_import_private_key">导入密钥</string>
     <string name="action_mode_show_private_key">显示私钥</string>
     <string name="action_mode_show_public_key">显示公钥</string>
+    <string name="action_mode_edit_key_password">编辑密钥密码</string>
     <string name="action_feedback">反馈</string>
     <string name="action_choose_language">选择语言</string>
     <string name="action_mode_diff">比较</string>
@@ -25,16 +26,18 @@
     <string name="action_edit_in_other_app">在其他应用中编辑</string>
     <string name="action_reset">重置</string>
     <string name="action_toggle_drawer">开关抽屉</string>
-    <string name="action_copy_commit_str">复制提交Hash值</string>
+    <string name="action_copy_commit_str">复制提交 Hash 值</string>
     <string name="action_create_external_repo">创建仓库</string>
-    <string name="action_share_diff">分享diff</string>
-    <string name="action_save_diff">保存diff</string>
+    <string name="action_share_diff">分享 diff</string>
+    <string name="action_save_diff">保存 diff</string>
+    <string name="action_send_report">发送报告</string>
 
     <!-- label msg -->
     <string name="label_ok">确定</string>
     <string name="label_remote_url">远程地址</string>
     <string name="label_cancel">取消</string>
     <string name="label_clone">克隆</string>
+    <string name="label_init">Init</string>
     <string name="label_delete">删除</string>
     <string name="label_generate_key">生成密钥</string>
     <string name="label_dialog_generate_key">生成密钥</string>
@@ -56,7 +59,7 @@
     <string name="label_done">完成</string>
     <string name="label_save">保存</string>
     <string name="label_choose_app_to_open">打开 …</string>
-    <string name="label_choose_app_to_edit">编辑 …</string>
+    <string name="label_choose_app_to_edit">使用…编辑</string>
     <string name="label_new_branch_name">新分支</string>
     <string name="label_anonymous_checkout">匿名检出</string>
 
@@ -75,54 +78,69 @@
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">选择分支</string>
-    <string name="dialog_choose_option">选择选项 …</string>
-    <string name="dialog_rename_repo_title">重命名库</string>
-    <string name="dialog_rename_repo_hint">库名</string>
+    <string name="dialog_choose_option">选择选项…</string>
+    <string name="dialog_rename_repo_title">重命名仓库</string>
+    <string name="dialog_rename_repo_hint">仓库名称</string>
     <string name="dialog_delete_repo_title">确认删除</string>
-    <string name="dialog_delete_repo_msg">你确定删除这个仓库吗？</string>
+    <string name="dialog_delete_repo_msg">您确定要删除此仓库吗？</string>
     <string name="dialog_rename_key_title">重命名</string>
+    <string name="dialog_edit_key_password_title">密钥密码</string>
     <string name="dialog_rename_branch_title">重命名</string>
     <string name="dialog_choose_language_title">选择语言</string>
     <string name="dialog_comfirm_import_repo_title">导入仓库</string>
-    <string name="dialog_comfirm_import_repo_msg">你确定导入这个仓库吗？</string>
+    <string name="dialog_comfirm_import_repo_msg">您确定要导入此仓库吗？</string>
     <string name="dialog_merge_title">选择分支来合并</string>
-    <string name="dialog_merge_checkbox">在提交后合并</string>
+    <string name="dialog_merge_checkbox">提交后合并</string>
     <string name="dialog_file_delete">删除文件</string>
     <string name="dialog_file_delete_msg">你确定要删除文件或目录？</string>
     <string name="dialog_file_remove_cached">删除缓存的文件</string>
     <string name="dialog_file_remove_cached_msg">你确定要删除这个索引文件或目录？</string>
-    <string name="dialog_file_remove_force">删除文件力</string>
-    <string name="dialog_file_remove_force_msg">你确定要删除工作目录和索引文件或目录？</string>
+    <string name="dialog_file_remove_force">删除 Force 文件</string>
+    <string name="dialog_file_remove_force_msg">您确定要删除工作目录和索引文件或目录吗？</string>
     <string name="dialog_key_delete">删除密钥</string>
     <string name="dialog_key_delete_msg">您确定要删除此密钥吗？</string>
     <string name="dialog_branch_delete">删除分支</string>
     <string name="dialog_branch_delete_msg">您确定要删除此分支吗？</string>
     <string name="dialog_reset_commit_title">重置更改</string>
-    <string name="dialog_reset_commit_msg">你确定放弃所有修改？</string>
+    <string name="dialog_reset_commit_msg">您确定要放弃所有修改吗？</string>
     <string name="dialog_create_dir_title">新建目录</string>
-    <string name="dialog_create_dir_hint">目录名</string>
+    <string name="dialog_create_dir_hint">目录名称</string>
     <string name="dialog_create_file_title">新建文件</string>
     <string name="dialog_create_file_hint">文件名</string>
     <string name="dialog_comfirm_checkout_commit_title">确认检出</string>
     <string name="dialog_comfirm_checkout_commit_msg">选择分支</string>
-    <string name="dialog_profile_preferences_title">偏好</string>
+    <string name="dialog_profile_preferences_title">选项</string>
     <string name="dialog_prompt_for_password_title">需要认证</string>
     <string name="dialog_prompt_for_password_title_auth_fail">认证失败</string>
     <string name="dialog_prompt_for_password_checkbox">保存用户名和密码</string>
-    <string name="dialog_title_you_want_to">你正准备 …</string>
+    <string name="dialog_title_you_want_to">你正准备…</string>
     <string name="dialog_create_branch_title">创建新的分支</string>
     <string name="dialog_create_branch_hint">分支名称</string>
     <string name="dialog_clone_recursive">递归克隆</string>
-    <string name="dialog_show_unstaged_diff">未暂存diff</string>
-    <string name="dialog_show_staged_diff">已暂存diff</string>
-
+    <string name="dialog_show_unstaged_diff">未暂存 diff</string>
+    <string name="dialog_show_staged_diff">已暂存 diff</string>
+    <string name="dialog_show_invalid_remote">无效远程报告</string>
+    <string name="dialog_not_supported">尚不支持</string>
+    <string name="dialog_not_supported_msg">您的设备尚不支持此特性，请参考帮助以获取更多信息。</string>
+    <string name="dialog_error_title">发生了错误</string>
+    <string name="dialog_error_send_report">发送错误报告</string>
+    <string name="dialog_error_occurred_msg">发生了一个没有预料到的错误</string>
+    <string name="dialog_keymap_title">快捷键</string>
+    <string name="dialog_keymap_mesg">C - 提交\n
+ F - 文件\n
+ S - 状态\n
+ ? - 帮助</string>
+    <string name="dialog_open_remote">打开远程地址</string>
+    <string name="dialog_open_remote_title">选择用于打开 %s 的应用</string>
+    <string name="dialog_open_remote_no_app_available">没有可用于打开此地址的应用</string>
+    <string name="dialog_permission_not_granted">MGit 需要读写权限 以便将本地 repo 写入到您的内部存储中。若不给予 MGit 此权限，它将无法正常运行。</string>
 
     <!-- Others -->
     <string name="pull_msg_init">正在拉取 …</string>
     <string name="progress_left_init">0%</string>
     <string name="progress_right_init">0/0</string>
     <string name="push_msg_init">正在推送 …</string>
-    <string name="fetch_msg_init">正在获取 … </string>
+    <string name="fetch_msg_init">正在抓取…</string>
     <string name="title_activity_private_key_manage">管理私钥</string>
     <string name="hello_world">Hello, World!</string>
     <string name="title_activity_explore_file">浏览文件</string>
@@ -139,7 +157,7 @@
     <string name="preference_repo_location">repos 的根存储位置</string>
     <string name="pref_category_title_general">通用</string>
     <string name="action_select_root_dir">选择作为根文件夹</string>
-    <string name="action_create_new_dir">创建新文件夹</string>
+    <string name="action_create_new_dir">新建文件夹</string>
     <string name="pref_category_title_git_profile">Git配置</string>
     <string name="preference_git_user_name">用户名</string>
     <string name="preference_git_user_email">用户邮箱</string>
@@ -153,7 +171,22 @@
     <string name="preference_use_gravatar_summary">从gravatar.com加载头像图片</string>
     <string name="pref_category_title_security">安全</string>
     <string name="preference_use_theme">选择颜色主题</string>
-    <string name="action_git_profile">Git配置</string>
-    <string name="action_open_in_other_app">在其他应用程式中打开</string>
+    <string name="action_git_profile">Git 配置</string>
+    <string name="action_open_in_other_app">在其他应用中打开</string>
     <string name="action_add_private_key">添加私钥</string>
+
+    <!-- Crash reporting via ACRA -->
+    <string name="crash_toast_text">MGit 发生错误 - 正在获取用于崩溃报告的数据</string>
+
+    <!-- Intent filters -->
+    <string name="cloning">正在克隆…</string>
+    <string name="importing">正在导入…</string>
+    <string name="clone_with_mgit">使用 MGit 克隆</string>
+    <string name="invalid_url">链接无效！</string>
+    <string name="initialising">正在初始化…</string>
+    <string name="github.com" translatable="false">github.com</string>
+    <string name="gitlab.com" translatable="false">gitlab.com</string>
+    <string name="bitbucket.com" translatable="false">bitbucket.com</string>
+    <string name="notabug.org" translatable="false">notabug.org</string>
+    <string name="repository_already_present">repo 已存在！</string>
 </resources>
