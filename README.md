@@ -44,6 +44,7 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 * `git rebase`
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
+
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play"
       height="80">](https://play.google.com/store/apps/details?id=com.manichord.mgit)
