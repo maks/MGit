@@ -98,7 +98,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="me.sheimi.sgit.fileprovider"
+            android:authorities="com.manichord.mgit.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

@@ -31,7 +31,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
 
     public static String TAG_FILE_NAME = "file_name";
     public static String TAG_MODE = "mode";
-    public static final String PROVIDER_AUTHORITY = "me.sheimi.sgit.fileprovider";
+    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
     public static short TAG_MODE_NORMAL = 0;
     public static short TAG_MODE_SSH_KEY = 1;
     private CommitsFragment mCommitsFragment;
