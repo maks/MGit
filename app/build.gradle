@@ -1,14 +1,12 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion 27
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 2001
         versionName "2.0"
@@ -23,12 +21,62 @@ android {
 }
 
 dependencies {
+    def aac_version = "1.1.1"
+    def androidx_appcompat_version = "1.0.0"
+    def moshi_version = "1.6.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'com.google.android.material:material:1.0.0-alpha1'
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat_version"
+    implementation "androidx.legacy:legacy-support-core-utils:$androidx_appcompat_version"
+    implementation "androidx.cardview:cardview:$androidx_appcompat_version"
+    implementation "androidx.recyclerview:recyclerview:$androidx_appcompat_version"
+    implementation "com.google.android.material:material:$androidx_appcompat_version"
+
+    // Rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+    // Thank you square
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // and thank you Jake
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
+    // Databinding for collections
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:3.0.0-beta3'
+    implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:3.0.0-beta3'
+
+    // Conductor: a small, yet full-featured framework that allows building View-based Android applications
+    implementation 'com.bluelinelabs:conductor:2.1.5'
+    // AAC Viewmodel support plugin for conductor
+    implementation "com.github.miquelbeltran:conductor-viewmodel:1.0.2"
+
+    // Add Stetho for Debug builds only
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    // Testing
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
+
+    // Mocking for tests
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
+
+    // Android framework testing
+    testImplementation 'org.robolectric:robolectric:3.8'
+
+    // Arch Components for testing
+    testImplementation "android.arch.core:core-testing:$aac_version"
+
+    // More fluent testing
+    testImplementation 'com.willowtreeapps.assertk:assertk:0.10'
+
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta02'
 }
