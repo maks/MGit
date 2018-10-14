@@ -8,7 +8,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".MGitApplication">
+
+        <meta-data
+                android:name="com.bugsnag.android.API_KEY"
+                android:value="0c3f3e562573aef707cf7b5e67759861"/>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

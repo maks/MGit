@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jmailen.kotlinter'
+apply plugin: 'com.bugsnag.android.gradle'
 
 android {
     compileSdkVersion 28
@@ -65,6 +66,9 @@ dependencies {
     implementation 'com.bluelinelabs:conductor:2.1.5'
     // AAC Viewmodel support plugin for conductor
     implementation "com.github.miquelbeltran:conductor-viewmodel:1.0.2"
+
+    // Crash tracking
+    implementation 'com.bugsnag:bugsnag-android:4.+'
 
     // Add Stetho for Debug builds only
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
