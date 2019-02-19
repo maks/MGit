@@ -117,7 +117,7 @@
     <string name="dialog_prompt_for_password_checkbox">Save username and password</string>
     <string name="dialog_title_you_want_to">You want to …</string>
     <string name="dialog_create_branch_title">Create new branch</string>
-    <string name="dialog_create_branch_hint">BranchName</string>
+    <string name="dialog_create_branch_hint">Branch Name</string>
     <string name="dialog_clone_recursive">Clone recursively</string>
     <string name="dialog_show_unstaged_diff">Unstaged diff</string>
     <string name="dialog_show_staged_diff">Staged diff</string>
