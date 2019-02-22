@@ -1,6 +1,10 @@
 language: android
 dist: trusty
 sudo: required
+addons:
+  apt:
+    packages:
+      - git
 
 group: edge
 
