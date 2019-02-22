@@ -18,7 +18,7 @@
     <string name="action_import_private_key">Импортировать ключ</string>
     <string name="action_mode_show_private_key">Покозать приватный ключ</string>
     <string name="action_mode_show_public_key">Покозать публичный ключ</string>
-    <string name="action_mode_edit_key_password">Изм<енить пароль ключа/string>
+    <string name="action_mode_edit_key_password">Изменить пароль ключа</string>
     <string name="action_feedback">Отзыв</string>
     <string name="action_choose_language">Выберете язык</string>
     <string name="action_mode_diff">Неидексирванные файлы</string>
