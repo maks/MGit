@@ -1,7 +1,10 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
+import org.gradle.kotlin.dsl.KotlinDependencyExtensionsKt
+plugins {
+    id("com.android.application") // TODO: make the version of this be defined in settings.gradle, not root build.gradle
+    id("org.jetbrains.kotlin.android") version "1.3.20" // TODO: move version to settings.gradle
+    id("org.jetbrains.kotlin.android.extensions") version "1.3.20"
+    id("org.jetbrains.kotlin.kapt") version "1.3.20"
+}
 
 android {
     compileSdkVersion 27
@@ -31,7 +34,7 @@ dependencies {
     def supportLib_version = "27.1.1"
     def lifecycle_version = "1.1.1"
 
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31'
+    implementation(KotlinDependencyExtensionsKt.kotlin(project.dependencies, "stdlib-jdk8", null)) // Version gets injected by Kotlin Gradle plugin, kotlin() is a feature from Gradle Kotlin DSL, thus looks ugly when used in Groovy
     implementation "com.android.support:support-fragment:$supportLib_version"
     implementation "com.android.support:support-annotations:$supportLib_version"
     implementation "com.android.support:appcompat-v7:$supportLib_version"
