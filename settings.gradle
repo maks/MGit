@@ -1,1 +1,19 @@
+pluginManagement {
+    repositories {
+        jcenter()
+        google()
+        gradlePluginPortal()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("com.android")) {
+                useModule("com.android.tools.build:gradle:3.3.1")
+            }
+            if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+                useVersion("1.3.20")
+            }
+        }
+    }
+}
+
 include ':app'
