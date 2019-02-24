@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">Файл был добавлен</string>
+    <string name="success_remove_file">Файл был удален</string>
+    <string name="success_commit">Изменения сохранены</string>
+    <string name="success_reset">Изменения отменены</string>
+    <string name="success_cherry_pick">Cherrypicked successfully</string>
+    <string name="success_rebase">Успешно отменено</string>
+    <string name="success_checkout_file">Успешно переключенно</string>
+    <string name="success_remote_added">Сервер добавлен</string>
+    <string name="success_remote_removed">Remote removed</string>
+    <string name="success_save">Файл сохранен</string>
+    <string name="msg_now_you_can_edit">Файл может быть изменен</string>
+    <string name="msg_commit_str_has_copied">Хэш коммита скопирован</string>
+
+</resources>
