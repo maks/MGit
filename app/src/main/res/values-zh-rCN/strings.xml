@@ -184,9 +184,5 @@
     <string name="clone_with_mgit">使用 MGit 克隆</string>
     <string name="invalid_url">链接无效！</string>
     <string name="initialising">正在初始化…</string>
-    <string name="github.com" translatable="false">github.com</string>
-    <string name="gitlab.com" translatable="false">gitlab.com</string>
-    <string name="bitbucket.com" translatable="false">bitbucket.com</string>
-    <string name="notabug.org" translatable="false">notabug.org</string>
     <string name="repository_already_present">repo 已存在！</string>
 </resources>

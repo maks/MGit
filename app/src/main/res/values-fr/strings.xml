@@ -79,6 +79,18 @@
     <string name="dialog_prompt_for_password_title_auth_fail">Échec d\'authentification</string>
     <string name="dialog_prompt_for_password_checkbox">Sauvegarder le nom d\'utilisateur et le mot de passe</string>
     <string name="dialog_title_you_want_to">Vous voulez …</string>
+    <string name="dialog_show_invalid_remote">Invalid remote report</string>
+    <string name="dialog_not_supported">Not Supported</string>
+    <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
+    <string name="dialog_error_title">Error occurred</string>
+    <string name="dialog_error_send_report">Send error report</string>
+    <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
+    <string name="dialog_keymap_title">Shortcut Keys</string>
+    <string name="dialog_keymap_mesg"> C - Commits\n F- Files\n S- Status\n ? - Help\n</string>
+    <string name="dialog_open_remote">Open remote url</string>
+    <string name="dialog_open_remote_title">Choose app to open %s remote</string>
+    <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
+    <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
 
     <!-- Others -->
     <string name="pull_msg_init">En tirant ...</string>
@@ -173,5 +185,17 @@
     <string name="dialog_push_is_force_push">Forcer pousser?</string>
     <string name="error_rename_repo_fail">Renommer repository échoué</string>
     <string name="success_remove_file">Fichier a été supprimé</string>
+    <string name="action_mode_edit_key_password">Edit key password</string>
+    <string name="action_send_report">Send report</string>
+    <string name="label_init">Init</string>
+    <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
+    <string name="clone_with_mgit">Clone with MGit</string>
+    <string name="invalid_url">Invalid URL!</string>
+    <string name="repository_already_present">Repository already present!</string>
+    <string name="cloning">Cloning …</string>
+    <string name="importing">Importing …</string>
+    <string name="initialising">Initialising …</string>
+    <string name="dialog_edit_key_password_title">Key Password</string>
+    <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
 
 </resources>

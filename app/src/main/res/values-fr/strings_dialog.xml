@@ -42,7 +42,6 @@
 
     <!-- Create External -->
     <string name="dialog_create_external_title">Créer un dépôt externe</string>
-    <string name="dialog_create_external_title_msg">Voulez-vous créer un repository git dans ce dossier?</string>
     <string name="dialog_create_external_positive_label">Créer</string>
 
 </resources>
