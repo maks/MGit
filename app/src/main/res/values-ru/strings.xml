@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">MGit</string>
     <string name="default_text">Стоковый текст</string>
     <string name="title_clone_repo">Скачать репозиторий</string>
-    <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
     <!-- action -->
     <string name="action_search">Поиск</string>
@@ -145,7 +143,6 @@
     <string name="title_activity_explore_file">Иследовать файлыы</string>
     <string name="title_activity_settings">Настройки</string>
     <string name="title_config_repo">Настройки репозитория</string>
-    <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Отзыв</string>
@@ -156,27 +153,21 @@
 
     <string name="preference_repo_location">Корневая папка для проектов</string>
     <string name="pref_category_title_general">Основные</string>
-    <string name="pref_key_repo_root_location" translatable="false">repo_root_path</string>
     <string name="action_select_root_dir">Выбрать как корневую папку</string>
     <string name="action_create_new_dir">Создать новую папку</string>
     <string name="pref_category_title_git_profile">Настройки профиля</string>
-    <string name="pref_key_git_user_name" translatable="false">user.name</string>
     <string name="preference_git_user_name">Имя пользователч</string>
-    <string name="pref_key_git_user_email" translatable="false">user.email</string>
     <string name="preference_git_user_email">Email</string>
     <string name="pref_category_title_about">О приложении</string>
     <string name="preference_send_feedback">Отзыв</string>
     <string name="preference_send_feedback_summary">Отправте отзыв, создав issue на GitHub</string>
-    <string name="preference_key_app_version" translatable="false">app_version</string>
     <string name="preference_app_version">Версия</string>
     <string name="preference_manage_ssh_keys_summary">Управления SSH ключами</string>
     <string name="preference_manage_ssh_keys">SSH Kлючи</string>
     <string name="preference_use_gravatar">Использовать аватарки из gravatar</string>
     <string name="preference_use_gravatar_summary">Загрузка аватарок с gravatar.com</string>
-    <string name="pref_key_use_gravatar" translatable="false">use.gravatar</string>
     <string name="pref_category_title_security">Безопасность</string>
     <string name="preference_use_theme">Тема</string>
-    <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>
     <string name="action_git_profile">Профиль Git</string>
     <string name="action_open_in_other_app">Открыть в другом приложении</string>
     <string name="action_add_private_key">Добавить приватный ключ</string>
@@ -189,16 +180,6 @@
     <string name="importing">Импорт … </string>
     <string name="clone_with_mgit">Клонированно с помощью MGit</string>
     <string name="invalid_url">Неверный URL!</string>
-    <string name="https" translatable="false">https</string>
-    <string name="http" translatable="false">http</string>
     <string name="initialising">Инализация … </string>
-    <string name="git" translatable="false">git</string>
-    <string name="git_extension" translatable="false">.git</string>
-    <string name="ending_with_git" translatable="false">.*\\.git</string>
-    <string name="ssh" translatable="false">ssh</string>
-    <string name="github.com" translatable="false">github.com</string>
-    <string name="gitlab.com" translatable="false">gitlab.com</string>
-    <string name="bitbucket.com" translatable="false">bitbucket.com</string>
-    <string name="notabug.org" translatable="false">notabug.org</string>
     <string name="repository_already_present">Репозиторий уже добавлен!</string>
 </resources>

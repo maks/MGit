@@ -18,7 +18,7 @@
     <string name="error_repository_not_found">没有发现仓库 (可能是仓库已损坏)</string>
 
     <string name="error_rename_repo_fail">重命名仓库失败</string>
-    <string name="error_invalid_author">作者名称歌手不符合 Name &lt;Email&gt;</string>
+    <string name="error_invalid_author"><![CDATA[作者名称歌手不符合 Name <Email>]]></string>
     <string name="error_no_commit_msg">未指定提交消息</string>
 
     <string name="error_rebase_abort_failed_in_reset">无法在重置 repo 时放弃重建数据库</string>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">File has been added to stage</string>
+    <string name="success_remove_file">File has been removed</string>
+    <string name="success_commit">Changes have been committed</string>
+    <string name="success_reset">Changes have been discarded</string>
+    <string name="success_cherry_pick">Cherrypicked successfully</string>
+    <string name="success_rebase">Rebased successfully</string>
+    <string name="success_checkout_file">Checkout successfully</string>
+    <string name="success_remote_added">Remote added</string>
+    <string name="success_remote_removed">Remote removed</string>
+    <string name="success_save">File saved Successfully</string>
+    <string name="msg_now_you_can_edit">File can be edited</string>
+    <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
+
+</resources>
