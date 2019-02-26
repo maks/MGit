@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v4.content.FileProvider;
 import android.webkit.MimeTypeMap;
 
 /**
@@ -25,6 +26,8 @@ public class FsUtils {
 
     public static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat(
             "yyyyMMdd_HHmmss", Locale.getDefault());
+
+    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
     public static final String TEMP_DIR = "temp";
     private static final String LOGTAG = FsUtils.class.getSimpleName();
 
@@ -116,23 +119,23 @@ public class FsUtils {
         return getMimeType(Uri.fromFile(file).toString());
     }
 
-    public static void openFile(File file) {
-        openFile(file, null);
+    public static void openFile(SheimiFragmentActivity activity, File file) {
+        //openFile(file, null);
+        startActivityToEditFile(activity, file);
     }
 
-    public static void openFile(File file, String mimeType) {
-        Intent intent = new Intent();
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(file);
-        if (mimeType == null) {
-            mimeType = getMimeType(uri.toString());
+    private static void startActivityToEditFile(SheimiFragmentActivity activity, File file) {
+        Uri uri = FileProvider.getUriForFile(activity, PROVIDER_AUTHORITY, file);
+        String mimeType = FsUtils.getMimeType(uri.toString());
+        Intent editIntent = new Intent(Intent.ACTION_EDIT);
+        editIntent.setDataAndType(uri, mimeType);
+        editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        try {
+            activity.startActivity(editIntent);
+            activity.forwardTransition();
+        } catch (ActivityNotFoundException e) {
+            activity.showMessageDialog(R.string.dialog_error_title, activity.getString(R.string.error_no_edit_app));
         }
-        intent.setDataAndType(uri, mimeType);
-        BasicFunctions.getActiveActivity().startActivity(
-                Intent.createChooser(
-                        intent,
-                        BasicFunctions.getActiveActivity().getString(
-                                R.string.label_choose_app_to_open)));
     }
 
     public static void deleteFile(File file) {
