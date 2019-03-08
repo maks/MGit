@@ -14,11 +14,11 @@
         <item>Принудительно удалить из репозитория</item>
     </string-array>
     <string-array name="repo_operation_names">
-        <item>Новая ветвь</item>
+        <item>Новая ветка</item>
         <item>Обновить</item>
         <item>Загрузить</item>
         <item>Добавить все</item>
-        <item>Комитнуть</item>
+        <item>Коммитнуть</item>
         <item>СБРОС</item>
         <item>Слитие</item>
         <item>Обновить в новую ветку</item>
@@ -28,8 +28,8 @@
         <item>Новый файл</item>
         <item>Новая папка</item>
         <item>Добавить сервер</item>
-        <item>Удалииь сервер</item>
-        <item>Ужалить</item>
+        <item>Удалить сервер</item>
+        <item>Удалить</item>
         <item>Файл настроек</item>
         <item>Настройки</item>
     </string-array>
@@ -40,8 +40,8 @@
 
     <!-- MUST KEY theme_names and theme_ids in SYNC -->
     <string-array name="theme_names">
-        <item>light</item>
-        <item>dark</item>
+        <item>Светлая</item>
+        <item>Тёмная</item>
     </string-array>
     <string-array name="codemirror_theme_names">
         <item>default</item>
