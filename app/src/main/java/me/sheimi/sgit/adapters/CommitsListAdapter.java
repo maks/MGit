@@ -1,11 +1,9 @@
 package me.sheimi.sgit.adapters;
 
-import java.security.Timestamp;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
@@ -24,13 +22,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by sheimi on 8/18/13.
@@ -38,8 +33,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class CommitsListAdapter extends BaseAdapter {
 
     private Repo mRepo;
-    private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
-            "MM/dd/yyyy", Locale.getDefault());
+    private DateFormat mCommitDateFormatter;
     private Set<Integer> mChosenItems;
     private String mFilter;
     private ArrayList<RevCommit> mAll;
@@ -106,6 +100,7 @@ public class CommitsListAdapter extends BaseAdapter {
         mAll = new ArrayList<RevCommit>();
         mFiltered = null;
         mFilter = null;
+        mCommitDateFormatter = android.text.format.DateFormat.getDateFormat(mContext);
     }
 
     private boolean isAccepted(RevCommit in) {
@@ -246,7 +241,7 @@ public class CommitsListAdapter extends BaseAdapter {
                 .setText(Repo.getCommitDisplayName(commit.getName()));
         holder.commitAuthor.setText(person.getName());
         holder.commitsMsg.setText(commit.getShortMessage());
-        holder.commitTime.setText(COMMITTIME_FORMATTER.format(date));
+        holder.commitTime.setText(mCommitDateFormatter.format(date));
 
         BasicFunctions.setAvatarImage(holder.commitsIcon, email);
 

@@ -1,11 +1,10 @@
 package me.sheimi.sgit.adapters;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.utils.BasicFunctions;
@@ -45,10 +44,9 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
 
     private static final int QUERY_TYPE_SEARCH = 0;
     private static final int QUERY_TYPE_QUERY = 1;
-    private static final SimpleDateFormat COMMITTIME_FORMATTER = new SimpleDateFormat(
-            "MM/dd/yyyy", Locale.getDefault());
 
     private int mQueryType = QUERY_TYPE_QUERY;
+    private DateFormat mCommitDateFormatter;
     private String mSearchQueryString;
     private RepoListActivity mActivity;
     private static final String TAG = RepoListAdapter.class.getSimpleName();
@@ -58,6 +56,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
         RepoDbManager.registerDbObserver(RepoContract.RepoEntry.TABLE_NAME,
                 this);
         mActivity = (RepoListActivity) context;
+        mCommitDateFormatter = android.text.format.DateFormat.getDateFormat(context);
     }
 
     public void searchRepo(String query) {
@@ -140,7 +139,7 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
 
             String date = "";
             if (repo.getLastCommitDate() != null) {
-                date = COMMITTIME_FORMATTER.format(repo.getLastCommitDate());
+                date = mCommitDateFormatter.format(repo.getLastCommitDate());
             }
             holder.commitTime.setText(date);
             holder.commitMsg.setText(repo.getLastCommitMsg());
