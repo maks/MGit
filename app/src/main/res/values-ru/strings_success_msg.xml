@@ -11,7 +11,7 @@
     <string name="success_remote_added">Сервер добавлен</string>
     <string name="success_remote_removed">Remote removed</string>
     <string name="success_save">Файл сохранен</string>
-    <string name="msg_now_you_can_edit">Файл может быть изменен</string>
+    <string name="msg_now_you_can_edit">Теперь файл может быть изменен</string>
     <string name="msg_commit_str_has_copied">Хэш коммита скопирован</string>
 
 </resources>

@@ -26,7 +26,7 @@
     <string name="action_edit_in_other_app">Редактировать в другом месте</string>
     <string name="action_reset">Сброс</string>
     <string name="action_toggle_drawer">Открыть меню</string>
-    <string name="action_copy_commit_str">Скопировать хэш комитта</string>
+    <string name="action_copy_commit_str">Скопировать хэш коммитта</string>
     <string name="action_create_external_repo">Создать внешний репозиторий</string>
     <string name="action_share_diff">Share diff</string>
     <string name="action_save_diff">Save diff</string>
@@ -73,12 +73,12 @@
     <string name="title_section3">Секция 3</string>
     <string name="tab_files_label">Файлы</string>
     <string name="tab_file_label">Файл</string>
-    <string name="tab_commits_label">Комитты</string>
+    <string name="tab_commits_label">Коммитты</string>
     <string name="tab_status_label">Статус</string>
 
     <!-- Dialog Msg -->
     <string name="dialog_choose_branch_title">Выберете Branch</string>
-    <string name="dialog_choose_option">Выберете...</string>
+    <string name="dialog_choose_option">Выберите...</string>
     <string name="dialog_rename_repo_title">Переименовать</string>
     <string name="dialog_rename_repo_hint">Имя репозитория</string>
     <string name="dialog_delete_repo_title">Подтверждение удаления</string>

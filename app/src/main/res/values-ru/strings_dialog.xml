@@ -3,17 +3,17 @@
 
     <!-- Cherry Pick -->
     <string name="dialog_cherrypick_title">Cherry Pick</string>
-    <string name="dialog_cherrypick_msg_hint">Хэш комита(скопируйте из списка комитов)</string>
+    <string name="dialog_cherrypick_msg_hint">Хэш коммита(скопируйте из списка коммитов)</string>
     <string name="dialog_label_cherrypick">Cherry Pick</string>
     <string name="dialog_rebase_title">Выберете ветку</string>
 
     <!-- Commit -->
-    <string name="dialog_commit_title">Комитнуть изменения</string>
-    <string name="dialog_commit_msg_hint">Сообщение комита</string>
-    <string name="dialog_commit_author_hint">Автор комита(рекомендуется)</string>
+    <string name="dialog_commit_title">Коммитнуть изменения</string>
+    <string name="dialog_commit_msg_hint">Сообщение коммита</string>
+    <string name="dialog_commit_author_hint">Автор коммита(рекомендуется)</string>
     <string name="dialog_commit_is_amend">Изменить предыдущий комиь</string>
     <string name="dialog_commit_auto_stage">Добовлять измененные файлы автоматически</string>
-    <string name="dialog_commit_positive_label">Комитнуть</string>
+    <string name="dialog_commit_positive_label">Коммитнуть</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Локальный путь</string>
