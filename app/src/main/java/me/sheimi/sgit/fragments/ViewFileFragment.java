@@ -74,13 +74,9 @@ public class ViewFileFragment extends BaseFragment {
             }
         });
         mFileContent.setBackgroundColor(Color.TRANSPARENT);
-        return v;
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
         loadFileContent();
+        return v;
     }
 
     @Override
