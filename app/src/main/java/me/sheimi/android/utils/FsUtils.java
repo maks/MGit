@@ -120,21 +120,25 @@ public class FsUtils {
     }
 
     public static void openFile(SheimiFragmentActivity activity, File file) {
-        //openFile(file, null);
-        startActivityToEditFile(activity, file);
-    }
-
-    private static void startActivityToEditFile(SheimiFragmentActivity activity, File file) {
         Uri uri = FileProvider.getUriForFile(activity, PROVIDER_AUTHORITY, file);
         String mimeType = FsUtils.getMimeType(uri.toString());
-        Intent editIntent = new Intent(Intent.ACTION_EDIT);
-        editIntent.setDataAndType(uri, mimeType);
-        editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setDataAndType(uri, mimeType);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         try {
-            activity.startActivity(editIntent);
+            activity.startActivity(intent);
             activity.forwardTransition();
         } catch (ActivityNotFoundException e) {
-            activity.showMessageDialog(R.string.dialog_error_title, activity.getString(R.string.error_no_edit_app));
+            //If no app can edit this file at least try to view it (PDFs, ...)
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try {
+                activity.startActivity(intent);
+                activity.forwardTransition();
+            }
+            catch (ActivityNotFoundException e1) {
+                activity.showMessageDialog(R.string.dialog_error_title, activity.getString(R.string.error_can_not_open_file));
+            }
         }
     }
 
