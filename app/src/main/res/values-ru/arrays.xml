@@ -10,7 +10,7 @@
         <item>Добавить</item>
         <item>Переключить ветвь(сброс)</item>
         <item>Удалить</item>
-        <item>Удалить кэширванное из репозитория</item>
+        <item>Удалить кэшированное из репозитория</item>
         <item>Принудительно удалить из репозитория</item>
     </string-array>
     <string-array name="repo_operation_names">
@@ -28,8 +28,8 @@
         <item>Новый файл</item>
         <item>Новая папка</item>
         <item>Добавить сервер</item>
-        <item>Удалииь сервер</item>
-        <item>Ужалить</item>
+        <item>Удалить сервер</item>
+        <item>Удалить</item>
         <item>Файл настроек</item>
         <item>Настройки</item>
     </string-array>
