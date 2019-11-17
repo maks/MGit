@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.BuildConfig;
 import me.sheimi.sgit.R;
 
 import org.apache.commons.io.FileUtils;
@@ -27,7 +28,8 @@ public class FsUtils {
     public static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat(
             "yyyyMMdd_HHmmss", Locale.getDefault());
 
-    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
+    //    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
+    public static final String PROVIDER_AUTHORITY = BuildConfig.APPLICATION_ID + ".fileprovider";
     public static final String TEMP_DIR = "temp";
     private static final String LOGTAG = FsUtils.class.getSimpleName();
 

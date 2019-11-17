@@ -25,6 +25,11 @@ android {
     lintOptions {
         abortOnError false
     }
+    buildTypes {
+        debug {
+            applicationIdSuffix = '.debug'
+        }
+    }
 }
 
 configurations {
