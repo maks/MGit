@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -93,46 +95,52 @@ public class RepoListActivity extends SheimiFragmentActivity {
         binding.repoList.setOnItemLongClickListener(mRepoListAdapter);
         mContext = getApplicationContext();
 
-        Uri uri = this.getIntent().getData();
+        Intent intent1 = this.getIntent();
+        Uri uri = intent1.getData();
         if (uri != null) {
-            URL mRemoteRepoUrl = null;
-            try {
-                mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
-            } catch (MalformedURLException e) {
-                Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
-                Timber.e(e);
-            }
-
-            if (mRemoteRepoUrl != null) {
-                String remoteUrl = mRemoteRepoUrl.toString();
-                String repoName = remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
-                StringBuilder repoUrlBuilder = new StringBuilder(remoteUrl);
-
-                //need git extension to clone some repos
-                if (!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension))) {
-                    repoUrlBuilder.append(getString(R.string.git_extension));
-                } else { //if has git extension remove it from repository name
-                    repoName = repoName.substring(0, repoName.lastIndexOf('.'));
+            boolean isSync = Intent.ACTION_SYNC.equalsIgnoreCase(intent1.getAction());
+            if (isSync) { // sync repo
+                syncRepo(intent1);
+            } else { // clone repo
+                URL mRemoteRepoUrl = null;
+                try {
+                    mRemoteRepoUrl = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
+                } catch (MalformedURLException e) {
+                    Toast.makeText(mContext, R.string.invalid_url, Toast.LENGTH_LONG).show();
+                    Timber.e(e);
                 }
-                //Check if there are others repositories with same remote
-                List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext, RepoDbManager.searchRepo(remoteUrl));
 
-                //if so, just open it
-                if (repositoriesWithSameRemote.size() > 0) {
-                    Toast.makeText(mContext, R.string.repository_already_present, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(mContext, RepoDetailActivity.class);
-                    intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
-                    startActivity(intent);
-                } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
-                    // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
-                    cloneViewModel.setRemoteUrl(repoUrlBuilder.toString());
-                    showCloneView();
-                } else {
-                    final String cloningStatus = getString(R.string.cloning);
-                    Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
-                    Boolean isRecursive = true;
-                    CloneTask task = new CloneTask(mRepo, true, cloningStatus, null);
-                    task.executeTask();
+                if (mRemoteRepoUrl != null) {
+                    String remoteUrl = mRemoteRepoUrl.toString();
+                    String repoName = remoteUrl.substring(remoteUrl.lastIndexOf("/") + 1);
+                    StringBuilder repoUrlBuilder = new StringBuilder(remoteUrl);
+
+                    //need git extension to clone some repos
+                    if (!remoteUrl.toLowerCase().endsWith(getString(R.string.git_extension))) {
+                        repoUrlBuilder.append(getString(R.string.git_extension));
+                    } else { //if has git extension remove it from repository name
+                        repoName = repoName.substring(0, repoName.lastIndexOf('.'));
+                    }
+                    //Check if there are others repositories with same remote
+                    List<Repo> repositoriesWithSameRemote = Repo.getRepoList(mContext, RepoDbManager.searchRepo(remoteUrl));
+
+                    //if so, just open it
+                    if (repositoriesWithSameRemote.size() > 0) {
+                        Toast.makeText(mContext, R.string.repository_already_present, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(mContext, RepoDetailActivity.class);
+                        intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
+                        startActivity(intent);
+                    } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
+                        // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
+                        cloneViewModel.setRemoteUrl(repoUrlBuilder.toString());
+                        showCloneView();
+                    } else {
+                        final String cloningStatus = getString(R.string.cloning);
+                        Repo mRepo = Repo.createRepo(repoName, repoUrlBuilder.toString(), cloningStatus);
+                        Boolean isRecursive = true;
+                        CloneTask task = new CloneTask(mRepo, true, cloningStatus, null);
+                        task.executeTask();
+                    }
                 }
             }
         }
@@ -267,5 +275,43 @@ public class RepoListActivity extends SheimiFragmentActivity {
     private void hideCloneView() {
         binding.getCloneViewModel().show(false);
         ViewHelperKt.hideKeyboard(this);
+    }
+
+    private void syncRepo(Intent intent) {
+        ComponentName componentName = intent.getComponent();
+        Uri uri = intent.getData();
+        if (uri == null) {
+            Toast.makeText(this, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String path = uri.getPath();
+        if (path == null) {
+            Toast.makeText(this, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String repoName = path.substring(path.lastIndexOf("/") + 1);
+        if (!Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
+            Toast.makeText(this, "Репозиторий " + path + " отсутствует в списке добавленных",
+                Toast.LENGTH_LONG).show();
+            return;
+        }
+        String command = intent.getStringExtra(Intent.EXTRA_TEXT);
+        syncRepo(command);
+
+    }
+
+    private void syncRepo(String command) {
+        if (!TextUtils.isEmpty(command)) {
+
+        } else {
+
+        }
+    }
+
+    private void onSyncRepoFinish() {
+//        Intent resIntent = new Intent("com.gee12.mytetroid.RESULT_ACTION");
+//        setResult(Activity.RESULT_OK, resIntent);
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

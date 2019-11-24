@@ -43,6 +43,17 @@
                 <data android:host="@string/bitbucket.com" />
                 <data android:host="@string/notabug.org" />
             </intent-filter>
+            <intent-filter android:label="Синхронизировать с MGit">
+                <action android:name="android.intent.action.SYNC" />
+<!--                <action android:name="android.intent.action.VIEW" />-->
+                <category android:name="android.intent.category.DEFAULT" />
+<!--                <data android:scheme="content" android:mimeType="text/plain"/>-->
+<!--                <data android:scheme="file" android:mimeType="text/plain"/>-->
+<!--                <data android:scheme="*" android:mimeType="text/plain"/>-->
+<!--                <data android:scheme="*" />-->
+                <data android:mimeType="text/plain"/>
+<!--                <data android:pathPattern=".*" />-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.RepoDetailActivity"
