@@ -38,7 +38,7 @@ public class PullAction extends RepoAction {
         mActivity.closeOperationDrawer();
     }
 
-    private static void pull(Repo repo, RepoDetailActivity activity,
+    public static void pull(Repo repo, RepoDetailActivity activity,
 			     String remote, boolean forcePull) {
         PullTask pullTask = new PullTask(repo, remote, forcePull, activity.new ProgressCallback(
                 R.string.pull_msg_init));

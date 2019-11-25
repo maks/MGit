@@ -23,17 +23,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-<!--            <intent-filter android:label="Синхронизировать с MGit">-->
-<!--                &lt;!&ndash;                <action android:name="android.intent.action.SYNC" />&ndash;&gt;-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                &lt;!&ndash;                <data android:scheme="content" android:mimeType="text/plain"/>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <data android:scheme="file" android:mimeType="text/plain"/>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <data android:scheme="*" android:mimeType="text/plain"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                <data android:scheme="*" />&ndash;&gt;-->
-<!--                <data android:mimeType="text/plain"/>-->
-<!--&lt;!&ndash;                <data android:pathPattern=".*" />&ndash;&gt;-->
-<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".activities.RepoDetailActivity"
