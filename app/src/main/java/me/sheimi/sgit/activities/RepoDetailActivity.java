@@ -79,7 +79,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int STATUS_FRAGMENT_INDEX = 2;
     private static final int BRANCH_CHOOSE_ACTIVITY = 0;
     private int mSelectedTab;
-    private boolean execExternalCommand;
+    private boolean isReceiveExtCommand;
+    private boolean isExecExtCommand;
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -104,7 +105,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         if (mRepo == null) {
             mRepo = checkExternalCommand(getIntent());
             if (mRepo != null) {
-                execExternalCommand = true;
+                isReceiveExtCommand = true;
             } else {
                 finish();
                 return;
@@ -135,7 +136,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         }
         resetCommitButtonName(branchName);
 
-        if (execExternalCommand) {
+        if (isReceiveExtCommand) {
             syncRepo(getIntent());
         }
     }
@@ -328,6 +329,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             mPullProgressContainer.setAnimation(anim);
             mPullProgressContainer.setVisibility(View.GONE);
             reset();
+            if (isExecExtCommand)
+                onSyncRepoFinish(isSuccess);
         }
 
         @Override
@@ -461,6 +464,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     }
 
+
     private Repo checkExternalCommand(Intent intent) {
         Uri uri = intent.getData();
         if (uri == null) {
@@ -472,8 +476,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             Toast.makeText(this, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
             return null;
         }
-//        String repoName = path.substring(path.lastIndexOf("/") + 1);
-//        if (!Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
         Repo repo = getRepoByName(path);
         if (repo == null) {
             Toast.makeText(this, "Репозиторий " + path + " отсутствует в списке добавленных",
@@ -505,26 +507,28 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
 
     private void syncRepo(@NotNull Intent intent) {
         String command = intent.getStringExtra(Intent.EXTRA_TEXT);
-        syncRepo(command);
+        if (syncRepo(command)) {
+            this.isExecExtCommand = true;
+        }
     }
 
-    private void syncRepo(String command) {
+    private boolean syncRepo(String command) {
         if (!TextUtils.isEmpty(command)) {
             String[] words = command.split(" ");
             if (words.length == 0) {
-                return;
+                return false;
             }
             int operIndex = 0;
             if (words[0].equalsIgnoreCase("git"))
                 operIndex = 1;
 
             if (operIndex == 1 && words.length == 1)
-                return;
+                return false;
             if (words[operIndex].equalsIgnoreCase("pull")) {
                 int forceIndex = findParam(words, new String[] {"-f", "--force"}, operIndex+1);
                 boolean forcePull = (forceIndex != -1);
                 String remote = null;
-                if (forceIndex < words.length - 1)
+                if (forceIndex != -1 && forceIndex < words.length - 1)
                     remote = words[words.length - 1];
 
                 if (forcePull && !TextUtils.isEmpty(remote)) {
@@ -532,10 +536,12 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
                 } else {
                     new PullAction(mRepo, this).execute();
                 }
+                return true;
             }
         } else {
             Toast.makeText(this, "Не передана команда", Toast.LENGTH_LONG).show();
         }
+        return false;
     }
 
     private int findParam(String[] words, String param, int startPos) {
@@ -561,10 +567,11 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         return -1;
     }
 
-    private void onSyncRepoFinish() {
+    private void onSyncRepoFinish(boolean isSuccess) {
 //        Intent resIntent = new Intent("com.gee12.mytetroid.RESULT_ACTION");
 //        setResult(Activity.RESULT_OK, resIntent);
-        setResult(Activity.RESULT_OK);
+        if (isSuccess)
+            setResult(Activity.RESULT_OK);
         finish();
     }
 }
