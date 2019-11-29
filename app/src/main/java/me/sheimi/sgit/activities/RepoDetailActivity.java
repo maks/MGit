@@ -80,7 +80,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int BRANCH_CHOOSE_ACTIVITY = 0;
     private int mSelectedTab;
     private boolean isReceiveExtCommand;
-    private boolean isExecExtCommand;
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -462,116 +461,5 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             return true;
         }
 
-    }
-
-
-    private Repo checkExternalCommand(Intent intent) {
-        Uri uri = intent.getData();
-        if (uri == null) {
-            Toast.makeText(this, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
-            return null;
-        }
-        String path = uri.getPath();
-        if (TextUtils.isEmpty(path)) {
-            Toast.makeText(this, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
-            return null;
-        }
-        Repo repo = getRepoByName(path);
-        if (repo == null) {
-            Toast.makeText(this, "Репозиторий " + path + " отсутствует в списке добавленных",
-                Toast.LENGTH_LONG).show();
-            return null;
-        }
-        return repo;
-    }
-
-    private Repo getRepoByName(String localPath) {
-//        ((SGitApplication) getApplicationContext()).getPrefenceHelper().setRepoRoot(
-//            "/storage/sdcard0/Android/data/com.manichord.mgit.debug/files/repo");
-        File file = ((SGitApplication) getApplicationContext()).getPrefenceHelper().getRepoRoot();
-        // check repo path
-        if (file == null || !localPath.startsWith(file.getAbsolutePath())) {
-            return null;
-        }
-        // check repo name
-        String repoName = new File(localPath).getName();
-        Cursor cursor = RepoDbManager.searchRepo(repoName);
-        List<Repo> repos = Repo.getRepoList(this, cursor);
-        for (Repo repo : repos) {
-            if (repoName.equalsIgnoreCase(repo.getLocalPath())) {
-                return repo;
-            }
-        }
-        return null;
-    }
-
-    private void syncRepo(@NotNull Intent intent) {
-        String command = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (syncRepo(command)) {
-            this.isExecExtCommand = true;
-        }
-    }
-
-    private boolean syncRepo(String command) {
-        if (!TextUtils.isEmpty(command)) {
-            String[] words = command.split(" ");
-            if (words.length == 0) {
-                return false;
-            }
-            int operIndex = 0;
-            if (words[0].equalsIgnoreCase("git"))
-                operIndex = 1;
-
-            if (operIndex == 1 && words.length == 1)
-                return false;
-            if (words[operIndex].equalsIgnoreCase("pull")) {
-                int forceIndex = findParam(words, new String[] {"-f", "--force"}, operIndex+1);
-                boolean forcePull = (forceIndex != -1);
-                String remote = null;
-                if (forceIndex != -1 && forceIndex < words.length - 1)
-                    remote = words[words.length - 1];
-
-                if (forcePull && !TextUtils.isEmpty(remote)) {
-                    PullAction.pull(mRepo, this, remote, forcePull);
-                } else {
-                    new PullAction(mRepo, this).execute();
-                }
-                return true;
-            }
-        } else {
-            Toast.makeText(this, "Не передана команда", Toast.LENGTH_LONG).show();
-        }
-        return false;
-    }
-
-    private int findParam(String[] words, String param, int startPos) {
-        if (words == null || startPos >= words.length)
-            return -1;
-        for (int i = startPos; i < words.length; i++) {
-            if (words[i].equalsIgnoreCase(param))
-                return i;
-        }
-        return -1;
-    }
-
-    private int findParam(String[] words, String[] params, int startPos) {
-        if (words == null || startPos >= words.length)
-            return -1;
-        for (int i = startPos; i < words.length; i++) {
-            for (String param : params) {
-                if (words[i].equalsIgnoreCase(param)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    private void onSyncRepoFinish(boolean isSuccess) {
-//        Intent resIntent = new Intent("com.gee12.mytetroid.RESULT_ACTION");
-//        setResult(Activity.RESULT_OK, resIntent);
-        if (isSuccess)
-            setResult(Activity.RESULT_OK);
-        finish();
     }
 }
