@@ -1,6 +1,7 @@
 package com.gee12.mgit;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -28,7 +29,7 @@ public class ExternalCommandReceiver {
     private String storagePath;
     private String command;
     private Repo repo;
-    private boolean isExecExtCommand;
+//    private boolean isExecExtCommand;
 
     public ExternalCommandReceiver(RepoDetailActivity activity, String storagePath, String command) {
         this.activity = activity;
@@ -36,6 +37,12 @@ public class ExternalCommandReceiver {
         this.command = command;
     }
 
+    /**
+     * Create instance from Intent data
+     * @param activity
+     * @param intent
+     * @return
+     */
     public static ExternalCommandReceiver checkExternalCommand(RepoDetailActivity activity, @NotNull Intent intent) {
         String appName = intent.getStringExtra(EXTRA_APP_NAME);
         if (appName == null || !appName.startsWith(SENDER_APP_NAME)) {
@@ -51,49 +58,70 @@ public class ExternalCommandReceiver {
             Toast.makeText(activity, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
             return null;
         }
-        String command = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (!TextUtils.isEmpty(command)) {
+        String command = intent.getStringExtra(EXTRA_SYNC_COMMAND);
+        if (TextUtils.isEmpty(command)) {
             Toast.makeText(activity, "Не передана команда", Toast.LENGTH_LONG).show();
             return null;
         }
         return new ExternalCommandReceiver(activity, path, command);
     }
 
+    /**
+     * Search repo by full path
+     * @return
+     */
     public Repo selectRepo() {
-        Repo repo = getRepoByName(storagePath);
+        Repo repo = getRepoByFullName(activity, storagePath);
         if (repo == null) {
             Toast.makeText(activity, "Репозиторий " + storagePath + " отсутствует в списке добавленных",
                 Toast.LENGTH_LONG).show();
             return null;
         }
+        this.repo = repo;
         return repo;
-
     }
 
-    private Repo getRepoByName(String localPath) {
+    /**
+     * Search repo (internal or external) by full path
+     * @param context
+     * @param repoLocalPath
+     * @return
+     */
+    private static Repo getRepoByFullName(Context context, String repoLocalPath) {
 //        ((SGitApplication) getApplicationContext()).getPrefenceHelper().setRepoRoot(
 //            "/storage/sdcard0/Android/data/com.manichord.mgit.debug/files/repo");
-        File file = ((SGitApplication)activity.getApplicationContext()).getPrefenceHelper().getRepoRoot();
+        File repoRoot = ((SGitApplication)context.getApplicationContext()).getPrefenceHelper().getRepoRoot();
         // check repo path
-        if (file == null || !localPath.startsWith(file.getAbsolutePath())) {
-            return null;
-        }
+//        if (repoRoot == null || !repoLocalPath.startsWith(repoRoot.getAbsolutePath())) {
+//            return null;
+//        }
         // check repo name
-        String repoName = new File(localPath).getName();
+        String repoName = new File(repoLocalPath).getName();
         Cursor cursor = RepoDbManager.searchRepo(repoName);
-        List<Repo> repos = Repo.getRepoList(this, cursor);
+        List<Repo> repos = Repo.getRepoList(context, cursor);
         for (Repo repo : repos) {
-            if (repoName.equalsIgnoreCase(repo.getLocalPath())) {
+            String path, name;
+            if (repo.isExternal()) {
+                path = repo.getLocalPath().substring(Repo.EXTERNAL_PREFIX.length());
+//                String[] strs = path.split("/");
+//                name = strs[strs.length - 1];
+            } else {
+                path = repoRoot.getAbsolutePath() + File.separator + repo.getLocalPath();
+//                name = repo.getLocalPath();
+            }
+            if (repoLocalPath.equalsIgnoreCase(path) /*&& repoName.equalsIgnoreCase(name)*/) {
                 return repo;
             }
         }
         return null;
     }
 
-    private void syncRepo(Intent intent) {
-        if (syncRepo(command)) {
-            this.isExecExtCommand = true;
-        }
+    /**
+     * Parsing and executing the command
+     * @return
+     */
+    public boolean syncRepo() {
+         return syncRepo(command);
     }
 
     private boolean syncRepo(String command) {
@@ -108,22 +136,26 @@ public class ExternalCommandReceiver {
 
             if (operIndex == 1 && words.length == 1)
                 return false;
+            // pull command
             if (words[operIndex].equalsIgnoreCase("pull")) {
                 int forceIndex = findParam(words, new String[] {"-f", "--force"}, operIndex+1);
                 boolean forcePull = (forceIndex != -1);
                 String remote = null;
-                if (forceIndex != -1 && forceIndex < words.length - 1)
+//                if (forceIndex != -1 && forceIndex < words.length - 1)
+                int remoteIndex = (forcePull) ? forceIndex + 1 : operIndex + 1;
+                if (remoteIndex < words.length)
                     remote = words[words.length - 1];
-
-                if (forcePull && !TextUtils.isEmpty(remote)) {
-                    PullAction.pull(mRepo, this, remote, forcePull);
+                // executing
+                if (!TextUtils.isEmpty(remote)) { // if entered remote, call pull command directly
+                    // without PullDialog
+                    PullAction.pull(repo, activity, remote, forcePull);
                 } else {
-                    new PullAction(mRepo, this).execute();
+                    new PullAction(repo, activity).execute();
                 }
                 return true;
             }
         } else {
-            Toast.makeText(this, "Не передана команда", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Не передана команда", Toast.LENGTH_LONG).show();
         }
         return false;
     }
@@ -151,11 +183,27 @@ public class ExternalCommandReceiver {
         return -1;
     }
 
-    private void onSyncRepoFinish(boolean isSuccess) {
+    /**
+     * Processing the result of the command
+     * @param isSuccess
+     */
+    public void onSyncFinish(boolean isSuccess) {
 //        Intent resIntent = new Intent("com.gee12.mytetroid.RESULT_ACTION");
 //        setResult(Activity.RESULT_OK, resIntent);
         if (isSuccess)
-            setResult(Activity.RESULT_OK);
-        finish();
+            activity.setResult(Activity.RESULT_OK);
+        activity.finish();
+    }
+
+    public String getStoragePath() {
+        return storagePath;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public Repo getRepo() {
+        return repo;
     }
 }

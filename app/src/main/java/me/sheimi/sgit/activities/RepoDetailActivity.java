@@ -1,9 +1,6 @@
 package me.sheimi.sgit.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,7 +8,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,20 +21,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-import java.util.List;
+import com.gee12.mgit.ExternalCommandReceiver;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.delegate.RepoOperationDelegate;
-import me.sheimi.sgit.activities.delegate.actions.PullAction;
 import me.sheimi.sgit.adapters.RepoOperationsAdapter;
-import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.fragments.BaseFragment;
 import me.sheimi.sgit.fragments.CommitsFragment;
@@ -79,7 +68,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int STATUS_FRAGMENT_INDEX = 2;
     private static final int BRANCH_CHOOSE_ACTIVITY = 0;
     private int mSelectedTab;
-    private boolean isReceiveExtCommand;
+//    private boolean isReceiveExtCommand;
+    ExternalCommandReceiver commandReceiver;
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -102,10 +92,9 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         // aweful hack! workaround for null repo when returning from BranchChooser, but going to
         // shortly refactor passing in serialised repo, so not worth doing more to fix for now
         if (mRepo == null) {
-            mRepo = checkExternalCommand(getIntent());
-            if (mRepo != null) {
-                isReceiveExtCommand = true;
-            } else {
+//            mRepo = checkExternalCommand(getIntent());
+            this.commandReceiver = ExternalCommandReceiver.checkExternalCommand(this, getIntent());
+            if (commandReceiver == null || (mRepo = commandReceiver.selectRepo()) == null) {
                 finish();
                 return;
             }
@@ -135,8 +124,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         }
         resetCommitButtonName(branchName);
 
-        if (isReceiveExtCommand) {
-            syncRepo(getIntent());
+        if (commandReceiver != null) {
+            commandReceiver.syncRepo();
         }
     }
 
@@ -328,8 +317,8 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             mPullProgressContainer.setAnimation(anim);
             mPullProgressContainer.setVisibility(View.GONE);
             reset();
-            if (isExecExtCommand)
-                onSyncRepoFinish(isSuccess);
+            if (commandReceiver != null)
+                commandReceiver.onSyncFinish(isSuccess);
         }
 
         @Override
