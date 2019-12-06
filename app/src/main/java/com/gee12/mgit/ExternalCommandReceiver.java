@@ -13,11 +13,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
+import me.sheimi.sgit.R;
 import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.delegate.actions.PullAction;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.database.models.Repo;
+import me.sheimi.sgit.repo.tasks.repo.PullTask;
 
 public class ExternalCommandReceiver {
 
@@ -148,7 +150,7 @@ public class ExternalCommandReceiver {
                 // executing
                 if (!TextUtils.isEmpty(remote)) { // if entered remote, call pull command directly
                     // without PullDialog
-                    PullAction.pull(repo, activity, remote, forcePull);
+                    pull(repo, activity, remote, forcePull);
                 } else {
                     new PullAction(repo, activity).execute();
                 }
@@ -159,6 +161,23 @@ public class ExternalCommandReceiver {
         }
         return false;
     }
+
+    /**
+     * Run pull task (method was copied from PullAction class, because there it is private)
+     * TODO: make original method public or at least protected
+     * @param repo
+     * @param activity
+     * @param remote
+     * @param forcePull
+     */
+    private static void pull(Repo repo, RepoDetailActivity activity,
+                            String remote, boolean forcePull) {
+        PullTask pullTask = new PullTask(repo, remote, forcePull, activity.new ProgressCallback(
+            R.string.pull_msg_init));
+        pullTask.executeTask();
+        activity.closeOperationDrawer();
+    }
+
 
     private int findParam(String[] words, String param, int startPos) {
         if (words == null || startPos >= words.length)
