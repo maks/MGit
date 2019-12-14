@@ -93,7 +93,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
         binding.repoList.setOnItemLongClickListener(mRepoListAdapter);
         mContext = getApplicationContext();
 
-        Uri uri = getIntent().getData();
+        Uri uri = this.getIntent().getData();
         if (uri != null) {
             URL mRemoteRepoUrl = null;
             try {
@@ -268,5 +268,4 @@ public class RepoListActivity extends SheimiFragmentActivity {
         binding.getCloneViewModel().show(false);
         ViewHelperKt.hideKeyboard(this);
     }
-
 }

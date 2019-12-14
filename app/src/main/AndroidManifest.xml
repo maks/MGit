@@ -54,10 +54,6 @@
             <intent-filter android:label="Синхронизировать с MGit">
                 <action android:name="android.intent.action.SYNC" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <!--                <data android:scheme="content" android:mimeType="text/plain"/>-->
-                <!--                <data android:scheme="file" android:mimeType="text/plain"/>-->
-                <!--                <data android:scheme="*" android:mimeType="text/plain"/>-->
-                <!--                <data android:scheme="*" />-->
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
@@ -127,7 +123,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
+            android:authorities="com.manichord.mgit.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

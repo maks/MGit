@@ -68,7 +68,6 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
     private static final int STATUS_FRAGMENT_INDEX = 2;
     private static final int BRANCH_CHOOSE_ACTIVITY = 0;
     private int mSelectedTab;
-//    private boolean isReceiveExtCommand;
     ExternalCommandReceiver commandReceiver;
 
     @Override
@@ -92,8 +91,10 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         // aweful hack! workaround for null repo when returning from BranchChooser, but going to
         // shortly refactor passing in serialised repo, so not worth doing more to fix for now
         if (mRepo == null) {
-//            mRepo = checkExternalCommand(getIntent());
+            // if the intent contains data to execute the sync command and they are correct
             this.commandReceiver = ExternalCommandReceiver.checkExternalCommand(this, getIntent());
+            // if the data is incorrect or the specified repository was not found in the database,
+            // then close the activity
             if (commandReceiver == null || (mRepo = commandReceiver.selectRepo()) == null) {
                 finish();
                 return;
@@ -123,7 +124,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             return;
         }
         resetCommitButtonName(branchName);
-
+        // start the sync command
         if (commandReceiver != null) {
             commandReceiver.syncRepo();
         }
@@ -317,6 +318,7 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
             mPullProgressContainer.setAnimation(anim);
             mPullProgressContainer.setVisibility(View.GONE);
             reset();
+            // start the sync result handler
             if (commandReceiver != null)
                 commandReceiver.onSyncFinish(isSuccess);
         }
@@ -451,4 +453,5 @@ public class RepoDetailActivity extends SheimiFragmentActivity {
         }
 
     }
+
 }
