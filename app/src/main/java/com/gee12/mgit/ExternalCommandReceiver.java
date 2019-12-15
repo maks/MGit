@@ -52,17 +52,17 @@ public class ExternalCommandReceiver {
         }
         Uri uri = intent.getData();
         if (uri == null) {
-            Toast.makeText(activity, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.error_getting_repo_location, Toast.LENGTH_LONG).show();
             return null;
         }
         String path = uri.getPath();
         if (TextUtils.isEmpty(path)) {
-            Toast.makeText(activity, "Ошибка получения расположения репозитория", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.error_getting_repo_location, Toast.LENGTH_LONG).show();
             return null;
         }
         String command = intent.getStringExtra(EXTRA_SYNC_COMMAND);
         if (TextUtils.isEmpty(command)) {
-            Toast.makeText(activity, "Не передана команда", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.command_not_transmitted, Toast.LENGTH_LONG).show();
             return null;
         }
         return new ExternalCommandReceiver(activity, path, command);
@@ -75,7 +75,7 @@ public class ExternalCommandReceiver {
     public Repo selectRepo() {
         Repo repo = getRepoByFullName(activity, storagePath);
         if (repo == null) {
-            Toast.makeText(activity, "Репозиторий " + storagePath + " отсутствует в списке добавленных",
+            Toast.makeText(activity, String.format(activity.getString(R.string.repo_is_not_in_list), storagePath),
                 Toast.LENGTH_LONG).show();
             return null;
         }
@@ -157,7 +157,7 @@ public class ExternalCommandReceiver {
                 return true;
             }
         } else {
-            Toast.makeText(activity, "Не передана команда", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, R.string.command_not_transmitted, Toast.LENGTH_LONG).show();
         }
         return false;
     }
