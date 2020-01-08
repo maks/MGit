@@ -1,18 +1,18 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_mode_diff"
         android:icon="@drawable/ic_file"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/action_mode_diff"/>
     <item
         android:id="@+id/action_mode_copy_commit"
         android:icon="@drawable/ic_action_copy"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/action_copy_commit_str"/>
     <item
         android:id="@+id/action_mode_checkout"
         android:icon="@drawable/ic_download"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/label_checkout"/>
 </menu>
