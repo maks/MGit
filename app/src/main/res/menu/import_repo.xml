@@ -1,15 +1,15 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_create_external"
         android:icon="@drawable/ic_content_new"
-        android:showAsAction="ifRoom"
+        app:showAsAction="ifRoom"
         android:title="@string/action_create_external_repo"/>
 
     <item
         android:id="@+id/action_import_external"
         android:icon="@drawable/ic_action_save"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/label_import"/>
 
 </menu>

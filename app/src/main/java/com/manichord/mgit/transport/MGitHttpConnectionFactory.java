@@ -54,7 +54,7 @@ import org.eclipse.jgit.transport.http.HttpConnection;
 import org.eclipse.jgit.transport.http.HttpConnectionFactory;
 
 /**
- * A factory returning instances of {@link JDKHttpConnection}
+ * A factory returning instances of {@link MGitHttpConnection}
  *
  * @since 3.3
  */
