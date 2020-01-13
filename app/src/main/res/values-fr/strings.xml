@@ -182,18 +182,7 @@
     <string name="clone_with_mgit">Cloner avec MGit</string>
     <string name="invalid_url">URL invalide !</string>
     <string name="initialising">Initialisation …</string>
-    <string name="github.com" translatable="false">github.com</string>
-    <string name="gitlab.com" translatable="false">gitlab.com</string>
-    <string name="bitbucket.com" translatable="false">bitbucket.com</string>
-    <string name="notabug.org" translatable="false">notabug.org</string>
     <string name="repository_already_present">Dépôt déjà présent !</string>
-    <string name="dialog_push_is_force_push">Forcer pousser?</string>
-    <string name="error_rename_repo_fail">Renommer repository échoué</string>
-    <string name="success_remove_file">Fichier a été supprimé</string>
-    <string name="action_send_report">Send report</string>
     <string name="label_init">Init</string>
-    <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
-    <string name="dialog_edit_key_password_title">Key Password</string>
-    <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
 
 </resources>
