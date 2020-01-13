@@ -17,6 +17,8 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 [![Join the chat at https://gitter.im/MGit-Android/Lobby](https://badges.gitter.im/MGit-Android/Lobby.svg)](https://gitter.im/MGit-Android/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Translate - with Stringlate](https://img.shields.io/badge/translate%20with-stringlate-green.svg)](https://lonamiwebs.github.io/stringlate/translate?git=https%3A%2F%2Fgithub.com%2Fmaks%2FMGit)
+
 * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/maks/MGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
 * This app requires minimum of for Android v4.x.
 
@@ -102,7 +104,7 @@ If you would like to contribute code, either a bugfix or a new feature, please m
 
 Please use the Android Studio formatting settings set for this project in the repo.
 
-All strings visible to the user.
+All strings visible to the user need to go into strings resource file. 
 
 #### Project Goals
 
