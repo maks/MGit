@@ -9,10 +9,11 @@
 
     <!-- Commit -->
     <string name="dialog_commit_title">Soumettre Changements</string>
-    <string name="dialog_commit_msg_hint">Engagez un message</string>
-    <string name="dialog_commit_is_amend">Modifier engagement précédent</string>
-    <string name="dialog_commit_auto_stage">Etape automatique des fichiers modifiés</string>
-    <string name="dialog_commit_positive_label">Soumettre</string>
+    <string name="dialog_commit_msg_hint">Message de commit</string>
+    <string name="dialog_commit_author_hint">Auteur de commit (optional)</string>
+    <string name="dialog_commit_is_amend">Modifier commit précédent</string>
+    <string name="dialog_commit_auto_stage">Stage automatique des fichiers modifiés</string>
+    <string name="dialog_commit_positive_label">Commit</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Chemin local</string>
@@ -29,19 +30,34 @@
     <string name="dialog_init_repo_positive_label">Initialiser</string>
 
     <!-- Add Remote -->
-    <string name="dialog_add_remote_title">Ajouter à distance</string>
-    <string name="dialog_add_remote_hint_name">Nom à distance</string>
-    <string name="dialog_add_remote_hint_url">URL à distance</string>
+    <string name="dialog_add_remote_title">Ajouter un dépôt distant</string>
+    <string name="dialog_add_remote_hint_name">Nom du dépôt distant</string>
+    <string name="dialog_add_remote_hint_url">URL du dépôt distant</string>
     <string name="dialog_add_remote_positive_label">Fini</string>
 
+    <!-- Remove Remote -->
+    <string name="dialog_remove_remote_title">Supprimer dépôt distant</string>
+    <string name="dialog_remove_remote_positive_label">Fini</string>
+
     <!-- Push -->
-    <string name="dialog_push_repo_title">Pousser à ...</string>
-    <string name="dialog_push_repo_msg">Etes-vous sûr de pousser les changements locaux?</string>
-    <string name="dialog_push_is_push_all">Pousser tout?</string>
+    <string name="dialog_push_repo_title">Push vers ...</string>
+    <string name="dialog_push_repo_msg">Êtes-vous sûr de vouloir effectuer un push des changements locaux?</string>
+    <string name="dialog_push_is_push_all">Push tout?</string>
+    <string name="dialog_push_is_force_push">Forcer push?</string>
     <string name="dialog_push_result">Résultat du push</string>
+
+    <!-- Pull -->
+    <string name="dialog_pull_repo_title">Pull depuis…</string>
+    <string name="dialog_pull_is_force_pull">Forcer le pull et reset à l\'état du pull ?</string>
 
     <!-- Create External -->
     <string name="dialog_create_external_title">Créer un dépôt externe</string>
+    <string name="dialog_create_external_msg">Voulez-vous créer un dépôt Git dans ce répertoire ?</string>
     <string name="dialog_create_external_positive_label">Créer</string>
+
+    <!-- Fetch Remote -->
+    <string name="dialog_fetch_title">Fetch</string>
+    <string name="dialog_fetch_positive_button">Fetch</string>
+    <string name="dialog_fetch_all_button">Fetch All</string>
 
 </resources>
