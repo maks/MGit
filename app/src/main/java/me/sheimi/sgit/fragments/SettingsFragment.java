@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.RepoListActivity;
+import com.manichord.mgit.repolist.RepoListActivity;
 
 public class SettingsFragment extends PreferenceFragment {
     private SharedPreferences.OnSharedPreferenceChangeListener mListener;

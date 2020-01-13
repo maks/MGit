@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Cherry Pick -->
-    <string name="dialog_cherrypick_title">择取</string>
-    <string name="dialog_cherrypick_msg_hint">提交Hash值 (从提交列表里复制)</string>
-    <string name="dialog_label_cherrypick">择取</string>
+    <string name="dialog_cherrypick_title">择取 (Cherry Pick)</string>
+    <string name="dialog_cherrypick_msg_hint">提交 Hash 值 (从提交列表中复制)</string>
+    <string name="dialog_label_cherrypick">择取 (Cherry Pick)</string>
     <string name="dialog_rebase_title">选择上游分支</string>
 
     <!-- Commit -->
@@ -40,24 +40,24 @@
     <string name="dialog_remove_remote_positive_label">完成</string>
 
     <!-- Push -->
-    <string name="dialog_push_repo_title">推送到 …</string>
-    <string name="dialog_push_repo_msg">你确定推送本地的修改？</string>
+    <string name="dialog_push_repo_title">推送至…</string>
+    <string name="dialog_push_repo_msg">您确定要推送本地修改吗？</string>
     <string name="dialog_push_is_push_all">全部推送？</string>
     <string name="dialog_push_is_force_push">强制推送？</string>
     <string name="dialog_push_result">推送结果</string>
 
     <!-- Pull -->
-    <string name="dialog_pull_repo_title">拉取分支 …</string>
+    <string name="dialog_pull_repo_title">拉取分支…</string>
     <string name="dialog_pull_is_force_pull">强制拉取并重置？</string>
 
     <!-- Create External -->
     <string name="dialog_create_external_title">创建仓库</string>
-    <string name="dialog_create_external_msg">你想在该目录中创建一个Git仓库？</string>
+    <string name="dialog_create_external_msg">您想在该目录中创建一个 Git 仓库吗？</string>
     <string name="dialog_create_external_positive_label">创建</string>
 
     <!-- Fetch Remote -->
-    <string name="dialog_fetch_title">获取</string>
-    <string name="dialog_fetch_positive_button">获取</string>
-    <string name="dialog_fetch_all_button">获取所有</string>
+    <string name="dialog_fetch_title">抓取</string>
+    <string name="dialog_fetch_positive_button">抓取</string>
+    <string name="dialog_fetch_all_button">抓取所有</string>
 
 </resources>

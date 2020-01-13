@@ -12,6 +12,8 @@
         <item>Löschen</item>
         <item>Löschen (cached, nur Repository)</item>
         <item>Löschen (force, mit aktuellen Änderungen)</item>
+        <item>Ausführbar machen</item>
+        <item>Nicht ausführbar machen</item>
     </string-array>
     <string-array name="repo_operation_names">
         <item>Neuer Branch</item>

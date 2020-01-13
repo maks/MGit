@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Cherry Pick -->
+    <string name="dialog_cherrypick_title">Cherry Pick</string>
+    <string name="dialog_cherrypick_msg_hint">Хэш комита(скопируйте из списка комитов)</string>
+    <string name="dialog_label_cherrypick">Cherry Pick</string>
+    <string name="dialog_rebase_title">Выберете ветку</string>
+
+    <!-- Commit -->
+    <string name="dialog_commit_title">Комитнуть изменения</string>
+    <string name="dialog_commit_msg_hint">Сообщение комита</string>
+    <string name="dialog_commit_author_hint">Автор комита(рекомендуется)</string>
+    <string name="dialog_commit_is_amend">Изменить предыдущий комиь</string>
+    <string name="dialog_commit_auto_stage">Добовлять измененные файлы автоматически</string>
+    <string name="dialog_commit_positive_label">Комитнуть</string>
+
+    <!-- Import Repo -->
+    <string name="dialog_import_local_path_hint">Локальный путь</string>
+    <string name="dialog_import_import_as_external_repo">Импортировать как внешний репозиторий</string>
+    <string name="dialog_import_set_local_repo_title">Установить локальный путь</string>
+
+    <!-- Clone Repo -->
+    <string name="dialog_clone_local_path_hint">Локальный путь</string>
+    <string name="dialog_clone_neutral_label">Init Local</string>
+
+    <!-- Init Repo -->
+    <string name="dialog_init_local_path_hint">Локальный путь</string>
+    <string name="dialog_init_repo_title">Локальный путь</string>
+    <string name="dialog_init_repo_positive_label">Init</string>
+
+    <!-- Add Remote -->
+    <string name="dialog_add_remote_title">Добавить сервер</string>
+    <string name="dialog_add_remote_hint_name">Имя сервера</string>
+    <string name="dialog_add_remote_hint_url">URL сервера</string>
+    <string name="dialog_add_remote_positive_label">Готово</string>
+
+    <!-- Remove Remote -->
+    <string name="dialog_remove_remote_title">Удалить сервер</string>
+    <string name="dialog_remove_remote_positive_label">Готово</string>
+
+    <!-- Push -->
+    <string name="dialog_push_repo_title">Загрузить в...</string>
+    <string name="dialog_push_repo_msg">Вы точно хотите загрузить все локальные изменения?</string>
+    <string name="dialog_push_is_push_all">Загрузить все?</string>
+    <string name="dialog_push_is_force_push">Принудительно загрузить?</string>
+    <string name="dialog_push_result">Результат загрузки</string>
+
+    <!-- Pull -->
+    <string name="dialog_pull_repo_title">Обновить из &#8230;</string>
+    <string name="dialog_pull_is_force_pull">Принудительно обновить?</string>
+
+    <!-- Create External -->
+    <string name="dialog_create_external_title">Создать внешний репозиторий</string>
+    <string name="dialog_create_external_msg">Вы хотите создать репозиторий в этой папке?</string>
+    <string name="dialog_create_external_positive_label">Создать</string>
+
+    <!-- Fetch Remote -->
+    <string name="dialog_fetch_title">Обновить в ветку</string>
+    <string name="dialog_fetch_positive_button">Обновить в ветку</string>
+    <string name="dialog_fetch_all_button">Обновить все</string>
+
+</resources>

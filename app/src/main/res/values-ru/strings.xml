@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="default_text">Стоковый текст</string>
+    <string name="title_clone_repo">Скачать репозиторий</string>
+
+    <!-- action -->
+    <string name="action_search">Поиск</string>
+    <string name="action_clone">Клонировать</string>
+    <string name="action_import_repo">Импортировать репозиторий</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_mode_rename_key">Переименовать ключ</string>
+    <string name="action_mode_rename_branch">Переиминовать branch</string>
+    <string name="action_manage_private_key">Приватные ключи</string>
+    <string name="action_generate_private_key">Создать ключ</string>
+    <string name="action_import_private_key">Импортировать ключ</string>
+    <string name="action_mode_show_private_key">Покозать приватный ключ</string>
+    <string name="action_mode_show_public_key">Покозать публичный ключ</string>
+    <string name="action_mode_edit_key_password">Изменить пароль ключа</string>
+    <string name="action_feedback">Отзыв</string>
+    <string name="action_choose_language">Выберете язык</string>
+    <string name="action_mode_diff">Неидексирванные файлы</string>
+    <string name="action_edit">Изменить</string>
+    <string name="action_edit_save">Сохранить</string>
+    <string name="action_copy_all">Копировать все файлы</string>
+    <string name="action_edit_in_other_app">Редактировать в другом месте</string>
+    <string name="action_reset">Сброс</string>
+    <string name="action_toggle_drawer">Открыть меню</string>
+    <string name="action_copy_commit_str">Скопировать хэш комитта</string>
+    <string name="action_create_external_repo">Создать внешний репозиторий</string>
+    <string name="action_share_diff">Share diff</string>
+    <string name="action_save_diff">Save diff</string>
+    <string name="action_send_report">Отправить репорт</string>
+
+    <!-- label msg -->
+    <string name="label_ok">OK</string>
+    <string name="label_remote_url">Удаленный URL</string>
+    <string name="label_cancel">Отмена</string>
+    <string name="label_clone">Клонировать</string>
+    <string name="label_init">Init</string>
+    <string name="label_delete">Удалить</string>
+    <string name="label_generate_key">Создать ключ</string>
+    <string name="label_dialog_generate_key">Создать ключ</string>
+    <string name="label_username">Логин</string>
+    <string name="label_password">Пароь</string>
+    <string name="label_new_file_name">Переименовать в</string>
+    <string name="label_key_size">Длина ключа</string>
+    <string name="label_rename">Переименовать</string>
+    <string name="label_send_feedback">Отправить отзыв</string>
+    <string name="label_import">Импортировать</string>
+    <string name="label_push">Push</string>
+    <string name="label_push_all">Push All</string>
+    <string name="label_create">Создать </string>
+    <string name="label_checkout">Изменить branch</string>
+    <string name="label_git_name">Имя</string>
+    <string name="label_git_email">Email</string>
+    <string name="label_git_name_per_repo">Имя для этого репозитория</string>
+    <string name="label_git_email_per_repo">Еmail для этого репозитория</string>
+    <string name="label_done">Готово</string>
+    <string name="label_save">Сохранить</string>
+    <string name="label_choose_app_to_open">Открыть с помощью...</string>
+    <string name="label_choose_app_to_edit">Редактировать с помощью</string>
+    <string name="label_new_branch_name">Новый Branch</string>
+    <string name="label_anonymous_checkout">Анонимная смена branch'a</string>
+
+    <!-- for title -->
+    <string name="title_activity_repo_detail">Репозиторий</string>
+    <string name="title_activity_import_repository">Импортировать репозиторий</string>
+    <string name="title_activity_view_file">Файл: </string>
+    <string name="title_activity_commit_diff">Diff:   </string>
+    <string name="title_section1">Секция 1</string>
+    <string name="title_section2">Секция 2</string>
+    <string name="title_section3">Секция 3</string>
+    <string name="tab_files_label">Файлы</string>
+    <string name="tab_file_label">Файл</string>
+    <string name="tab_commits_label">Комитты</string>
+    <string name="tab_status_label">Статус</string>
+
+    <!-- Dialog Msg -->
+    <string name="dialog_choose_branch_title">Выберете Branch</string>
+    <string name="dialog_choose_option">Выберете...</string>
+    <string name="dialog_rename_repo_title">Переименовать</string>
+    <string name="dialog_rename_repo_hint">Имя репозитория</string>
+    <string name="dialog_delete_repo_title">Подтверждение удаления</string>
+    <string name="dialog_delete_repo_msg">Вы действительно хотите удалить этот репозиторий?</string>
+    <string name="dialog_rename_key_title">Переименовать</string>
+    <string name="dialog_edit_key_password_title">Пароль ключа</string>
+    <string name="dialog_rename_branch_title">Переименовать</string>
+    <string name="dialog_choose_language_title">Выберете язык</string>
+    <string name="dialog_comfirm_import_repo_title">Импортируйте репозиторий</string>
+    <string name="dialog_comfirm_import_repo_msg">Вы действительно хотите удалить этот репозиторий?</string>
+    <string name="dialog_merge_title">Выберете ветки для слития</string>
+    <string name="dialog_merge_checkbox">Коммит после слития</string>
+    <string name="dialog_file_delete">Удалить файл</string>
+    <string name="dialog_file_delete_msg">Вы действительно хотите это удалить?</string>
+    <string name="dialog_file_remove_cached">Удалить кэшированный файл</string>
+    <string name="dialog_file_remove_cached_msg">Вы действительно хотите убрать этот файл из индеса?</string>
+    <string name="dialog_file_remove_force">Принудительно удалить файл</string>
+    <string name="dialog_file_remove_force_msg">Вы точно хотите это удалить?</string>
+    <string name="dialog_key_delete">Удалить ключ</string>
+    <string name="dialog_key_delete_msg">Вы действительно хотите удалить этот ключ?</string>
+    <string name="dialog_branch_delete">Удалить ветвь</string>
+    <string name="dialog_branch_delete_msg">Вы хотите удалить эту ветку?</string>
+    <string name="dialog_reset_commit_title">Сбросить изменения</string>
+    <string name="dialog_reset_commit_msg">Вы собираетесь вернуть все к посдеднему коммиту?</string>
+    <string name="dialog_create_dir_title">Новая папка</string>
+    <string name="dialog_create_dir_hint">Имя этой папки</string>
+    <string name="dialog_create_file_title">Новый файл</string>
+    <string name="dialog_create_file_hint">Имя сего файла</string>
+    <string name="dialog_comfirm_checkout_commit_title">Подтвердите переключение</string>
+    <string name="dialog_comfirm_checkout_commit_msg">Переключится на другую ветку</string>
+    <string name="dialog_profile_preferences_title">Настройки</string>
+    <string name="dialog_prompt_for_password_title">Нужна авторизация</string>
+    <string name="dialog_prompt_for_password_title_auth_fail">Не получилось войти</string>
+    <string name="dialog_prompt_for_password_checkbox">Сохранить имя пользователя и пароль</string>
+    <string name="dialog_title_you_want_to">Вы хотите…</string>
+    <string name="dialog_create_branch_title">Новая ветка</string>
+    <string name="dialog_create_branch_hint">Имя этой ветки</string>
+    <string name="dialog_clone_recursive">Clone recursively</string>
+    <string name="dialog_show_unstaged_diff">Несохраненные изменения</string>
+    <string name="dialog_show_staged_diff">Сохраненные</string>
+    <string name="dialog_show_invalid_remote">Invalid remote report</string>
+    <string name="dialog_not_supported">Не поддерживается..</string>
+    <string name="dialog_not_supported_msg">Это не доступно на вашем устройстве.. Прочтите мануал для понимания, что происходит</string>
+    <string name="dialog_error_title">Ошибка</string> <!--Аааааааааа ошибка стоп 0000000000-->
+    <string name="dialog_error_send_report">Отправить жалобу на ошибку</string>
+    <string name="dialog_error_occurred_msg">Непридвиденная ошибка</string><!--Какая же ещё-->
+    <string name="dialog_keymap_title">Сочитания клавиш</string>
+    <string name="dialog_keymap_mesg"> C - коммит\n F- файлы\n S- статус файлов\n ? - помощь\n</string>
+    <string name="dialog_open_remote">Открыть удаленный URL</string>
+    <string name="dialog_open_remote_title">В %s remote</string>
+    <string name="dialog_open_remote_no_app_available">Ни одно приложение не поддерживает эту ссылку</string>
+    <string name="dialog_permission_not_granted">MGit нужно разрещения га память для изменения git репозиториев. Без этого MGit будет работать неправильно.</string>
+
+    <!-- Others -->
+    <string name="pull_msg_init">Загрузка… </string>
+    <string name="progress_left_init">0%</string>
+    <string name="progress_right_init">0/0</string>
+    <string name="push_msg_init">Загрузка… </string>
+    <string name="fetch_msg_init">Fetching … </string>
+    <string name="title_activity_private_key_manage">Управление приватными ключами</string>
+    <string name="hello_world">Привет, мир!</string><!--Seriously??-->
+    <string name="title_activity_explore_file">Иследовать файлыы</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="title_config_repo">Настройки репозитория</string>
+
+    <!-- toast msg -->
+    <string name="feedback_subject">Отзыв</string>
+    <string name="cannot_delete_branch">Не получается удалить %s</string>
+    <string name="cannot_delete_current_branch">Нельзя удаалить ветвь %s . Сейчас на ней вы.</string>
+
+    <!-- Preferences -->
+
+    <string name="preference_repo_location">Корневая папка для проектов</string>
+    <string name="pref_category_title_general">Основные</string>
+    <string name="action_select_root_dir">Выбрать как корневую папку</string>
+    <string name="action_create_new_dir">Создать новую папку</string>
+    <string name="pref_category_title_git_profile">Настройки профиля</string>
+    <string name="preference_git_user_name">Имя пользователч</string>
+    <string name="preference_git_user_email">Email</string>
+    <string name="pref_category_title_about">О приложении</string>
+    <string name="preference_send_feedback">Отзыв</string>
+    <string name="preference_send_feedback_summary">Отправте отзыв, создав issue на GitHub</string>
+    <string name="preference_app_version">Версия</string>
+    <string name="preference_manage_ssh_keys_summary">Управления SSH ключами</string>
+    <string name="preference_manage_ssh_keys">SSH Kлючи</string>
+    <string name="preference_use_gravatar">Использовать аватарки из gravatar</string>
+    <string name="preference_use_gravatar_summary">Загрузка аватарок с gravatar.com</string>
+    <string name="pref_category_title_security">Безопасность</string>
+    <string name="preference_use_theme">Тема</string>
+    <string name="action_git_profile">Профиль Git</string>
+    <string name="action_open_in_other_app">Открыть в другом приложении</string>
+    <string name="action_add_private_key">Добавить приватный ключ</string>
+
+    <!-- Crash reporting via ACRA -->
+    <string name="crash_toast_text">Ошибка MGit - сбор информации для краш репорта</string>
+
+    <!-- Intent filters -->
+    <string name="cloning">Клонирование … </string>
+    <string name="importing">Импорт … </string>
+    <string name="clone_with_mgit">Клонированно с помощью MGit</string>
+    <string name="invalid_url">Неверный URL!</string>
+    <string name="initialising">Инализация … </string>
+    <string name="repository_already_present">Репозиторий уже добавлен!</string>
+</resources>

@@ -4,6 +4,13 @@ MGit is a Git client Android App.
 
 This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+      alt="Get it on Google Play"
+      height="80">](https://play.google.com/store/apps/details?id=com.manichord.mgit)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/packages/com.manichord.mgit)
+
 ## Notes
 
 [![Build Status](https://travis-ci.org/maks/MGit.svg?branch=master)](https://travis-ci.org/maks/MGit)
@@ -44,9 +51,6 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 * `git rebase`
 * `git cherrypick`
 * `git checkout <file>` (reset changes of a file)
-
-[![Android app on Google Play](https://developer.android.com/images/brand/en_app_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=com.manichord.mgit)
-[![Android app on F-Droid](https://f-droid.org/wiki/images/c/c4/F-Droid-button_available-on.png)](https://f-droid.org/repository/browse/?fdid=com.manichord.mgit)
 
 ## Quick start
 
@@ -89,7 +93,33 @@ All code written by `maks@manichord.com` can at your option also be used under t
 
 ## Help
 
-If you want to help improve this project, contributions, especially translations are very welcome.
+If you want to help improve this project, contributions, especially translations are very welcome. Also contributions to documentation via the wiki for this repo are also most welcome!
 
-Fork from this repo, create a new branch, commit your changes and then send a pull request against 
-the **master** branch of this repo.
+### Contributing code
+
+If you would like to contribute code, either a bugfix or a new feature, please make sure there is a open issue that addresses the new code. 
+**No Pull Requests** will be merged that do not reference an existing issue in the repo.
+
+Please use the Android Studio formatting settings set for this project in the repo.
+
+All strings visible to the user.
+
+#### Project Goals
+
+* Provide the best GUI git client available on any platform
+* Be usable on both phone, tablet and laptop form-factor devices
+
+#### Non-goals for the project
+
+* Support for proprietary vendor APIs (eg. Github)
+
+#### Major Contributions
+
+For new features, a discussion of the new functionality may need to take place in the comments on the issue covering it, so it may be best for that to occur before you spend time on writing the new code.
+
+The app is about to have a major restructure. All new functionality in the app will be written in Kotlin/Rx per #277. Please be aware that the project is now using Data Binding Library and all future functionality should make use of it.
+
+#### Submitting a Pull Request (PR)
+Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
+
+If you are working on a branch for some time, you may find that changes to master get merged in the meantime, if that happens please do **NOT** merge master into your branch! Instead rebase your branch onto the current head of master.

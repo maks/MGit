@@ -1,1 +1,7 @@
 *.bat text eol=crlf
+*.java text eol=lf
+*.kt text eol=lf
+*.gradle text eol=lf
+gradlew eol=lf
+*.xml eol=lf
+.git* text eol=lf

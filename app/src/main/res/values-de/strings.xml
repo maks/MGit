@@ -76,6 +76,8 @@
     <string name="dialog_prompt_for_password_title_auth_fail">Authentifizierung gescheitert</string>
     <string name="dialog_prompt_for_password_checkbox">Benutzername and Passwort speichern</string>
     <string name="dialog_title_you_want_to">Diese Datei ...</string>
+    <string name="dialog_error_send_report">Fehler per E-Mail melden</string>
+    <string name="dialog_error_occurred_msg">Ein unerwarteter Fehler ist aufgetreten</string>
 
     <!-- Others -->
     <string name="title_activity_private_key_manage">Private Schlüssel verwalten</string>
@@ -90,8 +92,8 @@
     <string name="dialog_create_branch_hint">Name des Branch</string>
     <string name="dialog_create_branch_title">Erstelle neuen Branch</string>
     <string name="hello_world">Hallo Welt!</string>
-    <string name="pull_msg_init">Führe "pull" durch …</string>
-    <string name="push_msg_init">Führe "push" durch …</string>
+    <string name="pull_msg_init">Führe \"pull\" durch …</string>
+    <string name="push_msg_init">Führe \"push\" durch …</string>
     <string name="success_remove_file">Datei wurde entfernt</string>
     <string name="error_rename_repo_fail">Das Umbenennen des Repository ist fehlgeschlagen</string>
     <string name="dialog_rename_repo_hint">Repository-Name</string>
@@ -166,9 +168,21 @@
     <string name="success_remote_removed">Remote Repository gelöscht</string>
     <string name="preference_manage_ssh_keys_summary">SSH Schlüssel verwalten</string>
     <string name="preference_use_gravatar">Verwenden Sie gravatar Bilder</string>
-    <string name="preference_use_gravatar_summary">Laden Sie avatar Bilder von gravatar.com</string>
+    <string name="preference_use_gravatar_summary">Profilbilder von gravatar.com laden</string>
     <string name="tab_file_label">Datei</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_config_repo">Repository-Konfiguration</string>
     <string name="action_import_private_key">Schlüssel importieren</string>
+    <string name="crash_toast_text">Kritischer MGit-Fehler, sammle Daten um einen E-Mail-Bericht zu senden</string>
+    <string name="clone_with_mgit">Mit MGit klonen</string>
+    <string name="invalid_url">Ungültige URL!</string>
+    <string name="repository_already_present">Repository existiert bereits!</string>
+    <string name="action_mode_edit_key_password">Edit key password</string>
+    <string name="action_send_report">Send report</string>
+    <string name="label_init">Init</string>
+    <string name="cloning">Cloning …</string>
+    <string name="importing">Importing …</string>
+    <string name="initialising">Initialising …</string>
+    <string name="dialog_edit_key_password_title">Key Password</string>
+    <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
 </resources>

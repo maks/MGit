@@ -3,7 +3,11 @@ package me.sheimi.android.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -27,6 +31,8 @@ import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
 
 public class SheimiFragmentActivity extends AppCompatActivity {
+
+    private static final int MGIT_PERMISSIONS_REQUEST = 123;
 
     public static interface OnBackClickListener {
         public boolean onClick();
@@ -62,6 +68,30 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MGIT_PERMISSIONS_REQUEST: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    // permission denied
+                    showMessageDialog(R.string.dialog_not_supported, getString(R.string.dialog_permission_not_granted));
+                }
+                return;
+            }
+        }
+    }
+
+    protected void checkAndRequestRequiredPermissions(String permission) {
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, so request it from user
+            ActivityCompat.requestPermissions(this, new String[]{permission}, MGIT_PERMISSIONS_REQUEST);
+        }
+    }
+
     /* View Utils Start */
     public void showToastMessage(final String msg) {
         runOnUiThread(new Runnable() {
@@ -78,16 +108,16 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     }
 
     public void showMessageDialog(int title, int msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, getString(msg), positiveBtn,
-                R.string.label_cancel, positiveListenerr,
+                R.string.label_cancel, positiveListener,
                 new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
-            DialogInterface.OnClickListener positiveListenerr) {
+            DialogInterface.OnClickListener positiveListener) {
         showMessageDialog(title, msg, positiveBtn, R.string.label_cancel,
-                positiveListenerr, new DummyDialogListener());
+                positiveListener, new DummyDialogListener());
     }
 
     public void showMessageDialog(int title, String msg, int positiveBtn,
@@ -261,8 +291,8 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         DisplayImageOptions mDisplayOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
-                .showImageForEmptyUri(R.drawable.ic_default_author)
-                .showImageOnFail(R.drawable.ic_default_author)
+                .showImageForEmptyUri(VectorDrawableCompat.create(getResources(), R.drawable.ic_default_author, getTheme()))
+                .showImageOnFail(VectorDrawableCompat.create(getResources(), R.drawable.ic_default_author, getTheme()))
                 .build();
         File cacheDir = StorageUtils.getCacheDirectory(this);
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)

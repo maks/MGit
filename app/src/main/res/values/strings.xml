@@ -39,6 +39,7 @@
     <string name="label_remote_url">Remote URL</string>
     <string name="label_cancel">Cancel</string>
     <string name="label_clone">Clone</string>
+    <string name="label_init">Init</string>
     <string name="label_delete">Delete</string>
     <string name="label_generate_key">Generate key</string>
     <string name="label_dialog_generate_key">Generate key</string>
@@ -116,7 +117,7 @@
     <string name="dialog_prompt_for_password_checkbox">Save username and password</string>
     <string name="dialog_title_you_want_to">You want to …</string>
     <string name="dialog_create_branch_title">Create new branch</string>
-    <string name="dialog_create_branch_hint">BranchName</string>
+    <string name="dialog_create_branch_hint">Branch Name</string>
     <string name="dialog_clone_recursive">Clone recursively</string>
     <string name="dialog_show_unstaged_diff">Unstaged diff</string>
     <string name="dialog_show_staged_diff">Staged diff</string>
@@ -124,11 +125,14 @@
     <string name="dialog_not_supported">Not Supported</string>
     <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
     <string name="dialog_error_title">Error occurred</string>
+    <string name="dialog_error_send_report">Send error report</string>
+    <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
     <string name="dialog_keymap_title">Shortcut Keys</string>
     <string name="dialog_keymap_mesg"> C - Commits\n F- Files\n S- Status\n ? - Help\n</string>
     <string name="dialog_open_remote">Open remote url</string>
     <string name="dialog_open_remote_title">Choose app to open %s remote</string>
     <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
+    <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -197,4 +201,7 @@
     <string name="bitbucket.com" translatable="false">bitbucket.com</string>
     <string name="notabug.org" translatable="false">notabug.org</string>
     <string name="repository_already_present">Repository already present!</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>

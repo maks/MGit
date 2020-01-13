@@ -12,6 +12,8 @@
         <item>削除</item>
         <item>リポジトリからキャッシュ済を削除</item>
         <item>リポジトリから強制的に削除</item>
+        <item>Make executable</item>
+        <item>Make not executable</item>
     </string-array>
     <string-array name="repo_operation_names">
         <item>新しいブランチ</item>

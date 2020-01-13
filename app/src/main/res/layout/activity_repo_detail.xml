@@ -10,7 +10,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="?drawable/drawer_background" >
+        android:background="?mgit_drawer_background" >
 
         <ListView
             android:id="@+id/repoOperationList"

@@ -1,21 +1,21 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.targetSdk
+        minSdkVersion 16
+        targetSdkVersion 27
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 207
-        versionName "1.5.4.2"
+        versionCode 214
+        versionName "1.5.5.1"
     }
 
     dataBinding {
@@ -27,31 +27,42 @@ android {
     }
 }
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+    }
+}
+
+
+
 dependencies {
-    debugCompile libraries.stetho
-    debugCompile libraries.stethoTimber
+    def supportLib_version = "27.1.1"
+    def lifecycle_version = "1.1.1"
 
-    compile libraries.supportFragment
-    compile libraries.supportAnnotations
-    compile libraries.supportAppCompat
-    compile libraries.supportDesign
-    compile libraries.supportRecyclerView
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31'
+    implementation "com.android.support:support-fragment:$supportLib_version"
+    implementation "com.android.support:support-annotations:$supportLib_version"
+    implementation "com.android.support:appcompat-v7:$supportLib_version"
+    implementation "com.android.support:design:$supportLib_version"
+    implementation "com.android.support:recyclerview-v7:$supportLib_version"
+    implementation "com.android.support:support-vector-drawable:$supportLib_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    compile libraries.timber
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    kapt "android.arch.lifecycle:compiler:$lifecycle_version"
 
-    compile libraries.jcraft
-    compile libraries.commonsIo
-    compile libraries.jgit
-    compile libraries.universalImageLoader
-    compile libraries.securePreferences
-    compile libraries.acra
-
-    compile "org.conscrypt:conscrypt-android:1.0.1"
-
-    testCompile libraries.junit
-    testCompile libraries.robolectric
-    testCompile libraries.robolectricShadowSupport
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
-
-    kapt "com.android.databinding:compiler:$versions.androidGradlePlugin"
+    implementation 'com.jakewharton.timber:timber:4.5.1'
+    implementation 'com.jcraft:jsch:0.1.54'
+    implementation 'commons-io:commons-io:2.5'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.scottyab:secure-preferences-lib:0.1.4'
+    implementation 'ch.acra:acra:4.9.2'
+    implementation 'org.conscrypt:conscrypt-android:1.1.0'
+    debugImplementation 'com.facebook.stetho:stetho:1.5.0'
+    debugImplementation 'com.facebook.stetho:stetho-timber:1.5.0'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:3.5'
+    testImplementation 'org.robolectric:shadows-support-v4:3.4-rc2'
 }

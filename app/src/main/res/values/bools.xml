@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="enable_stetho_timber_logging">false</bool>
+</resources>

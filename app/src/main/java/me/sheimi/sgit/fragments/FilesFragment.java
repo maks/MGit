@@ -97,7 +97,7 @@ public class FilesFragment extends RepoDetailFragment {
                             return;
                         }
                         try {
-                            FsUtils.openFile(file);
+                            FsUtils.openFile(((SheimiFragmentActivity) getActivity()), file);
                         } catch (ActivityNotFoundException e) {
                             Timber.e(e);
                             ((SheimiFragmentActivity)getActivity()).showMessageDialog(R.string.dialog_error_title,

@@ -125,13 +125,12 @@
     <string name="dialog_error_send_report">Envoyer un rapport d\'erreur</string>
     <string name="dialog_error_occurred_msg">Une erreur s\'est produite</string>
     <string name="dialog_keymap_title">Raccourcis</string>
-    <string name="dialog_keymap_mesg">C - Commits\n
-   F - Fichiers\n
-   S - État\n
-   ? - Aide</string>
+    <string name="dialog_keymap_mesg">C - Commits\n F - Fichiers\nS - État\n? - Aide</string>
     <string name="dialog_open_remote">Ouvrir l\'URL distante</string>
     <string name="dialog_open_remote_title">Choisir l\'app pour ouvrir %s</string>
     <string name="dialog_open_remote_no_app_available">Aucune App disponible pour ouvrir l\'URL</string>
+    <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
+
 
     <!-- Others -->
     <string name="pull_msg_init">Pull en cours ...</string>
@@ -173,6 +172,7 @@
     <string name="action_open_in_other_app">Ouvrir dans d\'autres apps</string>
     <string name="action_add_private_key">Ajouter une clé privée</string>
 
+
     <!-- Crash reporting via ACRA -->
     <string name="crash_toast_text">Erreur de MGit - récupération de données pour envoyer un email de rapport de bug</string>
 
@@ -187,4 +187,14 @@
     <string name="bitbucket.com" translatable="false">bitbucket.com</string>
     <string name="notabug.org" translatable="false">notabug.org</string>
     <string name="repository_already_present">Dépôt déjà présent !</string>
+    <string name="dialog_push_is_force_push">Forcer pousser?</string>
+    <string name="error_rename_repo_fail">Renommer repository échoué</string>
+    <string name="success_remove_file">Fichier a été supprimé</string>
+    <string name="action_mode_edit_key_password">Edit key password</string>
+    <string name="action_send_report">Send report</string>
+    <string name="label_init">Init</string>
+    <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
+    <string name="dialog_edit_key_password_title">Key Password</string>
+    <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
+
 </resources>

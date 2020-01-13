@@ -1,5 +1,7 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
+import android.support.annotation.StringRes;
+
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -108,6 +110,12 @@ public class CloneTask extends RepoRemoteOpTask {
         mRepo.setUsername(userName);
         mRepo.setPassword(password);
         return new CloneTask(mRepo, mCloneRecursive, mCloneStatusName, mCallback);
+    }
+
+    @Override
+    @StringRes
+    public int getErrorTitleRes() {
+        return R.string.error_clone_failed;
     }
 
     public class RepoCloneMonitor implements ProgressMonitor {

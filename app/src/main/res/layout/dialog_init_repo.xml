@@ -9,7 +9,7 @@
         android:id="@+id/localPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/general_vertial_margin"
+        android:layout_margin="@dimen/general_vertical_margin"
         android:hint="@string/dialog_init_local_path_hint"
         android:imeOptions="actionDone"
         android:singleLine="true"

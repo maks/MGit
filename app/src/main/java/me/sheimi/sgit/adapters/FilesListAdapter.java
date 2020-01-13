@@ -1,5 +1,13 @@
 package me.sheimi.sgit.adapters;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
@@ -7,13 +15,6 @@ import java.util.Comparator;
 
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.ArrayAdapter;
 
 /**
  * Created by sheimi on 8/18/13.
@@ -48,9 +49,9 @@ public class FilesListAdapter extends ArrayAdapter<File> {
         File item = getItem(position);
         holder.fileTitle.setText(item.getName());
         if (item.isDirectory()) {
-            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_folder_fl));
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.attr.ic_folder_fl));
         } else {
-            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.drawable.ic_file_fl));
+            holder.fileIcon.setImageResource(Profile.getStyledResource(getContext(), R.attr.ic_file_fl));
         }
         // set if selected
         if (convertView.isSelected()) {

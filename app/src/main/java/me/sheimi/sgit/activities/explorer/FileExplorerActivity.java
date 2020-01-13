@@ -1,12 +1,5 @@
 package me.sheimi.sgit.activities.explorer;
 
-import java.io.File;
-import java.io.FileFilter;
-
-import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.utils.Profile;
-import me.sheimi.sgit.R;
-import me.sheimi.sgit.adapters.FilesListAdapter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,6 +9,14 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileFilter;
+
+import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.android.utils.Profile;
+import me.sheimi.sgit.R;
+import me.sheimi.sgit.adapters.FilesListAdapter;
 
 public abstract class FileExplorerActivity extends SheimiFragmentActivity {
 
@@ -50,7 +51,7 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
         mCurrentPathView.setText(mCurrentDir.getPath());
 
         mUpDirIcon = (ImageView) findViewById(R.id.upDirIcon);
-        mUpDirIcon.setImageResource(Profile.getStyledResource(this, R.drawable.ic_folder_fl));
+        mUpDirIcon.setImageResource(Profile.getStyledResource(this, R.attr.ic_folder_fl));
 
         mUpDir = (TextView) findViewById(R.id.upDir);
         mUpDir.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +93,9 @@ public abstract class FileExplorerActivity extends SheimiFragmentActivity {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!mRootFolder.equals(mCurrentDir)) {
-                setCurrentDir(mCurrentDir.getParentFile());
+            final File parent = mCurrentDir.getParentFile();
+            if (!mRootFolder.equals(mCurrentDir) && (parent != null)) {
+                setCurrentDir(parent);
                 return true;
             }
             finish();
