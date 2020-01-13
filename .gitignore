@@ -27,6 +27,8 @@ build
 # generated files
 bin/
 gen/
+release
+/*/release
 
 # Local configuration file (sdk path, etc)
 local.properties

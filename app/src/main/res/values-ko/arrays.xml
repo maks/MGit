@@ -3,41 +3,39 @@
 
     <string-array name="merge_ff_type">
         <item>Fast Forward</item>
-        <item>Nur Fast Forward</item>
-        <item>Kein Fast Forward</item>
+        <item>Fast Forward Only</item>
+        <item>No Fast Forward</item>
     </string-array>
     <string-array name="repo_file_operations">
-        <item>Zum Staging-Bereich hinzufügen</item>
-        <item>Auschecken (Änderungen zurücksetzen)</item>
-        <item>Löschen</item>
-        <item>Löschen (cached, nur Repository)</item>
-        <item>Löschen (force, mit aktuellen Änderungen)</item>
-        <item>Ausführbar machen</item>
-        <item>Nicht ausführbar machen</item>
+        <item>Add to stage</item>
+        <item>Checkout (Reset Changes)</item>
+        <item>Delete</item>
+        <item>Remove cached from repository</item>
+        <item>Remove force from repository</item>
     </string-array>
     <string-array name="repo_operation_names">
-        <item>Neuer Branch</item>
+        <item>New Branch</item>
         <item>Pull</item>
         <item>Push</item>
-        <item>Alles zum Staging-Bereich hinzufügen</item>
+        <item>Add all to stage</item>
         <item>Commit</item>
         <item>Reset (HARD)</item>
         <item>Merge</item>
         <item>Fetch</item>
         <item>Rebase</item>
         <item>Cherry Pick</item>
-        <item>Unterschiede anzeigen (Diff)</item>
-        <item>Neue Datei</item>
-        <item>Neuer Ordner</item>
-        <item>Remote Repository hinzufügen</item>
-        <item>Remote Repository löschen</item>
-        <item>Löschen</item>
+        <item>Diff</item>
+        <item>New File</item>
+        <item>New Directory</item>
+        <item>Add Remote</item>
+        <item>Remove Remote</item>
+        <item>Delete</item>
         <item>Raw config</item>
         <item>Config</item>
     </string-array>
     <string-array name="dialog_choose_repo_action_items">
-        <item>Umbenennen</item>
-        <item>Löschen</item>
+        <item>Rename</item>
+        <item>Delete</item>
     </string-array>
 
     <!-- MUST KEY theme_names and theme_ids in SYNC -->

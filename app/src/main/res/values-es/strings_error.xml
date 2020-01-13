@@ -2,11 +2,11 @@
 <resources>
 
     <string name="error_invalid_remote">Invalid remote</string>
-    <string name="error_transport">Transport error</string>
+    <string name="error_transport">Error transportando</string>
     <string name="error_clone_failed">Clone failed</string>
     <string name="error_pull_failed_not_on_branch">Pull failed: not on branch</string>
-    <string name="error_pull_failed">Pull failed</string>
-    <string name="error_diff_failed">Diff failed</string>
+    <string name="error_pull_failed">Tirar está fallado</string>
+    <string name="error_diff_failed">Diff está fallado</string>
     <string name="error_out_of_memory">Out of memory</string>
     <string name="error_no_edit_app">No apps can edit source file</string>
     <string name="error_no_open_app">No apps can open source file</string>
@@ -18,7 +18,7 @@
     <string name="error_repository_not_found">Repository not found (there may be something wrong with this repo)</string>
 
     <string name="error_rename_repo_fail">Renaming repository failed</string>
-    <string name="error_invalid_author"><![CDATA[Author is not of the form Name <Email>]]></string>
+    <string name="error_invalid_author">Author is not of the form Name &lt;Email&gt;</string>
     <string name="error_no_commit_msg">No commit message specified</string>
 
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
@@ -28,15 +28,15 @@
     <string name="alert_too_long_key_size">Keylength is too large</string>
     <string name="alert_field_not_empty">Field should not be empty</string>
     <string name="alert_remoteurl_required">Remote URL required</string>
-    <string name="alert_localpath_required">Repository name required</string>
-    <string name="alert_localpath_format">Repository name can\'t contain slash.</string>
+    <string name="alert_localpath_required">Se necesita nombre de repo</string>
+    <string name="alert_localpath_format">Nombre de repo no puede contener slash.</string>
     <string name="alert_localpath_repo_exists">Repository already exists</string>
-    <string name="alert_new_filename_required">File name required</string>
-    <string name="alert_new_branchname_required">Branch name required</string>
+    <string name="alert_new_filename_required">Fichero necesita un nombre</string>
+    <string name="alert_new_branchname_required">Ramo necesita un nombre</string>
     <string name="alert_file_exists">File already exists</string>
     <string name="alert_filename_format">File name format error</string>
-    <string name="alert_choose_two_items">You can only choose two items</string>
-    <string name="alert_no_items_selected">No items selected</string>
+    <string name="alert_choose_two_items">Soló puede seleccionar dos elementos</string>
+    <string name="alert_no_items_selected">Ningún elemento seleccionado</string>
     <string name="alert_no_older_commits">No older commits to compare with</string>
     <string name="alert_please_wait_previous_op">Previous operation is still running</string>
     <string name="alert_you_must_choose_one_commit_to_copy">Please choose exactly one commit to copy</string>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="error_invalid_remote">Неверный сервер</string>
+    <string name="error_transport">Ошибка передачи данных</string>
+    <string name="error_clone_failed">Ошибка загрузки</string>
+    <string name="error_pull_failed_not_on_branch">Ошибка обноаления: не та ветка</string>
+    <string name="error_pull_failed">Ошибка обнавления</string>
+    <string name="error_diff_failed">Ошибка поиска разницы</string>
+    <string name="error_out_of_memory">Память слишком занята</string>
+    <string name="error_no_edit_app">Никто не может это редактировать</string>
+    <string name="error_no_open_app">Никто не может это открыть</string>
+    <string name="error_can_not_edit_file">Нельзя изменять этот файл здесь</string>
+    <string name="error_can_not_open_file">Нельзя открыть этот файл здесь</string>
+    <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="error_task_running">Предыдущая задаса все еще запущенна</string>
+    <string name="error_something_wrong">Что-то пошло не так</string>
+    <string name="error_repository_not_found">Репозиторий не найден(возможно с ним что-то не так)</string>
+
+    <string name="error_rename_repo_fail">Ошибка переименования репозитория</string>
+    <string name="error_invalid_author"><![CDATA[Author is not of the form Name <Email>]]></string>
+    <string name="error_no_commit_msg">Нет сообщения к комиту</string>
+
+    <string name="error_rebase_abort_failed_in_reset">Нельзя прирвать сброс</string>
+
+    <!-- alerts -->
+    <string name="alert_too_short_key_size">Длинна ключа слишком маленькая (минимум 1024 bits для RSA и DSA)</string>
+    <string name="alert_too_long_key_size">Длинна ключа слишком большая</string>
+    <string name="alert_field_not_empty">Поле не должно быть пустым</string>
+    <string name="alert_remoteurl_required">Нужно ввести URL сервера</string>
+    <string name="alert_localpath_required">Введите имя репозитория</string>
+    <string name="alert_localpath_format">В имени репозитория не должно быть слешей</string>
+    <string name="alert_localpath_repo_exists">Репозиторий уже существует</string>
+    <string name="alert_new_filename_required">Требуется имя файла</string>
+    <string name="alert_new_branchname_required">Необходимо ввести имя ветки</string>
+    <string name="alert_file_exists">Файл уже существует</string>
+    <string name="alert_filename_format">Ошибка в формате файла</string>
+    <string name="alert_choose_two_items">Можно выбрать только два значения</string>
+    <string name="alert_no_items_selected">Ничего не выбранно</string>
+    <string name="alert_no_older_commits">Не с чем сравнивать</string>
+    <string name="alert_please_wait_previous_op">Предыдущая операция еще не завершенна</string>
+    <string name="alert_you_must_choose_one_commit_to_copy">Пожалуйста, выберите хотя бы 1 комит для копирования</string>
+    <string name="alert_you_should_input_something">Надо что-то сюда ввести</string>
+    <string name="alert_please_add_a_remote">Для начала добавте сервер</string>
+    <string name="alert_is_already_a_git_repo">Эта папка уже репозиторий</string>
+    <string name="alert_save_failed">Ошибка сохранения</string>
+    <string name="alert_file_creation_failure">Невозможно создать файл</string>
+    <string name="error_no_repository">Репозиторий не найден</string>
+
+</resources>

@@ -14,8 +14,8 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 212
-        versionName "1.5.4.7"
+        versionCode 214
+        versionName "1.5.5.1"
     }
 
     dataBinding {
@@ -26,6 +26,14 @@ android {
         abortOnError false
     }
 }
+
+configurations {
+    all {
+        exclude module: 'httpclient'
+    }
+}
+
+
 
 dependencies {
     def supportLib_version = "27.1.1"

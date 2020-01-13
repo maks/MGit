@@ -177,4 +177,12 @@
     <string name="clone_with_mgit">Mit MGit klonen</string>
     <string name="invalid_url">Ungültige URL!</string>
     <string name="repository_already_present">Repository existiert bereits!</string>
+    <string name="action_mode_edit_key_password">Edit key password</string>
+    <string name="action_send_report">Send report</string>
+    <string name="label_init">Init</string>
+    <string name="cloning">Cloning …</string>
+    <string name="importing">Importing …</string>
+    <string name="initialising">Initialising …</string>
+    <string name="dialog_edit_key_password_title">Key Password</string>
+    <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
 </resources>

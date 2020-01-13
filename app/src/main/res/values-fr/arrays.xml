@@ -12,6 +12,8 @@
         <item>Supprimer</item>
         <item>Enlever caché de repository</item>
         <item>Enlever force de repository</item>
+        <item>Make executable</item>
+        <item>Make not executable</item>
     </string-array>
     <string-array name="repo_operation_names">
         <item>Nouveau Branche</item>

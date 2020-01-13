@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
-import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.CodeGuesser;
 import me.sheimi.android.utils.Profile;
 import me.sheimi.sgit.R;

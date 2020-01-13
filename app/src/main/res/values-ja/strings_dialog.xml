@@ -45,4 +45,17 @@
     <string name="dialog_create_external_msg">このディレクトリにGitリポジトリを作成してよろしいですか?</string>
     <string name="dialog_create_external_positive_label">作成</string>
 
+    <string name="dialog_show_invalid_remote">Invalid remote report</string>
+    <string name="dialog_not_supported">Not Supported</string>
+    <string name="dialog_not_supported_msg">This feature is not supported on your device, please see the manual for more details.</string>
+    <string name="dialog_error_title">Error occurred</string>
+    <string name="dialog_error_send_report">Send error report</string>
+    <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
+    <string name="dialog_keymap_title">Shortcut Keys</string>
+    <string name="dialog_keymap_mesg"> C - Commits\n F- Files\n S- Status\n ? - Help\n</string>
+    <string name="dialog_open_remote">Open remote url</string>
+    <string name="dialog_open_remote_title">Choose app to open %s remote</string>
+    <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
+    <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
+
 </resources>

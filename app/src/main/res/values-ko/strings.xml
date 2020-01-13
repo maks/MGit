@@ -156,4 +156,15 @@
     <string name="action_git_profile">Git 프로필</string>
     <string name="action_open_in_other_app">다른 앱에서 열기</string>
     <string name="action_add_private_key">Private Key 추가</string>
+    <string name="action_mode_edit_key_password">Edit key password</string>
+    <string name="action_send_report">Send report</string>
+    <string name="label_init">Init</string>
+    <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
+    <string name="clone_with_mgit">Clone with MGit</string>
+    <string name="invalid_url">Invalid URL!</string>
+    <string name="repository_already_present">Repository already present!</string>
+    <string name="cloning">Cloning …</string>
+    <string name="importing">Importing …</string>
+    <string name="initialising">Initialising …</string>
+    <string name="dialog_edit_key_password_title">Key Password</string>
 </resources>

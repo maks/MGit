@@ -1,8 +1,5 @@
 package me.sheimi.sgit.activities;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -213,21 +210,7 @@ public class ViewFileActivity extends SheimiFragmentActivity {
                 if (mActivityMode == TAG_MODE_SSH_KEY) {
                     return true;
                 }
-                Uri uri = Uri.fromFile(mFileFragment.getFile());
-                String mimeType = FsUtils.getMimeType(uri.toString());
-                Intent viewIntent = new Intent(Intent.ACTION_VIEW);
-                Intent editIntent = new Intent(Intent.ACTION_EDIT);
-                viewIntent.setDataAndType(uri, mimeType);
-                editIntent.setDataAndType(uri, mimeType);
-                try {
-                    Intent chooserIntent = Intent.createChooser(viewIntent,
-                            getString(R.string.label_choose_app_to_edit));
-                    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { editIntent });
-                    startActivity(chooserIntent);
-                    forwardTransition();
-                } catch (ActivityNotFoundException e) {
-                    showMessageDialog(R.string.dialog_error_title, getString(R.string.error_no_edit_app));
-                }
+                FsUtils.openFile(this, mFileFragment.getFile());
                 break;
             case R.id.action_edit:
                 if (mActivityMode == TAG_MODE_SSH_KEY) {

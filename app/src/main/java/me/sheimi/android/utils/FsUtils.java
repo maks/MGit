@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.support.v4.content.FileProvider;
 import android.webkit.MimeTypeMap;
 
 /**
@@ -25,6 +26,8 @@ public class FsUtils {
 
     public static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat(
             "yyyyMMdd_HHmmss", Locale.getDefault());
+
+    public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
     public static final String TEMP_DIR = "temp";
     private static final String LOGTAG = FsUtils.class.getSimpleName();
 
@@ -116,23 +119,27 @@ public class FsUtils {
         return getMimeType(Uri.fromFile(file).toString());
     }
 
-    public static void openFile(File file) {
-        openFile(file, null);
-    }
-
-    public static void openFile(File file, String mimeType) {
-        Intent intent = new Intent();
-        intent.setAction(android.content.Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(file);
-        if (mimeType == null) {
-            mimeType = getMimeType(uri.toString());
-        }
+    public static void openFile(SheimiFragmentActivity activity, File file) {
+        Uri uri = FileProvider.getUriForFile(activity, PROVIDER_AUTHORITY, file);
+        String mimeType = FsUtils.getMimeType(uri.toString());
+        Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setDataAndType(uri, mimeType);
-        BasicFunctions.getActiveActivity().startActivity(
-                Intent.createChooser(
-                        intent,
-                        BasicFunctions.getActiveActivity().getString(
-                                R.string.label_choose_app_to_open)));
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        try {
+            activity.startActivity(intent);
+            activity.forwardTransition();
+        } catch (ActivityNotFoundException e) {
+            //If no app can edit this file at least try to view it (PDFs, ...)
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            try {
+                activity.startActivity(intent);
+                activity.forwardTransition();
+            }
+            catch (ActivityNotFoundException e1) {
+                activity.showMessageDialog(R.string.dialog_error_title, activity.getString(R.string.error_can_not_open_file));
+            }
+        }
     }
 
     public static void deleteFile(File file) {

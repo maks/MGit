@@ -18,7 +18,7 @@
     <string name="error_repository_not_found">Repository not found (there may be something wrong with this repo)</string>
 
     <string name="error_rename_repo_fail">Renaming repository failed</string>
-    <string name="error_invalid_author"><![CDATA[Author is not of the form Name <Email>]]></string>
+    <string name="error_invalid_author">Author is not of the form Name &lt;Email&gt;</string>
     <string name="error_no_commit_msg">No commit message specified</string>
 
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>

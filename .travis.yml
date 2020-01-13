@@ -1,6 +1,10 @@
 language: android
 dist: trusty
 sudo: required
+addons:
+  apt:
+    packages:
+      - git
 
 group: edge
 
@@ -21,6 +25,9 @@ before_script:
   - export DATE=$(date)
   - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
 script:
+  - ./gradlew kotlinDslAccessorsSnapshot
+  - git --no-pager diff
+  - git --no-pager diff --name-only --exit-code
   - ./gradlew clean assembleDebug testDebug 
 after_success:
   - curl -sSL "https://raw.githubusercontent.com/h5bp-bot/scripts/0.6.1/update_site_branch.sh" |
