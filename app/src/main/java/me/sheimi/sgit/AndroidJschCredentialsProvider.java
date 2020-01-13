@@ -33,7 +33,23 @@ public class AndroidJschCredentialsProvider extends org.eclipse.jgit.transport.C
     @Override
     public boolean get(URIish uri, CredentialItem... items) throws UnsupportedCredentialItem {
         Timber.w("get for uri %s", uri);
-        //FIXME: we will only handle the first *successfully* matched item
+        /*
+         * The caller will have passed some number of CredentialItems. We only
+         * support those of StringType (representing passphrases for private
+         * keys we have on hand). We will fill in as many of those as we have
+         * passphrases for (stored as encrypted SecurePreferences). Return true
+         * if we were able to fill in any of them. (The API description of the
+         * superclass avoids saying "any" or "all" for the return-true case; it
+         * says to return true "if the request was successful and values were
+         * supplied". It says to return false "if the user canceled the request
+         * and did not supply all requested values". Because this is not an
+         * interactive CredentialsProvider, "the user canceled the request"
+         * can't ever be true, so it seems fair to reserve the false return for
+         * only when we can supply none of the requested values, and return true
+         * whenever we have been able to supply at least one of them, even if
+         * not all.)
+         */
+        boolean foundAny = false;
         for (final CredentialItem item : items) {
             if (item instanceof CredentialItem.StringType) {
                 Timber.w("need credential for: %s ", item.getPromptText());
@@ -43,10 +59,10 @@ public class AndroidJschCredentialsProvider extends org.eclipse.jgit.transport.C
                 String password = mSecPrefsHelper.get(keyfileName);
                 if (password != null) {
                     ((CredentialItem.StringType) item).setValue(password);
-                    return true;
+                    foundAny = true;
                 }
             }
         }
-        return false;
+        return foundAny;
     }
 }
