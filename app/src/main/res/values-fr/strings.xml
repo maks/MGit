@@ -190,7 +190,6 @@
     <string name="dialog_push_is_force_push">Forcer pousser?</string>
     <string name="error_rename_repo_fail">Renommer repository échoué</string>
     <string name="success_remove_file">Fichier a été supprimé</string>
-    <string name="action_mode_edit_key_password">Edit key password</string>
     <string name="action_send_report">Send report</string>
     <string name="label_init">Init</string>
     <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
