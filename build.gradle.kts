@@ -1,6 +1,6 @@
 buildscript {
-    rootProject.extra["kotlin_version"] = "1.2.50"
-    rootProject.extra["android_plugin_version"] = "3.1.3"
+    rootProject.extra["kotlin_version"] = "1.3.61"
+    rootProject.extra["android_plugin_version"] = "3.5.3"
 
     val kotlin_version: String by rootProject.extra
     val android_plugin_version: String by rootProject.extra
