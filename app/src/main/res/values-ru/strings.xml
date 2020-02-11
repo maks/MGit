@@ -61,7 +61,7 @@
     <string name="label_choose_app_to_open">Открыть с помощью...</string>
     <string name="label_choose_app_to_edit">Редактировать с помощью</string>
     <string name="label_new_branch_name">Новый Branch</string>
-    <string name="label_anonymous_checkout">Анонимная смена branch'a</string>
+    <string name="label_anonymous_checkout">Анонимная смена branch\'a</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">Репозиторий</string>
