@@ -28,11 +28,20 @@ android {
     }
 
     signingConfigs {
-        release {
-            keyAlias alias
-            keyPassword password
-            storeFile file(keystore)
-            storePassword password
+        if (project.hasProperty('special')) {
+            release {
+                keyAlias alias
+                keyPassword password
+                storeFile file(keystore)
+                storePassword password
+            }
+        } else {
+            release {
+                keyAlias ''
+                keyPassword ''
+                storeFile file('/empty')
+                storePassword ''
+            }
         }
     }
 
