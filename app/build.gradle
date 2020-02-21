@@ -27,12 +27,6 @@ android {
         abortOnError false
     }
 
-    Properties properties = new Properties()
-    properties.load(project.rootProject.file('local.properties').newDataInputStream())
-    def alias = properties.getProperty('alias')
-    def password = properties.getProperty('password')
-    def keystore = properties.getProperty('keystore')
-
     signingConfigs {
         release {
             keyAlias alias
