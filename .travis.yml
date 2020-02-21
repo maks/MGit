@@ -25,7 +25,7 @@ before_script:
   - export DATE=$(date)
   - export VERSION=$(date --date="$DATE" +'%Y%m%d%H%M%S')
 before_install:
-  - yes | sdkmanager "platforms;android-29"  
+  - yes | sdkmanager --licenses  
 script:
   - ./gradlew kotlinDslAccessorsSnapshot
   - git --no-pager diff
