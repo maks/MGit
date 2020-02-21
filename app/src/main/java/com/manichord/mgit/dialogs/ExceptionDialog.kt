@@ -5,11 +5,11 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.widget.Button
+import io.sentry.Sentry
 import kotlinx.android.synthetic.main.dialog_exception.view.*
 import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.R
 import me.sheimi.sgit.dialogs.DummyDialogListener
-import org.acra.ACRA
 
 class ExceptionDialog : SheimiDialogFragment() {
     private var mThrowable: Throwable? = null
@@ -43,14 +43,14 @@ class ExceptionDialog : SheimiDialogFragment() {
         super.onStart()
         val dialog = dialog as AlertDialog
         val positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE) as Button
-        positiveButton.setOnClickListener({
-            ACRA.getErrorReporter().handleException(mThrowable, false)
+        positiveButton.setOnClickListener {
+            Sentry.capture(mThrowable);
             dismiss()
-        })
+        }
         val negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE)
-        negativeButton.setOnClickListener({
+        negativeButton.setOnClickListener {
             dismiss()
-        })
+        }
     }
 
     fun setThrowable(throwable: Throwable?) {

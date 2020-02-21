@@ -63,6 +63,8 @@ public class BranchChooserActivity extends SheimiFragmentActivity implements Act
 
                 return true;
             case R.id.action_mode_delete:
+                if (true)
+                    throw new RuntimeException("Crasher test.");
                 AlertDialog.Builder alert = new AlertDialog.Builder(this)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setTitle(getString(R.string.dialog_branch_delete) + " " + mChosenCommit)
@@ -150,6 +152,7 @@ public class BranchChooserActivity extends SheimiFragmentActivity implements Act
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         View v = getLayoutInflater().inflate(R.layout.fragment_branches, null);
         mRepo = (Repo) getIntent().getSerializableExtra(Repo.TAG);
         mBranchTagList = (ListView) v.findViewById(R.id.branches);
