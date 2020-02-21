@@ -48,3 +48,5 @@ local.properties
 *.iml
 *.iws
 *.ipr
+app/src/main/resources
+gradle.properties

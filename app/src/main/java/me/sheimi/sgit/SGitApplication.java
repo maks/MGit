@@ -3,14 +3,14 @@ package me.sheimi.sgit;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.manichord.mgit.transport.MGitHttpConnectionFactory;
 
-import org.acra.ACRA;
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
 import org.eclipse.jgit.transport.CredentialsProvider;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
 import me.sheimi.android.utils.SecurePrefsException;
 import me.sheimi.android.utils.SecurePrefsHelper;
 import me.sheimi.sgit.preference.PreferenceHelper;
@@ -19,11 +19,6 @@ import timber.log.Timber;
 /**
  * Custom Application Singleton
  */
-@ReportsCrashes(
-    mailTo = "mgit@manichord.com",
-    mode = ReportingInteractionMode.TOAST,
-    resToastText = R.string.crash_toast_text // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
-)
 public class SGitApplication extends Application {
 
     private static Context mContext;
@@ -40,6 +35,12 @@ public class SGitApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // only init Sentry if not debug build
+        if (!BuildConfig.DEBUG) {
+            Sentry.init(new AndroidSentryClientFactory(this));
+            Log.d("SENTRY", "SENTRY Configured");
+        }
+
         mContext = getApplicationContext();
         setAppVersionPref();
         mPrefsHelper = new PreferenceHelper(this);
@@ -48,17 +49,6 @@ public class SGitApplication extends Application {
             mCredentialsProvider = new AndroidJschCredentialsProvider(mSecPrefs);
         } catch (SecurePrefsException e) {
             Timber.e(e);
-        }
-    }
-
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-
-        // The following line triggers the initialization of ACRA
-        if (!BuildConfig.DEBUG) {
-            ACRA.init(this);
         }
     }
 

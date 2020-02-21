@@ -4,8 +4,9 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
 
     defaultConfig {
         applicationId "com.manichord.mgit"
@@ -24,6 +25,30 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    signingConfigs {
+        if (project.hasProperty('special')) {
+            release {
+                keyAlias alias
+                keyPassword password
+                storeFile file(keystore)
+                storePassword password
+            }
+        } else {
+            release {
+                keyAlias ''
+                keyPassword ''
+                storeFile file('/empty')
+                storePassword ''
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
@@ -58,8 +83,9 @@ dependencies {
     implementation 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
-    implementation 'ch.acra:acra:4.9.2'
     implementation 'org.conscrypt:conscrypt-android:1.1.0'
+    implementation 'io.sentry:sentry-android:1.7.27'
+
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-timber:1.5.0'
     testImplementation 'junit:junit:4.12'
