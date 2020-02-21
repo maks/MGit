@@ -49,3 +49,4 @@ local.properties
 *.iws
 *.ipr
 app/src/main/resources
+gradle.properties
