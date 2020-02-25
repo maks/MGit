@@ -11,12 +11,12 @@ android {
     defaultConfig {
         applicationId "com.manichord.mgit"
         minSdkVersion 16
-        targetSdkVersion 27
+        targetSdkVersion 28
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 214
-        versionName "1.5.5.1"
+        versionCode 215
+        versionName "1.5.6"
     }
 
     dataBinding {
