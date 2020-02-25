@@ -1,5 +1,13 @@
 package me.sheimi.android.utils;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.content.FileProvider;
+import android.webkit.MimeTypeMap;
+
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -8,16 +16,6 @@ import java.util.Locale;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.sgit.R;
-
-import org.apache.commons.io.FileUtils;
-
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
-import android.support.v4.content.FileProvider;
-import android.webkit.MimeTypeMap;
 
 /**
  * Created by sheimi on 8/8/13.
@@ -29,7 +27,6 @@ public class FsUtils {
 
     public static final String PROVIDER_AUTHORITY = "com.manichord.mgit.fileprovider";
     public static final String TEMP_DIR = "temp";
-    private static final String LOGTAG = FsUtils.class.getSimpleName();
 
     private FsUtils() {
     }
@@ -105,7 +102,7 @@ public class FsUtils {
         String type = null;
         String extension = MimeTypeMap.getFileExtensionFromUrl(url
                 .toLowerCase(Locale.getDefault()));
-        if (extension != null) {
+        if (extension != null && !overrideMimeToPlainText(extension)) {
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             type = mime.getMimeTypeFromExtension(extension);
         }
@@ -146,6 +143,16 @@ public class FsUtils {
         File to = new File(file.getAbsolutePath() + System.currentTimeMillis());
         file.renameTo(to);
         deleteFileInner(to);
+    }
+
+    /**
+     * For some file types, need to override their mimetype to be text/plain
+     * @param fileExtension
+     * @return
+     */
+    private static boolean overrideMimeToPlainText(String fileExtension) {
+        // for now only Typescript needs this override as Mime DB uses ".ts" for mpg2 files
+        return "ts".equalsIgnoreCase(fileExtension);
     }
 
     private static void deleteFileInner(File file) {
