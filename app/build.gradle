@@ -15,7 +15,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 215
+        versionCode 216
         versionName "1.5.6"
     }
 
