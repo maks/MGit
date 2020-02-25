@@ -154,16 +154,6 @@ public class ViewFileActivity extends SheimiFragmentActivity {
 
     }
 
-    private void setSaveStatus(MenuItem mi) {
-        if (mFileFragment.getEditMode()) {
-            mi.setIcon(R.drawable.ic_action_save);
-            mi.setTitle(R.string.action_edit_save);
-        } else {
-            mi.setIcon(R.drawable.ic_action_edit);
-            mi.setTitle(R.string.action_edit);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
