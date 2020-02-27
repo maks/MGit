@@ -23,7 +23,7 @@ public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
     }
 
     protected void setError(int errorRes) {
-        Timber.e("set error [%d] exception", errorRes);
+        Timber.e("set error res id: %d", errorRes);
         mErrorRes = errorRes;
     }
 
