@@ -9,14 +9,9 @@
 
     <item
         android:id="@+id/action_edit_in_other_app"
-        android:icon="@drawable/ic_file"
-        app:showAsAction="ifRoom"
-        android:title="@string/action_edit_in_other_app"/>
-    <item
-        android:id="@+id/action_edit"
         android:icon="@drawable/ic_action_edit"
         app:showAsAction="ifRoom"
-        android:title="@string/action_edit"/>
+        android:title="@string/action_edit_in_other_app"/>
     <item
         android:id="@+id/action_copy_all"
         android:icon="@drawable/ic_action_copy"

@@ -8,8 +8,10 @@ import android.widget.Button
 import io.sentry.Sentry
 import kotlinx.android.synthetic.main.dialog_exception.view.*
 import me.sheimi.android.views.SheimiDialogFragment
+import me.sheimi.sgit.BuildConfig
 import me.sheimi.sgit.R
 import me.sheimi.sgit.dialogs.DummyDialogListener
+import timber.log.Timber
 
 class ExceptionDialog : SheimiDialogFragment() {
     private var mThrowable: Throwable? = null
@@ -44,7 +46,12 @@ class ExceptionDialog : SheimiDialogFragment() {
         val dialog = dialog as AlertDialog
         val positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE) as Button
         positiveButton.setOnClickListener {
-            Sentry.capture(mThrowable);
+            if (BuildConfig.DEBUG) {
+                // when debugging just log the exception
+                Timber.e(mThrowable);
+            } else {
+                Sentry.capture(mThrowable);
+            }
             dismiss()
         }
         val negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE)

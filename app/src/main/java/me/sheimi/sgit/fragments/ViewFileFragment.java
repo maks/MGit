@@ -36,7 +36,6 @@ public class ViewFileFragment extends BaseFragment {
     private ProgressBar mLoading;
     private File mFile;
     private short mActivityMode = ViewFileActivity.TAG_MODE_NORMAL;
-    private boolean mEditMode = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,35 +80,14 @@ public class ViewFileFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (mEditMode) {
-            mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
-        }
     }
 
     private void loadFileContent() {
         mFileContent.loadUrl("file:///android_asset/editor.html");
-        mFileContent.setFocusable(mEditMode);
-    }
-
-    public boolean getEditMode() {
-        return mEditMode;
     }
 
     public File getFile() {
         return mFile;
-    }
-
-    public void setEditMode(boolean mode) {
-        mEditMode = mode;
-        mFileContent.setFocusable(mEditMode);
-        mFileContent.setFocusableInTouchMode(mEditMode);
-        if (mEditMode) {
-            mFileContent.loadUrl(CodeGuesser
-                    .wrapUrlScript("setEditable();"));
-            showToastMessage(R.string.msg_now_you_can_edit);
-        } else {
-            mFileContent.loadUrl(CodeGuesser.wrapUrlScript("save();"));
-        }
     }
 
     public void copyAll() {
@@ -135,37 +113,6 @@ public class ViewFileFragment extends BaseFragment {
             ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("mgit", content);
             clipboard.setPrimaryClip(clip);
-        }
-
-
-        @JavascriptInterface
-        public void save(final String content) {
-            if (mActivityMode == ViewFileActivity.TAG_MODE_SSH_KEY) {
-                return;
-            }
-            if (content == null) {
-                showToastMessage(R.string.alert_save_failed);
-                return;
-            }
-            Thread thread = new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        FileUtils.writeStringToFile(mFile, content);
-                    } catch (IOException e) {
-                        showUserError(e, R.string.alert_save_failed);
-                    }
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadFileContent();
-                            showToastMessage(R.string.success_save);
-                        }
-                    });
-                }
-            });
-            thread.start();
         }
 
         @JavascriptInterface()
@@ -204,27 +151,9 @@ public class ViewFileFragment extends BaseFragment {
                     mLoading.setVisibility(View.INVISIBLE);
                     mFileContent.loadUrl(CodeGuesser
                             .wrapUrlScript("display();"));
-                    if (mEditMode) {
-                        mFileContent.loadUrl(CodeGuesser
-                                .wrapUrlScript("setEditable();"));
-                    }
                 }
             });
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            mEditMode = savedInstanceState.getBoolean("EditMode", false);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean("EditMode", mEditMode);
     }
 
     @Override
