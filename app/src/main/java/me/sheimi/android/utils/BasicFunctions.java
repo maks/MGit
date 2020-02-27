@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
+import com.manichord.mgit.dialogs.ErrorDialog;
 import com.manichord.mgit.dialogs.ExceptionDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -67,6 +68,12 @@ public class BasicFunctions {
         return getActiveActivity().getImageLoader();
     }
 
+    public static void showError(@NonNull @NotNull SheimiFragmentActivity activity, @StringRes final int errorTitleRes, @StringRes final int errorRes) {
+        ErrorDialog exceptionDialog = new ErrorDialog();
+        exceptionDialog.setErrorRes(errorRes);
+        exceptionDialog.setErrorTitleRes(errorTitleRes);
+        exceptionDialog.show(activity.getSupportFragmentManager(), "error-dialog");
+    }
 
     public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, Throwable throwable, @StringRes final int errorTitleRes, @StringRes final int errorRes) {
         ExceptionDialog exceptionDialog = new ExceptionDialog();

@@ -22,13 +22,17 @@ public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
         mErrorRes = errorRes;
     }
 
+    protected void setError(int errorRes) {
+        Timber.e("set error [%d] exception", errorRes);
+        mErrorRes = errorRes;
+    }
+
     private boolean mIsCanceled = false;
 
     public void cancelTask() {
         mIsCanceled = true;
     }
 
-    //TODO(kaeptmblaubaer1000): maybe make abstract?
     /**
      * This method is to be overridden and should return the resource that
      * is used as the title as the

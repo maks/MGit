@@ -12,10 +12,8 @@ import me.sheimi.sgit.BuildConfig
 import me.sheimi.sgit.R
 import me.sheimi.sgit.dialogs.DummyDialogListener
 import timber.log.Timber
-import kotlin.Exception
 
-class ExceptionDialog : SheimiDialogFragment() {
-    private var mThrowable: Throwable? = null
+class ErrorDialog : SheimiDialogFragment() {
     @StringRes
     private var mErrorRes: Int = 0
     @StringRes
@@ -27,22 +25,15 @@ class ExceptionDialog : SheimiDialogFragment() {
         val builder = AlertDialog.Builder(rawActivity)
         val inflater = rawActivity.layoutInflater
         val layout = inflater.inflate(R.layout.dialog_exception, null)
-        val details = when (mThrowable) {
-            is Exception -> { (mThrowable as Exception).message }
-            else -> ""
-        }
-        layout.error_message.setText(getString(mErrorRes) + "\n" + details)
+        layout.error_message.setText(mErrorRes)
 
         builder.setView(layout)
 
         // set button listener
         builder.setTitle(if (errorTitleRes != 0) errorTitleRes else R.string.dialog_error_title)
-        builder.setNegativeButton(getString(R.string.label_cancel),
-                DummyDialogListener())
         builder.setPositiveButton(
-                getString(R.string.dialog_error_send_report),
+                getString(R.string.label_ok),
                 DummyDialogListener())
-
         return builder.create()
     }
 
@@ -51,22 +42,8 @@ class ExceptionDialog : SheimiDialogFragment() {
         val dialog = dialog as AlertDialog
         val positiveButton = dialog.getButton(Dialog.BUTTON_POSITIVE) as Button
         positiveButton.setOnClickListener {
-            if (BuildConfig.DEBUG) {
-                // when debugging just log the exception
-                Timber.e(mThrowable);
-            } else {
-                Sentry.capture(mThrowable);
-            }
             dismiss()
         }
-        val negativeButton = dialog.getButton(Dialog.BUTTON_NEGATIVE)
-        negativeButton.setOnClickListener {
-            dismiss()
-        }
-    }
-
-    fun setThrowable(throwable: Throwable?) {
-        mThrowable = throwable
     }
 
     fun setErrorRes(@StringRes errorRes: Int) {

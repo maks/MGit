@@ -3,8 +3,8 @@
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
 
-
     <dimen name="general_horizontal_margin">8dp</dimen>
+    <dimen name="large_horizontal_margin">16dp</dimen>
     <dimen name="general_vertical_margin">4dp</dimen>
     <dimen name="general_min_height">50dp</dimen>
     <dimen name="general_image_height">200dp</dimen>
