@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.manichord.mgit"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
 
         vectorDrawables.useSupportLibrary = true
