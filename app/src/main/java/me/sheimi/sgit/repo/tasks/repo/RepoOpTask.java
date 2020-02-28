@@ -26,7 +26,11 @@ public abstract class RepoOpTask extends SheimiAsyncTask<Void, String, Boolean> 
         super.onPostExecute(isSuccess);
         mRepo.removeTask(this);
         if (!isSuccess && !isTaskCanceled()) {
-            BasicFunctions.showException(BasicFunctions.getActiveActivity(), mException, mErrorRes, getErrorTitleRes());
+            if (mException == null) {
+                BasicFunctions.showError(BasicFunctions.getActiveActivity(), mErrorRes, getErrorTitleRes());
+            } else {
+                BasicFunctions.showException(BasicFunctions.getActiveActivity(), mException, mErrorRes, getErrorTitleRes());
+            }
         }
         if (isSuccess && mSuccessMsg != 0) {
             BasicFunctions.getActiveActivity().showToastMessage(mSuccessMsg);

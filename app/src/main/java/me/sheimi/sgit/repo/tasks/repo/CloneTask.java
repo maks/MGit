@@ -8,6 +8,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.errors.NotSupportedException;
 import org.eclipse.jgit.lib.ProgressMonitor;
 
 import java.io.File;
@@ -71,7 +72,7 @@ public class CloneTask extends RepoRemoteOpTask {
             cloneCommand.call();
             Profile.setLastCloneSuccess();
         } catch (InvalidRemoteException e) {
-            setException(e, R.string.error_invalid_remote);
+            setError(R.string.error_invalid_remote);
             Profile.setLastCloneFailed(mRepo);
             return false;
         } catch (TransportException e) {
@@ -82,8 +83,14 @@ public class CloneTask extends RepoRemoteOpTask {
         } catch (GitAPIException e) {
             setException(e, R.string.error_clone_failed);
             return false;
-        } catch (JGitInternalException e) {
-            setException(e);
+        }
+        catch (JGitInternalException e) {
+            // not supported when unsupported git remotehttp://asdgfkas URI
+            if (e.getCause() instanceof NotSupportedException) {
+                setError(R.string.error_invalid_remote);
+            } else {
+                setException(e);
+            }
             return false;
         } catch (OutOfMemoryError e) {
             setException(e, R.string.error_out_of_memory);

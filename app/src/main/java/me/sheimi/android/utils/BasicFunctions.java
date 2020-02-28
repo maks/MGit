@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
-import com.manichord.mgit.dialogs.ExceptionDialog;
+import com.manichord.mgit.dialogs.ErrorDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,13 +67,19 @@ public class BasicFunctions {
         return getActiveActivity().getImageLoader();
     }
 
+    public static void showError(@NonNull @NotNull SheimiFragmentActivity activity, @StringRes final int errorTitleRes, @StringRes final int errorRes) {
+        ErrorDialog errorDialog = new ErrorDialog();
+        errorDialog.setErrorRes(errorRes);
+        errorDialog.setErrorTitleRes(errorTitleRes);
+        errorDialog.show(activity.getSupportFragmentManager(), "error-dialog");
+    }
 
     public static void showException(@NonNull @NotNull SheimiFragmentActivity activity, Throwable throwable, @StringRes final int errorTitleRes, @StringRes final int errorRes) {
-        ExceptionDialog exceptionDialog = new ExceptionDialog();
-        exceptionDialog.setThrowable(throwable);
-        exceptionDialog.setErrorRes(errorRes);
-        exceptionDialog.setErrorTitleRes(errorTitleRes);
-        exceptionDialog.show(activity.getSupportFragmentManager(), "exception-dialog");
+        ErrorDialog errorDialog = new ErrorDialog();
+        errorDialog.setThrowable(throwable);
+        errorDialog.setErrorRes(errorRes);
+        errorDialog.setErrorTitleRes(errorTitleRes);
+        errorDialog.show(activity.getSupportFragmentManager(), "exception-dialog");
     }
 
 

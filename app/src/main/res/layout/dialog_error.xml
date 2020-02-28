@@ -7,5 +7,8 @@ android:orientation="vertical">
         android:id="@+id/error_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingStart="@dimen/large_horizontal_margin"
+        android:paddingLeft="@dimen/large_horizontal_margin"
         android:text="@string/dialog_error_occurred_msg" />
 </LinearLayout>
