@@ -28,9 +28,6 @@ before_install:
   - yes | sdkmanager "platforms;android-29"
   - yes | sdkmanager "build-tools;29.0.3"
 script:
-  - ./gradlew kotlinDslAccessorsSnapshot
-  - git --no-pager diff
-  - git --no-pager diff --name-only --exit-code
   - ./gradlew clean assembleDebug testDebug 
 after_success:
   - curl -sSL "https://raw.githubusercontent.com/h5bp-bot/scripts/0.6.1/update_site_branch.sh" |
