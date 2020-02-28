@@ -36,7 +36,7 @@ public abstract class SheimiAsyncTask<A, B, C> extends AsyncTask<A, B, C> {
     /**
      * This method is to be overridden and should return the resource that
      * is used as the title as the
-     * {@link com.manichord.mgit.dialogs.ExceptionDialog} title when the
+     * {@link com.manichord.mgit.dialogs.ErrorDialog} title when the
      * task fails with an exception.
      */
     @StringRes
