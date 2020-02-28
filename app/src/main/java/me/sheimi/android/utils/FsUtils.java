@@ -126,9 +126,9 @@ public class FsUtils {
             activity.startActivity(intent);
             activity.forwardTransition();
         } catch (ActivityNotFoundException e) {
-            //If no app can edit this file at least try to view it (PDFs, ...)
+            //This can occur if no app for file type or more than one app
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             try {
                 activity.startActivity(intent);
                 activity.forwardTransition();
