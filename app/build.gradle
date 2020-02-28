@@ -61,7 +61,7 @@ configurations {
 
 
 dependencies {
-    def supportLib_version = "27.1.1"
+    def supportLib_version = "28.0.0"
     def lifecycle_version = "1.1.1"
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31'
@@ -84,7 +84,7 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
     implementation 'org.conscrypt:conscrypt-android:1.1.0'
-    implementation 'io.sentry:sentry-android:1.7.27'
+    implementation 'io.sentry:sentry-android:1.7.30'
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-timber:1.5.0'
