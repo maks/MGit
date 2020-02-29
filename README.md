@@ -20,7 +20,15 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 [![Translate - with Stringlate](https://img.shields.io/badge/translate%20with-stringlate-green.svg)](https://lonamiwebs.github.io/stringlate/translate?git=https%3A%2F%2Fgithub.com%2Fmaks%2FMGit)
 
 * If you encounter any issues (bugs, crashes, etc.) and want to help improve this project, please open an issue on [GitHub](https://github.com/maks/MGit/issues/new) describing: what the issues are; and how they were caused, to allow for re-creation and fixing of bugs.
-* This app requires minimum of for Android v4.x.
+* This app requires minimum of for Android v5.0
+
+### Editing Files
+
+As of version 15.7, MGit no longer provides an internal texteditor, instead if you wish to edit files, you will need to have an editor app installed. 
+
+An open source editor that has been tested to work with MGit is ["Turbo Editor"]( https://play.google.com/store/apps/details?id=com.maskyn.fileeditorpro)
+
+but others that support File Providers should also work.
 
 ## Supported Features
 
