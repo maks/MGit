@@ -126,9 +126,8 @@ public class FsUtils {
             activity.startActivity(intent);
             activity.forwardTransition();
         } catch (ActivityNotFoundException e) {
-            //This can occur if no app for file type or more than one app
+            // Looks like many editor apps only register for VIEW not EDIT intents :-(
             intent.setAction(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             try {
                 activity.startActivity(intent);
                 activity.forwardTransition();
@@ -201,4 +200,7 @@ public class FsUtils {
         return new File(dir.getAbsolutePath() + File.separator + relative_path);
     }
 
+    public static boolean isTextMimeType(String mime) {
+        return mime.startsWith("text") || mime.equals("application/javascript") || mime.equals("application/json");
+    }
 }

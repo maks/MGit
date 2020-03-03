@@ -87,7 +87,7 @@ public class FilesFragment extends RepoDetailFragment {
                             return;
                         }
                         String mime = FsUtils.getMimeType(file);
-                        if (mime.startsWith("text")) {
+                        if (FsUtils.isTextMimeType(mime)) {
                             Intent intent = new Intent(getActivity(),
                                     ViewFileActivity.class);
                             intent.putExtra(ViewFileActivity.TAG_FILE_NAME,
