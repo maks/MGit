@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 import me.sheimi.android.utils.FsUtils;
-import me.sheimi.sgit.SGitApplication;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.RepoDbManager;
 import me.sheimi.sgit.exception.StopTaskException;
@@ -514,7 +514,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public static void setLocalRepoRoot(Context context, File repoRoot) {
-        PreferenceHelper prefs = ((SGitApplication) context.getApplicationContext()).getPrefenceHelper();
+        PreferenceHelper prefs = ((MGitApplication) context.getApplicationContext()).getPrefenceHelper();
         File oldRoot = prefs.getRepoRoot();
         prefs.setRepoRoot(repoRoot.getAbsolutePath());
 
@@ -529,7 +529,7 @@ public class Repo implements Comparable<Repo>, Serializable {
     }
 
     public File getDir() {
-        PreferenceHelper prefHelper = ((SGitApplication) SGitApplication.getContext()).getPrefenceHelper();
+        PreferenceHelper prefHelper = ((MGitApplication) MGitApplication.getContext()).getPrefenceHelper();
         return Repo.getDir(prefHelper, getLocalPath());
     }
 

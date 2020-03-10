@@ -11,9 +11,10 @@ import android.widget.EditText;
 import java.io.File;
 
 import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
 import com.manichord.mgit.repolist.RepoListActivity;
-import me.sheimi.sgit.SGitApplication;
+
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.preference.PreferenceHelper;
 import me.sheimi.sgit.repo.tasks.repo.InitLocalTask;
@@ -35,7 +36,7 @@ public class InitDialog extends SheimiDialogFragment implements
         super.onCreateDialog(savedInstanceState);
         mActivity = (RepoListActivity) getActivity();
 
-        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+        mPrefsHelper = ((MGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         LayoutInflater inflater = mActivity.getLayoutInflater();

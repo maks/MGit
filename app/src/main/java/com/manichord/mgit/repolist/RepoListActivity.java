@@ -27,8 +27,8 @@ import java.net.URL;
 import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.RepoDetailActivity;
 import me.sheimi.sgit.activities.UserSettingsActivity;
 import me.sheimi.sgit.activities.explorer.ExploreFileActivity;
@@ -121,7 +121,7 @@ public class RepoListActivity extends SheimiFragmentActivity {
                     Intent intent = new Intent(mContext, RepoDetailActivity.class);
                     intent.putExtra(Repo.TAG, repositoriesWithSameRemote.get(0));
                     startActivity(intent);
-                } else if (Repo.getDir(((SGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
+                } else if (Repo.getDir(((MGitApplication) getApplicationContext()).getPrefenceHelper(), repoName).exists()) {
                     // Repository with name end already exists, see https://github.com/maks/MGit/issues/289
                     cloneViewModel.setRemoteUrl(repoUrlBuilder.toString());
                     showCloneView();

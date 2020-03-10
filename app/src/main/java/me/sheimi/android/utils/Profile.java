@@ -3,10 +3,8 @@ package me.sheimi.android.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.util.Log;
 
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
 
 /**

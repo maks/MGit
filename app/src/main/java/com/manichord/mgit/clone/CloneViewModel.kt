@@ -3,8 +3,8 @@ package com.manichord.mgit.clone
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
+import me.sheimi.sgit.MGitApplication
 import me.sheimi.sgit.R
-import me.sheimi.sgit.SGitApplication
 import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.repo.CloneTask
 import me.sheimi.sgit.repo.tasks.repo.InitLocalTask
@@ -85,7 +85,7 @@ class CloneViewModel(application: Application) : AndroidViewModel(application) {
     private fun validateRemoteUrl(remoteUrl: String): Boolean {
         remoteUrlError.value = null
         if (remoteUrl.isBlank()) {
-            remoteUrlError.value = getApplication<SGitApplication>().getString(R.string.alert_remoteurl_required)
+            remoteUrlError.value = getApplication<MGitApplication>().getString(R.string.alert_remoteurl_required)
             return false
         }
         return true
@@ -94,18 +94,18 @@ class CloneViewModel(application: Application) : AndroidViewModel(application) {
     private fun validateLocalName(localName: String): Boolean {
         localRepoNameError.value = null
         if (localName.isBlank()) {
-           localRepoNameError.value = getApplication<SGitApplication>().getString((R.string.alert_localpath_required))
+           localRepoNameError.value = getApplication<MGitApplication>().getString((R.string.alert_localpath_required))
            return false
         }
         if (localName.contains("/")) {
-            localRepoNameError.value = getApplication<SGitApplication>().getString((R.string.alert_localpath_format))
+            localRepoNameError.value = getApplication<MGitApplication>().getString((R.string.alert_localpath_format))
             return false
         }
 
-        val prefsHelper = (getApplication<SGitApplication>()).prefenceHelper
+        val prefsHelper = (getApplication<MGitApplication>()).prefenceHelper
         val file = Repo.getDir(prefsHelper, localName)
         if (file.exists()) {
-            localRepoNameError.value = getApplication<SGitApplication>().getString((R.string.alert_localpath_repo_exists))
+            localRepoNameError.value = getApplication<MGitApplication>().getString((R.string.alert_localpath_repo_exists))
             return false
         }
         return true

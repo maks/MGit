@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
-import me.sheimi.sgit.preference.PreferenceHelper;
 
 public class ExploreRootDirActivity extends FileExplorerActivity {
 

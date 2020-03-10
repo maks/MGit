@@ -12,8 +12,8 @@ import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.lib.StoredConfig;
 
 import me.sheimi.android.utils.Profile;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.exception.StopTaskException;
 
@@ -71,7 +71,7 @@ public class CommitChangesTask extends RepoOpTask {
             String msg, String authorName, String authorEmail) throws Exception, NoHeadException, NoMessageException,
             UnmergedPathsException, ConcurrentRefUpdateException,
             WrongRepositoryStateException, GitAPIException, StopTaskException {
-        Context context = SGitApplication.getContext();
+        Context context = MGitApplication.getContext();
         StoredConfig config = repo.getGit().getRepository().getConfig();
         String committerEmail = config.getString("user", null, "email");
         String committerName = config.getString("user", null, "name");
