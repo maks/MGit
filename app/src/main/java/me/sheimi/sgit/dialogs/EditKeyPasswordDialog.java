@@ -11,10 +11,9 @@ import android.widget.EditText;
 import java.io.File;
 
 import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity;
-import me.sheimi.sgit.ssh.PrivateKeyUtils;
 import timber.log.Timber;
 
 /**
@@ -76,7 +75,7 @@ public class EditKeyPasswordDialog extends SheimiDialogFragment implements
     public void onClick(View view) {
         String newPassword = mPassword.getText().toString().trim();
         try {
-            ((SGitApplication)getActivity().getApplicationContext()).getSecurePrefsHelper().
+            ((MGitApplication)getActivity().getApplicationContext()).getSecurePrefsHelper().
                 set(mKeyFile.getName(), newPassword);
         } catch (Exception e) {
             Timber.e(e);

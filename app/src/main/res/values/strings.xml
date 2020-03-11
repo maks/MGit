@@ -133,6 +133,10 @@
     <string name="dialog_open_remote_title">Choose app to open %s remote</string>
     <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
     <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
+    <string name="dialog_privacy_title">Privacy</string>
+    <string name="dialog_privacy_message">We care about your privacy and data security.\nIn order to keep improving MGit needs to be able to send error and crash reports to Sentry.io that will be viewable only to the developers of MGit. The reports will contain information about the device you are using, a unique randomly generated ID and potentially some metadata about the git repo you are using.\nWe will never send any sensitive information such as login credentials.\nPlease click the "I agree" button to allow MGit to do so or if not, please close MGit now.</string>
+    <string name="dialog_privacy_ok_button">I agree</string>
+    <string name="dialog_privacy_close_button">Close MGit</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>

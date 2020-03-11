@@ -15,8 +15,8 @@ import java.io.File;
 
 import me.sheimi.android.utils.FsUtils;
 import me.sheimi.android.views.SheimiDialogFragment;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
-import me.sheimi.sgit.SGitApplication;
 import me.sheimi.sgit.database.RepoContract;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.preference.PreferenceHelper;
@@ -42,7 +42,7 @@ public class ImportLocalRepoDialog extends SheimiDialogFragment implements
 
         mActivity = getActivity();
 
-        mPrefsHelper = ((SGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
+        mPrefsHelper = ((MGitApplication)mActivity.getApplicationContext()).getPrefenceHelper();
 
         Bundle args = getArguments();
         if (args != null && args.containsKey(FROM_PATH)) {

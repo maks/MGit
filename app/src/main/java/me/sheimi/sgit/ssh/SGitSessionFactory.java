@@ -13,8 +13,7 @@ import org.eclipse.jgit.util.FS;
 
 import java.io.File;
 
-import me.sheimi.sgit.SGitApplication;
-import timber.log.Timber;
+import me.sheimi.sgit.MGitApplication;
 
 /**
  * Custom config for Jsch, including using user-provided private keys
@@ -28,7 +27,7 @@ public class SGitSessionFactory extends JschConfigSessionFactory {
 
         // Awful use of App singleton but not really any other way to get hold of a provider that needs
         // to have been initialised with an Android context
-        UserInfo userInfo = new CredentialsProviderUserInfo(session, SGitApplication.getJschCredentialsProvider());
+        UserInfo userInfo = new CredentialsProviderUserInfo(session, MGitApplication.getJschCredentialsProvider());
         session.setUserInfo(userInfo);
     }
 

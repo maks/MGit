@@ -8,10 +8,10 @@ import timber.log.Timber;
 
 /**
  * Provides debug-build specific Application.
- *
+ * <p>
  * To disable Stetho console logging change the setting in src/debug/res/values/bools.xml
  */
-public class MGitDebugApplication extends SGitApplication {
+public class MGitDebugApplication extends MGitApplication {
 
     private static final String LOGTAG = MGitDebugApplication.class.getSimpleName();
 
