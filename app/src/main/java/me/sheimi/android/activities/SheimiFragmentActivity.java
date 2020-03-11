@@ -1,5 +1,6 @@
 package me.sheimi.android.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,8 +28,10 @@ import java.io.File;
 import me.sheimi.android.avatar.AvatarDownloader;
 import me.sheimi.android.utils.BasicFunctions;
 import me.sheimi.android.utils.Profile;
+import me.sheimi.sgit.MGitApplication;
 import me.sheimi.sgit.R;
 import me.sheimi.sgit.dialogs.DummyDialogListener;
+import me.sheimi.sgit.preference.PreferenceHelper;
 
 public class SheimiFragmentActivity extends AppCompatActivity {
 
@@ -90,6 +93,28 @@ public class SheimiFragmentActivity extends AppCompatActivity {
             // Permission is not granted, so request it from user
             ActivityCompat.requestPermissions(this, new String[]{permission}, MGIT_PERMISSIONS_REQUEST);
         }
+    }
+
+    protected void enforcePrivacy(final Activity activity) {
+        final PreferenceHelper prefHelper = ((MGitApplication)activity.getApplication()).getPrefenceHelper();
+        if (prefHelper.isPrivacyAccepted()) {
+            return;
+        }
+
+        showMessageDialog(R.string.dialog_privacy_title, getString(R.string.dialog_privacy_message),
+            R.string.dialog_privacy_ok_button, R.string.dialog_privacy_close_button,
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    prefHelper.setPrivacyAccepted();
+                }
+            },
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    activity.finish();
+                }
+            });
     }
 
     /* View Utils Start */

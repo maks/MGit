@@ -62,6 +62,8 @@ public class RepoListActivity extends SheimiFragmentActivity {
 
         checkAndRequestRequiredPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+        enforcePrivacy(this);
+
         RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
         CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);
 

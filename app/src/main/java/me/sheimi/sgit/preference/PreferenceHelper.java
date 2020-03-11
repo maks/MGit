@@ -19,6 +19,9 @@ public class PreferenceHelper {
     private static final boolean DEFAULT_BOOLEAN = false;
     private static final String DEFAULT_STRING = "";
 
+    private static final String PRIVACY_ACCEPTED_KEY = "privacy.accepted";
+    private static final int PRIVACY_ACCEPTED_VERSION = 1;
+
     private final Context mContext;
 
     public PreferenceHelper(Context context) {
@@ -42,6 +45,11 @@ public class PreferenceHelper {
     public void setRepoRoot(String repoRootPath) {
         edit(mContext.getString(R.string.pref_key_repo_root_location), repoRootPath);
         Timber.d("set root:"+repoRootPath);
+    }
+
+    public void setPrivacyAccepted() {
+        edit(PRIVACY_ACCEPTED_KEY, PRIVACY_ACCEPTED_VERSION);
+        Timber.d("Privacy policy accepted version:"+PRIVACY_ACCEPTED_VERSION);
     }
 
 
@@ -79,5 +87,9 @@ public class PreferenceHelper {
 
     private boolean getBoolean(String name) {
         return  getSharedPrefs().getBoolean(name, DEFAULT_BOOLEAN);
+    }
+
+    public boolean isPrivacyAccepted() {
+        return getSharedPrefs().getInt(PRIVACY_ACCEPTED_KEY, 0) == PRIVACY_ACCEPTED_VERSION;
     }
 }
