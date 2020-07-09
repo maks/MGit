@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="success_add_to_stage">Fichero está anado a stage</string>
+    <string name="success_remove_file">Fichero está eliminado</string>
+    <string name="success_commit">Alteraciónes están confirmadas</string>
+    <string name="success_reset">Alteraciónes están desechadas</string>
+    <string name="success_cherry_pick">Cherrypicked con éxito</string>
+    <string name="success_rebase">Rebased con éxito</string>
+    <string name="success_checkout_file">Checkout con éxito</string>
+    <string name="success_remote_added">Distante anado</string>
+    <string name="success_remote_removed">Distante eliminado</string>
+    <string name="success_save">Fichero almacenado con Éxito</string>
+    <string name="msg_now_you_can_edit">Se puede modificar este fichero</string>
+    <string name="msg_commit_str_has_copied">Commit hash está copiado</string>
+
+</resources>
