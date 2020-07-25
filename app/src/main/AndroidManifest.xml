@@ -15,7 +15,8 @@
         android:icon="@mipmap/ic_launcher"
         android:logo="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true">
         <activity
             android:name="com.manichord.mgit.repolist.RepoListActivity"
             android:label="@string/app_name" >
