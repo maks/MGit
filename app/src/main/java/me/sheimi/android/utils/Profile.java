@@ -75,4 +75,9 @@ public class Profile {
         a.recycle();
         return styled;
     }
+
+    public static boolean isEngLang(Context context) {
+        String engLangPrefKey = context.getString(R.string.pref_key_eng_lang);
+        return getProfileSharedPreference(context).getBoolean(engLangPrefKey, false);
+    }
 }

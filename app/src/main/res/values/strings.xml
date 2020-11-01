@@ -208,4 +208,6 @@
     <string name="error_no_worktree">This is a bare repository!</string>
     <string name="error_invalid_index">The Git index is invalid!</string>
     <string name="error_file_not_found">File not found!</string>
+    <string name="preference_eng_lang">English Language</string>
+    <string name="pref_key_eng_lang" translatable="false">eng.lang</string>
 </resources>

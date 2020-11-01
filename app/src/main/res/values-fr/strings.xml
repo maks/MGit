@@ -184,5 +184,6 @@
     <string name="initialising">Initialisation …</string>
     <string name="repository_already_present">Dépôt déjà présent !</string>
     <string name="label_init">Init</string>
+    <string name="preference_eng_lang">Langue Anglaise</string>
 
 </resources>

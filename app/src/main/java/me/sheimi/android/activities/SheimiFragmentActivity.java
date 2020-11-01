@@ -5,11 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +20,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.Locale;
+
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
-
-import java.io.File;
 
 import me.sheimi.android.avatar.AvatarDownloader;
 import me.sheimi.android.utils.BasicFunctions;
@@ -46,6 +50,23 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         BasicFunctions.setActiveActivity(this);
         setTheme(Profile.getThemeResource(getApplicationContext()));
+        updateLocale(Profile.isEngLang(getApplicationContext()));
+    }
+
+    private void updateLocale(boolean isEngLang) {
+        final Locale locale;
+        if (isEngLang) {
+            locale = Locale.ENGLISH;
+        } else {
+            locale = Locale.getDefault();
+        }
+        final Resources r = getResources();
+        final DisplayMetrics dm = r.getDisplayMetrics();
+        final Configuration c = r.getConfiguration();
+        if (c.locale == null || !c.locale.equals(locale)) {
+            c.locale = locale;
+            r.updateConfiguration(c, dm);
+        }
     }
 
     @Override

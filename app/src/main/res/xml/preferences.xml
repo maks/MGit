@@ -26,6 +26,15 @@
             >
 
         </ListPreference>
+
+        <SwitchPreference
+            android:title="@string/preference_eng_lang"
+            android:key="@string/pref_key_eng_lang"
+            android:defaultValue="false"
+            android:persistent="true"
+            >
+        </SwitchPreference>
+
     </PreferenceCategory>
 
     <PreferenceCategory

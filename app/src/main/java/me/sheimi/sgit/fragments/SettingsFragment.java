@@ -29,11 +29,12 @@ public class SettingsFragment extends PreferenceFragment {
 
         final String themePrefKey = getString(R.string.pref_key_use_theme_id);
         final String gravatarPrefKey = getString(R.string.pref_key_use_gravatar);
+        final String engLangPrefKey = getString(R.string.pref_key_eng_lang);
 
         mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (themePrefKey.equals(key)) {
+                if (themePrefKey.equals(key) || engLangPrefKey.equals(key)) {
                     // nice trick to recreate the back stack, to ensure existing activities onCreate() are
                     // called to set new theme, courtesy of: http://stackoverflow.com/a/28799124/85472
                     TaskStackBuilder.create(getActivity())

@@ -167,4 +167,5 @@
     <string name="importing">Importing …</string>
     <string name="initialising">Initialising …</string>
     <string name="dialog_edit_key_password_title">Key Password</string>
+    <string name="preference_eng_lang">영어</string>
 </resources>
