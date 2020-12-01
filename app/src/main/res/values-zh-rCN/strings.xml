@@ -186,4 +186,5 @@
     <string name="initialising">正在初始化…</string>
     <string name="repository_already_present">repo 已存在！</string>
     <string name="preference_eng_lang">英语</string>
+    <string name="preference_eng_lang_summary">使用英语代替默认语言</string>
 </resources>

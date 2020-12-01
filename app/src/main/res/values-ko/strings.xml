@@ -168,4 +168,5 @@
     <string name="initialising">Initialising …</string>
     <string name="dialog_edit_key_password_title">Key Password</string>
     <string name="preference_eng_lang">영어</string>
+    <string name="preference_eng_lang_summary">기본 언어 대신 영어 사용</string>
 </resources>

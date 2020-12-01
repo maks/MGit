@@ -29,7 +29,8 @@
 
         <SwitchPreference
             android:title="@string/preference_eng_lang"
-            android:key="@string/pref_key_eng_lang"
+            android:summary="@string/preference_eng_lang_summary"
+            android:key="@string/pref_key_use_english"
             android:defaultValue="false"
             android:persistent="true"
             >

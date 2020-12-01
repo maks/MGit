@@ -183,4 +183,5 @@
     <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
     <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
     <string name="preference_eng_lang">Idioma en Inglés</string>
+    <string name="preference_eng_lang_summary">Utilice el inglés en lugar del idioma predeterminado</string>
 </resources>

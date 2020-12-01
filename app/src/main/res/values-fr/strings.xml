@@ -185,5 +185,5 @@
     <string name="repository_already_present">Dépôt déjà présent !</string>
     <string name="label_init">Init</string>
     <string name="preference_eng_lang">Langue Anglaise</string>
-
+    <string name="preference_eng_lang_summary">Utilisez l\'anglais au lieu de la langue par défaut</string>
 </resources>

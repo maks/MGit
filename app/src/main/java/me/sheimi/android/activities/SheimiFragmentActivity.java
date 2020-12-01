@@ -50,12 +50,12 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         BasicFunctions.setActiveActivity(this);
         setTheme(Profile.getThemeResource(getApplicationContext()));
-        updateLocale(Profile.isEngLang(getApplicationContext()));
+        updateLocale(Profile.useEnglishLocale(getApplicationContext()));
     }
 
-    private void updateLocale(boolean isEngLang) {
+    private void updateLocale(boolean useEnglishLocale) {
         final Locale locale;
-        if (isEngLang) {
+        if (useEnglishLocale) {
             locale = Locale.ENGLISH;
         } else {
             locale = Locale.getDefault();
