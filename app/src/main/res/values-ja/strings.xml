@@ -184,5 +184,6 @@
     <string name="initialising">Initialising …</string>
     <string name="dialog_edit_key_password_title">Key Password</string>
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
-
+    <string name="preference_eng_lang">英語</string>
+    <string name="preference_eng_lang_summary">デフォルト言語の代わりに英語を使用する</string>
 </resources>

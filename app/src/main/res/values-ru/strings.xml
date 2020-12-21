@@ -182,4 +182,6 @@
     <string name="invalid_url">Неверный URL!</string>
     <string name="initialising">Инализация … </string>
     <string name="repository_already_present">Репозиторий уже добавлен!</string>
+    <string name="preference_eng_lang">Английский Язык</string>
+    <string name="preference_eng_lang_summary">Используйте английский вместо языка по умолчанию</string>
 </resources>

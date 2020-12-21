@@ -173,4 +173,6 @@
     <string name="initialising">Initialising …</string>
     <string name="dialog_edit_key_password_title">Key Password</string>
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
+    <string name="preference_eng_lang">שפה אנגלית</string>
+    <string name="preference_eng_lang_summary">השתמש באנגלית במקום בשפת ברירת המחדל</string>
 </resources>
