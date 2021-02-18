@@ -75,10 +75,10 @@ MGit 是一个安卓上的Git客户端应用.
 5. 如果需要, 系统将提示您输入连接到远程repo的凭据. MGit将把存储库（所有分支）下载到您的设备上
 
 ### 创建本地存储库
-1. Click on the `+` icon to add a new repository
-2. Click on `Init Local` to create a local repository
-3. Enter the name for this repository when prompted
-4. A local empty repo will be created
+1. 点击 `+` 图标添加新存储库
+2. 点击 `Init Local` 创建本地存储库
+3. 出现提示时输入此存储库的名称
+4. 将创建本地空存储库
 
 ### URL 格式
 
@@ -104,11 +104,11 @@ MGit 是一个安卓上的Git客户端应用.
 
 ## 幫助
 
-如果你想帮助改善这个项目, 贡献, 特别是翻译是非常欢迎的. 此外通过維基为本提供文档合并也是最受欢迎的!
+如果你想帮助改善这个项目, 贡献, 特别是翻译是非常欢迎的. 此外通过維基为本提供文档存储库也是最受欢迎的!
 
 ### 贡献代码
 如果你想贡献代码，无论是一个错误修复或一个新的功能，，。不会合并。
-如果你想贡献代码, 无论是一个错误修复或一个新的功能, 请确保有一个解决新的代码的问题. **No Pull Requests** 不引用合并當中现有问题的请求.
+如果你想贡献代码, 无论是一个错误修复或一个新的功能, 请确保有一个解决新的代码的问题. **No Pull Requests** 不引用存储库當中现有问题的请求.
 
 请使用repo中为此项目设置的Android Studio格式设置.
 
