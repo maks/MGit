@@ -66,72 +66,71 @@ MGit 是一个安卓上的Git客户端应用.
 
 ## 快速启动
 
-### Clone a remote repository
+### 克隆远程存储库
 
-1. Click on the `+` icon to add a new repository
-2. Enter remote URL (see URL format below)
-3. Enter local repository name - note that this is **not** the full path, as MGit stores all  
-repositories in the same local directory (can be changed in MGit settings)
-4. Click the `Clone` button
-5. If required, you will be prompted for credentials to connect to the remote repo. MGit will download the repository (all branches) to your device
+1. 点击 `+` 图标添加新的存储库
+2. 输入远程URL (参閲下面的 URL 格式)
+3. 输入本地存储库名称 - 请注意这 **不是** 完整路径, 因为MGit将所有存储库存储在同一本地目录中 (可以在MGit设置中更改)
+4. 点击 `克隆` 按钮
+5. 如果需要, 系统将提示您输入连接到远程repo的凭据. MGit将把存储库（所有分支）下载到您的设备上
 
-### Create a local repository
+### 创建本地存储库
 1. Click on the `+` icon to add a new repository
 2. Click on `Init Local` to create a local repository
 3. Enter the name for this repository when prompted
 4. A local empty repo will be created
 
-### URL format
+### URL 格式
 
 #### SSH URLs
 
-* SSH running on standard port (22): `ssh://username@server_name/path/to/repo`
-* SSH running on non-standard port: `ssh://username@server_name:port/path/to/repo`
-* `username` is needed - by default, MGit tries to connect as root.
+* SSH 在标准端口(22)上运行: `ssh://username@server_name/path/to/repo`
+* SSH 在非标准端口上运行: `ssh://username@server_name:port/path/to/repo`
+* `username` 是默认情况下必需的, MGit 尝试以 root 用户身份连接.
 
 #### HTTP(S) URLs
 
 * HTTP(S) URL: `https://server_name/path/to/repo`
 
-## ToDo List
+## 待办事项列表
 
-[Future enhancements and bugs are tracked here on Github](https://github.com/maks/MGit/issues).
+[在Github上跟踪未来的增强和bugs](https://github.com/maks/MGit/issues).
 
-## License
+## 许可
 
-See [GPLv3](./LICENSE)
+参閲 [GPLv3](./LICENSE)
 
-All code written by `maks@manichord.com` can at your option also be used under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+所有代码出自于 `maks@manichord.com` 也可以在 [MIT license](https://en.wikipedia.org/wiki/MIT_License)下使用.
 
-## Help
+## 幫助
 
-If you want to help improve this project, contributions, especially translations are very welcome. Also contributions to documentation via the wiki for this repo are also most welcome!
+如果你想帮助改善这个项目, 贡献, 特别是翻译是非常欢迎的. 此外通过維基为本提供文档合并也是最受欢迎的!
 
-### Contributing code
+### 贡献代码
+如果你想贡献代码，无论是一个错误修复或一个新的功能，，。不会合并。
+如果你想贡献代码, 无论是一个错误修复或一个新的功能, 请确保有一个解决新的代码的问题. **No Pull Requests** 不引用合并當中现有问题的请求.
 
-If you would like to contribute code, either a bugfix or a new feature, please make sure there is a open issue that addresses the new code. 
-**No Pull Requests** will be merged that do not reference an existing issue in the repo.
+请使用repo中为此项目设置的Android Studio格式设置.
 
-Please use the Android Studio formatting settings set for this project in the repo.
+所有对用户可见的字符串都需要进入字符串资源文件. 
 
-All strings visible to the user need to go into strings resource file. 
+#### 项目目标
 
-#### Project Goals
+* 提供在任何平台上可用的最佳帶GUI-Git客户端
+* 可用于电话、平板电脑和笔记本电脑等設備
 
-* Provide the best GUI git client available on any platform
-* Be usable on both phone, tablet and laptop form-factor devices
+#### 非目标项目
 
-#### Non-goals for the project
+* 支持专有供应商APIs (eg. Github)
 
-* Support for proprietary vendor APIs (eg. Github)
+#### 主要贡献
 
-#### Major Contributions
+对于新特性, 新功能的讨论可能需要在涉及它的问题的注释中进行, 因此最好在您花时间编写新代码之前进行.
 
-For new features, a discussion of the new functionality may need to take place in the comments on the issue covering it, so it may be best for that to occur before you spend time on writing the new code.
+该应用程序即将进行重大重组. 用 Kotlin/Rx 应用程序中的所有新功能都将按照 #277 编写. 请注意该项目现在正在使用数据绑定库，所有未来的功能都应该使用它.
 
-The app is about to have a major restructure. All new functionality in the app will be written in Kotlin/Rx per #277. Please be aware that the project is now using Data Binding Library and all future functionality should make use of it.
+#### 提交拉取请求 (PR)
 
-#### Submitting a Pull Request (PR)
-Fork from this repo, create a new branch, commit your changes and then send a pull request against the **master** branch of this repo.
+从这个repo分支, 创建一个新分支, 提交您的更改后发送一个对这个repo的 **master** 分支的请求.
 
-If you are working on a branch for some time, you may find that changes to master get merged in the meantime, if that happens please do **NOT** merge master into your branch! Instead rebase your branch onto the current head of master.
+如果您在一个分支上工作了一段时间, 您可能会发现对 master 的更改同时被合并, 如果发生这种情况，请 **不要** 将 master 合并到您的分支中! 相反将你的分支重设为当前的 master 分支.
