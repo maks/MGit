@@ -1,5 +1,7 @@
 # MGit
 
+[English](README.md) | [简体中文](README_CN.md)
+
 MGit is a Git client Android App.
 
 This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
