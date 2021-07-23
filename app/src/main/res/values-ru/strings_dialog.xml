@@ -8,12 +8,12 @@
     <string name="dialog_rebase_title">Выберете ветку</string>
 
     <!-- Commit -->
-    <string name="dialog_commit_title">Коммитнуть изменения</string>
+    <string name="dialog_commit_title">Закоммитить изменения</string>
     <string name="dialog_commit_msg_hint">Сообщение коммита</string>
     <string name="dialog_commit_author_hint">Автор коммита(рекомендуется)</string>
-    <string name="dialog_commit_is_amend">Изменить предыдущий комиь</string>
+    <string name="dialog_commit_is_amend">Изменить предыдущий комит</string>
     <string name="dialog_commit_auto_stage">Добовлять измененные файлы автоматически</string>
-    <string name="dialog_commit_positive_label">Коммитнуть</string>
+    <string name="dialog_commit_positive_label">Закоммитить</string>
 
     <!-- Import Repo -->
     <string name="dialog_import_local_path_hint">Локальный путь</string>
