@@ -18,7 +18,7 @@
         <item>Обновить</item>
         <item>Загрузить</item>
         <item>Добавить все</item>
-        <item>Коммитнуть</item>
+        <item>Закоммитить</item>
         <item>СБРОС</item>
         <item>Слитие</item>
         <item>Обновить в новую ветку</item>
@@ -29,7 +29,7 @@
         <item>Новая папка</item>
         <item>Добавить сервер</item>
         <item>Удалить сервер</item>
-        <item>Ужалить</item>
+        <item>Удалить</item>
         <item>Файл настроек</item>
         <item>Настройки</item>
     </string-array>
