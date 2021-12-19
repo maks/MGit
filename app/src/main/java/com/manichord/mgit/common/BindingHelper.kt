@@ -1,7 +1,7 @@
 package com.manichord.mgit.common
 
-import android.support.design.widget.TextInputLayout
-import android.databinding.BindingAdapter
+import com.google.android.material.textfield.TextInputLayout
+import androidx.databinding.BindingAdapter
 
 
 @BindingAdapter("app:errorText")

@@ -1,8 +1,8 @@
 package com.manichord.mgit.clone
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import me.sheimi.sgit.MGitApplication
 import me.sheimi.sgit.R
 import me.sheimi.sgit.database.models.Repo

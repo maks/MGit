@@ -2,10 +2,7 @@ package me.sheimi.sgit
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.manichord.mgit.transport.MGitHttpConnectionFactory
-import io.sentry.Sentry
-import io.sentry.android.AndroidSentryClientFactory
 import me.sheimi.android.utils.SecurePrefsException
 import me.sheimi.android.utils.SecurePrefsHelper
 import me.sheimi.sgit.preference.PreferenceHelper
@@ -41,11 +38,6 @@ open class MGitApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // only init Sentry if not debug build
-        if (!BuildConfig.DEBUG) {
-            Sentry.init(AndroidSentryClientFactory(this))
-            Log.d("SENTRY", "SENTRY Configured")
-        }
         mContext = applicationContext
         setAppVersionPref()
         prefenceHelper = PreferenceHelper(this)

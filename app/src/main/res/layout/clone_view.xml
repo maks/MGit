@@ -16,7 +16,7 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true"
@@ -60,9 +60,9 @@
             android:imeOptions="actionNext"
             android:inputType="textUri"
             android:text="@={viewModel.remoteUrl}" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:errorEnabled="true"
@@ -80,7 +80,7 @@
             android:hint="@string/dialog_clone_local_path_hint"
             android:text="@={viewModel.localRepoName}"
             />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 
     <CheckBox
@@ -122,5 +122,5 @@
             android:text="@string/label_cancel"
             android:onClick="@{() -> clickHandler.onActionClick(ClickActions.CANCEL.name)}"
             />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

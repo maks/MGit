@@ -3,14 +3,14 @@ package com.manichord.mgit.repolist;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
+import androidx.core.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -61,8 +61,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
         super.onCreate(savedInstanceState);
 
         checkAndRequestRequiredPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        enforcePrivacy(this);
 
         RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
         CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);

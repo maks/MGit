@@ -1,6 +1,6 @@
 package me.sheimi.sgit.repo.tasks.repo;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;

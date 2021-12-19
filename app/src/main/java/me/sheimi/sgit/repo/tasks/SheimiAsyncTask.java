@@ -1,7 +1,7 @@
 package me.sheimi.sgit.repo.tasks;
 
 import android.os.AsyncTask;
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import me.sheimi.sgit.R;
 import timber.log.Timber;

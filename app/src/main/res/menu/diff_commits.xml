@@ -4,7 +4,7 @@
         android:id="@+id/action_share_diff"
         app:showAsAction="ifRoom"
         android:title="@string/action_share_diff"
-	    app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
+	    app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider" />
       <item
         android:id="@+id/action_save_diff"
         android:icon="@drawable/ic_download"	  
