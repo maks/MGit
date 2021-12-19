@@ -56,8 +56,6 @@ class ErrorDialog : SheimiDialogFragment() {
                 } else {
                     Timber.e(if (mErrorRes != 0) getString(mErrorRes) else "")
                 }
-            } else {
-                // log error for future submission
             }
             dismiss()
         }

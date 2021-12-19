@@ -183,6 +183,7 @@
 
     <!-- Crash reporting via ACRA -->
     <string name="crash_toast_text">MGit error - gathering data to email a crash report</string>
+    <string name="crash_report_email" translatable="false">mgit@manichord.com</string>
 
     <!-- Intent filters -->
     <string name="cloning">Cloning … </string>

@@ -7,6 +7,11 @@ android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
 
     defaultConfig {
         applicationId "com.manichord.mgit"
@@ -19,8 +24,8 @@ android {
         versionName "1.6.0"
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
 
     lintOptions {
@@ -64,6 +69,8 @@ dependencies {
     def supportLib_version = "28.0.0"
     def lifecycle_version = "1.1.1"
 
+    def acraVersion = '5.8.4'
+
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31'
     implementation 'androidx.fragment:fragment:1.0.0'
     implementation 'androidx.annotation:annotation:1.0.0'
@@ -84,6 +91,9 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.scottyab:secure-preferences-lib:0.1.4'
     implementation 'org.conscrypt:conscrypt-android:1.1.0'
+
+    implementation "ch.acra:acra-mail:$acraVersion"
+    implementation "ch.acra:acra-dialog:$acraVersion"
 
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.facebook.stetho:stetho-timber:1.5.0'
