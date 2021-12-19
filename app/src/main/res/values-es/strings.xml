@@ -180,8 +180,12 @@
     <string name="clone_with_mgit">Clone with MGit</string>
     <string name="invalid_url">URL inválido!</string>
     <string name="repository_already_present">Repository already present!</string>
+    <string name="dialog_error_send_report">Send error report</string>
     <string name="dialog_error_occurred_msg">An unexpected error occurred</string>
     <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
     <string name="preference_eng_lang">Idioma en Inglés</string>
     <string name="preference_eng_lang_summary">Utilice el inglés en lugar del idioma predeterminado</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>

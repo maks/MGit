@@ -175,4 +175,7 @@
     <string name="error_rebase_abort_failed_in_reset">Could not abort rebase while resetting repo</string>
     <string name="preference_eng_lang">שפה אנגלית</string>
     <string name="preference_eng_lang_summary">השתמש באנגלית במקום בשפת ברירת המחדל</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>

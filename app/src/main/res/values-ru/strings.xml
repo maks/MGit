@@ -184,4 +184,7 @@
     <string name="repository_already_present">Репозиторий уже добавлен!</string>
     <string name="preference_eng_lang">Английский Язык</string>
     <string name="preference_eng_lang_summary">Используйте английский вместо языка по умолчанию</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>

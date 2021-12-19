@@ -187,4 +187,7 @@
     <string name="repository_already_present">repo 已存在！</string>
     <string name="preference_eng_lang">英语</string>
     <string name="preference_eng_lang_summary">使用英语代替默认语言</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>
