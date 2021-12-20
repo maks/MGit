@@ -8,10 +8,10 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.graphics.drawable.VectorDrawableCompat;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -114,28 +114,6 @@ public class SheimiFragmentActivity extends AppCompatActivity {
             // Permission is not granted, so request it from user
             ActivityCompat.requestPermissions(this, new String[]{permission}, MGIT_PERMISSIONS_REQUEST);
         }
-    }
-
-    protected void enforcePrivacy(final Activity activity) {
-        final PreferenceHelper prefHelper = ((MGitApplication)activity.getApplication()).getPrefenceHelper();
-        if (prefHelper.isPrivacyAccepted()) {
-            return;
-        }
-
-        showMessageDialog(R.string.dialog_privacy_title, getString(R.string.dialog_privacy_message),
-            R.string.dialog_privacy_ok_button, R.string.dialog_privacy_close_button,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    prefHelper.setPrivacyAccepted();
-                }
-            },
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    activity.finish();
-                }
-            });
     }
 
     /* View Utils Start */

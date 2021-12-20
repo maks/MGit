@@ -3,9 +3,8 @@ package com.manichord.mgit.dialogs
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.widget.Button
-import io.sentry.Sentry
 import kotlinx.android.synthetic.main.dialog_error.view.*
 import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.BuildConfig
@@ -57,8 +56,6 @@ class ErrorDialog : SheimiDialogFragment() {
                 } else {
                     Timber.e(if (mErrorRes != 0) getString(mErrorRes) else "")
                 }
-            } else {
-                mThrowable?.let { Sentry.capture(mThrowable) }
             }
             dismiss()
         }

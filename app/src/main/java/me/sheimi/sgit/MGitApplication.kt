@@ -2,13 +2,14 @@ package me.sheimi.sgit
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.manichord.mgit.transport.MGitHttpConnectionFactory
-import io.sentry.Sentry
-import io.sentry.android.AndroidSentryClientFactory
 import me.sheimi.android.utils.SecurePrefsException
 import me.sheimi.android.utils.SecurePrefsHelper
 import me.sheimi.sgit.preference.PreferenceHelper
+import org.acra.config.dialog
+import org.acra.config.mailSender
+import org.acra.data.StringFormat
+import org.acra.ktx.initAcra
 import org.eclipse.jgit.transport.CredentialsProvider
 import timber.log.Timber
 
@@ -41,11 +42,6 @@ open class MGitApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // only init Sentry if not debug build
-        if (!BuildConfig.DEBUG) {
-            Sentry.init(AndroidSentryClientFactory(this))
-            Log.d("SENTRY", "SENTRY Configured")
-        }
         mContext = applicationContext
         setAppVersionPref()
         prefenceHelper = PreferenceHelper(this)
@@ -54,6 +50,24 @@ open class MGitApplication : Application() {
             mCredentialsProvider = AndroidJschCredentialsProvider(securePrefsHelper)
         } catch (e: SecurePrefsException) {
             Timber.e(e)
+        }
+    }
+
+    override fun attachBaseContext(base:Context) {
+        super.attachBaseContext(base)
+
+        initAcra {
+            //core configuration:
+            buildConfigClass = BuildConfig::class.java
+            reportFormat = StringFormat.JSON
+            // each plugin you chose above can be configured in a block like this:
+            dialog {
+                text = getString(R.string.dialog_error_send_report)
+                //opening this block automatically enables the plugin.
+            }
+            mailSender {
+                withMailTo(getString(R.string.crash_report_email))
+            }
         }
     }
 

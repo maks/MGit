@@ -1,7 +1,7 @@
 package me.sheimi.sgit.activities.delegate.actions;
 
 import android.app.AlertDialog;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 
 import me.sheimi.sgit.R;

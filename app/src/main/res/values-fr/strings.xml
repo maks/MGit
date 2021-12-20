@@ -186,4 +186,7 @@
     <string name="label_init">Init</string>
     <string name="preference_eng_lang">Langue Anglaise</string>
     <string name="preference_eng_lang_summary">Utilisez l\'anglais au lieu de la langue par défaut</string>
+    <string name="error_no_worktree">This is a bare repository!</string>
+    <string name="error_invalid_index">The Git index is invalid!</string>
+    <string name="error_file_not_found">File not found!</string>
 </resources>
