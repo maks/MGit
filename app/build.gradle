@@ -4,19 +4,19 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion '29.0.3'
 
 
     defaultConfig {
         applicationId "com.manichord.mgit"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 220
-        versionName "1.5.10"
+        versionCode 221
+        versionName "1.6.0"
     }
 
     dataBinding {
