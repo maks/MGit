@@ -24,7 +24,7 @@ This is a continuation of [the SGit project](https://github.com/sheimi/SGit).
 
 ### Editing Files
 
-As of version 15.7, MGit no longer provides an internal texteditor, instead if you wish to edit files, you will need to have an editor app installed. 
+As of version 1.5.7, MGit no longer provides an internal texteditor, instead if you wish to edit files, you will need to have an editor app installed. 
 
 An open source editor that has been tested to work with MGit is ["Turbo Editor"]( https://play.google.com/store/apps/details?id=com.maskyn.fileeditorpro)
 
@@ -49,7 +49,7 @@ but others that support File Providers should also work.
 * Checkout remote branches
 * Merge branches
 * Push merged content
-* Edit file (built-in editor or external app that can edit the given file type)
+* Edit file via external app that can edit the given file type
 * Commit and push changed files
 * Committer information
 * Prompt for password
