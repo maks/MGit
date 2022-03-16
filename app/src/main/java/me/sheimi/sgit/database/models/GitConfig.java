@@ -16,7 +16,7 @@ public class GitConfig {
 
     private final StoredConfig mConfig;
 
-    private final String USER_SECTION = "name";
+    private final String USER_SECTION = "user";
     private final String NAME_SUBSECTION = "name";
     private final String EMAIL_SUBSECTION = "email";
 
