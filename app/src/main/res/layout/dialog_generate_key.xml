@@ -2,6 +2,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
     <EditText
         android:id="@+id/newFilename"
         android:inputType="text"
@@ -12,6 +13,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/label_new_file_name" />
+
     <EditText
         android:id="@+id/key_size"
         android:inputType="number"
@@ -22,18 +24,31 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:hint="@string/label_key_size"/>
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical">
-      <RadioButton android:id="@+id/radio_rsa"
-		   android:layout_width="wrap_content"
-		   android:layout_height="wrap_content"
-		   android:text="RSA"/>
-      <RadioButton android:id="@+id/radio_dsa"
-		   android:layout_width="wrap_content"
-		   android:layout_height="wrap_content"
-		   android:text="DSA"/>
+        android:hint="@string/label_key_size" />
+
+    <RadioGroup
+        android:id="@+id/radio_keygen_type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_rsa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="RSA" />
+
+        <RadioButton
+            android:id="@+id/radio_dsa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DSA" />
+        <!-- JSCH doesn't support writing ED25519 keys yet, only reading -->
+        <!--<RadioButton
+            android:id="@+id/radio_ed25519"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ED25519" />-->
     </RadioGroup>
 </LinearLayout>
