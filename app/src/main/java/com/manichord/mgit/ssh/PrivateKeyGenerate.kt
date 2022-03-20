@@ -12,6 +12,8 @@ import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.R
 import me.sheimi.sgit.activities.explorer.PrivateKeyManageActivity
 import me.sheimi.sgit.ssh.PrivateKeyUtils
+import org.acra.ktx.sendWithAcra
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
@@ -67,6 +69,11 @@ class PrivateKeyGenerate : SheimiDialogFragment() {
             else -> KeyPair.RSA
         }
         val newKey = File(PrivateKeyUtils.getPrivateKeyFolder(), newFilename)
+        if (newKey.exists()) {
+            showToastMessage(R.string.alert_key_exists)
+            mNewFilename.error = getString(R.string.alert_key_exists)
+            return
+        }
         val newPubKey = File(PrivateKeyUtils.getPublicKeyFolder(), newFilename)
         try {
             val jsch = JSch()
@@ -75,9 +82,12 @@ class PrivateKeyGenerate : SheimiDialogFragment() {
             kpair.writePublicKey(FileOutputStream(newPubKey), "mgit")
             kpair.dispose()
         } catch (e: Exception) {
-            //TODO
-            e.printStackTrace()
+            Timber.e(e, "Failed to generate SSH key")
+            RuntimeException("Failed to generate SSH key", e).sendWithAcra()
+            // Delete any leftover files
+            newKey.delete()
+            newPubKey.delete()
         }
-        (activity as PrivateKeyManageActivity?)!!.refreshList()
+        (activity as PrivateKeyManageActivity).refreshList()
     }
 }
