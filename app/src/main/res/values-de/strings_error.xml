@@ -34,5 +34,6 @@
     <string name="alert_please_add_a_remote">Bitte zuerst eine Remote Repository hinzufügen</string>
     <string name="alert_is_already_a_git_repo">Dieses Verzeichnis ist bereits ein Git-Repository.</string>
     <string name="alert_save_failed">Speichern fehlgeschlagen</string>
+    <string name="alert_key_exists">Schlüssel existiert bereits</string>
 
 </resources>

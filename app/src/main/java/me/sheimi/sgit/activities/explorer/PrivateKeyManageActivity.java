@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.manichord.mgit.ssh.PrivateKeyGenerate;
+
 import java.io.File;
 import java.io.FileFilter;
 
@@ -88,21 +90,12 @@ public class PrivateKeyManageActivity extends FileExplorerActivity implements Ac
 		startActivity(intent);
 		return true;
 	case R.id.action_mode_edit_key_password:
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle(R.string.dialog_not_supported)
-                .setMessage(R.string.dialog_not_supported_msg)
-                .setPositiveButton(R.string.label_ok, null)
-                .show();
-        } else {
-            pathArg = new Bundle();
-            pathArg.putString(EditKeyPasswordDialog.KEY_FILE_EXTRA, mChosenFile.getAbsolutePath());
-            mode.finish();
-            EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
-            editDialog.setArguments(pathArg);
-            editDialog.show(getSupportFragmentManager(), "rename-dialog");
-        }
+        pathArg = new Bundle();
+        pathArg.putString(EditKeyPasswordDialog.KEY_FILE_EXTRA, mChosenFile.getAbsolutePath());
+        mode.finish();
+        EditKeyPasswordDialog editDialog = new EditKeyPasswordDialog();
+        editDialog.setArguments(pathArg);
+        editDialog.show(getSupportFragmentManager(), "rename-dialog");
         return true;
 	case R.id.action_mode_delete:
 	    mode.finish();
