@@ -189,4 +189,6 @@
     <string name="error_no_worktree">This is a bare repository!</string>
     <string name="error_invalid_index">The Git index is invalid!</string>
     <string name="error_file_not_found">File not found!</string>
+    <string name="dialog_access_all_files_title">すべてのファイルへのアクセス</string>
+    <string name="dialog_access_all_files_msg">外部ストレージからリポジトリを読み書きするには、すべてのファイルへのアクセスを許可してください。</string>
 </resources>

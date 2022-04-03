@@ -190,4 +190,6 @@
     <string name="error_no_worktree">This is a bare repository!</string>
     <string name="error_invalid_index">The Git index is invalid!</string>
     <string name="error_file_not_found">File not found!</string>
+    <string name="dialog_access_all_files_title">所有文件的访问</string>
+    <string name="dialog_access_all_files_msg">请允许访问所有文件以从外部存储读取/写入存储库。</string>
 </resources>

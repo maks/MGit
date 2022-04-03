@@ -189,4 +189,6 @@
     <string name="error_no_worktree">This is a bare repository!</string>
     <string name="error_invalid_index">The Git index is invalid!</string>
     <string name="error_file_not_found">File not found!</string>
+    <string name="dialog_access_all_files_title">Accès à tous les fichiers</string>
+    <string name="dialog_access_all_files_msg">Veuillez autoriser l\'accès à tous les fichiers afin de lire/écrire des référentiels à partir d\'un stockage externe.</string>
 </resources>
