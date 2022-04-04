@@ -5,16 +5,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import androidx.core.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -158,21 +154,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 showCloneView();
                 return true;
             case R.id.action_import_repo:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-                    showMessageDialog(
-                        R.string.dialog_access_all_files_title,
-                        R.string.dialog_access_all_files_msg,
-                        R.string.label_ok, (dialogInterface, i) -> {
-                            try {
-                                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                                startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
-                            } catch (ActivityNotFoundException e) {
-                                startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
-                            }
-                        }
-                    );
-                    return true;
-                }
                 intent = new Intent(this, ImportRepositoryActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_REPO);
                 forwardTransition();
