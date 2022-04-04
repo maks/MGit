@@ -2,16 +2,22 @@ package me.sheimi.android.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Environment;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -114,6 +120,27 @@ public class SheimiFragmentActivity extends AppCompatActivity {
             // Permission is not granted, so request it from user
             ActivityCompat.requestPermissions(this, new String[]{permission}, MGIT_PERMISSIONS_REQUEST);
         }
+    }
+
+    public boolean checkAndRequestAccessAllFilesPermission(int requestCode) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R || Environment.isExternalStorageManager()) {
+            return false;
+        }
+        showMessageDialog(
+            R.string.dialog_access_all_files_title,
+            R.string.dialog_access_all_files_msg,
+            R.string.label_ok, (dialog, which) -> {
+                try {
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
+                    startActivityForResult(intent, requestCode);
+                } catch (ActivityNotFoundException e) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                    startActivityForResult(intent, requestCode);
+                }
+            }
+        );
+        return true;
     }
 
     /* View Utils Start */

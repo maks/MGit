@@ -163,6 +163,9 @@ public class RepoListAdapter extends ArrayAdapter<Repo> implements
     public void onItemClick(AdapterView<?> adapterView, View view,
             int position, long id) {
         Repo repo = getItem(position);
+        if (repo.isExternal() && mActivity.checkAndRequestAccessAllFilesPermission(0)) {
+            return;
+        }
         Intent intent = new Intent(mActivity, RepoDetailActivity.class);
         intent.putExtra(Repo.TAG, repo);
         mActivity.startActivity(intent);
