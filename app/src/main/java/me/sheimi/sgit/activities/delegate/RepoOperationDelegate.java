@@ -28,6 +28,7 @@ import me.sheimi.sgit.activities.delegate.actions.RebaseAction;
 import me.sheimi.sgit.activities.delegate.actions.RemoveRemoteAction;
 import me.sheimi.sgit.activities.delegate.actions.RepoAction;
 import me.sheimi.sgit.activities.delegate.actions.ResetAction;
+import me.sheimi.sgit.activities.delegate.actions.UndoAction;
 import me.sheimi.sgit.database.models.Repo;
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask.AsyncTaskPostCallback;
 import me.sheimi.sgit.repo.tasks.repo.AddToStageTask;
@@ -55,6 +56,7 @@ public class RepoOperationDelegate {
         mActions.add(new PushAction(mRepo, mActivity));
         mActions.add(new AddAllAction(mRepo, mActivity));
         mActions.add(new CommitAction(mRepo, mActivity));
+        mActions.add(new UndoAction(mRepo, mActivity));
         mActions.add(new ResetAction(mRepo, mActivity));
         mActions.add(new MergeAction(mRepo, mActivity));
         mActions.add(new FetchAction(mRepo, mActivity));

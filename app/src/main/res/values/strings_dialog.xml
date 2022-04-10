@@ -60,4 +60,10 @@
     <string name="dialog_fetch_positive_button">Fetch</string>
     <string name="dialog_fetch_all_button">Fetch All</string>
 
+    <!-- Undo -->
+    <string name="dialog_undo_commit_title">Undo Last Commit</string>
+    <string name="dialog_undo_commit_msg">Are you sure you want to undo last commit?</string>
+    <string name="dialog_undo_no_commit_msg">No commit to undo!</string>
+    <string name="dialog_undo_first_commit_msg">Cannot undo the initial commit!</string>
+
 </resources>

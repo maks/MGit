@@ -33,6 +33,7 @@
     <string name="action_share_diff">Share diff</string>
     <string name="action_save_diff">Save diff</string>
     <string name="action_send_report">Send report</string>
+    <string name="action_undo">Undo</string>
 
     <!-- label msg -->
     <string name="label_ok">OK</string>

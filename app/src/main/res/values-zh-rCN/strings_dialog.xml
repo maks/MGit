@@ -60,4 +60,9 @@
     <string name="dialog_fetch_positive_button">抓取</string>
     <string name="dialog_fetch_all_button">抓取所有</string>
 
+    <!-- Undo -->
+    <string name="dialog_undo_commit_msg">您确定要撤销上次提交吗？</string>
+    <string name="dialog_undo_commit_title">撤销上次提交</string>
+    <string name="dialog_undo_no_commit_msg">没有历史提交！</string>
+    <string name="dialog_undo_first_commit_msg">首次提交无法撤销！</string>
 </resources>

@@ -13,5 +13,6 @@
     <string name="success_save">File saved Successfully</string>
     <string name="msg_now_you_can_edit">File can be edited</string>
     <string name="msg_commit_str_has_copied">Commit hash has been copied</string>
+    <string name="success_undo">Last commit have been undone</string>
 
 </resources>

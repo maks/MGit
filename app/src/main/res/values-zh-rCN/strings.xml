@@ -31,6 +31,7 @@
     <string name="action_share_diff">分享 diff</string>
     <string name="action_save_diff">保存 diff</string>
     <string name="action_send_report">发送报告</string>
+    <string name="action_undo">撤销</string>
 
     <!-- label msg -->
     <string name="label_ok">确定</string>
@@ -192,4 +193,5 @@
     <string name="error_file_not_found">File not found!</string>
     <string name="dialog_access_all_files_title">所有文件的访问</string>
     <string name="dialog_access_all_files_msg">请允许访问所有文件以从外部存储读取/写入存储库。</string>
+
 </resources>

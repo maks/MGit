@@ -21,6 +21,7 @@
         <item>プッシュ</item>
         <item>すべてステージに追加</item>
         <item>コミット</item>
+        <item>Undo Last Commit</item>
         <item>Reset (HARD)</item>
         <item>マージ</item>
         <item>Fetch</item>
