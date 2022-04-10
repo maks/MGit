@@ -21,6 +21,7 @@
         <item>Pousser</item>
         <item>Ajouter tout au stage</item>
         <item>Commit</item>
+        <item>Undo Last Commit</item>
         <item>Reset (HARD)</item>
         <item>Merge</item>
         <item>Fetch</item>

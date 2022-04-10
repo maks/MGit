@@ -13,5 +13,6 @@
     <string name="success_save">文件成功保存</string>
     <string name="msg_now_you_can_edit">文件可以被编辑</string>
     <string name="msg_commit_str_has_copied">已复制添加的 Hash 值</string>
+    <string name="success_undo">上次提交已被撤销</string>
 
 </resources>

@@ -21,6 +21,7 @@
         <item>推送</item>
         <item>暂存所有</item>
         <item>提交</item>
+        <item>撤销上次提交</item>
         <item>重置（强制）</item>
         <item>合并</item>
         <item>获取</item>

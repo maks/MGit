@@ -21,6 +21,7 @@
         <item>Push</item>
         <item>Alles zum Staging-Bereich hinzufügen</item>
         <item>Commit</item>
+        <item>Undo Last Commit</item>
         <item>Reset (HARD)</item>
         <item>Merge</item>
         <item>Fetch</item>

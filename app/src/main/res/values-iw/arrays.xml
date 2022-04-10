@@ -20,7 +20,8 @@
     <item>דחוף</item>
     <item>הוסף את כולם לשלב</item>
     <item>Commit</item>
-    <item>Reset (HARD)</item>
+      <item>Undo Last Commit</item>
+      <item>Reset (HARD)</item>
     <item>מיזוג</item>
     <item>Fetch</item>
     <item>Rebase</item>

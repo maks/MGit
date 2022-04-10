@@ -19,6 +19,7 @@
         <item>Загрузить</item>
         <item>Добавить все</item>
         <item>Закоммитить</item>
+        <item>Undo Last Commit</item>
         <item>СБРОС</item>
         <item>Слитие</item>
         <item>Обновить в новую ветку</item>
