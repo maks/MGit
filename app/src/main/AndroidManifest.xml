@@ -131,7 +131,7 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
-        <receiver android:name="com.manichord.mgit.receiver.BroadcastReceiver"
+        <receiver android:name="com.manichord.mgit.Receiver"
             android:enabled="true"
             android:exported="true">
 <!--            android:permission="com.manichord.mgit.GIT">-->
