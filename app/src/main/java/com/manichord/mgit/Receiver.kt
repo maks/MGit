@@ -41,12 +41,6 @@ class Receiver : BroadcastReceiver() {
             }
 
             // TODO error if it failed?
-
-            // send an intent back for checking
-            val intent = Intent("com.manichord.mgit.GIT")
-                .putExtra("success", isSuccess == true)
-
-            this.context.sendBroadcast(intent)
         }
     }
 
