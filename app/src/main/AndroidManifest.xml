@@ -135,12 +135,8 @@
             android:enabled="true"
             android:exported="true">
 <!--            android:permission="com.manichord.mgit.GIT">-->
-            <intent-filter android:label="TODO">
-                <action android:name="com.manichord.mgit.SYNC" />
-                <action android:name="com.manichord.mgit.PULL" />
-                <action android:name="com.manichord.mgit.PUSH" />
-                <action android:name="com.manichord.mgit.COMMIT" />
-                <action android:name="com.manichord.mgit.STAGE" />
+            <intent-filter android:label="@string/receiver_filter_label">
+                <action android:name="@string/intent_git" />
             </intent-filter>
         </receiver>
     </application>

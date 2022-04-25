@@ -6,6 +6,9 @@
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
+    <!-- custom intent -->
+    <string name="intent_git" translatable="false">com.manichord.mgit.GIT</string>
+
     <!-- action -->
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
@@ -146,6 +149,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_config_repo">Repository config</string>
     <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
+    <string name="receiver_filter_label">Run git commands using intents</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
