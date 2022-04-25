@@ -3,7 +3,6 @@ package com.manichord.mgit
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import me.sheimi.sgit.R
@@ -12,10 +11,6 @@ import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask
 import me.sheimi.sgit.repo.tasks.repo.PullTask
 import me.sheimi.sgit.repo.tasks.repo.PushTask
-import me.sheimi.sgit.repo.tasks.repo.RepoRemoteOpTask
-import java.util.*
-
-const val TAG = "mgit.Receiver"
 
 class Receiver : BroadcastReceiver() {
     private val notification_channel = "com.manichord.mgit.receiver"
@@ -161,20 +156,5 @@ class Receiver : BroadcastReceiver() {
                     Callback(context, this)).executeTask()
             }
         }
-
-//        val cursor = RepoDbManager.queryAllRepo()
-//        val repos = Repo.getRepoList(context, cursor)
-//        val task = PullTask(repos[0], repos[0].remotes.elementAt(0), false, Callback(context, this))
-//        task.executeTask()
-
-        // queryAllRepo
-
-//        Log.d(TAG, "it works")
-
-//        context?.sendBroadcast(Intent("something"))
-//        Log.d(TAG, "onReceive: " + intent?.action)
-
-//        val repo = intent?.getStringExtra("repository")
-//        val remote = intent?.getStringExtra("remote") ?: "origin"
     }
 }
