@@ -131,6 +131,18 @@
                 android:resource="@xml/filepaths" />
         </provider>
 
+        <receiver android:name="com.manichord.mgit.receiver.BroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+<!--            android:permission="com.manichord.mgit.GIT">-->
+            <intent-filter android:label="TODO">
+                <action android:name="com.manichord.mgit.SYNC" />
+                <action android:name="com.manichord.mgit.PULL" />
+                <action android:name="com.manichord.mgit.PUSH" />
+                <action android:name="com.manichord.mgit.COMMIT" />
+                <action android:name="com.manichord.mgit.STAGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
