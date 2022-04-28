@@ -74,6 +74,12 @@
                 />
         </Preference>
 
+        <Preference
+            android:title="API Whitelist"
+            android:summary="Manage git API whitelist"
+            android:persistent="true">
+        </Preference>
+
         <SwitchPreference
             android:title="@string/preference_use_gravatar"
             android:summary="@string/preference_use_gravatar_summary"

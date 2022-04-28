@@ -136,10 +136,12 @@
 
         <activity
             android:name="com.manichord.mgit.GitReceiverActivity"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true">
-            <intent-filter>
+            android:noHistory="true">
+            <intent-filter android:label="TODO">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 

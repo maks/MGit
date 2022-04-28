@@ -6,9 +6,6 @@
     <string name="title_clone_repo">Clone Repository</string>
     <string name="preference_file_key" translatable="false">com.manichord.mgit</string>
 
-    <!-- custom intent -->
-    <string name="intent_git" translatable="false">com.manichord.mgit.GIT</string>
-
     <!-- action -->
     <string name="action_search">Search</string>
     <string name="action_clone">Clone</string>
@@ -67,6 +64,9 @@
     <string name="label_choose_app_to_edit">Edit With …</string>
     <string name="label_new_branch_name">New Branch</string>
     <string name="label_anonymous_checkout">Anonymous checkout</string>
+    <string name="label_task">%s Task\nRepository: %s</string>
+    <string name="label_task_progress">%s %s\n Progress %s</string>
+    <string name="label_task_runner">Task requested by package:\n%s</string>
 
     <!-- for title -->
     <string name="title_activity_repo_detail">Repository</string>
@@ -136,6 +136,7 @@
     <string name="dialog_open_remote_title">Choose app to open %s remote</string>
     <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
     <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
+    <string name="dialog_confirm_task_execution_title">Run task</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -149,7 +150,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_config_repo">Repository config</string>
     <string name="feedback_url" translatable="false">https://github.com/maks/MGit/issues/new</string>
-    <string name="receiver_filter_label">Run git commands using intents</string>
 
     <!-- toast msg -->
     <string name="feedback_subject">Feedback</string>
