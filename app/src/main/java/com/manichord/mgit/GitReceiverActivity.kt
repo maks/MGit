@@ -1,18 +1,18 @@
 package com.manichord.mgit
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.os.Bundle
-import android.util.Log
+import android.content.*
+import android.os.*
 import android.widget.TextView
+import android.widget.Toast
 import me.sheimi.android.activities.SheimiFragmentActivity
+import me.sheimi.android.activities.SheimiFragmentActivity.onOptionDialogClicked
 import me.sheimi.sgit.R
 import me.sheimi.sgit.database.RepoDbManager
 import me.sheimi.sgit.database.models.Repo
 import me.sheimi.sgit.repo.tasks.SheimiAsyncTask
 import me.sheimi.sgit.repo.tasks.repo.*
 import java.util.*
+
 
 class GitReceiverActivity : SheimiFragmentActivity(), SheimiAsyncTask.AsyncTaskCallback,
                             SheimiAsyncTask.AsyncTaskPostCallback {
@@ -52,6 +52,8 @@ class GitReceiverActivity : SheimiFragmentActivity(), SheimiAsyncTask.AsyncTaskC
             Commit("Commit"),
             Checkout("Checkout"),
         }
+
+        var isRunning = false
     }
 
     lateinit var taskLabel: TextView
@@ -248,15 +250,45 @@ class GitReceiverActivity : SheimiFragmentActivity(), SheimiAsyncTask.AsyncTaskC
         }
     }
 
+    private var mService: Messenger? = null
+
+    private lateinit var mMessenger: Messenger
+
+//    private var mCallback = object : Handler(Looper.get) {
+
+    /** Flag indicating whether we have called bind on the service.  */
+    private var bound: Boolean = false
+
+    private val mConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // This is called when the connection with the service has been
+            // established, giving us the object we can use to
+            // interact with the service.  We are communicating with the
+            // service using a Messenger, so here we get a client-side
+            // representation of that from the raw IBinder object.
+            mService = Messenger(service)
+            bound = true
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            mService = null
+            bound = false
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.git_receiver_activity)
 
-        val intent2 = Intent()
-            .putStringArrayListExtra("commands", arrayListOf("pull", "push"))
-            .putExtra("pull", Bundle().apply {
-                putString("ahaha", "hh")
-            })
+        isRunning = true
+
+//        val intent2 = Intent()
+//            .putStringArrayListExtra("commands", arrayListOf("pull", "push"))
+//            .putExtra("pull", Bundle().apply {
+//                putString("ahaha", "hh")
+//            })
 
         taskLabel = findViewById<TextView>(R.id.taskLabel)
         taskProgressLabel = findViewById<TextView>(R.id.taskProgressLabel)
@@ -264,7 +296,32 @@ class GitReceiverActivity : SheimiFragmentActivity(), SheimiAsyncTask.AsyncTaskC
 
         prefs = this.getPreferences(Context.MODE_PRIVATE)
 
-        tasks.add(intent)
-        runTask()
+//        findViewById<Button>(R.id.testBtn).setOnClickListener {
+//            val message = Message.obtain(null, TestService.MSG_CHECK, 0, 0)
+//            message.replyTo = mMessenger
+//            mService?.send(message)
+//        }
+
+//        tasks.add(intent)
+//        runTask()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        mMessenger = Messenger(object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+                Toast.makeText(applicationContext, "got message from serivce!", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        bindService(Intent(this, GitAPIService::class.java), mConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        isRunning = false
     }
 }

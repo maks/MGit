@@ -31,6 +31,11 @@ public class RepoDbManager {
         mReadableDatabase = mDbHelper.getReadableDatabase();
     }
 
+    public static RepoDbManager createInstance(Context context) {
+        mInstance = new RepoDbManager(context.getApplicationContext());
+        return mInstance;
+    }
+
     private static RepoDbManager getInstance() {
         if (mInstance == null) {
             mInstance = new RepoDbManager(BasicFunctions.getActiveActivity());

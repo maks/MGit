@@ -110,7 +110,7 @@
         <activity
             android:name=".activities.UserSettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity" >
+            android:parentActivityName="com.manichord.mgit.repolist.RepoListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.manichord.mgit.repolist.RepoListActivity" />
@@ -118,7 +118,7 @@
         <activity
             android:name=".activities.explorer.ExploreRootDirActivity"
             android:label="@string/title_activity_explore_file"
-            android:parentActivityName=".activities.UserSettingsActivity" >
+            android:parentActivityName=".activities.UserSettingsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.UserSettingsActivity" />
@@ -133,21 +133,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-
-        <activity
-            android:name="com.manichord.mgit.GitReceiverActivity"
+        <service
+            android:name="com.manichord.mgit.GitAPIService"
             android:enabled="true"
             android:exported="true"
-            android:noHistory="true">
-            <intent-filter android:label="TODO">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="mgit" />
-            </intent-filter>
-        </activity>
+            android:process=":gitapi" />
     </application>
-
 </manifest>

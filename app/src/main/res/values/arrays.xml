@@ -39,6 +39,11 @@
         <item>Rename</item>
         <item>Delete</item>
     </string-array>
+<!--    <string-array name="dialog_confirm_task_execution">-->
+<!--        <item>Yes</item>-->
+<!--        <item>No</item>-->
+<!--        <item>Yes, don't bother me anymore</item>-->
+<!--    </string-array>-->
 
     <!-- MUST KEY theme_names and theme_ids in SYNC -->
     <string-array name="theme_names">
