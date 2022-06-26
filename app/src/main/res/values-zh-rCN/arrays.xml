@@ -19,9 +19,10 @@
         <item>新的分支</item>
         <item>拉取</item>
         <item>推送</item>
+        <item>快速推送(添加，提交，推送)</item>
         <item>暂存所有</item>
         <item>提交</item>
-        <item>重置（强制）</item>
+        <item>重置（HARD）</item>
         <item>合并</item>
         <item>获取</item>
         <item>衍合</item>

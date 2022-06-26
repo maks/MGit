@@ -19,6 +19,7 @@
         <item>新しいブランチ</item>
         <item>プル</item>
         <item>プッシュ</item>
+        <item>Quick Push(Add,Commit,Push)</item>
         <item>すべてステージに追加</item>
         <item>コミット</item>
         <item>Reset (HARD)</item>

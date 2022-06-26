@@ -17,6 +17,7 @@
         <item>New Branch</item>
         <item>Pull</item>
         <item>Push</item>
+        <item>Quick Push(Add,Commit,Push)</item>
         <item>Add all to stage</item>
         <item>Commit</item>
         <item>Reset (HARD)</item>
