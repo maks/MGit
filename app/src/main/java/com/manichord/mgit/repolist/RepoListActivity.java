@@ -65,8 +65,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        checkAndRequestRequiredPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
         RepoListViewModel viewModel = ViewModelProviders.of(this).get(RepoListViewModel.class);
         CloneViewModel cloneViewModel = ViewModelProviders.of(this).get(CloneViewModel.class);
 
@@ -142,6 +140,13 @@ public class RepoListActivity extends SheimiFragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // check everytime on the repo list activity that we still have file access permission
+        checkAndRequestRequiredPermissions(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -158,21 +163,6 @@ public class RepoListActivity extends SheimiFragmentActivity {
                 showCloneView();
                 return true;
             case R.id.action_import_repo:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-                    showMessageDialog(
-                        R.string.dialog_access_all_files_title,
-                        R.string.dialog_access_all_files_msg,
-                        R.string.label_ok, (dialogInterface, i) -> {
-                            try {
-                                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                                startActivity(new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri));
-                            } catch (ActivityNotFoundException e) {
-                                startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
-                            }
-                        }
-                    );
-                    return true;
-                }
                 intent = new Intent(this, ImportRepositoryActivity.class);
                 startActivityForResult(intent, REQUEST_IMPORT_REPO);
                 forwardTransition();
