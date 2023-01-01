@@ -20,8 +20,8 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        versionCode 224
-        versionName "1.6.3"
+        versionCode 227
+        versionName "1.7.0"
     }
 
     buildFeatures {
@@ -92,7 +92,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
     implementation 'org.eclipse.jgit:org.eclipse.jgit:3.7.1.201504261725-r'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    implementation 'com.scottyab:secure-preferences-lib:0.1.4'
+    implementation 'com.scottyab:secure-preferences-lib:0.1.7'
     implementation 'org.conscrypt:conscrypt-android:2.5.2'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 
