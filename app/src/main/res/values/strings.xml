@@ -208,6 +208,6 @@
     <string name="preference_eng_lang">English Language</string>
     <string name="preference_eng_lang_summary">Use English instead of the default language</string>
     <string name="pref_key_use_english" translatable="false">use.english</string>
-    <string name="dialog_access_all_files_title">Access to all files</string>
-    <string name="dialog_access_all_files_msg">Please allow access to all files in order to read/write repositories from external storage.</string>
+    <string name="dialog_access_all_files_title">Access MGit to access all files</string>
+    <string name="dialog_access_all_files_msg">To function correctly and be able to do things like finding modified files in your git working directory MGit needs permission to access all files.\n\nGrant permission?</string>
 </resources>
