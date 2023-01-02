@@ -118,27 +118,11 @@ public class SheimiFragmentActivity extends AppCompatActivity {
     protected void checkAndRequestRequiredPermissions(Context context, String legacyPermission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (PermissionsHelper.Companion.canReadStorage(context) != true) {
-                showMessageDialog(
-                    R.string.dialog_access_all_files_title,
-                    getString(R.string.dialog_access_all_files_msg),
-                    R.string.label_ok,
-                    R.string.label_cancel,
-                    (dialogInterface, i) -> {
-                        try {
-                            Uri uri = Uri.fromParts("package", getPackageName(), null);
-                            Intent permissionAllowIntent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri);
-                            startActivity(permissionAllowIntent);
-                        } catch (ActivityNotFoundException e) {
-                            Log.e("SheimiFragmentActivity", "could not start activity to request all files permission");
-                            showMessageDialog(R.string.dialog_error_title, getString(R.string.error_couldnt_display_all_files_permission));
-                        }
-                    },
-                    (dialogInterface, i) -> {
-                        // can't go on without all files permission
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.dialog_gplay_title).setMessage(getString(R.string.dialog_gplay_rejection))
+                    .setPositiveButton(R.string.label_ok,(dialogInterface, i) -> {
                         finish();
-                    }
-                );
-
+                    }).show();
             }
         } else {
             if (ContextCompat.checkSelfPermission(this, legacyPermission) != PackageManager.PERMISSION_GRANTED) {

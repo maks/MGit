@@ -133,6 +133,10 @@
     <string name="dialog_open_remote_title">Choose app to open %s remote</string>
     <string name="dialog_open_remote_no_app_available">No Apps available to open the url</string>
     <string name="dialog_permission_not_granted">MGit requires that you grant it write access to be able to write local git repos to your storage, until you do this MGit will NOT work properly.</string>
+    <string name="dialog_access_all_files_title">Access MGit to access all files</string>
+    <string name="dialog_access_all_files_msg">To function correctly and be able to do things like finding modified files in your git working directory MGit needs permission to access all files.\n\nGrant permission?</string>
+    <string name="dialog_gplay_title">This App cannot function properly when installed from Google Play</string>
+    <string name="dialog_gplay_rejection">This app has been rejected by Google Play staff from being allowed to use the All Files permission and as such is not functional on Android 11 and newer when installed from Google Play.\nPlease install the app from F-Droid if you wish to use this app Android 11+ devices.</string>
 
     <!-- Others -->
     <string name="pull_msg_init">Pulling … </string>
@@ -208,6 +212,4 @@
     <string name="preference_eng_lang">English Language</string>
     <string name="preference_eng_lang_summary">Use English instead of the default language</string>
     <string name="pref_key_use_english" translatable="false">use.english</string>
-    <string name="dialog_access_all_files_title">Access MGit to access all files</string>
-    <string name="dialog_access_all_files_msg">To function correctly and be able to do things like finding modified files in your git working directory MGit needs permission to access all files.\n\nGrant permission?</string>
 </resources>
