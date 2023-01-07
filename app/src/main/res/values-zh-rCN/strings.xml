@@ -154,9 +154,9 @@
 
     <!-- Preferences -->
 
-    <string name="preference_repo_location">repos 的根存储位置</string>
-    <string name="pref_category_title_general">通用</string>
-    <string name="action_select_root_dir">选择作为根文件夹</string>
+    <string name="preference_repo_location">仓库存储目录</string>
+    <string name="pref_category_title_general">常规</string>
+    <string name="action_select_root_dir">选择一个文件夹作为仓库存储目录</string>
     <string name="action_create_new_dir">新建文件夹</string>
     <string name="pref_category_title_git_profile">Git配置</string>
     <string name="preference_git_user_name">用户名</string>
@@ -167,10 +167,12 @@
     <string name="preference_app_version">版本</string>
     <string name="preference_manage_ssh_keys_summary">管理 SSH Keys</string>
     <string name="preference_manage_ssh_keys">SSH Keys</string>
-    <string name="preference_use_gravatar">使用重力图像</string>
+    <string name="preference_use_gravatar">使用gravatar图像</string>
     <string name="preference_use_gravatar_summary">从gravatar.com加载头像图片</string>
     <string name="pref_category_title_security">安全</string>
     <string name="preference_use_theme">选择颜色主题</string>
+    <string name="preference_quick_push_commit_msg">为快速推送设置提交信息</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">请先去设置页面为快速推送设置提交信息</string>
     <string name="action_git_profile">Git 配置</string>
     <string name="action_open_in_other_app">在其他应用中打开</string>
     <string name="action_add_private_key">添加私钥</string>

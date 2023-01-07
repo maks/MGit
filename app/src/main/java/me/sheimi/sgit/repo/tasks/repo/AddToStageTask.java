@@ -25,7 +25,14 @@ public class AddToStageTask extends RepoOpTask {
 
     public boolean addToStage() {
         try {
-            mRepo.getGit().add().addFilepattern(mFilePattern).call();
+            //   jGit hasn't a cmd direct add modified/new/deleted files, so if want to add
+            //   those 3 types changed, need a combined call like below.
+            //   check it: https://stackoverflow.com/a/59434085
+
+            //add modified/new files
+            mRepo.getGit().add().setUpdate(false).addFilepattern(mFilePattern).call();
+            //add modified/deleted files
+            mRepo.getGit().add().setUpdate(true).addFilepattern(mFilePattern).call();
         } catch (StopTaskException e) {
             return false;
         } catch (Throwable e) {

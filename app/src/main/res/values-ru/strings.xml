@@ -168,6 +168,8 @@
     <string name="preference_use_gravatar_summary">Загрузка аватарок с gravatar.com</string>
     <string name="pref_category_title_security">Безопасность</string>
     <string name="preference_use_theme">Тема</string>
+    <string name="preference_quick_push_commit_msg">Set commit msg for quick push</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">Before Quick Push, You must set commit msg for it on Settings</string>
     <string name="action_git_profile">Профиль Git</string>
     <string name="action_open_in_other_app">Открыть в другом приложении</string>
     <string name="action_add_private_key">Добавить приватный ключ</string>

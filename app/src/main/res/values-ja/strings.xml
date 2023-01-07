@@ -163,6 +163,8 @@
     <string name="preference_send_feedback">フィードバック</string>
     <string name="preference_send_feedback_summary">GitHub に新しいイシューを作成してフィードバックを送信します</string>
     <string name="preference_use_theme">色のテーマを選択</string>
+    <string name="preference_quick_push_commit_msg">Set commit msg for quick push</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">Before Quick Push, You must set commit msg for it on Settings</string>
     <string name="success_remote_removed">リモートを削除しました</string>
     <string name="preference_manage_ssh_keys_summary">SSH キーを管理</string>
     <string name="preference_use_gravatar">グラビア画像を使用する</string>

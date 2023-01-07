@@ -17,6 +17,7 @@
         <item>Nuevo Ramo</item>
         <item>Tirar</item>
         <item>Empujar</item>
+        <item>Quick Push(Add,Commit,Push)</item>
         <item>Anadir todo a stage</item>
         <item>Commit</item>
         <item>Reset (DURO)</item>

@@ -176,6 +176,9 @@
     <string name="pref_key_use_gravatar" translatable="false">use.gravatar</string>
     <string name="pref_category_title_security">Security</string>
     <string name="preference_use_theme">Select Colour Theme</string>
+    <string name="preference_quick_push_commit_msg">Set commit msg for quick push</string>
+    <string name="pre_key_quick_push_commit_msg" translatable="false">quickpush.commitmsg</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">Before Quick Push, You must set commit msg for it on Settings</string>
     <string name="pref_key_use_theme_id" translatable="false">color_theme_id</string>
     <string name="action_git_profile">Git Profile</string>
     <string name="action_open_in_other_app">Open in other apps</string>

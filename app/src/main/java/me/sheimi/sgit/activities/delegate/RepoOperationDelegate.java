@@ -23,6 +23,7 @@ import me.sheimi.sgit.activities.delegate.actions.NewDirAction;
 import me.sheimi.sgit.activities.delegate.actions.NewFileAction;
 import me.sheimi.sgit.activities.delegate.actions.PullAction;
 import me.sheimi.sgit.activities.delegate.actions.PushAction;
+import me.sheimi.sgit.activities.delegate.actions.QuickPushAction;
 import me.sheimi.sgit.activities.delegate.actions.RawConfigAction;
 import me.sheimi.sgit.activities.delegate.actions.RebaseAction;
 import me.sheimi.sgit.activities.delegate.actions.RemoveRemoteAction;
@@ -53,6 +54,7 @@ public class RepoOperationDelegate {
         mActions.add(new NewBranchAction(mRepo,mActivity));
         mActions.add(new PullAction(mRepo, mActivity));
         mActions.add(new PushAction(mRepo, mActivity));
+        mActions.add(new QuickPushAction(mRepo, mActivity));
         mActions.add(new AddAllAction(mRepo, mActivity));
         mActions.add(new CommitAction(mRepo, mActivity));
         mActions.add(new ResetAction(mRepo, mActivity));

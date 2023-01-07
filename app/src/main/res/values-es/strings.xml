@@ -166,6 +166,8 @@
     <string name="preference_use_gravatar_summary">Load avatar images from gravatar.com</string>
     <string name="pref_category_title_security">Security</string>
     <string name="preference_use_theme">Select Colour Theme</string>
+    <string name="preference_quick_push_commit_msg">Set commit msg for quick push</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">Before Quick Push, You must set commit msg for it on Settings</string>
     <string name="action_git_profile">Git Profile</string>
     <string name="action_open_in_other_app">Open in other apps</string>
     <string name="action_add_private_key">Add Private Key</string>

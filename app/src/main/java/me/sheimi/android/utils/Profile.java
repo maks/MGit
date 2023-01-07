@@ -27,6 +27,11 @@ public class Profile {
         return sSharedPreference;
     }
 
+    public static String getQuickPushMsg(Context context) {
+        String key = context.getString(R.string.pre_key_quick_push_commit_msg);
+        return getProfileSharedPreference(context).getString(key, "");
+    }
+
     public static String getUsername(Context context) {
         String userNamePrefKey = context.getString(R.string.pref_key_git_user_name);
         return getProfileSharedPreference(context).getString(userNamePrefKey, "");

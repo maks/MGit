@@ -165,6 +165,8 @@
     <string name="preference_send_feedback">Feedback</string>
     <string name="preference_send_feedback_summary">Feedback im GitHub Issue Tracker geben</string>
     <string name="preference_use_theme">Farbschema ändern</string>
+    <string name="preference_quick_push_commit_msg">Set commit msg for quick push</string>
+    <string name="alert_plese_set_commit_msg_for_quick_push">Before Quick Push, You must set commit msg for it on Settings</string>
     <string name="success_remote_removed">Remote Repository gelöscht</string>
     <string name="preference_manage_ssh_keys_summary">SSH Schlüssel verwalten</string>
     <string name="preference_use_gravatar">Verwenden Sie gravatar Bilder</string>

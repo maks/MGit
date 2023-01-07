@@ -26,7 +26,13 @@
             >
 
         </ListPreference>
-
+        <me.sheimi.sgit.preference.EditTextPreference
+            android:title="@string/preference_quick_push_commit_msg"
+            android:key="@string/pre_key_quick_push_commit_msg"
+            android:summary="%s"
+            android:persistent="true"
+            >
+        </me.sheimi.sgit.preference.EditTextPreference>
         <SwitchPreference
             android:title="@string/preference_eng_lang"
             android:summary="@string/preference_eng_lang_summary"
