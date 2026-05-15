@@ -66,10 +66,6 @@ public class ViewFileFragment extends BaseFragment {
                 Log.d("MyApplication", message + " -- From line " + lineNumber
                         + " of " + sourceID);
             }
-
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
         });
         mFileContent.setBackgroundColor(Color.TRANSPARENT);
 

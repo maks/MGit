@@ -86,10 +86,6 @@ public class CommitDiffActivity extends SheimiFragmentActivity {
                 Log.d("MyApplication", message + " -- From line " + lineNumber
                         + " of " + sourceID);
             }
-
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                return false;
-            }
         });
         mDiffContent.setBackgroundColor(Color.TRANSPARENT);
     }
