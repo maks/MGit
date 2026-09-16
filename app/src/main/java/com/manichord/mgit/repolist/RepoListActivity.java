@@ -158,19 +158,19 @@ public class RepoListActivity extends SheimiFragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch (item.getItemId()) {
-            case R.id.action_new:
-                showCloneView();
-                return true;
-            case R.id.action_import_repo:
-                intent = new Intent(this, ImportRepositoryActivity.class);
-                startActivityForResult(intent, REQUEST_IMPORT_REPO);
-                forwardTransition();
-                return true;
-            case R.id.action_settings:
-                intent = new Intent(this, UserSettingsActivity.class);
-                startActivity(intent);
-                return true;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_new) {
+            showCloneView();
+            return true;
+        } else if (itemId == R.id.action_import_repo) {
+            intent = new Intent(this, ImportRepositoryActivity.class);
+            startActivityForResult(intent, REQUEST_IMPORT_REPO);
+            forwardTransition();
+            return true;
+        } else if (itemId == R.id.action_settings) {
+            intent = new Intent(this, UserSettingsActivity.class);
+            startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
