@@ -2,6 +2,7 @@ package me.sheimi.sgit.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -169,10 +170,14 @@ public class FilesFragment extends RepoDetailFragment {
      * 根据当前目录和仓库根目录,生成可点击的面包屑导航
      */
     private void updateBreadcrumb() {
-        if (mBreadcrumbContainer == null || mCurrentDir == null || mRootDir == null) {
+        if (mBreadcrumbContainer == null || mCurrentDir == null || mRootDir == null || getActivity() == null) {
             return;
         }
         mBreadcrumbContainer.removeAllViews();
+
+        TypedArray a = getActivity().getTheme().obtainStyledAttributes(new int[] { android.R.attr.textColor });
+        int textColor = a.getColor(0, Color.BLACK);
+        a.recycle();
 
         // 从当前目录往上收集到仓库根目录,再反转顺序,得到从根到当前的路径链
         List<File> chain = new ArrayList<>();
@@ -193,7 +198,7 @@ public class FilesFragment extends RepoDetailFragment {
             TextView segment = new TextView(getActivity());
             segment.setText(label);
             segment.setPadding(dpToPx(6), dpToPx(4), dpToPx(6), dpToPx(4));
-            segment.setTextColor(isLast ? Color.parseColor("#212121") : Color.parseColor("#1976D2"));
+            segment.setTextColor(isLast ? textColor : Color.parseColor("#1976D2"));
             segment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
