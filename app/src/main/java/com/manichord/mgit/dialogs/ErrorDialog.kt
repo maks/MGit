@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.annotation.StringRes
 import android.widget.Button
-import kotlinx.android.synthetic.main.dialog_error.view.*
+import android.widget.TextView
 import me.sheimi.android.views.SheimiDialogFragment
 import me.sheimi.sgit.BuildConfig
 import me.sheimi.sgit.R
@@ -32,7 +32,8 @@ class ErrorDialog : SheimiDialogFragment() {
             }
             else -> ""
         }
-        layout.error_message.setText(getString(mErrorRes) + "\n" + details)
+        val errorMessage = layout.findViewById<TextView>(R.id.error_message)
+        errorMessage.text = getString(mErrorRes) + "\n" + details
 
         builder.setView(layout)
 
