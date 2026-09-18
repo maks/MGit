@@ -2,16 +2,24 @@ package me.sheimi.sgit.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import me.sheimi.android.activities.SheimiFragmentActivity;
 import me.sheimi.android.activities.SheimiFragmentActivity.OnBackClickListener;
@@ -38,6 +46,9 @@ public class FilesFragment extends RepoDetailFragment {
 
     private Repo mRepo;
 
+    private HorizontalScrollView mBreadcrumbScroll;
+    private LinearLayout mBreadcrumbContainer;
+
     public static FilesFragment newInstance(Repo mRepo) {
         FilesFragment fragment = new FilesFragment();
         Bundle bundle = new Bundle();
@@ -63,6 +74,8 @@ public class FilesFragment extends RepoDetailFragment {
         mRootDir = mRepo.getDir();
 
         mFilesList = (ListView) v.findViewById(R.id.filesList);
+        mBreadcrumbScroll = (HorizontalScrollView) v.findViewById(R.id.breadcrumbScroll);
+        mBreadcrumbContainer = (LinearLayout) v.findViewById(R.id.breadcrumbContainer);
 
         mFilesListAdapter = new FilesListAdapter(getActivity(),
                 new FileFilter() {
@@ -151,6 +164,68 @@ public class FilesFragment extends RepoDetailFragment {
         if (mFilesListAdapter != null) {
             mFilesListAdapter.setDir(mCurrentDir);
         }
+        updateBreadcrumb();
+    }
+    /**
+     * 根据当前目录和仓库根目录,生成可点击的面包屑导航
+     */
+    private void updateBreadcrumb() {
+        if (mBreadcrumbContainer == null || mCurrentDir == null || mRootDir == null || getActivity() == null) {
+            return;
+        }
+        mBreadcrumbContainer.removeAllViews();
+
+        TypedArray a = getActivity().getTheme().obtainStyledAttributes(new int[] { android.R.attr.textColor });
+        int textColor = a.getColor(0, Color.BLACK);
+        a.recycle();
+
+        // 从当前目录往上收集到仓库根目录,再反转顺序,得到从根到当前的路径链
+        List<File> chain = new ArrayList<>();
+        File dir = mCurrentDir;
+        while (dir != null) {
+            chain.add(dir);
+            if (dir.equals(mRootDir)) {
+                break;
+            }
+            dir = dir.getParentFile();
+        }
+        Collections.reverse(chain);
+
+        for (int i = 0; i < chain.size(); i++) {
+            final File dirLevel = chain.get(i);
+            boolean isLast = (i == chain.size() - 1);
+            String label = dirLevel.equals(mRootDir) ? mRepo.getDiaplayName() : dirLevel.getName();
+            TextView segment = new TextView(getActivity());
+            segment.setText(label);
+            segment.setPadding(dpToPx(6), dpToPx(4), dpToPx(6), dpToPx(4));
+            segment.setTextColor(isLast ? textColor : Color.parseColor("#1976D2"));
+            segment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setCurrentDir(dirLevel);
+                }
+            });
+            mBreadcrumbContainer.addView(segment);
+
+            if (!isLast) {
+                TextView separator = new TextView(getActivity());
+                separator.setText(" \u203a ");
+                separator.setTextColor(Color.parseColor("#9E9E9E"));
+                mBreadcrumbContainer.addView(separator);
+            }
+        }
+
+        mBreadcrumbScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                mBreadcrumbScroll.fullScroll(View.FOCUS_RIGHT);
+            }
+        });
+    }
+
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 
     /**

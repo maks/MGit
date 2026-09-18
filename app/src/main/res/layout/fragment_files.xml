@@ -2,9 +2,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <HorizontalScrollView
+        android:id="@+id/breadcrumbScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:scrollbars="none"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
+
+        <LinearLayout
+            android:id="@+id/breadcrumbContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical" />
+
+    </HorizontalScrollView>
+
     <ListView
         android:id="@+id/filesList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/breadcrumbScroll" />
 
 </RelativeLayout>
