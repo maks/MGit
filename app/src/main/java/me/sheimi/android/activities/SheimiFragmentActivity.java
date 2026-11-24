@@ -24,6 +24,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.manichord.mgit.permissions.PermissionsHelper;
@@ -56,6 +58,48 @@ public class SheimiFragmentActivity extends AppCompatActivity {
         BasicFunctions.setActiveActivity(this);
         setTheme(Profile.getThemeResource(getApplicationContext()));
         updateLocale(Profile.useEnglishLocale(getApplicationContext()));
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            applyEdgeToEdgeInsets();
+        }
+    }
+
+    private void applyEdgeToEdgeInsets() {
+        final View content = findViewById(android.R.id.content);
+        final View actionBar = findViewById(androidx.appcompat.R.id.action_bar_container);
+        if (content == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(content, (view, insets) -> {
+            view.post(() -> updateContentPadding(view, actionBar, insets));
+            return ViewCompat.onApplyWindowInsets(view, insets);
+        });
+        content.post(() -> updateContentPadding(content, actionBar, ViewCompat.getRootWindowInsets(content)));
+    }
+
+    private void updateContentPadding(View content, View actionBar, WindowInsetsCompat insets) {
+        if (actionBar == null || actionBar.getHeight() == 0) {
+            return;
+        }
+        int[] contentLocation = new int[2];
+        int[] actionBarLocation = new int[2];
+        content.getLocationInWindow(contentLocation);
+        actionBar.getLocationInWindow(actionBarLocation);
+        int top = Math.max(0, actionBarLocation[1] + actionBar.getHeight() - contentLocation[1]);
+        int bottom = 0;
+        if (insets != null) {
+            int navigationBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom;
+            int decorHeight = getWindow().getDecorView().getHeight();
+            int contentBottom = contentLocation[1] + content.getHeight();
+            if (navigationBar > 0 && decorHeight > 0 && contentBottom > decorHeight - navigationBar) {
+                bottom = Math.min(navigationBar, contentBottom - (decorHeight - navigationBar));
+            }
+        }
+        content.setPadding(content.getPaddingLeft(), top, content.getPaddingRight(), bottom);
     }
 
     private void updateLocale(boolean useEnglishLocale) {
